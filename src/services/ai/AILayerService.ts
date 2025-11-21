@@ -18,52 +18,17 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import type { Database, Json } from '@/types/supabase-generated';
-import { pytorchModel } from './models/PyTorchScoringModel';
+import type { Database, Json } from '@/types/supabase';
 import { logger } from '@/lib/logger';
+import type { 
+  CompatibilityFeatures, 
+  AIConfig, 
+  AIScore, 
+  ProfileWithInterests 
+} from './types';
+import { calculateDistance, fallbackPrediction } from './utils';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
-
-/**
- * Perfil con intereses relacionados
- */
-interface ProfileWithInterests {
-  id: string;
-  age?: number | null;
-  interests?: Array<{ id: string; [key: string]: unknown }>;
-  latitude?: number | null;
-  longitude?: number | null;
-  [key: string]: any;
-}
-
-// Types
-export interface CompatibilityFeatures {
-  likesGiven: number;
-  likesReceived: number;
-  commentsCount: number;
-  proximityKm: number;
-  responseTimeMs: number;
-  sharedInterestsCount: number;
-  ageGap: number;
-  bigFiveCompatibility: number; // Del scoring actual
-  swingerTraitsScore: number; // Del scoring actual
-}
-
-export interface AIConfig {
-  enabled: boolean;
-  fallbackEnabled: boolean;
-  modelEndpoint: string;
-  cacheEnabled: boolean;
-  cacheTTL: number;
-}
-
-export interface AIScore {
-  score: number;
-  confidence: number;
-  method: 'ai' | 'legacy' | 'hybrid';
-  features?: CompatibilityFeatures;
-  timestamp: Date;
-}
 
 /**
  * AILayerService - Servicio principal de capa AI
@@ -227,7 +192,7 @@ export class AILayerService {
       .or(`user_id.eq.${userId1},user_id.eq.${userId2}`);
 
     // Feature 3: Proximidad (Haversine)
-    const proximityKm = this.calculateDistance(
+    const proximityKm = calculateDistance(
       user1.latitude || 0,
       user1.longitude || 0,
       user2.latitude || 0,
@@ -355,12 +320,14 @@ export class AILayerService {
 
   /**
    * Llama al modelo ML para predicción
-   * v3.5.0: Usa PyTorch/TensorFlow.js con fallback automático
+   * v3.5.0: Usa lazy loading para evitar dependencia circular
    * @private
    */
   private async callMLModel(features: CompatibilityFeatures): Promise<number> {
     try {
-      // Usar modelo PyTorch/TensorFlow.js (Fase 1.2)
+      // Lazy import para evitar dependencia circular
+      const { pytorchModel } = await import('./models/PyTorchScoringModel');
+      
       logger.debug('Using PyTorch model for prediction');
       const score = await pytorchModel.predict(features);
       logger.debug(`PyTorch prediction successful: ${score.toFixed(3)}`);
@@ -368,29 +335,8 @@ export class AILayerService {
     } catch (error) {
       logger.warn('PyTorch model failed, using fallback algorithm', { error });
       
-      // Fallback: algoritmo simple basado en features
-      // (mismo que usa PyTorchScoringModel internamente)
-      const normalized = {
-        likes: Math.min((features.likesGiven + features.likesReceived) / 10, 1),
-        engagement: Math.min(features.commentsCount / 50, 1),
-        proximity: Math.max(1 - features.proximityKm / 100, 0),
-        sharedInterests: Math.min(features.sharedInterestsCount / 10, 1),
-        ageGap: Math.max(1 - features.ageGap / 20, 0),
-        bigFive: features.bigFiveCompatibility,
-        swinger: features.swingerTraitsScore,
-      };
-
-      // Weighted sum (pesos ajustables por entrenamiento)
-      const score =
-        normalized.likes * 0.15 +
-        normalized.engagement * 0.1 +
-        normalized.proximity * 0.15 +
-        normalized.sharedInterests * 0.2 +
-        normalized.ageGap * 0.1 +
-        normalized.bigFive * 0.2 +
-        normalized.swinger * 0.1;
-
-      return Math.min(Math.max(score, 0), 1);
+      // Usar fallback desde utils (evita duplicación)
+      return fallbackPrediction(features);
     }
   }
 
@@ -412,28 +358,6 @@ export class AILayerService {
     return 0.8;
   }
 
-  /**
-   * Calcula distancia Haversine (del servicio actual)
-   * @private
-   */
-  private calculateDistance(
-    lat1: number,
-    lon1: number,
-    lat2: number,
-    lon2: number
-  ): number {
-    const R = 6371; // Radio de la Tierra en km
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  }
 
   /**
    * Genera cache key

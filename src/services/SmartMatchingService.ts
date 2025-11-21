@@ -208,11 +208,29 @@ class SmartMatchingService {
         return [];
       }
 
+      // CRÍTICO: Obtener perfil del usuario actual para verificar is_demo
+      const { data: currentUser } = await supabase
+        .from('profiles')
+        .select('is_demo')
+        .eq('user_id', userId)
+        .single();
+
       let query = supabase
         .from('profiles')
         .select('*')
         .eq('is_public', true)
         .neq('user_id', userId);
+
+      // SEGURIDAD: Filtrar por tipo de usuario (demo vs real)
+      if (currentUser?.is_demo === true) {
+        // Usuario demo: solo puede ver otros demos
+        query = query.eq('is_demo', true);
+        logger.info('🎭 Usuario demo: filtrando solo perfiles demo');
+      } else {
+        // Usuario real: SOLO puede ver usuarios reales
+        query = query.eq('is_demo', false);
+        logger.info('👤 Usuario real: filtrando solo perfiles reales');
+      }
 
       // Aplicar filtros
       if (options.filters) {

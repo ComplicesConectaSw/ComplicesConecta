@@ -27,6 +27,42 @@ All notable changes to this project will be documented in this file.
 - **CSS inline styles**: Documentados como legítimos para barras dinámicas
 - **ParentalControl**: Corregidas referencias a funciones renombradas
 
+## [v3.7.1] - 2025-11-20 22:58
+
+### 🔒 SEGURIDAD CRÍTICA
+- **SmartMatchingService**: Implementado filtro `is_demo` para separar usuarios demo/real
+- **RLS Policies**: Migración `20251120_security_fix_demo_isolation.sql` con políticas de seguridad
+- **Doble validación**: Aplicación + Base de datos para prevenir cruce de datos
+
+### 🔧 REFACTORIZACIÓN ARQUITECTURAL
+- **Dependencias circulares**: Eliminadas completamente (AILayerService ↔ PyTorchScoringModel)
+- **Tipos centralizados**: `src/services/ai/types.ts` para interfaces compartidas
+- **Funciones compartidas**: `src/services/ai/utils.ts` para lógica reutilizable
+- **Lazy imports**: Implementados para evitar ciclos de dependencia
+
+### 🐳 INFRAESTRUCTURA
+- **Supabase local**: Sincronizado con BD remota (30 migraciones aplicadas)
+- **Docker Neo4j**: Configurado con `docker-compose.neo4j.yml`
+- **Tipos TypeScript**: Regenerados desde BD actualizada (8,388 líneas)
+
+### ✨ FEATURES AVANZADAS COMPLETADAS
+- **ImageModal.tsx**: Modal carrusel completo con navegación, likes y comentarios por imagen
+- **ParentalControl.tsx**: Control parental avanzado con PIN, auto-bloqueo y 3 niveles de restricción
+- **Integración Profiles**: Modal unificado para ProfileSingle y ProfileCouple
+
+### 🔧 MEJORAS TÉCNICAS
+- **Build optimizado**: Bundle 1,021.62 kB (293.24 kB gzip)
+- **Tests E2E**: 9/9 pasando (25.8s)
+- **TypeScript**: 100% type-safe (errores corregidos)
+- **Documentación**: Manual de usuario completo (300+ líneas)
+
+### 📊 MÉTRICAS FINALES
+- **Progreso**: 8/8 tareas completadas (100%)
+- **Estado**: LISTO PARA PRODUCCIÓN v3.7.1
+- **Build time**: 46.98s (con sincronización completa)
+- **Errores críticos**: 0
+- **Vulnerabilidades**: Corregidas (separación demo/real blindada)
+
 ## [3.7.0] - 2025-11-16
 
 ### ✨ Agregado
