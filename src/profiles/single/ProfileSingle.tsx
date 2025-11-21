@@ -37,12 +37,13 @@ import { usePersistedState } from '@/hooks/usePersistedState';
 import type { Database } from '@/types/supabase-generated';
 import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
+import { ImageModal } from '@/profiles/shared/ImageModal';
+import { ParentalControl } from '@/components/profile/ParentalControl';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { walletService, WalletService } from '@/services/WalletService';
 import { nftService } from '@/services/NFTService';
 import { useProfileTheme } from '@/features/profile/useProfileTheme';
-import { ImageModal } from '@/components/profile/ImageModal';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
@@ -126,19 +127,18 @@ const ProfileSingle: React.FC = () => {
   ];
 
   // Funciones para el modal del carrusel
-  const handleImageLike = (imageId: string) => {
+  const handleImageLike = (imageIndex: number) => {
+    const imageId = imageIndex.toString();
     const currentLikes = imageLikes[imageId] || 0;
     const userLiked = imageUserLikes[imageId] || false;
     
-    setImageLikes(prev => ({
-      ...prev,
-      [imageId]: userLiked ? currentLikes - 1 : currentLikes + 1
-    }));
-    
-    setImageUserLikes(prev => ({
-      ...prev,
-      [imageId]: !userLiked
-    }));
+    if (userLiked) {
+      setImageLikes(prev => ({ ...prev, [imageId]: currentLikes - 1 }));
+      setImageUserLikes(prev => ({ ...prev, [imageId]: false }));
+    } else {
+      setImageLikes(prev => ({ ...prev, [imageId]: currentLikes + 1 }));
+      setImageUserLikes(prev => ({ ...prev, [imageId]: true }));
+    }
   };
 
   const openImageModal = (index: number) => {
@@ -146,19 +146,19 @@ const ProfileSingle: React.FC = () => {
     setShowImageModal(true);
   };
 
-  const navigateCarousel = (direction: 'prev' | 'next') => {
-    if (direction === 'prev') {
-      setSelectedImageIndex(prev => prev > 0 ? prev - 1 : privateImages.length - 1);
-    } else {
-      setSelectedImageIndex(prev => prev < privateImages.length - 1 ? prev + 1 : 0);
-    }
+  const navigateCarousel = (index: number) => {
+    setSelectedImageIndex(index);
   };
 
-  const handleAddComment = (imageId: string, comment: string) => {
-    setImageComments(prev => ({
-      ...prev,
-      [imageId]: [...(prev[imageId] || []), comment]
-    }));
+  const handleAddComment = (imageIndex: number) => {
+    const comment = prompt('Añadir comentario:');
+    if (comment) {
+      const imageId = imageIndex.toString();
+      setImageComments(prev => ({
+        ...prev,
+        [imageId]: [...(prev[imageId] || []), comment]
+      }));
+    }
   };
 
 
@@ -1416,17 +1416,24 @@ Información del perfil:
         />
       )}
 
+      {/* Control Parental */}
+      <ParentalControl
+        isLocked={isParentalLocked}
+        onToggle={setIsParentalLocked}
+      />
+
       {/* Modal de carrusel de imágenes */}
       <ImageModal
         isOpen={showImageModal}
         onClose={() => setShowImageModal(false)}
-        images={privateImages}
+        images={privateImages.map(img => img.url)}
         currentIndex={selectedImageIndex}
         onNavigate={navigateCarousel}
         onLike={handleImageLike}
         onComment={handleAddComment}
-        isParentalLocked={isParentalLocked}
-        onToggleParental={() => setIsParentalLocked(!isParentalLocked)}
+        likes={imageLikes}
+        userLikes={imageUserLikes}
+        isPrivate={true}
       />
 
       {/* Modal de reporte */}

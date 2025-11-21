@@ -27,6 +27,8 @@ import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
 import { PrivateImageGallery } from '@/components/profile/PrivateImageGallery';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
 import { ProfileNavTabs } from '@/profiles/shared/ProfileNavTabs';
+import { ImageModal } from '@/profiles/shared/ImageModal';
+import { ParentalControl } from '@/components/profile/ParentalControl';
 import { walletService, WalletService } from '@/services/WalletService';
 import { nftService } from '@/services/NFTService';
 
@@ -39,7 +41,14 @@ const ProfileCouple: React.FC = () => {
   const [privateImageAccess, setPrivateImageAccess] = useState<'none' | 'pending' | 'approved' | 'denied'>('none');
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [demoPrivateUnlocked, setDemoPrivateUnlocked] = useState(false);
-  const [isParentalLocked, setIsParentalLocked] = useState(false);
+  const [isParentalLocked, setIsParentalLocked] = usePersistedState('parentalLock', false);
+  
+  // Estados para modal de imágenes
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [imageLikes, setImageLikes] = useState<{[key: string]: number}>({});
+  const [imageUserLikes, setImageUserLikes] = useState<{[key: string]: boolean}>({});
+  const [_imageComments, _setImageComments] = useState<{[key: string]: string[]}>({});
   
   // Función para hacer funcional el botón "Ver Fotos Privadas"
   const handleViewPrivatePhotos = () => {
@@ -50,6 +59,42 @@ const ProfileCouple: React.FC = () => {
       setShowPrivateImageRequest(true);
     }
   };
+
+  // Funciones para modal de imágenes
+  const handleImageLike = (imageIndex: number) => {
+    const imageId = imageIndex.toString();
+    const currentLikes = imageLikes[imageId] || 0;
+    const userLiked = imageUserLikes[imageId] || false;
+    
+    if (userLiked) {
+      setImageLikes(prev => ({ ...prev, [imageId]: currentLikes - 1 }));
+      setImageUserLikes(prev => ({ ...prev, [imageId]: false }));
+    } else {
+      setImageLikes(prev => ({ ...prev, [imageId]: currentLikes + 1 }));
+      setImageUserLikes(prev => ({ ...prev, [imageId]: true }));
+    }
+  };
+
+  const handleAddComment = (imageIndex: number) => {
+    const comment = prompt('Añadir comentario:');
+    if (comment) {
+      const imageId = imageIndex.toString();
+      _setImageComments(prev => ({
+        ...prev,
+        [imageId]: [...(prev[imageId] || []), comment]
+      }));
+    }
+  };
+
+  const navigateCarousel = (index: number) => {
+    setSelectedImageIndex(index);
+  };
+
+  const _openImageModal = (index: number) => {
+    setSelectedImageIndex(index);
+    setShowImageModal(true);
+  };
+
   const { isAuthenticated, user, profile: authProfile } = useAuth();
 
   // Estados para funcionalidades blockchain
@@ -207,14 +252,14 @@ const ProfileCouple: React.FC = () => {
             partner1_last_name: 'Martínez',
             partner1_age: 26,
             partner1_gender: 'female' as const,
-            partner1_avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
+            // partner1_avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
             partner1_bio: 'Amo el arte y los atardeceres.',
             partner2_id: 'demo-partner-2',
             partner2_first_name: 'Luciana',
             partner2_last_name: 'Vega',
             partner2_age: 32,
             partner2_gender: 'female',
-            partner2_avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
+            // partner2_avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
             partner2_interested_in: 'both',
             partner2_bio: 'Fan de la tecnología y el buen café.',
             created_at: new Date().toISOString(),
@@ -691,15 +736,39 @@ const ProfileCouple: React.FC = () => {
         />
       )}
 
+      {/* Control Parental */}
+      <ParentalControl
+        isLocked={isParentalLocked}
+        onToggle={setIsParentalLocked}
+      />
+
+      {/* Modal de carrusel de imágenes */}
+      <ImageModal
+        isOpen={showImageModal}
+        onClose={() => setShowImageModal(false)}
+        images={[
+          '/src/assets/people/couple/privado/couple-private-1.jpg',
+          '/src/assets/people/couple/privado/couple-private-2.jpg',
+          '/src/assets/people/couple/privado/couple-private-3.jpg',
+          '/src/assets/people/couple/privado/couple-private-4.jpg'
+        ]}
+        currentIndex={selectedImageIndex}
+        onNavigate={navigateCarousel}
+        onLike={handleImageLike}
+        onComment={handleAddComment}
+        likes={imageLikes}
+        userLikes={imageUserLikes}
+        isPrivate={true}
+      />
+
       {/* Modal de reporte */}
       <ReportDialog
         profileId={profile?.id || ''}
-        profileName={profile ? `${profile.partner1_first_name || ''} & ${profile.partner2_first_name || ''}` : 'Pareja'}
+        profileName={`${profile?.partner1_first_name || ''} & ${profile?.partner2_first_name || ''}`}
         isOpen={showReportDialog}
         onOpenChange={setShowReportDialog}
         onReport={(reason) => {
           console.log('Perfil reportado por:', reason);
-          // Aqu se implementar la lgica de reporte
         }}
       />
     </div>
