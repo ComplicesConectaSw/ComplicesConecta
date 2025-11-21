@@ -27,6 +27,32 @@ All notable changes to this project will be documented in this file.
 - **CSS inline styles**: Documentados como legítimos para barras dinámicas
 - **ParentalControl**: Corregidas referencias a funciones renombradas
 
+## [v3.7.2] - 2025-11-21 00:24
+
+### 🔒 SISTEMA LEGAL AVANZADO - PROTOCOLO DE DISOLUCIÓN
+- **Consentimiento Dinámico**: Sistema inteligente con evidencia legal (IP, timestamp, hash)
+- **Protocolo de Divorcio Digital**: Acuerdos prenupciales con cláusula de muerte súbita
+- **Cuenta Regresiva**: Timer de 72h para resolución de disputas de pareja
+- **Confiscación Automática**: ADMIN_FORFEIT por expiración de plazo
+
+### 🏗️ ARQUITECTURA LEGAL IMPLEMENTADA
+- **ConsentGuard.tsx**: Componente inteligente de consentimientos por capas
+- **CoupleDissolutionService.ts**: Lógica completa de congelamiento y disolución
+- **CoupleDisputeManager.tsx**: UI "Zona de Peligro" con cronómetro en tiempo real
+- **Migraciones SQL**: Sistema completo de evidencia legal y disputas
+
+### 💾 BASE DE DATOS LEGAL
+- **user_consents**: Consentimientos con evidencia legal completa
+- **couple_agreements**: Acuerdos prenupciales digitales
+- **couple_disputes**: Sistema de disputas con timer automático
+- **frozen_assets**: Detalle de activos congelados durante disputas
+
+### ⚖️ CUMPLIMIENTO NORMATIVO
+- **Evidencia Legal**: IP, timestamps, hashes SHA-256 para integridad
+- **Texto Legal**: Cláusulas defensibles ante tribunales
+- **Estados Inmutables**: Proceso irreversible una vez iniciado
+- **RLS Policies**: Seguridad por usuario y pareja
+
 ## [v3.7.1] - 2025-11-20 22:58
 
 ### 🔒 SEGURIDAD CRÍTICA
