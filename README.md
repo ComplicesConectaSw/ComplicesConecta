@@ -88,6 +88,7 @@
 ### **📖 Documentos en `docs/`**
 - **[📚 Índice de Documentación](./docs/README.md)** - Índice completo de toda la documentación
 - **[💼 Guía para Inversores](./docs/Inversores/GUIA_INVERSORES.md)** - Información de inversión y SAFTE
+- **[💰 Manifiesto FinTech](./docs/Inversores/MANIFIESTO_FINTECH_ESTRATEGIA_NEGOCIO.md)** - Estrategia de negocio y soberanía financiera
 - **[🛡️ Guía para Moderadores](./docs/Moderadores/GUIA_MODERADORES.md)** - Información de moderación y pagos
 - **[🏢 Guía para Clubs](./docs/Clubs/GUIA_CLUBS.md)** - Información de clubs verificados y partners
 - **[🎨 Guía de NFTs](./docs/GUIA_NFTS.md)** - Galerías NFT-Verificadas
@@ -112,9 +113,10 @@
 4. Testing: [Guía de Testing](./docs/TESTING.md)
 
 #### Para Stakeholders/Inversores
-1. Lee primero: [Guía para Inversores](./docs/GUIA_INVERSORES.md)
-2. Revisa: [Presentación Pública](./COMPLICESCONECTA_PRESENTACION_PUBLICA.md)
-3. Consulta: Sección "Modelo de Negocio" en [documentación maestra](./docs/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md)
+1. Lee primero: [Guía para Inversores](./docs/Inversores/GUIA_INVERSORES.md)
+2. Estrategia FinTech: [Manifiesto FinTech](./docs/Inversores/MANIFIESTO_FINTECH_ESTRATEGIA_NEGOCIO.md)
+3. Revisa: [Presentación Pública](./COMPLICESCONECTA_PRESENTACION_PUBLICA.md)
+4. Consulta: Sección "Modelo de Negocio" en [documentación maestra](./docs/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md)
 
 #### Para Moderadores
 1. Lee primero: [Guía para Moderadores](./docs/GUIA_MODERADORES.md)
