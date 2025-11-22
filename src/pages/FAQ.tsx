@@ -118,7 +118,7 @@ const FAQ = () => {
         },
         {
           question: "Cmo puedo acceder a eventos VIP?",
-          answer: "Los eventos VIP estn disponibles para miembros Premium verificados. Recibirs invitaciones exclusivas basadas en tu ubicacin y preferencias."
+          answer: "Los eventos VIP están disponibles para miembros Premium verificados. Recibirás invitaciones exclusivas basadas en tu ubicación y preferencias."
         },
         {
           question: "Los eventos son seguros y discretos?",

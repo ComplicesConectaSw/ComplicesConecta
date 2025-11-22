@@ -26,6 +26,23 @@
   transition: width 0.5s ease-in-out;
 }
 
+/* Ripple effect for MicroInteractions */
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
 /* 
  * CSS Compatibility Notes:
  * - scrollbar-width: Supported in Firefox, Chrome 121+. Fallbacks provided.

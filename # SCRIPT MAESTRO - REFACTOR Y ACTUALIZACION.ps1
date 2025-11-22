@@ -210,7 +210,7 @@ function Update-AllImports {
     Write-Host "`nOK: Archivos actualizados: $actualizados" -ForegroundColor Green
 }
 
-function Run-Audit {
+function Start-Audit {
     Write-Host "`n=== AUDITORIA COMPLETA DEL PROYECTO ===" -ForegroundColor Cyan
     
     $report = @{
@@ -294,7 +294,7 @@ function Run-Audit {
     Write-Host "`nReporte guardado en: $reportPath" -ForegroundColor Green
 }
 
-function Fix-CSS {
+function Repair-CSS {
     Write-Host "`n=== ANALIZANDO Y CORRIGIENDO CSS ===" -ForegroundColor Cyan
     
     if (Test-Path "src/styles/ui-fixes-consolidated.css") {
@@ -329,7 +329,7 @@ function Fix-CSS {
     Write-Host "`nOK: CSS verificado y corregido" -ForegroundColor Green
 }
 
-function Create-MasterImports {
+function New-MasterImports {
     Write-Host "`n=== CREANDO ARCHIVO MAESTRO DE IMPORTS ===" -ForegroundColor Cyan
     
     $masterContent = @'

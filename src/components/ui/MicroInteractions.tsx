@@ -86,10 +86,8 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
         <span
           key={ripple.id}
           className="ripple-effect"
-          style={{
-            '--ripple-x': `${ripple.x}px`,
-            '--ripple-y': `${ripple.y}px`,
-          } as React.CSSProperties}
+          data-ripple-x={ripple.x}
+          data-ripple-y={ripple.y}
         />
       ))}
 

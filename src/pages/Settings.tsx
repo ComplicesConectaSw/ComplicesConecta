@@ -37,7 +37,7 @@ const Settings = () => {
     {
       icon: MapPin,
       title: "Encuentros Gelocalizados",
-      description: "Localiza parejas swinger y clubs exclusivos cerca de tu ubicacin",
+      description: "Localiza parejas swinger y clubs exclusivos cerca de tu ubicación",
       status: "Activo"
     },
     {

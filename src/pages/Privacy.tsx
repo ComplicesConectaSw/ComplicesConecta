@@ -66,7 +66,7 @@ const Privacy = () => {
                 <div>
                   <h4 className="font-semibold text-white mb-2">Informacin de Registro:</h4>
                   <ul className="list-disc list-inside text-white/80 space-y-1">
-                    <li>Nombre, edad y ubicacin</li>
+                    <li>Nombre, edad y ubicación</li>
                     <li>Direccin de correo electrnico</li>
                     <li>Preferencias y orientacin</li>
                     <li>Fotografas de perfil</li>

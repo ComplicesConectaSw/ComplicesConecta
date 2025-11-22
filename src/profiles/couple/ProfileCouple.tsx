@@ -221,20 +221,20 @@ const ProfileCouple: React.FC = () => {
     }
   };
   
-  // Migracin localStorage ? usePersistedState
+  // Migración localStorage → usePersistedState
   const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
   const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        logger.info('?? ProfileCouple - Estado de autenticacin:', {
+        logger.info('?? ProfileCouple - Estado de autenticación:', {
           isAuthenticated,
           user: !!user,
           authProfile: !!authProfile
         });
 
-        // Verificar si hay sesin demo activa PRIMERO
+        // Verificar si hay sesión demo activa PRIMERO
         if (demoAuth === 'true' && demoUser) {
           logger.info('?? Cargando perfil demo pareja...');
           const demoCoupleProfile: CoupleProfileWithPartners = {
@@ -271,7 +271,7 @@ const ProfileCouple: React.FC = () => {
           return;
         }
         
-        // Verificar autenticacin usando useAuth
+        // Verificar autenticación usando useAuth
         if (!isAuthenticated) {
           logger.info('? No autenticado, redirigiendo a auth');
           navigate('/auth', { replace: true });
@@ -500,7 +500,7 @@ const ProfileCouple: React.FC = () => {
                         <span className="sm:hidden">Report</span>
                       </Button>
                       
-                      {/* Botn para solicitar acceso a fotos privadas */}
+                      {/* Botón para solicitar acceso a fotos privadas */}
                       {privateImageAccess === 'none' && (
                         <Button 
                           onClick={handleViewPrivatePhotos}

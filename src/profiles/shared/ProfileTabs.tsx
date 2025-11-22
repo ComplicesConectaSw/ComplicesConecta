@@ -178,8 +178,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
                   {(profile as SingleProfile).interests!.map((interest: string, index: number) => (
                     <Badge 
                       key={index} 
-                      variant="secondary" 
-                      className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 text-white border-pink-400/30"
+                      className="bg-purple-500/20 text-purple-100 border-purple-400/30 hover:bg-purple-500/30 transition-colors text-xs"
                     >
                       {interest}
                     </Badge>

@@ -660,6 +660,7 @@ const Profiles: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-white mb-2 drop-shadow-md">Ubicación</label>
                   <select 
+                    title="Filtrar por ubicación"
                     className="w-full p-3 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                     onChange={(e) => {
                       const filters: FilterState = {
@@ -689,6 +690,7 @@ const Profiles: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-white mb-2 drop-shadow-md">Intereses</label>
                   <select 
+                    title="Filtrar por intereses"
                     className="w-full p-3 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                     onChange={(e) => {
                       const filters: FilterState = {
@@ -716,6 +718,7 @@ const Profiles: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-white mb-2 drop-shadow-md">Estado</label>
                   <select 
+                    title="Filtrar por estado online"
                     className="w-full p-3 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                     onChange={(e) => {
                       const filters: FilterState = {

@@ -136,6 +136,6 @@ export function safeBlockchainCast<T>(data: any): T {
 }
 
 // Helper para acceso seguro a propiedades
-export function safeGet<T>(obj: any, key: string, defaultValue?: T): T {
+export function safeGet<T>(obj: any, key: string, defaultValue?: T): T | undefined {
   return obj && obj[key] !== undefined ? obj[key] : defaultValue;
 }

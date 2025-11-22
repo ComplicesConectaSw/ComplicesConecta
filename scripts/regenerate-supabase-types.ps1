@@ -39,7 +39,7 @@ try {
 
 # Verificar que supabase CLI esté disponible
 try {
-    $supabaseVersion = npx supabase --version 2>&1
+    # $supabaseVersion = npx supabase --version 2>&1
     Write-Host "✅ Supabase CLI encontrado" -ForegroundColor Green
 } catch {
     Write-Host "⚠️  Supabase CLI no encontrado, intentando instalar..." -ForegroundColor Yellow

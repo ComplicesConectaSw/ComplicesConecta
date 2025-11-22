@@ -141,7 +141,7 @@ const News: React.FC = () => {
         "Filtros por proximidad: 'Muy cerca' (=5km), 'En tu zona' (=15km)",
         "Algoritmo de compatibilidad con scoring inteligente",
         "Chat en tiempo real optimizado con Supabase Realtime",
-        "Privacidad de ubicacin configurable"
+        "Privacidad de ubicación configurable"
       ],
       color: "from-green-500 to-teal-600"
     },

@@ -11,14 +11,6 @@ declare global {
     hasWalletProtection?: boolean;
     [key: string]: any;
   }
-  
-  interface Document {
-    // Propiedades específicas que se usan
-    fonts?: {
-      values(): any[];
-      [key: string]: any;
-    };
-  }
 }
 
 // Tipos utilitarios para reducir 'as any'

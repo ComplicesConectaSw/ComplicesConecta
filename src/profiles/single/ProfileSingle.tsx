@@ -747,7 +747,7 @@ Información del perfil:
                       </Button>
                     )}
                     
-                    {/* Boton para solicitar acceso a fotos privadas */}
+                    {/* Botón para solicitar acceso a fotos privadas */}
                     {privateImageAccess === 'none' && (
                       <Button 
                         onClick={handleViewPrivatePhotos}
@@ -788,7 +788,7 @@ Información del perfil:
             </CardContent>
           </Card>
 
-          {/* Estadsticas mejoradas */}
+          {/* Estadísticas mejoradas */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

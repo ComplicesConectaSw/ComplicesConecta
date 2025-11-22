@@ -99,7 +99,7 @@ const Requests = () => {
     
     setReceivedInvitations(demoReceived);
     setSentInvitations(demoSent);
-    logger.info('?? Solicitudes demo cargadas:', { received: demoReceived.length, sent: demoSent.length });
+    logger.info('✅ Solicitudes demo cargadas:', { received: demoReceived.length, sent: demoSent.length });
   };
   
   const loadInvitations = useCallback(async () => {
@@ -187,7 +187,7 @@ const Requests = () => {
           description: `La invitacin ha sido procesada correctamente (modo demo).`,
         });
         
-        logger.info('?? Accin demo en invitacin:', { invitationId, action });
+        logger.info('✅ Acción demo en invitación:', { invitationId, action });
         return;
       }
       

@@ -134,6 +134,7 @@ export const ProfileReportsPanel: React.FC = () => {
 
         <div className="flex items-center space-x-2">
           <select
+            title="Filtrar reportes por estado"
             value={filter}
             onChange={(e) => setFilter(e.target.value as 'all' | 'pending' | 'reviewed')}
             className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"

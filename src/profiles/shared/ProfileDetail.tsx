@@ -253,7 +253,7 @@ const ProfileDetail = () => {
             <Card className="shadow-soft bg-white/10 backdrop-blur-md border-white/20">
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold text-white mb-4">Intereses y Hobbies</h2>
-                <div className="bg-gradient-to-r from-purple-100/80 to-pink-100/80 backdrop-blur-sm rounded-lg p-4 border border-purple-200/50">
+                <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-lg p-4 border border-purple-200/50">
                   <div className="space-y-4">
                     <div>
                       <h3 className="font-medium text-white mb-3">Intereses principales</h3>
@@ -261,7 +261,7 @@ const ProfileDetail = () => {
                         {profile.interests.map((interest, _index) => (
                           <Badge 
                             key={interest} 
-                            className="bg-purple-200/80 text-purple-900 border border-purple-300/50 px-3 py-1.5 text-sm font-semibold whitespace-nowrap"
+                            className="bg-purple-500/20 text-purple-100 border-purple-400/30 hover:bg-purple-500/30 transition-colors px-3 py-1.5 text-sm font-semibold whitespace-nowrap"
                             style={{ flexShrink: 0 }}
                           >
                             {interest}
