@@ -53,7 +53,12 @@ const ProfileCouple: React.FC = () => {
   // Función para hacer funcional el botón "Ver Fotos Privadas"
   const handleViewPrivatePhotos = () => {
     if (isOwnProfile) {
-      alert('✅ ACCESO CONCEDIDO (DEMO)\n\nEn producción esto se haría solo tras aprobar la solicitud.');
+      // Si es el propio perfil, solicitar desbloqueo con PIN
+      if (isParentalLocked) {
+        // Mostrar el modal de control parental para ingresar PIN
+        // El control parental ya está en la página, solo necesitamos activarlo
+        return;
+      }
       setDemoPrivateUnlocked(true);
     } else {
       setShowPrivateImageRequest(true);
@@ -626,21 +631,49 @@ const ProfileCouple: React.FC = () => {
                   <Lock className="w-4 h-4" />
                   Fotos Privadas (4)
                 </h4>
-                {demoPrivateUnlocked && (
-                  <Button
-                    onClick={() => setIsParentalLocked(!isParentalLocked)}
-                    className="bg-orange-600/80 hover:bg-orange-700/80 text-white text-xs px-2 py-1"
-                  >
-                    <Baby className="w-3 h-3 mr-1" />
-                    {isParentalLocked ? 'Desbloquear' : 'Bloquear'}
-                  </Button>
-                )}
+                <Button
+                  onClick={() => {
+                    if (!isParentalLocked) {
+                      // Bloquear ahora
+                      setIsParentalLocked(true);
+                      setDemoPrivateUnlocked(false);
+                      localStorage.setItem('parentalControlLocked', JSON.stringify(true));
+                    }
+                    // Si está bloqueado, el modal ya está visible
+                  }}
+                  className={`text-xs px-3 py-1.5 flex items-center gap-1.5 ${
+                    isParentalLocked 
+                      ? 'bg-red-600/80 hover:bg-red-700/80 text-white' 
+                      : 'bg-orange-600/80 hover:bg-orange-700/80 text-white'
+                  }`}
+                >
+                  {isParentalLocked ? (
+                    <>
+                      <Lock className="w-3 h-3" />
+                      Bloqueado
+                    </>
+                  ) : demoPrivateUnlocked ? (
+                    <>
+                      <Baby className="w-3 h-3" />
+                      Bloquear
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-3 h-3" />
+                      Desbloquear
+                    </>
+                  )}
+                </Button>
               </div>
               <div
                 className="grid grid-cols-2 sm:grid-cols-3 gap-4 cursor-pointer"
                 onClick={() => {
                   if (isOwnProfile) {
-                    alert('✅ ACCESO CONCEDIDO (DEMO)\n\nEn producción esto se haría solo tras aprobar la solicitud.');
+                    // Si está bloqueado por control parental, no hacer nada
+                    // El usuario debe desbloquear primero con el PIN
+                    if (isParentalLocked) {
+                      return; // El modal de control parental ya está visible
+                    }
                     setDemoPrivateUnlocked(true);
                   } else {
                     setShowPrivateImageRequest(true);
@@ -739,7 +772,21 @@ const ProfileCouple: React.FC = () => {
       {/* Control Parental */}
       <ParentalControl
         isLocked={isParentalLocked}
-        onToggle={setIsParentalLocked}
+        onToggle={(locked) => {
+          setIsParentalLocked(locked);
+          localStorage.setItem('parentalControlLocked', JSON.stringify(locked));
+          // Si se desbloquea, permitir acceso a imágenes privadas
+          if (!locked) {
+            setDemoPrivateUnlocked(true);
+          } else {
+            // Si se bloquea, ocultar imágenes privadas
+            setDemoPrivateUnlocked(false);
+          }
+        }}
+        onUnlock={() => {
+          // Callback cuando se desbloquea exitosamente con PIN
+          setDemoPrivateUnlocked(true);
+        }}
       />
 
       {/* Modal de carrusel de imágenes */}

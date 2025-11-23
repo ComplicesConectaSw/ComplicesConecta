@@ -92,9 +92,9 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
 
   const getRestrictionDescription = (level: string) => {
     switch (level) {
-      case 'soft': return '⚡ Bloqueo básico - Contenido sensible oculto';
-      case 'medium': return '🛡️ Bloqueo moderado - Auto-lock 5 min';
-      case 'strict': return '🔒 Bloqueo estricto - Máxima protección';
+      case 'soft': return '⚡ Suave - Contenido sensible oculto, sin auto-bloqueo';
+      case 'medium': return '🛡️ Moderado - Auto-bloqueo en 5 min de inactividad';
+      case 'strict': return '🔒 Estricto - Máxima protección + Auto-bloqueo 5 min';
       default: return '⚙️ Configuración personalizada';
     }
   };
@@ -270,10 +270,11 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
           </Button>
         </div>
 
-        <div className="text-xs text-gray-600 space-y-1">
-          <p><strong>Soft:</strong> Sin auto-bloqueo</p>
-          <p><strong>Medium:</strong> Auto-bloqueo 5min</p>
-          <p><strong>Strict:</strong> Auto-bloqueo 5min + restricciones</p>
+        <div className="text-xs text-gray-600 space-y-1 bg-gray-50 rounded-lg p-3">
+          <p><strong>🟢 Suave:</strong> Contenido sensible oculto, sin auto-bloqueo automático</p>
+          <p><strong>🟡 Moderado:</strong> Auto-bloqueo tras 5 minutos de inactividad</p>
+          <p><strong>🔴 Estricto:</strong> Máxima protección + Auto-bloqueo 5 min + Restricciones adicionales</p>
+          <p className="mt-2 pt-2 border-t border-gray-200"><strong>📌 PIN actual:</strong> {savedPin} (Click en "Cambiar PIN" para modificar)</p>
         </div>
       </CardContent>
     </Card>
