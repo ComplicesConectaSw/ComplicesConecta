@@ -633,34 +633,37 @@ const ProfileCouple: React.FC = () => {
                 </h4>
                 <Button
                   onClick={() => {
+                    // BLOQUEAR es inmediato sin PIN
+                    // DESBLOQUEAR requiere PIN (el modal ya está visible cuando isParentalLocked=true)
                     if (!isParentalLocked) {
-                      // Bloquear ahora
+                      // Bloquear ahora SIN PIN
                       setIsParentalLocked(true);
                       setDemoPrivateUnlocked(false);
                       localStorage.setItem('parentalControlLocked', JSON.stringify(true));
                     }
-                    // Si está bloqueado, el modal ya está visible
+                    // Si está bloqueado, NO hacer nada - el usuario debe usar el modal de PIN
                   }}
-                  className={`text-xs px-3 py-1.5 flex items-center gap-1.5 ${
+                  className={`text-xs px-3 py-1.5 flex items-center gap-1.5 transition-all ${
                     isParentalLocked 
-                      ? 'bg-red-600/80 hover:bg-red-700/80 text-white' 
-                      : 'bg-orange-600/80 hover:bg-orange-700/80 text-white'
+                      ? 'bg-red-600/80 hover:bg-red-700/80 text-white cursor-default' 
+                      : 'bg-orange-600/80 hover:bg-orange-700/80 text-white hover:scale-105'
                   }`}
+                  disabled={isParentalLocked}
                 >
                   {isParentalLocked ? (
                     <>
                       <Lock className="w-3 h-3" />
-                      Bloqueado
+                      🔒 Bloqueado (PIN requerido para desbloquear)
                     </>
                   ) : demoPrivateUnlocked ? (
                     <>
                       <Baby className="w-3 h-3" />
-                      Bloquear
+                      Bloquear Ahora
                     </>
                   ) : (
                     <>
                       <Lock className="w-3 h-3" />
-                      Desbloquear
+                      Click en foto para desbloquear
                     </>
                   )}
                 </Button>
