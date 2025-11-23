@@ -53,9 +53,11 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  // Ocultar HeaderNav en páginas de perfil (usan Navigation de abajo)
+  // Ocultar HeaderNav en páginas de perfil SOLO si hay sesión activa (no demo)
+  // En demo, HeaderNav permanece para navegación
+  const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
   const hideOnPages = ['/profile-single', '/profile-couple', '/profile/', '/edit-profile'];
-  const shouldHide = hideOnPages.some(page => location.pathname.startsWith(page));
+  const shouldHide = !isDemoMode && hideOnPages.some(page => location.pathname.startsWith(page));
   
   if (shouldHide) return null;
 
@@ -65,7 +67,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     { name: 'Descubrir', path: '/discover', icon: Search },
     { name: 'Matches', path: '/matches', icon: Heart },
     { name: 'Chat', path: '/chat', icon: MessageSquare },
-    { name: 'Noticias', path: '/news', icon: Bell },
+    { name: 'Noticias', path: '/news', icon: Calendar },
     { name: 'Eventos', path: '/events', icon: Calendar },
     { name: 'Tokens', path: '/tokens', icon: DollarSign },
     { name: 'NFTs', path: '/nfts', icon: Image }
@@ -78,14 +80,14 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     { name: 'Premium', path: '/premium', icon: Crown, category: 'Servicios' },
     { name: 'Marketplace', path: '/marketplace', icon: ShoppingBag, category: 'Servicios' },
     { name: 'Blog', path: '/blog', icon: FileText, category: 'Contenido' },
-    { name: 'Noticias', path: '/news', icon: Bell, category: 'Contenido' },
+    { name: 'Noticias', path: '/news', icon: Calendar, category: 'Contenido' },
     { name: 'Inversores', path: '/investors', icon: DollarSign, category: 'Acerca de' },
     { name: 'Empresa', path: '/about', icon: Building2, category: 'Acerca de' },
     { name: 'Carreras', path: '/careers', icon: Building2, category: 'Acerca de' },
     { name: 'Donaciones', path: '/donations', icon: DollarSign, category: 'Acerca de' },
-    { name: 'FAQ', path: '/faq', icon: HelpCircle, category: 'Ayuda' },
+    { name: 'FAQ', path: '/faq', icon: Info, category: 'Ayuda' },
     { name: 'Información', path: '/info', icon: Info, category: 'Ayuda' },
-    { name: 'Soporte', path: '/support', icon: HelpCircle, category: 'Ayuda' },
+    { name: 'Soporte', path: '/support', icon: Info, category: 'Ayuda' },
     { name: 'Términos', path: '/terms', icon: FileText, category: 'Legal' },
     { name: 'Privacidad', path: '/privacy', icon: Lock, category: 'Legal' },
     { name: 'Seguridad', path: '/security', icon: Shield, category: 'Legal' },
@@ -291,7 +293,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                       onClick={() => navigate('/settings')}
                       className="text-white hover:bg-purple-700/50 cursor-pointer"
                     >
-                      <Settings className="h-4 w-4 mr-2" />
+                      <User className="h-4 w-4 mr-2" />
                       Configuración
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="bg-purple-500/30" />
@@ -393,7 +395,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                     }}
                     className="flex items-center space-x-2 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
                   >
-                    <Settings className="h-5 w-5" />
+                    <User className="h-5 w-5" />
                     <span>Config</span>
                   </button>
                 </div>
