@@ -27,9 +27,16 @@ export const generateDemoUUID = (seed: string): string => {
   const hex4 = Math.abs(hash4).toString(16).padStart(12, '0').slice(0, 12);
   
   // Formato UUID v4: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
-  // Asegurar que el último segmento tenga exactamente 12 caracteres
-  const lastSegment = hex4.padStart(12, '0').slice(0, 12);
-  const uuid = `${hex1}-${hex2}-4${hex3.slice(1)}-a${hex3.slice(1, 3)}${hex3.slice(3)}-${lastSegment}`;
+  // Segmento 1: 8 caracteres (hex1)
+  // Segmento 2: 4 caracteres (hex2)
+  // Segmento 3: 4 caracteres (4xxx)
+  // Segmento 4: 4 caracteres (axxx)
+  // Segmento 5: 12 caracteres (hex4)
+  const segment3 = `4${hex3.slice(0, 3)}`;  // 4 + 3 chars = 4 chars total
+  const segment4 = `a${hex3.slice(3, 6)}`.padEnd(4, '0');  // a + 3 chars padded = 4 chars total
+  const segment5 = hex4.padStart(12, '0');  // 12 chars
+  
+  const uuid = `${hex1}-${hex2}-${segment3}-${segment4}-${segment5}`;
   
   return uuid;
 };

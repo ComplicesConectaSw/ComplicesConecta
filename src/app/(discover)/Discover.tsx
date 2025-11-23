@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/shared/ui/Button";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
-import { Heart, Flame, RefreshCw, Filter, Star, Home, User, Search } from 'lucide-react';
+import { Heart, Flame, RefreshCw, Filter, Star, Home, User, Search, Sliders } from 'lucide-react';
 import HeaderNav from '@/components/HeaderNav';
 import SuperLikesModal from '@/components/modals/SuperLikesModal';
 import PremiumModal from '@/components/modals/PremiumModal';
@@ -597,8 +597,9 @@ const Discover = () => {
               transition={{ duration: 0.3 }}
             >
               <GlassCard className="w-full lg:w-80 p-4 lg:p-6" variant="colored">
-              <h3 className="text-lg font-semibold mb-4 text-white flex items-center gap-2">
-                <span className="bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent font-bold">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Sliders className="h-5 w-5 text-purple-300" />
+                <span className="text-white drop-shadow-lg font-bold">
                   Filtros Avanzados
                 </span>
               </h3>
