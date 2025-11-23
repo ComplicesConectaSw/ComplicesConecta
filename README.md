@@ -24,6 +24,9 @@ Actualmente estoy trabajando en:
 
 Este repositorio es un "laboratorio vivo" donde experimento con tecnologías complejas. Si bien la organización del código puede no ser perfecta en todos los módulos, la arquitectura demuestra la capacidad de integrar sistemas dispares (Grafos + SQL + Blockchain) en un producto funcional.
 
+📆 Festimada para completar limpieza de código muerto y comentarios legacy. así como actualización de la documentación en la raíz 
+         
+                  📅 08 de diciembre del 2025
 
 
 
