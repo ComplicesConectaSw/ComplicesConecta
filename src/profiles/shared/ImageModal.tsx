@@ -91,7 +91,7 @@ export const ImageModal = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm"
+        className="fixed inset-0 z-50 bg-gradient-to-br from-purple-900/95 via-black/90 to-blue-900/95 backdrop-blur-xl"
         onClick={onClose}
       >
         <div className="relative w-full h-full flex items-center justify-center">
@@ -99,7 +99,7 @@ export const ImageModal = ({
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-4 right-4 z-10 text-white hover:bg-white/20"
+            className="absolute top-4 right-4 z-10 text-white bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/30 hover:scale-110 transition-all shadow-lg"
             onClick={onClose}
           >
             <X className="h-6 w-6" />
@@ -110,7 +110,7 @@ export const ImageModal = ({
             <Button
               variant="ghost"
               size="icon"
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 text-white hover:bg-white/20"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 text-white bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/30 hover:scale-110 transition-all shadow-lg"
               onClick={(e) => {
                 e.stopPropagation();
                 onNavigate(currentIndex - 1);
@@ -124,7 +124,7 @@ export const ImageModal = ({
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-white hover:bg-white/20"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-white bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/30 hover:scale-110 transition-all shadow-lg"
               onClick={(e) => {
                 e.stopPropagation();
                 onNavigate(currentIndex + 1);
@@ -157,18 +157,18 @@ export const ImageModal = ({
 
             {/* Watermark for private images */}
             {isPrivate && (
-              <div className="absolute bottom-4 right-4 bg-black/50 text-white px-2 py-1 rounded text-sm">
+              <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-lg text-sm border border-white/20 shadow-lg">
                 ComplicesConecta © Privado
               </div>
             )}
 
             {/* Action buttons */}
-            <div className="absolute bottom-4 left-4 flex gap-2">
+            <div className="absolute bottom-4 left-4 flex gap-2 bg-black/40 backdrop-blur-md rounded-lg p-2 border border-white/10">
               {onLike && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  className={`text-white hover:bg-white/20 ${
+                  className={`text-white bg-white/10 backdrop-blur-sm hover:bg-white/30 ${
                     userLikes[currentIndex] ? 'text-red-500' : ''
                   }`}
                   onClick={handleLike}
@@ -182,7 +182,7 @@ export const ImageModal = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/20"
+                  className="text-white bg-white/10 backdrop-blur-sm hover:bg-white/30"
                   onClick={handleComment}
                 >
                   <MessageCircle className="h-4 w-4 mr-1" />
@@ -193,7 +193,7 @@ export const ImageModal = ({
           </motion.div>
 
           {/* Image indicators */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2">
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 bg-black/40 backdrop-blur-md px-3 py-2 rounded-full border border-white/20">
             {images.map((_, index) => (
               <button
                 key={index}
