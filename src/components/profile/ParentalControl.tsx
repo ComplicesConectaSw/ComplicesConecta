@@ -228,18 +228,24 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
           </div>
         )}
 
-        <div className="grid grid-cols-3 gap-2">
-          {(['soft', 'medium', 'strict'] as const).map((level) => (
-            <Button
-              key={level}
-              onClick={() => handleRestrictionChange(level)}
-              variant={restrictionLevel === level ? "default" : "outline"}
-              size="sm"
-              className={restrictionLevel === level ? getRestrictionColor(level) : ''}
-            >
-              {level.charAt(0).toUpperCase() + level.slice(1)}
-            </Button>
-          ))}
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-gray-700">Nivel de Restricción</label>
+          <div className="grid grid-cols-3 gap-2">
+            {(['soft', 'medium', 'strict'] as const).map((level) => (
+              <Button
+                key={level}
+                onClick={() => handleRestrictionChange(level)}
+                variant={restrictionLevel === level ? "default" : "outline"}
+                size="sm"
+                className={`${restrictionLevel === level ? getRestrictionColor(level) + ' text-white font-bold border-2' : 'bg-white/50'} transition-all duration-300 hover:scale-105`}
+              >
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+              </Button>
+            ))}
+          </div>
+          <p className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
+            {getRestrictionDescription(restrictionLevel)}
+          </p>
         </div>
 
         <div className="flex gap-2">
