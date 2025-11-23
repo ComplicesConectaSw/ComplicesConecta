@@ -48,7 +48,7 @@ export const AnimatedProfileCard = React.memo<ProfileCardProps>(function Animate
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
   const [isLiked, setIsLiked] = React.useState(false);
   const [showViews, setShowViews] = React.useState(false);
-  const [views] = React.useState(Math.floor(Math.random() * 500) + 50); // Views aleatorias 50-550
+  const [viewCount] = React.useState(Math.floor(Math.random() * 500) + 50); // Views aleatorias 50-550
 
   const allImages = [image, ...images];
 
@@ -308,7 +308,7 @@ export const AnimatedProfileCard = React.memo<ProfileCardProps>(function Animate
                 onViewProfile?.(id);
               }}
               className="relative bg-white/10 text-white hover:bg-white/20 active:bg-white/30 transition-all duration-300 px-2 sm:px-3 py-1.5 sm:py-2 touch-manipulation group"
-              title={`${views} visualizaciones`}
+              title={`${viewCount} visualizaciones`}
             >
               <Eye className={cn(
                 "w-3 h-3 sm:w-4 sm:h-4 transition-all",
@@ -320,7 +320,7 @@ export const AnimatedProfileCard = React.memo<ProfileCardProps>(function Animate
                   animate={{ scale: 1, opacity: 1 }}
                   className="absolute -top-6 left-1/2 -translate-x-1/2 bg-black/90 text-white text-[10px] px-2 py-1 rounded whitespace-nowrap z-10"
                 >
-                  👁️ {views} vistas
+                  👁️ {viewCount} vistas
                 </motion.span>
               )}
             </Button>
