@@ -1142,7 +1142,7 @@ Información del perfil:
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="p-4 bg-white/5 rounded-lg">
-                        <h3 className="text-white font-semibold mb-2">ltima Actividad</h3>
+                        <h3 className="text-white font-semibold mb-2">Última Actividad</h3>
                         <p className="text-white/70 text-sm">
                           {profileStats.lastActive.toLocaleDateString('es-ES', {
                             day: 'numeric',
@@ -1324,13 +1324,14 @@ Información del perfil:
                       className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
                       onClick={() => {
                         if (isOwnProfile) {
-                          // Si está bloqueado, mostrar el modal de control parental
-                          // El modal ya está en la página y se muestra automáticamente cuando isParentalLocked es true
-                          if (!isParentalLocked) {
+                          if (isParentalLocked) {
+                            // Si está bloqueado, el usuario debe desbloquear primero con el modal
+                            alert('🔒 Contenido bloqueado por Control Parental. Desbloquea usando el PIN en la sección de Control Parental arriba.');
+                          } else {
                             // Si no está bloqueado, mostrar las imágenes directamente
                             setDemoPrivateUnlocked(true);
+                            openImageModal(0);
                           }
-                          // Si está bloqueado, el modal ya está visible y el usuario debe ingresar el PIN
                         } else {
                           setShowPrivateImageRequest(true);
                         }
@@ -1366,11 +1367,12 @@ Información del perfil:
                       className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
                       onClick={() => {
                         if (isOwnProfile) {
-                          // Si está bloqueado por control parental, no hacer nada
                           if (isParentalLocked) {
-                            return; // El modal de control parental ya está visible
+                            alert('🔒 Contenido bloqueado por Control Parental. Desbloquea usando el PIN en la sección de Control Parental arriba.');
+                            return;
                           }
                           setDemoPrivateUnlocked(true);
+                          openImageModal(1);
                         } else {
                           setShowPrivateImageRequest(true);
                         }
@@ -1404,11 +1406,13 @@ Información del perfil:
                     <div
                       className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
                       onClick={() => {
-                        if (demoPrivateUnlocked && isOwnProfile && !isParentalLocked) {
-                          openImageModal(2); // Tercera imagen (índice 2)
-                        } else if (isOwnProfile) {
-                          alert('✅ ACCESO CONCEDIDO (DEMO)');
+                        if (isOwnProfile) {
+                          if (isParentalLocked) {
+                            alert('🔒 Contenido bloqueado por Control Parental. Desbloquea usando el PIN en la sección de Control Parental arriba.');
+                            return;
+                          }
                           setDemoPrivateUnlocked(true);
+                          openImageModal(2);
                         } else {
                           setShowPrivateImageRequest(true);
                         }
