@@ -946,7 +946,7 @@ const ModeratorDashboard = () => {
 
               <div className="bg-yellow-500/20 border border-yellow-500/50 rounded-lg p-4">
                 <p className="text-yellow-200 text-sm">
-                  ?? Este baneo es permanente y utilizar huella digital (canvas + WorldID). 
+                  ⚠️ Este baneo es permanente y utilizará huella digital (canvas + WorldID). 
                   El usuario no podr crear nuevas cuentas con el mismo dispositivo o WorldID.
                 </p>
               </div>

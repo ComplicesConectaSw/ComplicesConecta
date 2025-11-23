@@ -149,7 +149,7 @@ export default function ProjectInfo() {
               ) : activeTab === 'releases' ? (
                 <div className="prose prose-invert max-w-none">
                   <h1 className="text-4xl font-bold text-white mb-6">
-                    ?? Notas de Versin - ComplicesConecta
+                    📋 Notas de Versión - ComplicesConecta
                   </h1>
                   
                   <h2 className="text-2xl font-bold text-green-400 mb-4">v3.5.0 - Features Innovadoras + Neo4j (Actual)</h2>

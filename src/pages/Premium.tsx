@@ -35,9 +35,9 @@ const Premium = () => {
       return;
     }
     
-    // Si no hay demo, verificar autenticacin real
-    // Por ahora permitir acceso sin autenticacin para usuarios reales
-    logger.info('?? Acceso a Premium sin autenticacin requerida');
+    // Si no hay demo, verificar autenticación real
+    // Por ahora permitir acceso sin autenticación para usuarios reales
+    logger.info('ℹ️ Acceso a Premium sin autenticación requerida');
   }, [navigate, demoAuth, demoUser]);
 
   const handleComingSoon = (title: string) => {
@@ -303,7 +303,7 @@ const Premium = () => {
 
             <div className="text-center">
               <p className="text-sm text-white mb-4">
-                ?? Pagos seguros procesados por Stripe  ?? Transacciones encriptadas  ???? Precios en pesos mexicanos
+                🔒 Pagos seguros procesados por Stripe  ✅ Transacciones encriptadas  🇲🇽 Precios en pesos mexicanos
               </p>
               <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                 <Shield className="h-3 w-3 mr-1" />
