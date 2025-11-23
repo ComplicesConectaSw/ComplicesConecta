@@ -1,6 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import { performanceMonitoring } from './PerformanceMonitoringService';
+import { generateDemoUUID } from '@/utils/demoUuid';
 
 export interface Post {
   id: string;
@@ -139,9 +140,9 @@ class PostsService {
       ];
 
       mockPosts.push({
-        id: `post-${i + 1}`,
-        user_id: `user-${Math.floor(Math.random() * 10) + 1}`,
-        profile_id: `profile-${Math.floor(Math.random() * 10) + 1}`,
+        id: generateDemoUUID(`post-${i + 1}-${Date.now()}`),
+        user_id: generateDemoUUID(`user-${Math.floor(Math.random() * 10) + 1}`),
+        profile_id: generateDemoUUID(`profile-${Math.floor(Math.random() * 10) + 1}`),
         content,
         post_type: postType,
         image_url: postType === 'photo' ? realImageUrls[i % realImageUrls.length] : undefined,

@@ -103,10 +103,22 @@ button .text-white,
 }
 
 /* 
- * CSS Compatibility Notes:
- * - scrollbar-width: Supported in Firefox, Chrome 121+. Fallbacks provided.
- * - -webkit-overflow-scrolling: Legacy iOS support. Progressive enhancement.
- * These warnings are acceptable as they have proper fallbacks.
+ * ===== CSS COMPATIBILITY NOTES (Android/iOS Support) =====
+ * IGNORAR WARNINGS - TIENEN FALLBACKS ADECUADOS:
+ * 
+ * 1. scrollbar-width: 
+ *    - Soportado: Firefox (todos), Chrome 121+, Edge 121+
+ *    - Android Chrome/Samsung: Usa scrollbar por defecto del sistema (funciona)
+ *    - iOS Safari: No soportado pero usa scrollbar nativo (funciona)
+ *    - RESULTADO: Visual mejorado donde se soporta, funcional en todos
+ * 
+ * 2. -webkit-overflow-scrolling:
+ *    - Legacy property para iOS momentum scrolling
+ *    - Deprecado pero no rompe nada
+ *    - Navegadores modernos: Ignoran la propiedad (no causa errores)
+ *    - RESULTADO: Mejora UX en iOS antiguo, sin efectos en modernos
+ * 
+ * CONCLUSIÓN: Warnings son SEGUROS de ignorar - Progressive Enhancement
  */
 
 /* Hover animations for buttons and interactive elements */
