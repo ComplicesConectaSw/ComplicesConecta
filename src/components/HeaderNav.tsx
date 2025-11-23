@@ -19,7 +19,8 @@ import {
   ChevronDown,
   MoreHorizontal,
   Scale,
-  Image
+  Image,
+  Settings
 } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import {
@@ -293,7 +294,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                       onClick={() => navigate('/settings')}
                       className="text-white hover:bg-purple-700/50 cursor-pointer"
                     >
-                      <User className="h-4 w-4 mr-2" />
+                      <Settings className="h-4 w-4 mr-2" />
                       Configuración
                     </DropdownMenuItem>
                     <DropdownMenuSeparator className="bg-purple-500/30" />
@@ -395,7 +396,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                     }}
                     className="flex items-center space-x-2 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-300"
                   >
-                    <User className="h-5 w-5" />
+                    <Settings className="h-5 w-5" />
                     <span>Config</span>
                   </button>
                 </div>
