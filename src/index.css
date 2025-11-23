@@ -43,6 +43,65 @@
   }
 }
 
+/* Button animations - Global */
+button, .btn, [role="button"] {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover:not(:disabled), .btn:hover:not(:disabled), [role="button"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+button:active:not(:disabled), .btn:active:not(:disabled), [role="button"]:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heart/Like button animation */
+.like-button {
+  transition: all 0.3s ease;
+}
+
+.like-button:hover {
+  transform: scale(1.2);
+}
+
+.like-button:active {
+  transform: scale(0.9);
+}
+
+.like-button.liked {
+  animation: heartBeat 0.6s ease-in-out;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.3); }
+  50% { transform: scale(1.1); }
+  75% { transform: scale(1.25); }
+}
+
+/* Text visibility fixes */
+.text-white, .text-gray-100, .text-gray-200 {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure text is visible on all backgrounds */
+.bg-gradient-to-r .text-white,
+.bg-gradient-to-br .text-white,
+.bg-purple-900 .text-white {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Button text visibility */
+button .text-white,
+.btn .text-white {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
 /* 
  * CSS Compatibility Notes:
  * - scrollbar-width: Supported in Firefox, Chrome 121+. Fallbacks provided.
