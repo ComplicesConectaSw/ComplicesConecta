@@ -180,89 +180,13 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               </button>
             </div>
 
-            {/* Navegación Central - Desktop */}
-            <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 flex-1 justify-center mx-4 xl:mx-8 overflow-x-auto scrollbar-hide">
-              {mainNavItems.slice(0, 4).map((item) => {
-                const IconComponent = item.icon;
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => handleNavigation(item.path)}
-                    className={`flex items-center space-x-1 xl:space-x-2 px-2 xl:px-4 py-2 rounded-lg text-xs xl:text-sm font-medium transition-all duration-300 flex-shrink-0 ${
-                      isActive(item.path)
-                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25'
-                        : 'text-white/90 hover:text-white hover:bg-white/10'
-                    }`}
-                  >
-                    <IconComponent className="h-4 w-4 flex-shrink-0" />
-                    <span className="whitespace-nowrap hidden xl:inline">{item.name}</span>
-                  </button>
-                );
-              })}
-              
-              {/* Menú desplegable "Más" */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center space-x-1 xl:space-x-2 px-2 xl:px-4 py-2 rounded-lg text-xs xl:text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 flex-shrink-0">
-                    <MoreHorizontal className="h-4 w-4 flex-shrink-0" />
-                    <span className="whitespace-nowrap">Más</span>
-                    <ChevronDown className="h-3 w-3 flex-shrink-0" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent 
-                  className="w-56 sm:w-64 bg-purple-900/95 border-purple-500/30 backdrop-blur-md max-h-[80vh] overflow-y-auto z-[200] custom-scrollbar"
-                  align="end"
-                  sideOffset={5}
-                >
-                  <div className="max-h-[calc(80vh-2rem)] overflow-y-auto overscroll-contain custom-scrollbar-inner">
-                    {['Comunidad', 'Servicios', 'Contenido', 'Acerca de', 'Ayuda', 'Legal'].map((category) => {
-                      const categoryItems = secondaryNavItems.filter(item => item.category === category);
-                      if (categoryItems.length === 0) return null;
-                      
-                      return (
-                        <div key={category}>
-                          <DropdownMenuLabel className="text-purple-300 text-xs font-semibold px-2 py-1.5 sticky top-0 bg-purple-900/95 z-10">
-                            {category}
-                          </DropdownMenuLabel>
-                          {categoryItems.map((item) => {
-                            const IconComponent = item.icon;
-                            return (
-                              <DropdownMenuItem
-                                key={item.name}
-                                onClick={() => handleNavigation(item.path)}
-                                className="text-white hover:bg-purple-500/20 hover:text-white cursor-pointer px-2 py-2"
-                              >
-                                <IconComponent className="h-4 w-4 mr-2 flex-shrink-0" />
-                                <span className="truncate">{item.name}</span>
-                              </DropdownMenuItem>
-                            );
-                          })}
-                          <DropdownMenuSeparator className="bg-purple-500/20 my-1" />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </nav>
+            {/* Navegación Central - OCULTA, solo espaciador */}
+            <div className="flex-1"></div>
 
             {/* Acciones de Usuario - Derecha */}
             <div className="flex items-center space-x-2 flex-shrink-0">
               
-              {/* Iconos de Acción */}
-              <div className="hidden md:flex items-center space-x-1">
-                <button 
-                  onClick={() => {
-                    handleNavigation('/tokens');
-                    logger.info('Tokens icon clicked');
-                  }}
-                  className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
-                  title="Tokens"
-                >
-                  <DollarSign className="h-5 w-5" />
-                </button>
-                {/* Botones ocultos: Ayuda, Settings, Notificaciones */}
-              </div>
+              {/* Solo Perfil/Demo visible - Iconos ocultos */}
 
               {/* Botón de Login/Perfil - Muestra estado de autenticación */}
               {isAuthenticated() ? (
