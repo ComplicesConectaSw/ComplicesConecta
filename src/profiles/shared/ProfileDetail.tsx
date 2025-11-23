@@ -217,71 +217,40 @@ const ProfileDetail = () => {
                     <p className="text-sm text-white/80">
                       <strong className="text-white">Profesión:</strong> {profile.profession}
                     </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* About Section */}
-            <Card className="bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-white mb-4">Sobre mí</h2>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-medium text-white mb-2">Qué busco</h3>
-                    <p className="text-white/80">{profile.lookingFor}</p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-medium text-white mb-2">Educación</h3>
-                    <p className="text-white/80">{profile.education}</p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="font-medium text-white mb-2">Idiomas</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {profile.languages.map((lang) => (
-                        <Badge key={lang} className="border border-white/30 bg-white/10 backdrop-blur-sm text-white">{lang}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Interests & Hobbies */}
-            <Card className="shadow-soft bg-white/10 backdrop-blur-md border-white/20">
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-white mb-4">Intereses y Hobbies</h2>
-                <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-sm rounded-lg p-4 border border-purple-200/50">
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="font-medium text-white mb-3">Intereses principales</h3>
-                      <div className="flex flex-wrap gap-2 items-start content-start min-h-[80px]">
-                        {profile.interests.map((interest, _index) => (
-                          <Badge 
-                            key={interest} 
-                            className="bg-purple-500/20 text-purple-100 border-purple-400/30 hover:bg-purple-500/30 transition-colors px-3 py-1.5 text-sm font-semibold whitespace-nowrap"
-                            style={{ flexShrink: 0 }}
-                          >
-                            {interest}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
                     
-                    <div>
-                      <h3 className="font-medium text-white mb-3">Otros hobbies</h3>
-                      <div className="flex flex-wrap gap-2 items-start content-start min-h-[80px]">
-                        {profile.hobbies.map((hobby, _index) => (
-                          <Badge 
-                            key={hobby} 
-                            className="bg-pink-200/80 text-pink-900 border border-pink-300/50 px-3 py-1.5 text-sm font-semibold whitespace-nowrap"
-                            style={{ flexShrink: 0 }}
-                          >
-                            {hobby}
-                          </Badge>
-                        ))}
+                    <div className="space-y-4">
+                      <div className="bg-black/20 backdrop-blur-sm rounded-xl p-4">
+                        <h3 className="font-medium text-gray-100 mb-2">Qué busco</h3>
+                        <p className="text-gray-100 font-medium">{profile.lookingFor}</p>
+                      </div>
+                      
+                      <div className="bg-black/20 backdrop-blur-sm rounded-xl p-4">
+                        <h3 className="font-medium text-gray-100 mb-2">Educación</h3>
+                        <p className="text-gray-100 font-medium">{profile.education}</p>
+                      </div>
+                      
+                      <div className="bg-black/20 backdrop-blur-sm rounded-xl p-4">
+                        <h3 className="font-medium text-gray-100 mb-2">Idiomas</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {profile.languages.map((lang) => (
+                            <Badge key={lang} className="border border-white/30 bg-white/10 backdrop-blur-sm text-white">{lang}</Badge>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="bg-black/20 backdrop-blur-sm rounded-xl p-4">
+                        <h3 className="font-medium text-gray-100 mb-2">Hobbies</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {profile.hobbies.map((hobby) => (
+                            <Badge 
+                              key={hobby} 
+                              className="bg-pink-200/80 text-pink-900 border border-pink-300/50 px-3 py-1.5 text-sm font-semibold whitespace-nowrap"
+                              style={{ flexShrink: 0 }}
+                            >
+                              {hobby}
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>

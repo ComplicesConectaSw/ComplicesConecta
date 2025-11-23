@@ -78,12 +78,13 @@
   transform: scale(0.95);
 }
 
-/* Scroll invisible pero funcional para contenedores espec├¡ficos */
+/* Scroll invisible pero funcional para contenedores específicos */
 .invisible-scroll {
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  /* ⚠️ COMPATIBILIDAD: scrollbar-width no soportado en Safari/Chrome < 121 - ACEPTABLE */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
 .invisible-scroll::-webkit-scrollbar {
@@ -128,7 +129,8 @@
   .chat-messages {
     flex: 1;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    /* ⚠️ COMPATIBILIDAD: -webkit-overflow-scrolling deprecated pero necesario para iOS < 13 */
+    -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
   }
   
   .chat-input {
@@ -422,6 +424,7 @@ All colors MUST be HSL. */
 /* Scrollbar hide utility for navigation */
 .scrollbar-hide {
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  /* ⚠️ COMPATIBILIDAD: scrollbar-width no soportado en Safari/Chrome < 121 - ACEPTABLE */
   scrollbar-width: none;  /* Firefox */
 }
 

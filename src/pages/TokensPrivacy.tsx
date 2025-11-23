@@ -44,7 +44,7 @@ export default function TokensPrivacy() {
             </span>
           </h1>
           <p className="text-white/80 max-w-2xl mx-auto">
-            Tu privacidad y seguridad son nuestra prioridad. Conoce cmo protegemos tu informacin en nuestro sistema de tokens.
+            Tu privacidad y seguridad son nuestra prioridad. Conoce cómo protegemos tu información en nuestro sistema de tokens.
           </p>
         </div>
 
@@ -57,10 +57,10 @@ export default function TokensPrivacy() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-white/80">
-            <p><strong className="text-white">ltima actualizacin:</strong> 3 de septiembre de 2025</p>
-            <p><strong className="text-white">Vigencia:</strong> Esta poltica aplica durante la fase beta y se actualizar para la versin de produccin.</p>
+            <p><strong className="text-white">Última actualización:</strong> 3 de septiembre de 2025</p>
+            <p><strong className="text-white">Vigencia:</strong> Esta política aplica durante la fase beta y se actualizará para la versión de producción.</p>
             <p>
-              Esta poltica describe cmo ComplicesConecta recopila, usa y protege la informacin relacionada 
+              Esta política describe cómo ComplicesConecta recopila, usa y protege la información relacionada 
               con nuestro sistema de tokens CMPX/GTK durante la fase beta.
             </p>
           </CardContent>
@@ -80,8 +80,8 @@ export default function TokensPrivacy() {
               <ul className="list-disc list-inside space-y-1 ml-4">
                 <li>Balance actual de tokens CMPX</li>
                 <li>Historial de transacciones y recompensas</li>
-                <li>Cdigos de referido generados y utilizados</li>
-                <li>Lmites mensuales y fechas de reset</li>
+                <li>Códigos de referido generados y utilizados</li>
+                <li>Límites mensuales y fechas de reset</li>
                 <li>Compras de funciones premium con tokens</li>
               </ul>
             </div>
@@ -91,14 +91,14 @@ export default function TokensPrivacy() {
               <ul className="list-disc list-inside space-y-1 ml-4">
                 <li>Relaciones de referido entre usuarios</li>
                 <li>Fechas y montos de recompensas otorgadas</li>
-                <li>Estadsticas de referidos exitosos</li>
+                <li>Estadísticas de referidos exitosos</li>
               </ul>
             </div>
 
             <div className="bg-blue-900/30 p-4 rounded-lg">
               <p className="text-blue-200">
-                <strong>Importante:</strong> NO recopilamos informacin financiera personal como nmeros de tarjeta 
-                o cuentas bancarias durante la fase beta, ya que el sistema funciona nicamente con tokens internos.
+                <strong>Importante:</strong> NO recopilamos información financiera personal como números de tarjeta 
+                o cuentas bancarias durante la fase beta, ya que el sistema funciona únicamente con tokens internos.
               </p>
             </div>
           </CardContent>
@@ -113,14 +113,14 @@ export default function TokensPrivacy() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-white/80">
-            <p>Utilizamos la informacin de tokens para:</p>
+            <p>Utilizamos la información de tokens para:</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <h4 className="font-semibold text-white">Operacin del Sistema:</h4>
                 <ul className="list-disc list-inside space-y-1 text-sm">
                   <li>Procesar recompensas por referidos</li>
                   <li>Mantener balances actualizados</li>
-                  <li>Aplicar lmites mensuales</li>
+                  <li>Aplicar límites mensuales</li>
                   <li>Prevenir fraudes y abusos</li>
                 </ul>
               </div>
@@ -150,8 +150,8 @@ export default function TokensPrivacy() {
               <div className="space-y-3">
                 <h4 className="font-semibold text-white">Proteccin de Datos:</h4>
                 <ul className="list-disc list-inside space-y-1 text-sm">
-                  <li>Encriptacin de datos en trnsito y reposo</li>
-                  <li>Acceso restringido a informacin sensible</li>
+                  <li>Encriptación de datos en tránsito y reposo</li>
+                  <li>Acceso restringido a información sensible</li>
                   <li>Auditoras regulares de seguridad</li>
                   <li>Respaldos seguros y redundantes</li>
                 </ul>
@@ -159,9 +159,9 @@ export default function TokensPrivacy() {
               <div className="space-y-3">
                 <h4 className="font-semibold text-white">Prevencin de Fraudes:</h4>
                 <ul className="list-disc list-inside space-y-1 text-sm">
-                  <li>Validacin automtica de transacciones</li>
+                  <li>Validación automática de transacciones</li>
                   <li>Monitoreo de patrones sospechosos</li>
-                  <li>Lmites de seguridad automticos</li>
+                  <li>Límites de seguridad automáticos</li>
                   <li>Registro completo de actividades</li>
                 </ul>
               </div>
@@ -182,9 +182,9 @@ export default function TokensPrivacy() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <ul className="list-disc list-inside space-y-2 text-sm">
                 <li><strong className="text-white">Acceso:</strong> Ver tu historial completo de tokens</li>
-                <li><strong className="text-white">Rectificacin:</strong> Corregir informacin incorrecta</li>
+                <li><strong className="text-white">Rectificación:</strong> Corregir información incorrecta</li>
                 <li><strong className="text-white">Eliminacin:</strong> Solicitar borrado de datos</li>
-                <li><strong className="text-white">Portabilidad:</strong> Exportar tu informacin</li>
+                <li><strong className="text-white">Portabilidad:</strong> Exportar tu información</li>
               </ul>
               <ul className="list-disc list-inside space-y-2 text-sm">
                 <li><strong className="text-white">Oposicin:</strong> Rechazar ciertos usos de datos</li>
@@ -220,7 +220,7 @@ export default function TokensPrivacy() {
               <ul className="list-disc list-inside space-y-1 text-sm ml-4">
                 <li>Los CMPX se convertirn en tokens GTK blockchain</li>
                 <li>Se implementarn pagos reales con Stripe</li>
-                <li>Esta poltica se actualizar con nuevos trminos</li>
+                <li>Esta política se actualizará con nuevos términos</li>
                 <li>Se notificar a todos los usuarios sobre cambios</li>
               </ul>
             </div>
@@ -233,11 +233,11 @@ export default function TokensPrivacy() {
             <CardTitle className="text-white">Contacto y Soporte</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-white/80">
-            <p>Para consultas sobre esta poltica de privacidad o el manejo de tus datos:</p>
+            <p>Para consultas sobre esta política de privacidad o el manejo de tus datos:</p>
             <div className="bg-purple-900/30 p-4 rounded-lg space-y-2">
               <p><strong className="text-white">Email:</strong> privacy@complicesconecta.com</p>
               <p><strong className="text-white">Soporte:</strong> Disponible 24/7 en la aplicacin</p>
-              <p><strong className="text-white">Tiempo de respuesta:</strong> Mximo 48 horas</p>
+              <p><strong className="text-white">Tiempo de respuesta:</strong> Máximo 48 horas</p>
             </div>
           </CardContent>
         </Card>
