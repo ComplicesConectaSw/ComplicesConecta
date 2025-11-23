@@ -47,6 +47,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const { user, isAuthenticated, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   // Detectar scroll para efecto de transparencia
   useEffect(() => {
@@ -56,6 +57,12 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
+  // Ocultar HeaderNav en páginas de perfil (usan Navigation de abajo)
+  const hideOnPages = ['/profile-single', '/profile-couple', '/profile/', '/edit-profile'];
+  const shouldHide = hideOnPages.some(page => location.pathname.startsWith(page));
+  
+  if (shouldHide) return null;
 
   // Items principales - siempre visibles
   const mainNavItems = [
@@ -282,13 +289,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 </button>
                 <button 
                   onClick={() => {
-                    if (isAuthenticated()) {
-                      // TODO: Abrir NotificationCenter dropdown o navegar a página de notificaciones
-                      handleNavigation('/notifications');
-                    } else {
-                      handleNavigation('/news');
-                    }
-                    logger.info('Notifications icon clicked');
+                    setShowNotifications(!showNotifications);
+                    logger.info('Notifications toggled:', { shown: !showNotifications });
                   }}
                   className="relative p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
                   title="Notificaciones"
