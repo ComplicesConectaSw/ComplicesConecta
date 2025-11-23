@@ -92,7 +92,32 @@ const ProfileSingle: React.FC = () => {
   const [_walletInfo, setWalletInfo] = useState<any>(null);
   const [tokenBalances, setTokenBalances] = useState({ cmpx: '0', gtk: '0', matic: '0' });
   const [testnetInfo, setTestnetInfo] = useState<any>(null);
-  const [userNFTs, setUserNFTs] = useState<any[]>([]);
+  const [userNFTs, setUserNFTs] = useState<any[]>([
+    {
+      id: 1,
+      token_id: '001',
+      name: 'Profile NFT Genesis',
+      image: '/placeholder.svg',
+      rarity: 'Legendary',
+      attributes: [{ trait_type: 'Tipo', value: 'Genesis' }]
+    },
+    {
+      id: 2,
+      token_id: '042',
+      name: 'Verified Badge NFT',
+      image: '/placeholder.svg',
+      rarity: 'Rare',
+      attributes: [{ trait_type: 'Tipo', value: 'Verificado' }]
+    },
+    {
+      id: 3,
+      token_id: '127',
+      name: 'Early Adopter',
+      image: '/placeholder.svg',
+      rarity: 'Común',
+      attributes: [{ trait_type: 'Tipo', value: 'Adopción' }]
+    }
+  ]);
   const [isClaimingTokens, setIsClaimingTokens] = useState(false);
   const [isDemoMode] = useState(WalletService.isDemoMode());
   
