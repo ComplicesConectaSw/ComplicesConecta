@@ -1,3 +1,38 @@
+
+              Cómplices Conecta (Beta v3.7.2) 🚀
+⚠️ NOTA DE DESARROLLO: Este proyecto se encuentra actualmente en fase BETA activa. El código está en proceso de refactorización y limpieza. Se recomienda revisar la rama main para la versión más estable.
+
+
+📋 Descripción
+Plataforma social AI-Native diseñada para comunidades privadas, integrando verificación de identidad, economía de tokens (Web3) y algoritmos de matching social avanzados.
+🛠️ Stack Tecnológico
+Frontend: React, TypeScript, Vite, TailwindCSS.
+Backend: Supabase (Auth, DB, Realtime), Edge Functions.
+Data Science: Neo4j (Graph DB) para conexiones sociales y recomendaciones.
+
+
+AI: Integración para moderación y resúmenes de chat.
+Testing: Playwright (E2E) y Jest.
+🚧 Estado del Proyecto
+Actualmente estoy trabajando en:
+[ ] Refactorización de la estructura de carpetas en /src.
+[ ] Optimización de las consultas a Neo4j.
+[ ] Limpieza de código muerto y comentarios legacy.
+[x] Implementación de Tests E2E críticos (Completado).
+💡 Nota para Reclutadores / Reviewers
+
+
+Este repositorio es un "laboratorio vivo" donde experimento con tecnologías complejas. Si bien la organización del código puede no ser perfecta en todos los módulos, la arquitectura demuestra la capacidad de integrar sistemas dispares (Grafos + SQL + Blockchain) en un producto funcional.
+
+
+
+
+
+
+
+
+
+
 # 🎯 ComplicesConecta - Plataforma Swinger Premium v3.7.2
 
 <div align="center">
