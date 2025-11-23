@@ -170,8 +170,24 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
                     <img
                       src={image.thumbnail || image.url}
                       alt="Imagen privada"
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-full object-cover rounded-lg transition-all duration-300"
+                      onError={(e) => {
+                        // Fallback elegante para imágenes rotas
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const fallback = target.nextElementSibling as HTMLElement;
+                        if (fallback) fallback.style.display = 'flex';
+                      }}
                     />
+                    {/* ⚠️ EXCEPCIÓN LEGÍTIMA CSS INLINE - Fallback dinámico controlado por JS */}
+                    <div 
+                      className="w-full h-full bg-gradient-to-br from-purple-900/80 via-purple-800/80 to-blue-900/80 backdrop-blur-sm rounded-lg border border-white/20 items-center justify-center flex-col hidden"
+                      style={{ display: 'none' }}
+                    >
+                      <Lock className="h-8 w-8 text-purple-300 mb-2" />
+                      <span className="text-xs text-white/80 font-medium">🔒 Contenido Privado</span>
+                      <span className="text-xs text-white/60">Imagen no disponible</span>
+                    </div>
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
                       <Eye className="h-6 w-6 text-white" />
                     </div>

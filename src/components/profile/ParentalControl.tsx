@@ -83,10 +83,19 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
 
   const getRestrictionColor = (level: string) => {
     switch (level) {
-      case 'soft': return 'bg-green-500';
-      case 'medium': return 'bg-yellow-500';
-      case 'strict': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case 'soft': return 'bg-gradient-to-r from-green-500 to-emerald-500';
+      case 'medium': return 'bg-gradient-to-r from-yellow-500 to-orange-500';
+      case 'strict': return 'bg-gradient-to-r from-red-500 to-pink-500';
+      default: return 'bg-gradient-to-r from-gray-500 to-slate-500';
+    }
+  };
+
+  const getRestrictionDescription = (level: string) => {
+    switch (level) {
+      case 'soft': return '⚡ Bloqueo básico - Contenido sensible oculto';
+      case 'medium': return '🛡️ Bloqueo moderado - Auto-lock 5 min';
+      case 'strict': return '🔒 Bloqueo estricto - Máxima protección';
+      default: return '⚙️ Configuración personalizada';
     }
   };
 
@@ -99,83 +108,93 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
           exit={{ opacity: 0, scale: 0.9 }}
           className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
         >
-          <Card className="w-full max-w-md bg-white/95 backdrop-blur border-2 border-red-200">
+          <Card className="w-full max-w-md bg-gradient-to-br from-purple-900/95 via-purple-800/95 to-blue-900/95 backdrop-blur-xl border border-white/20 shadow-2xl shadow-purple-900/50">
             <CardHeader className="text-center">
-              <div className="mx-auto mb-4 p-3 bg-red-100 rounded-full w-fit">
-                <Baby className="h-8 w-8 text-red-600" />
+              <div className="mx-auto mb-4 p-4 bg-gradient-to-br from-red-500/20 to-orange-500/20 backdrop-blur-sm rounded-full w-fit border border-red-400/30">
+                <Baby className="h-8 w-8 text-red-400" />
               </div>
-              <CardTitle className="text-xl font-bold text-red-700">
-                Control Parental Activo
+              <CardTitle className="text-xl font-bold text-white drop-shadow-lg">
+                🔒 Control Parental Activo
               </CardTitle>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-white/80 font-medium">
                 Contenido bloqueado para menores de edad
               </p>
             </CardHeader>
             
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               <div className="text-center">
-                <Badge className={`${getRestrictionColor(restrictionLevel)} text-white`}>
+                <Badge className={`${getRestrictionColor(restrictionLevel)} text-white font-semibold px-4 py-2 text-sm backdrop-blur-sm border border-white/20`}>
                   Nivel: {restrictionLevel.charAt(0).toUpperCase() + restrictionLevel.slice(1)}
                 </Badge>
+                <div className="mt-2 text-xs text-white/70">
+                  {getRestrictionDescription(restrictionLevel)}
+                </div>
               </div>
 
               {!showPinInput ? (
-                <div className="space-y-4">
-                  <p className="text-sm text-center text-gray-700">
-                    Este contenido está restringido por control parental.
-                    Solo adultos pueden acceder.
-                  </p>
+                <div className="space-y-6">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                    <p className="text-sm text-center text-white/90 font-medium leading-relaxed">
+                      🔞 Este contenido está restringido por control parental.
+                      <br />
+                      <span className="text-white/70">Solo adultos pueden acceder.</span>
+                    </p>
+                  </div>
                   
                   <Button
                     onClick={() => setShowPinInput(true)}
-                    className="w-full bg-blue-600 hover:bg-blue-700"
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-xl backdrop-blur-sm border border-white/20 shadow-lg shadow-blue-500/25 transition-all duration-300 hover:scale-105"
                   >
-                    <Unlock className="h-4 w-4 mr-2" />
-                    Desbloquear con PIN
+                    <Unlock className="h-5 w-5 mr-2" />
+                    🔓 Desbloquear con PIN
                   </Button>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
-                      Ingresa PIN de 4 dígitos:
+                <div className="space-y-6">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                    <label className="block text-sm font-semibold mb-3 text-white/90 text-center">
+                      🔢 Ingresa PIN de 4 dígitos:
                     </label>
                     <input
                       type="password"
                       maxLength={4}
                       value={pin}
                       onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
-                      className="w-full p-3 border rounded-lg text-center text-2xl tracking-widest"
+                      className="w-full p-4 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl text-center text-3xl tracking-widest text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
                       placeholder="••••"
                       autoFocus
                     />
                   </div>
                   
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <Button
                       onClick={() => {
                         setShowPinInput(false);
                         setPin('');
                       }}
                       variant="outline"
-                      className="flex-1"
+                      className="flex-1 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 rounded-xl py-3 font-semibold"
                     >
-                      Cancelar
+                      ❌ Cancelar
                     </Button>
                     <Button
                       onClick={handlePinSubmit}
                       disabled={pin.length !== 4}
-                      className="flex-1 bg-green-600 hover:bg-green-700"
+                      className={`flex-1 rounded-xl py-3 font-semibold transition-all duration-300 ${
+                        pin.length === 4 
+                          ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:scale-105' 
+                          : 'bg-white/10 text-white/50 cursor-not-allowed backdrop-blur-sm border border-white/20'
+                      }`}
                     >
-                      Confirmar
+                      ✅ Confirmar
                     </Button>
                   </div>
                 </div>
               )}
 
-              <div className="text-xs text-center text-gray-500 border-t pt-3">
-                <p>🔒 Protección según Ley Olimpia</p>
-                <p>Contenido sensible restringido</p>
+              <div className="text-xs text-center text-white/60 border-t border-white/20 pt-4 mt-6">
+                <p className="font-medium">🔒 Protección según Ley Olimpia</p>
+                <p className="text-white/50">Contenido sensible restringido</p>
               </div>
             </CardContent>
           </Card>
