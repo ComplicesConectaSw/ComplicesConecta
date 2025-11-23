@@ -20,7 +20,7 @@ export const SAFE_INTERESTS = [
   
   // Ambiente y experiencias lifestyle
   "Ambiente Elegante", "Música Ambiente", "Iluminación Intima", "Espacios Privados",
-  "Ambiente Relajado", "Experiencias Sensuales", "Bienestar Integral", "Entretenimiento Adulto"
+  "Ambiente Sofisticado", "Experiencias Sensuales", "Bienestar Integral", "Entretenimiento Adulto"
 ];
 
 // ========================================

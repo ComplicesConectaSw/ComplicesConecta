@@ -466,6 +466,11 @@ const Discover = () => {
       setShowPremiumModal(true);
       return;
     }
+    // Validar que profileId sea válido antes de navegar
+    if (!profileId || profileId === 'undefined' || profileId === 'null') {
+      console.error('Error: profileId inválido', { profileId });
+      return;
+    }
     navigate(`/chat/${profileId}`);
   };
 
