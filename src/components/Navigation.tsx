@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, MessageCircle, Heart, User, Settings, Coins, Search, UserPlus } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { LogoutButton } from '@/components/ui/LogoutButton';
 import { useFeatures } from '@/hooks/useFeatures';
 import { cn } from '@/shared/lib/cn';
 import { getNavbarStyles } from '@/features/profile/useProfileTheme';
@@ -73,9 +74,10 @@ const Navigation = ({ className }: NavigationProps) => {
 
   return (
     <>
-      {/* Botón flotante de cambio de tema */}
-      <div className="fixed top-20 right-4 z-40">
+      {/* Botones flotantes superiores */}
+      <div className="fixed top-20 right-4 z-40 flex flex-col gap-2">
         <ThemeToggle />
+        <LogoutButton showText={false} />
       </div>
 
       {/* Navegación inferior */}

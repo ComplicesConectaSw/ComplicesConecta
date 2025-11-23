@@ -270,11 +270,40 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
           </Button>
         </div>
 
-        <div className="text-xs text-gray-600 space-y-1 bg-gray-50 rounded-lg p-3">
-          <p><strong>🟢 Suave:</strong> Contenido sensible oculto, sin auto-bloqueo automático</p>
-          <p><strong>🟡 Moderado:</strong> Auto-bloqueo tras 5 minutos de inactividad</p>
-          <p><strong>🔴 Estricto:</strong> Máxima protección + Auto-bloqueo 5 min + Restricciones adicionales</p>
-          <p className="mt-2 pt-2 border-t border-gray-200"><strong>📌 PIN actual:</strong> {savedPin} (Click en "Cambiar PIN" para modificar)</p>
+        <div className="text-xs text-gray-600 space-y-2 bg-gray-50 rounded-lg p-3">
+          <div className="space-y-1">
+            <p className="font-bold text-green-600">🟢 SUAVE (Básico):</p>
+            <ul className="ml-4 space-y-0.5 text-gray-700">
+              <li>• Contenido sensible oculto con blur</li>
+              <li>• NO hay auto-bloqueo automático</li>
+              <li>• Perfecto para usuarios responsables</li>
+            </ul>
+          </div>
+          
+          <div className="space-y-1">
+            <p className="font-bold text-orange-600">🟡 MODERADO (Recomendado):</p>
+            <ul className="ml-4 space-y-0.5 text-gray-700">
+              <li>• Auto-bloqueo tras 5 min de inactividad</li>
+              <li>• Temporizador visible en pantalla</li>
+              <li>• Balance entre seguridad y comodidad</li>
+            </ul>
+          </div>
+          
+          <div className="space-y-1">
+            <p className="font-bold text-red-600">🔴 ESTRICTO (Máxima Seguridad):</p>
+            <ul className="ml-4 space-y-0.5 text-gray-700">
+              <li>• Auto-bloqueo tras 5 min de inactividad</li>
+              <li>• Requiere PIN para cada desbloqueo</li>
+              <li>• NO permite bypass temporal</li>
+              <li>• Máxima protección parental</li>
+            </ul>
+          </div>
+          
+          <p className="mt-2 pt-2 border-t border-gray-200">
+            <strong>📌 PIN actual:</strong> <span className="font-mono bg-gray-200 px-2 py-0.5 rounded">{savedPin}</span>
+            <br />
+            <span className="text-gray-500 text-xs">Click en "Cambiar PIN" para modificar</span>
+          </p>
         </div>
       </CardContent>
     </Card>

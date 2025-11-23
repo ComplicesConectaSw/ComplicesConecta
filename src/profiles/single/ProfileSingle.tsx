@@ -1285,12 +1285,13 @@ Información del perfil:
                       className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
                       onClick={() => {
                         if (isOwnProfile) {
-                          // Si está bloqueado por control parental, no hacer nada
-                          // El usuario debe desbloquear primero con el PIN
-                          if (isParentalLocked) {
-                            return; // El modal de control parental ya está visible
+                          // Si está bloqueado, mostrar el modal de control parental
+                          // El modal ya está en la página y se muestra automáticamente cuando isParentalLocked es true
+                          if (!isParentalLocked) {
+                            // Si no está bloqueado, mostrar las imágenes directamente
+                            setDemoPrivateUnlocked(true);
                           }
-                          setDemoPrivateUnlocked(true);
+                          // Si está bloqueado, el modal ya está visible y el usuario debe ingresar el PIN
                         } else {
                           setShowPrivateImageRequest(true);
                         }
