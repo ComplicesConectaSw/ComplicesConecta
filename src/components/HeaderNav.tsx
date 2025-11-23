@@ -8,11 +8,8 @@ import {
   Calendar, 
   Building2, 
   Shield, 
-  HelpCircle, 
   Info,
   DollarSign,
-  Settings,
-  Bell,
   Menu,
   X,
   ShoppingBag,
@@ -25,7 +22,6 @@ import {
   Image
 } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
-import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,7 +43,6 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const { user, isAuthenticated, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
 
   // Detectar scroll para efecto de transparencia
   useEffect(() => {
@@ -263,43 +258,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                 >
                   <DollarSign className="h-5 w-5" />
                 </button>
-                <button 
-                  onClick={() => {
-                    handleNavigation('/faq');
-                    logger.info('Help icon clicked');
-                  }}
-                  className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
-                  title="Ayuda"
-                >
-                  <HelpCircle className="h-5 w-5" />
-                </button>
-                <button 
-                  onClick={() => {
-                    if (isAuthenticated()) {
-                      handleNavigation('/settings');
-                    } else {
-                      handleNavigation('/info');
-                    }
-                    logger.info('Settings icon clicked');
-                  }}
-                  className="p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
-                  title="Configuración"
-                >
-                  <Settings className="h-5 w-5" />
-                </button>
-                <button 
-                  onClick={() => {
-                    setShowNotifications(!showNotifications);
-                    logger.info('Notifications toggled:', { shown: !showNotifications });
-                  }}
-                  className="relative p-2 text-white/70 hover:text-purple-400 hover:bg-white/10 rounded-lg transition-all duration-300"
-                  title="Notificaciones"
-                >
-                  <Bell className="h-5 w-5" />
-                  <Badge className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 bg-purple-500 text-white text-xs flex items-center justify-center rounded-full shadow-lg border-2 border-purple-600 z-10">
-                    3
-                  </Badge>
-                </button>
+                {/* Botones ocultos: Ayuda, Settings, Notificaciones */}
               </div>
 
               {/* Botón de Login/Perfil - Muestra estado de autenticación */}
