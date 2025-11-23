@@ -1,4 +1,5 @@
 import { logger } from '@/lib/logger';
+import { generateDemoUserUUID } from '@/utils/demoUuid';
 // Configuración de la aplicación - Separación Demo vs Producción
 export interface AppConfig {
   mode: 'demo' | 'production';
@@ -172,7 +173,7 @@ export const handleDemoAuth = (email: string, accountType: string = 'single') =>
   const finalAccountType = isDemoAdmin(email) ? 'admin' : accountType;
   
   const demoUser = {
-    id: `demo-${Date.now()}`,
+    id: generateDemoUserUUID(email),
     email: email.toLowerCase().trim(),
     role: isDemoAdmin(email) ? 'admin' : 'user',
     accountType: finalAccountType,

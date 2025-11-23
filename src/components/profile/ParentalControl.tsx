@@ -131,66 +131,66 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
                 </div>
               </div>
 
-              {!showPinInput ? (
-                <div className="space-y-6">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                    <p className="text-sm text-center text-white/90 font-medium leading-relaxed">
-                      🔞 Este contenido está restringido por control parental.
-                      <br />
-                      <span className="text-white/70">Solo adultos pueden acceder.</span>
-                    </p>
-                  </div>
-                  
+              <div className="space-y-6">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                  <p className="text-sm text-center text-white/90 font-medium leading-relaxed">
+                    🔞 Este contenido está restringido por control parental.
+                    <br />
+                    <span className="text-white/70">Solo adultos pueden acceder.</span>
+                  </p>
+                </div>
+                
+                {!showPinInput ? (
                   <Button
                     onClick={() => setShowPinInput(true)}
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-xl backdrop-blur-sm border border-white/20 shadow-lg shadow-blue-500/25 transition-all duration-300 hover:scale-105"
                   >
                     <Unlock className="h-5 w-5 mr-2" />
-                    🔓 Desbloquear con PIN
+                    🔓 Desbloquear Contenido
                   </Button>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                    <label className="block text-sm font-semibold mb-3 text-white/90 text-center">
-                      🔢 Ingresa PIN de 4 dígitos:
-                    </label>
-                    <input
-                      type="password"
-                      maxLength={4}
-                      value={pin}
-                      onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
-                      className="w-full p-4 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl text-center text-3xl tracking-widest text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
-                      placeholder="••••"
-                      autoFocus
-                    />
+                ) : (
+                  <div className="space-y-6">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                      <label className="block text-sm font-semibold mb-3 text-white/90 text-center">
+                        🔢 Ingresa PIN de 4 dígitos:
+                      </label>
+                      <input
+                        type="password"
+                        maxLength={4}
+                        value={pin}
+                        onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
+                        className="w-full p-4 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl text-center text-3xl tracking-widest text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all duration-300"
+                        placeholder="••••"
+                        autoFocus
+                      />
+                    </div>
+                    
+                    <div className="flex gap-3">
+                      <Button
+                        onClick={() => {
+                          setShowPinInput(false);
+                          setPin('');
+                        }}
+                        variant="outline"
+                        className="flex-1 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 rounded-xl py-3 font-semibold"
+                      >
+                        ❌ Cancelar
+                      </Button>
+                      <Button
+                        onClick={handlePinSubmit}
+                        disabled={pin.length !== 4}
+                        className={`flex-1 rounded-xl py-3 font-semibold transition-all duration-300 ${
+                          pin.length === 4 
+                            ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:scale-105' 
+                            : 'bg-white/10 text-white/50 cursor-not-allowed backdrop-blur-sm border border-white/20'
+                        }`}
+                      >
+                        ✅ Confirmar
+                      </Button>
+                    </div>
                   </div>
-                  
-                  <div className="flex gap-3">
-                    <Button
-                      onClick={() => {
-                        setShowPinInput(false);
-                        setPin('');
-                      }}
-                      variant="outline"
-                      className="flex-1 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 rounded-xl py-3 font-semibold"
-                    >
-                      ❌ Cancelar
-                    </Button>
-                    <Button
-                      onClick={handlePinSubmit}
-                      disabled={pin.length !== 4}
-                      className={`flex-1 rounded-xl py-3 font-semibold transition-all duration-300 ${
-                        pin.length === 4 
-                          ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:scale-105' 
-                          : 'bg-white/10 text-white/50 cursor-not-allowed backdrop-blur-sm border border-white/20'
-                      }`}
-                    >
-                      ✅ Confirmar
-                    </Button>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
 
               <div className="text-xs text-center text-white/60 border-t border-white/20 pt-4 mt-6">
                 <p className="font-medium">🔒 Protección según Ley Olimpia</p>

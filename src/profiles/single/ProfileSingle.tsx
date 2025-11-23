@@ -61,8 +61,11 @@ const ProfileSingle: React.FC = () => {
   const [demoPrivateUnlocked, setDemoPrivateUnlocked] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
   
-  // Estado para control parental básico
-  const [isParentalLocked, setIsParentalLocked] = useState(false);
+  // Estado para control parental básico - DEBE ESTAR BLOQUEADO POR DEFECTO
+  const [isParentalLocked, setIsParentalLocked] = useState(() => {
+    const saved = localStorage.getItem('parentalControlLocked');
+    return saved !== null ? JSON.parse(saved) : true; // BLOQUEADO por defecto
+  });
   
   // Estados para modal de carrusel avanzado
   const [showImageModal, setShowImageModal] = useState(false);
@@ -1419,7 +1422,10 @@ Información del perfil:
       {/* Control Parental */}
       <ParentalControl
         isLocked={isParentalLocked}
-        onToggle={setIsParentalLocked}
+        onToggle={(locked) => {
+          setIsParentalLocked(locked);
+          localStorage.setItem('parentalControlLocked', JSON.stringify(locked));
+        }}
       />
 
       {/* Modal de carrusel de imágenes */}

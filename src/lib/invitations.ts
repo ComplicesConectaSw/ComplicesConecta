@@ -197,18 +197,18 @@ export const invitationService = {
         throw new Error('Supabase no está disponible');
       }
       
-      // Obtener invitaciones recibidas - compatible con ambos esquemas
+      // Obtener invitaciones recibidas - usar solo columnas que existen
       const { data: receivedData, error: receivedError } = await supabase
         .from('invitations')
         .select('*')
-        .or(`to_profile_id.eq.${profileId},to_profile.eq.${profileId}`)
+        .eq('to_profile', profileId)
         .order('created_at', { ascending: false });
       
-      // Obtener invitaciones enviadas - compatible con ambos esquemas
+      // Obtener invitaciones enviadas - usar solo columnas que existen
       const { data: sentData, error: sentError } = await supabase
         .from('invitations')
         .select('*')
-        .or(`from_profile_id.eq.${profileId},from_profile.eq.${profileId}`)
+        .eq('from_profile', profileId)
         .order('created_at', { ascending: false });
 
       if (receivedError || sentError) {
@@ -324,7 +324,7 @@ export const invitationService = {
       const { data, error } = await supabase
         .from('invitations')
         .select('id')
-        .or(`and(from_profile_id.eq.${user1},to_profile_id.eq.${user2}),and(from_profile_id.eq.${user2},to_profile_id.eq.${user1}),and(from_profile.eq.${user1},to_profile.eq.${user2}),and(from_profile.eq.${user2},to_profile.eq.${user1})`)
+        .or(`and(from_profile.eq.${user1},to_profile.eq.${user2}),and(from_profile.eq.${user2},to_profile.eq.${user1})`)
         .eq('type', 'chat')
         .eq('status', 'accepted')
         .limit(1);
