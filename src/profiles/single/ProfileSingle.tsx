@@ -391,8 +391,9 @@ Información del perfil:
       tokenId: Math.floor(Math.random() * 10000)
     };
     
-    // Mostrar progreso
-    alert('⏳ Minteando NFT...\n\nEsto puede tardar unos segundos');
+    // Mostrar progreso con toast
+    // TODO: Reemplazar con componente Toast glassmorphism
+    console.log('⏳ Minteando NFT... Esto puede tardar unos segundos');
     
     // Simular delay de blockchain
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -400,7 +401,7 @@ Información del perfil:
     // Agregar a la lista de NFTs del usuario
     setUserNFTs(prev => [...prev, nftData]);
     
-    alert(`✅ NFT MINTEADO EXITOSAMENTE\n\n🎨 Token ID: #${nftData.tokenId}\n📦 Tipo: ${nftData.attributes[0].value}\n✨ Agregado a tu colección`);
+    console.log(`✅ NFT MINTEADO: Token ID #${nftData.tokenId}, Tipo: ${nftData.attributes[0].value}`);
     
     logger.info('NFT minteado (demo):', nftData);
   };
@@ -956,26 +957,61 @@ Información del perfil:
                 {/* Lista de NFTs */}
                 {userNFTs.length > 0 && (
                   <div>
-                    <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
-                      <Images className="w-4 h-4 text-purple-400" />
-                      Mis NFTs ({userNFTs.length})
-                    </h4>
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h4 className="text-sm font-medium mb-1 flex items-center gap-2">
+                          <Images className="w-4 h-4 text-purple-400" />
+                          Mis NFTs ({userNFTs.length})
+                        </h4>
+                        <p className="text-xs text-white/60">
+                          🎨 Tokens únicos que representan tu perfil en blockchain
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => navigate('/nfts')}
+                        className="text-xs text-purple-400 hover:text-purple-300"
+                      >
+                        Saber más →
+                      </Button>
+                    </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {userNFTs.slice(0, 4).map((nft, index) => (
-                        <div key={nft.id || index} className="p-2 bg-white/10 rounded-lg">
-                          <div className="aspect-square bg-gradient-to-br from-purple-500 to-blue-500 rounded mb-2 flex items-center justify-center">
-                            <Images className="w-6 h-6 text-white" />
+                        <div key={nft.id || index} className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-all cursor-pointer group">
+                          <div className="aspect-square rounded mb-2 overflow-hidden relative">
+                            {nft.image ? (
+                              <img 
+                                src={nft.image} 
+                                alt={`NFT #${nft.token_id}`}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+                                <Images className="w-6 h-6 text-white" />
+                              </div>
+                            )}
+                            <div className="absolute top-1 right-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">
+                              #{nft.token_id}
+                            </div>
                           </div>
                           <div className="text-xs">
-                            <div className="font-medium truncate">NFT #{nft.token_id}</div>
-                            <div className="text-white/70 capitalize">{nft.rarity}</div>
+                            <div className="font-medium truncate">{nft.name || `NFT #${nft.token_id}`}</div>
+                            <div className="text-white/70 capitalize text-[10px]">{nft.rarity || 'Común'}</div>
                           </div>
                         </div>
                       ))}
                     </div>
                     {userNFTs.length > 4 && (
                       <div className="text-center mt-2">
-                        <span className="text-xs text-white/70">+{userNFTs.length - 4} más</span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => navigate('/nfts')}
+                          className="text-xs text-white/70 hover:text-white"
+                        >
+                          Ver todos (+{userNFTs.length - 4} más)
+                        </Button>
                       </div>
                     )}
                   </div>
