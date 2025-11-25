@@ -272,6 +272,8 @@ conecta-social-comunidad-main/
 │   ├── aplicar-migraciones-remoto.ps1         # Aplicar migraciones remoto (DEPRECADO - usar database-manager.ps1)
 │   ├── sync-databases.ps1                     # Sincronizar BD (DEPRECADO - usar database-manager.ps1)
 │   └── verificar-alineacion-tablas.ps1        # Verificar alineación tablas (DEPRECADO - usar database-manager.ps1)
+│   └── utils/                                 # Utilidades de repositorio (NUEVO v3.6.6)
+│       └── github_menu.ps1                    # Menú interactivo para comandos Git/GitHub
 ├── tailwind.config.ts            # Configuración Tailwind CSS v3.4.18 (300 líneas)
 ├── postcss.config.js             # Configuración PostCSS con @tailwindcss/postcss
 ├── docker-compose.yml            # Docker Compose con Neo4j (ACTUALIZADO v3.5.0)

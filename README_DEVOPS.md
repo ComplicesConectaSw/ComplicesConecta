@@ -150,6 +150,14 @@ docker run -d --name dd-agent \
   - Mejor manejo de errores en `db reset` y regeneración de tipos
   - Mejor detección de conexión remota con mensajes informativos
 
+### Script Temporal de RLS (Solo Desarrollo)
+
+- **Archivo:** `fix-rls-temp.sql`
+- **Propósito:** Deshabilitar temporalmente las políticas RLS problemáticas en la tabla `profiles` durante sesiones de depuración.
+- **Uso recomendado:**
+  - Solo en ENTORNO DE DESARROLLO cuando RLS bloquea el acceso a perfiles y se requiere aislar el problema.
+  - Nunca ejecutar en producción; la configuración RLS definitiva está en las migraciones oficiales de `supabase/migrations/`.
+
 ### Script de Corrección de Caracteres
 - **Archivo:** `scripts/fix-character-encoding.ps1`
 - **Propósito:** Corregir caracteres mal codificados (?, etc.) en archivos cuando están cerrados

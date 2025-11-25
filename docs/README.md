@@ -114,6 +114,12 @@
 2. [Guía de Tokens](./GUIA_TOKENS.md) - Sistema de Tokens (CMPX y GTK)
 3. [Plan de Correcciones](./CORRECCIONES_FASES_v3.6.3.md) - Correcciones por fases
 
+### 🔧 Scripts clave (DevOps)
+
+- **[DevOpsManagerUltra.ps1](../DevOpsManagerUltra.ps1)** – Orquestador DevOps maestro (BD, Git, monitoreo).
+- **[build-and-deploy.ps1](../build-and-deploy.ps1)** – Build optimizado y deploy a Vercel.
+- **[github_menu.ps1](../scripts/utils/github_menu.ps1)** – Menú interactivo para comandos Git/GitHub.
+
 ---
 
 ## 📊 ESTRUCTURA DE DIRECTORIOS
