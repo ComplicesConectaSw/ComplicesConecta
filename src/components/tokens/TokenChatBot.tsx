@@ -4,12 +4,10 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card, CardContent } from '@/shared/ui/Card';
 import { Input } from '@/shared/ui/Input';
 import { useTokens } from '@/hooks/useTokens';
-import { Bot, Send, Loader2 } from 'lucide-react';
-import { cn } from '@/shared/lib/cn';
+import { Send, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface ChatMessage {
@@ -376,13 +374,6 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-
   if (loading) {
     return (
       <Card className="w-full max-w-2xl mx-auto">
@@ -390,87 +381,91 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
           <Loader2 className="h-8 w-8 animate-spin mr-2" />
           <span>Cargando tu asistente de tokens...</span>
         </CardContent>
-        </CardTitle>
-      </div>
-    </CardHeader>
-    <CardContent className="p-0">
-      <div className="h-[500px] overflow-y-auto p-6 space-y-6 custom-scrollbar">
-        {/* Messages Area */}
-        {messages.map((message) => (
-          <motion.div
-            key={message.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className={`flex ${message.type === 'bot' ? 'justify-start' : 'justify-end'} mb-6`}
-          >
-            <div
-              className={`p-4 rounded-2xl ${
-                message.type === 'bot'
-                  ? 'bg-gray-800/80 text-gray-100 rounded-tl-none border-l-2 border-purple-500/50'
-                  : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-tr-none shadow-lg'
-              } max-w-[85%]`}
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardContent className="p-0">
+        <div className="h-[500px] overflow-y-auto p-6 space-y-6 custom-scrollbar">
+          {/* Messages Area */}
+          {messages.map((message) => (
+            <motion.div
+              key={message.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className={`flex ${message.type === 'bot' ? 'justify-start' : 'justify-end'} mb-6`}
             >
-              <p className="text-sm leading-relaxed">{message.content}</p>
-              {message.actions && message.actions.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {message.actions.map((action) => (
-                    <motion.button
-                      key={action.id}
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={action.action}
-                      className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
-                        action.variant === 'outline'
-                          ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
-                          : action.variant === 'destructive'
-                          ? 'bg-red-500/90 text-white hover:bg-red-600'
-                          : 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600'
-                      }`}
-                    >
-                      {action.label}
-                    </motion.button>
-                  ))}
-                </div>
-              )}
+              <div
+                className={`p-4 rounded-2xl ${
+                  message.type === 'bot'
+                    ? 'bg-gray-800/80 text-gray-100 rounded-tl-none border-l-2 border-purple-500/50'
+                    : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-tr-none shadow-lg'
+                } max-w-[85%]`}
+              >
+                <p className="text-sm leading-relaxed">{message.content}</p>
+                {message.actions && message.actions.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {message.actions.map((action) => (
+                      <motion.button
+                        key={action.id}
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={action.action}
+                        className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
+                          action.variant === 'outline'
+                            ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
+                            : action.variant === 'destructive'
+                            ? 'bg-red-500/90 text-white hover:bg-red-600'
+                            : 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600'
+                        }`}
+                      >
+                        {action.label}
+                      </motion.button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          ))}
+
+          {/* Input Area */}
+          <div className="border-t border-purple-500/20 p-4 bg-gray-900/80 backdrop-blur-md">
+            <div className="flex items-center space-x-2">
+              <Input
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                placeholder="Escribe tu mensaje..."
+                className="flex-1 bg-gray-800/80 border border-purple-500/30 text-white placeholder-gray-400 rounded-l-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-200"
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                disabled={isTyping}
+              />
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleSendMessage}
+                disabled={!userInput.trim() || isTyping}
+                className={`px-4 py-3 rounded-r-lg font-medium transition-all duration-200 ${
+                  !userInput.trim() || isTyping
+                    ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg'
+                }`}
+              >
+                {isTyping ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <Send className="h-5 w-5" />
+                )}
+              </motion.button>
             </div>
-          </motion.div>
-        ))}
-        {/* Input Area */}
-        <div className="border-t border-purple-500/20 p-4 bg-gray-900/80 backdrop-blur-md">
-          <div className="flex items-center space-x-2">
-            <Input
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              placeholder="Escribe tu mensaje..."
-              className="flex-1 bg-gray-800/80 border border-purple-500/30 text-white placeholder-gray-400 rounded-l-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-200"
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              disabled={isTyping}
-            />
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleSendMessage}
-              disabled={!userInput.trim() || isTyping}
-              className={`px-4 py-3 rounded-r-lg font-medium transition-all duration-200 ${
-                !userInput.trim() || isTyping
-                  ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg'
-              }`}
-            >
-              {isTyping ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : (
-                <Send className="h-5 w-5" />
-              )}
-            </motion.button>
+            <p className="text-xs text-center text-gray-400 mt-2">
+              Presiona Enter para enviar
+            </p>
           </div>
-          <p className="text-xs text-center text-gray-400 mt-2">
-            Presiona Enter para enviar
-          </p>
         </div>
       </CardContent>
     </Card>
   );
-);
 }
