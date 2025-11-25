@@ -136,6 +136,16 @@ Este repositorio es un "laboratorio vivo" donde experimento con tecnologías com
   - **[🛡️ Ley Olimpia](./docs/legal/LEY_OLIMPIA.md)** - Protección contra violencia digital (Art. 259 Ter/Quáter/Quinquies)
   - **[📋 Políticas Legales](./docs/legal/Legal-Policy/README.md)** - 9 políticas de seguridad y cumplimiento
 
+### **📌 Documentación Estratégica (Investor Ready)**
+
+- **[📄 Visión Estratégica](./docs/strategy/VISION.md)**
+- **[💳 Estrategia Premium Post-Beta](./docs/strategy/PREMIUM_STRATEGY.md)**
+
+### **🧾 Auditorías Técnicas y Análisis de Calidad**
+
+- **[📊 Análisis Completo del Proyecto](./docs/audit/ANALISIS_COMPLETO.json)**
+- **[✅ Auditoría Final del Proyecto](./docs/audit/FINAL_AUDIT.json)**
+
 > **📚 Documentación Técnica (Uso Interno):**  
 > La documentación técnica completa está en `docs-unified/` (no se sube a Git):
 > - `docs-unified/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md` - Documentación técnica completa

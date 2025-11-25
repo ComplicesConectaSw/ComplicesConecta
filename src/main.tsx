@@ -76,6 +76,18 @@ if (typeof window !== 'undefined') {
     throw new Error(`React context test failed: ${error}`);
   }
   
+  const isIgnoredWalletError = (message: unknown): boolean => {
+    if (!message) return false;
+    const text = String(message).toLowerCase();
+    return (
+      text.includes('chainid') ||
+      text.includes('ethereum') ||
+      text.includes('solana') ||
+      text.includes('tronlink') ||
+      text.includes('metamask')
+    );
+  };
+
   // Configurar React DevTools si está disponible
   if (win.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
     debugLog('REACT_DEVTOOLS_DETECTED');
@@ -91,6 +103,11 @@ if (typeof window !== 'undefined') {
   
   // Configurar error boundaries globales para React
   win.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => {
+    if (isIgnoredWalletError(event.reason)) {
+      // Silenciar errores de extensiones de wallet para la demo
+      event.preventDefault();
+      return;
+    }
     debugLog('UNHANDLED_PROMISE_REJECTION', { 
       reason: event.reason,
       promise: event.promise 
@@ -98,6 +115,11 @@ if (typeof window !== 'undefined') {
   });
   
   win.addEventListener('error', (event: ErrorEvent) => {
+    if (isIgnoredWalletError(event.message || event.error?.message)) {
+      // Silenciar errores de chainId/ethereum/solana/TronLink/MetaMask
+      event.preventDefault();
+      return;
+    }
     debugLog('GLOBAL_ERROR', { 
       message: event.message,
       filename: event.filename,

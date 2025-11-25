@@ -75,7 +75,7 @@ const Index = () => {
           setLoadingTimeoutPassed(true);
           loadingTimeoutRef.current = null;
         }
-      }, 2000); // 2 segundos - timeout único y suficiente
+      }, 3000); // 3 segundos - timeout único y suficiente
     }
 
     return () => {
