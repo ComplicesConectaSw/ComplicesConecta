@@ -4,6 +4,7 @@ import { Lock, Unlock, Baby, Clock, Shield, Settings } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
 import { Badge } from '@/components/ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface ParentalControlProps {
   isLocked: boolean;
@@ -106,7 +107,7 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xl flex items-center justify-center p-4"
         >
           <Card className="w-full max-w-md bg-gradient-to-br from-purple-900/95 via-purple-800/95 to-blue-900/95 backdrop-blur-xl border border-white/20 shadow-2xl shadow-purple-900/50">
             <CardHeader className="text-center">
@@ -205,7 +206,7 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
 
   // Panel de configuración cuando está desbloqueado
   return (
-    <Card className="mb-4 border-green-200 bg-green-50/50">
+    <Card className="mb-4 border-green-200 bg-white/5 backdrop-blur-xl">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -228,25 +229,43 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
           </div>
         )}
 
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-gray-700">Nivel de Restricción</label>
-          <div className="grid grid-cols-3 gap-2">
-            {(['soft', 'medium', 'strict'] as const).map((level) => (
-              <Button
-                key={level}
-                onClick={() => handleRestrictionChange(level)}
-                variant={restrictionLevel === level ? "default" : "outline"}
-                size="sm"
-                className={`${restrictionLevel === level ? getRestrictionColor(level) + ' text-white font-bold border-2' : 'bg-white/50'} transition-all duration-300 hover:scale-105`}
-              >
-                {level.charAt(0).toUpperCase() + level.slice(1)}
-              </Button>
-            ))}
-          </div>
-          <p className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
+        <TooltipProvider>
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-gray-700">Nivel de Restricción</label>
+            <div className="grid grid-cols-3 gap-2">
+              {(['soft', 'medium', 'strict'] as const).map((level) => {
+                const label = level.charAt(0).toUpperCase() + level.slice(1);
+                const tooltipText =
+                  level === 'soft'
+                    ? 'Ligero: Solo aplica sobre la galería privada, sin bloqueo al iniciar sesión.'
+                    : level === 'strict'
+                      ? 'Estricto: El perfil puede iniciar bloqueado desde login y requiere PIN siempre.'
+                      : 'Moderado: Auto-bloqueo en 5 minutos, recomendado para la mayoría de usuarios.';
+
+                return (
+                  <Tooltip key={level}>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={() => handleRestrictionChange(level)}
+                        variant={restrictionLevel === level ? "default" : "outline"}
+                        size="sm"
+                        className={`${restrictionLevel === level ? getRestrictionColor(level) + ' text-white font-bold border-2' : 'bg-white/50'} transition-all duration-300 hover:scale-105`}
+                      >
+                        {label}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs text-xs">
+                      {tooltipText}
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </div>
+            <p className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
             {getRestrictionDescription(restrictionLevel)}
-          </p>
-        </div>
+            </p>
+          </div>
+        </TooltipProvider>
 
         <div className="flex gap-2">
           <Button

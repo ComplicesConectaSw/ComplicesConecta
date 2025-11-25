@@ -4,6 +4,7 @@ import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Lock, Unlock, Check, X } from 'lucide-react';
 import { PrivateImageRequest } from './PrivateImageRequest';
+import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
 
 interface PrivateImage {
   id: string;
@@ -167,27 +168,13 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
                     className="relative aspect-square cursor-pointer group"
                     onClick={() => handleImageClick(image.id)}
                   >
-                    <img
+                    <ImageWithFallback
                       src={image.thumbnail || image.url}
                       alt="Imagen privada"
-                      className="w-full h-full object-cover rounded-lg transition-all duration-300"
-                      onError={(e) => {
-                        // Fallback elegante para imágenes rotas
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        const fallback = target.nextElementSibling as HTMLElement;
-                        if (fallback) fallback.style.display = 'flex';
-                      }}
+                      fallbackType="private"
+                      fallbackText="Imagen no disponible"
+                      className="w-full h-full rounded-lg overflow-hidden"
                     />
-                    {/* ⚠️ EXCEPCIÓN LEGÍTIMA CSS INLINE - Fallback dinámico controlado por JS */}
-                    <div 
-                      className="w-full h-full bg-gradient-to-br from-purple-900/80 via-purple-800/80 to-blue-900/80 backdrop-blur-sm rounded-lg border border-white/20 items-center justify-center flex-col hidden"
-                      style={{ display: 'none' }}
-                    >
-                      <Lock className="h-8 w-8 text-purple-300 mb-2" />
-                      <span className="text-xs text-white/80 font-medium">🔒 Contenido Privado</span>
-                      <span className="text-xs text-white/60">Imagen no disponible</span>
-                    </div>
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
                       <Eye className="h-6 w-6 text-white" />
                     </div>
@@ -217,21 +204,27 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
         {/* Modal de imagen ampliada */}
         {selectedImage && (
           <div
-            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/40 backdrop-blur-xl z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedImage(null)}
           >
-            <div className="relative max-w-4xl max-h-full">
-              <img
-                src={images.find(img => img.id === selectedImage)?.url}
-                alt="Imagen privada ampliada"
-                className="max-w-full max-h-full object-contain rounded-lg"
-              />
-              <Button
-                onClick={() => setSelectedImage(null)}
-                className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white rounded-full p-2"
-              >
-                <X className="h-4 w-4" />
-              </Button>
+            <div className="relative max-w-4xl max-h-full w-full" onClick={(e) => e.stopPropagation()}>
+              <Card className="bg-black/40 backdrop-blur-2xl border-white/20 overflow-hidden">
+                <CardContent className="p-2 sm:p-4">
+                  <ImageWithFallback
+                    src={images.find(img => img.id === selectedImage)?.url || ''}
+                    alt="Imagen privada ampliada"
+                    fallbackType="private"
+                    fallbackText="Imagen no disponible"
+                    className="max-h-[80vh] w-full"
+                  />
+                  <Button
+                    onClick={() => setSelectedImage(null)}
+                    className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white rounded-full p-2"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
           </div>
         )}

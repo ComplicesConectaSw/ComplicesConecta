@@ -16,8 +16,6 @@ import {
   FileText,
   Lock,
   Crown,
-  ChevronDown,
-  MoreHorizontal,
   Scale,
   Image,
   Settings
@@ -54,13 +52,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  // Ocultar HeaderNav en páginas de perfil SOLO si hay sesión activa (no demo)
-  // En demo, HeaderNav permanece para navegación
-  const isDemoMode = localStorage.getItem('demo_authenticated') === 'true';
-  const hideOnPages = ['/profile-single', '/profile-couple', '/profile/', '/edit-profile'];
-  const shouldHide = !isDemoMode && hideOnPages.some(page => location.pathname.startsWith(page));
-  
-  if (shouldHide) return null;
+  // Siempre mostrar HeaderNav para que el usuario tenga acceso a Configuración y Cerrar Sesión
+  // (Requisito UX: nunca perder la navegación principal)
 
   // Items principales - siempre visibles
   const mainNavItems = [

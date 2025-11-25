@@ -61,10 +61,12 @@ const ProfileSingle: React.FC = () => {
   const [demoPrivateUnlocked, setDemoPrivateUnlocked] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
   
-  // Estado para control parental básico - DEBE ESTAR BLOQUEADO POR DEFECTO
+  // Estado para control parental - Desbloqueado por defecto excepto en modo estricto
   const [isParentalLocked, setIsParentalLocked] = useState(() => {
     const saved = localStorage.getItem('parentalControlLocked');
-    return saved !== null ? JSON.parse(saved) : true; // BLOQUEADO por defecto
+    const restrictionLevel = localStorage.getItem('restrictionLevel') || 'medium';
+    // Solo bloquear por defecto si el nivel es 'strict'
+    return saved !== null ? JSON.parse(saved) : restrictionLevel === 'strict';
   });
   
   // Estados para modal de carrusel avanzado

@@ -8,8 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
 import { Button } from '@/shared/ui/Button';
 import { Input } from '@/shared/ui/Input';
 import { useTokens } from '@/hooks/useTokens';
-import { Bot, User, Send, Loader2 } from 'lucide-react';
+import { Bot, Send, Loader2 } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
+import { motion } from 'framer-motion';
 
 interface ChatMessage {
   id: string;
@@ -389,129 +390,87 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
           <Loader2 className="h-8 w-8 animate-spin mr-2" />
           <span>Cargando tu asistente de tokens...</span>
         </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card className="token-chatbox w-full max-w-2xl mx-auto h-[600px] flex flex-col">
-      <CardHeader className="border-b border-white/20 bg-gradient-to-r from-purple-900/80 to-blue-900/80 backdrop-filter backdrop-blur-md flex-shrink-0 shadow-lg">
-        <CardTitle className="flex items-center gap-2 text-white font-bold drop-shadow-md">
-          <Bot className="h-5 w-5 text-purple-300" />
-          🤖 Asistente de Tokens CMPX/GTK
         </CardTitle>
-        <p className="text-sm text-white font-medium drop-shadow-md">
-          Tu guía personal para tokens en fase Beta
-        </p>
-      </CardHeader>
-      
-      <CardContent className="flex-1 flex flex-col p-0 bg-gradient-to-b from-purple-900/10 to-blue-900/10">
+      </div>
+    </CardHeader>
+    <CardContent className="p-0">
+      <div className="h-[500px] overflow-y-auto p-6 space-y-6 custom-scrollbar">
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-purple-900/20 to-blue-900/20 backdrop-filter backdrop-blur-sm">
-          {messages.map((message) => (
+        {messages.map((message) => (
+          <motion.div
+            key={message.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className={`flex ${message.type === 'bot' ? 'justify-start' : 'justify-end'} mb-6`}
+          >
             <div
-              key={message.id}
-              className={cn(
-                "flex gap-3",
-                message.type === 'user' ? 'justify-end' : 'justify-start'
-              )}
+              className={`p-4 rounded-2xl ${
+                message.type === 'bot'
+                  ? 'bg-gray-800/80 text-gray-100 rounded-tl-none border-l-2 border-purple-500/50'
+                  : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-tr-none shadow-lg'
+              } max-w-[85%]`}
             >
-              {message.type === 'bot' && (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-400 flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <Bot className="h-4 w-4 text-white" />
-                </div>
-              )}
-              
-              <div
-                className={cn(
-                  "max-w-[85%] sm:max-w-[75%] md:max-w-[70%] lg:max-w-[65%] rounded-lg p-3 sm:p-4 break-words overflow-hidden",
-                  message.type === 'user'
-                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md'
-                    : 'bg-gradient-to-r from-purple-800/95 via-purple-700/95 to-blue-800/95 backdrop-filter backdrop-blur-md text-white border border-purple-400/50 shadow-lg'
-                )}
-              >
-                <div className="whitespace-pre-wrap text-xs sm:text-sm leading-relaxed break-words max-h-32 sm:max-h-40 overflow-y-auto overflow-wrap-break-word hyphens-auto font-medium sm:font-semibold text-white drop-shadow-lg word-break-break-all">
-                  {message.content.split('\n').map((line, idx) => {
-                    // Detectar bullets y aplicar estilos especiales
-                    if (line.trim().startsWith('•')) {
-                      return (
-                        <div key={idx} className="text-white font-medium drop-shadow-md mb-1">
-                          {line}
-                        </div>
-                      );
-                    }
-                    return <div key={idx}>{line}</div>;
-                  })}
-                </div>
-                
-                {message.actions && (
-                  <div className="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
-                    {message.actions.map((action) => (
-                      <Button
-                        key={action.id}
-                        size="sm"
-                        variant={action.variant || 'outline'}
-                        onClick={action.action}
-                        className="text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 min-w-0 flex-shrink-0 whitespace-nowrap"
-                      >
-                        {action.label}
-                      </Button>
-                    ))}
-                  </div>
-                )}
-              </div>
-              
-              {message.type === 'user' && (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-md">
-                  <User className="h-4 w-4 text-white" />
+              <p className="text-sm leading-relaxed">{message.content}</p>
+              {message.actions && message.actions.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {message.actions.map((action) => (
+                    <motion.button
+                      key={action.id}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={action.action}
+                      className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
+                        action.variant === 'outline'
+                          ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20'
+                          : action.variant === 'destructive'
+                          ? 'bg-red-500/90 text-white hover:bg-red-600'
+                          : 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600'
+                      }`}
+                    >
+                      {action.label}
+                    </motion.button>
+                  ))}
                 </div>
               )}
             </div>
-          ))}
-          
-          {isTyping && (
-            <div className="flex gap-3 justify-start">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-blue-400 flex items-center justify-center flex-shrink-0 shadow-sm">
-                <Bot className="h-4 w-4 text-white" />
-              </div>
-              <div className="bg-gradient-to-r from-purple-800/40 to-blue-800/40 border border-purple-400/50 rounded-lg p-3 shadow-sm">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-purple-300 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-blue-300 rounded-full animate-bounce animate-delay-100"></div>
-                  <div className="w-2 h-2 bg-purple-300 rounded-full animate-bounce animate-delay-200"></div>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          <div ref={messagesEndRef} />
-        </div>
-        
+          </motion.div>
+        ))}
         {/* Input Area */}
-        <div className="border-t border-white/30 p-3 sm:p-4 bg-gradient-to-r from-purple-900/50 to-blue-900/50 backdrop-filter backdrop-blur-md flex-shrink-0 shadow-lg">
-          <div className="flex gap-2">
+        <div className="border-t border-purple-500/20 p-4 bg-gray-900/80 backdrop-blur-md">
+          <div className="flex items-center space-x-2">
             <Input
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Escribe tu mensaje aquí..."
-              className="flex-1 bg-white/15 border-white/30 text-white placeholder-white/70 focus:border-white/50 text-sm"
+              placeholder="Escribe tu mensaje..."
+              className="flex-1 bg-gray-800/80 border border-purple-500/30 text-white placeholder-gray-400 rounded-l-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-200"
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               disabled={isTyping}
             />
-            <Button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={handleSendMessage}
               disabled={!userInput.trim() || isTyping}
-              size="sm"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 px-3 sm:px-4"
+              className={`px-4 py-3 rounded-r-lg font-medium transition-all duration-200 ${
+                !userInput.trim() || isTyping
+                  ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg'
+              }`}
             >
-              <Send className="h-4 w-4" />
-            </Button>
+              {isTyping ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Send className="h-5 w-5" />
+              )}
+            </motion.button>
           </div>
-          <p className="text-xs sm:text-sm text-white/80 mt-2 leading-relaxed">
-            💡 Prueba: "¿Cuántos tokens tengo?" o "Quiero hacer staking"
+          <p className="text-xs text-center text-gray-400 mt-2">
+            Presiona Enter para enviar
           </p>
         </div>
       </CardContent>
     </Card>
   );
+);
 }

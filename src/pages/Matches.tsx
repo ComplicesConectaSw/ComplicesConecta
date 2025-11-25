@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
 import HeaderNav from "@/components/HeaderNav";
-import Navigation from "@/components/Navigation";
-import { MatchCard } from "@/components/ui/MatchCard";
-// import { ProfileCard } from "@/profiles/shared/ProfileCard"; // No usado actualmente
-// import { UnifiedTabs } from "@/components/ui/UnifiedTabs";
-import { UnifiedButton } from "@/components/ui/UnifiedButton";
-import { UnifiedCard } from "@/components/ui/UnifiedCard";
-import { Heart, MessageCircle, Sparkles, ArrowLeft, Flame, Users, Crown } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Heart, MessageCircle, User, Flame, Users, Crown, Sparkles } from "lucide-react";
+// useNavigate removido por no utilizarse
 import { motion } from "framer-motion";
 import { logger } from '@/lib/logger';
 import { useAuth } from '@/features/auth/useAuth';
@@ -30,14 +24,10 @@ export interface Match {
 }
 
 const Matches = () => {
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const [_matches, _setMatches] = useState<Match[]>([]);
-  const [_isProduction, _setIsProduction] = useState(false);
+  const { isAuthenticated: _isAuthenticated } = useAuth();
+  const [matches, setMatches] = useState<Match[]>([]);
   const [isLoading] = useState(false);
   
-  // Verificar si hay sesin activa (demo o produccin)
-  const hasActiveSession = typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
   const [demoMatches] = useState<Match[]>([
     {
       id: 1,
@@ -119,15 +109,14 @@ const Matches = () => {
   useEffect(() => {
     const demoAuth = safeGetItem<string>('demo_authenticated', { validate: true, defaultValue: 'false' });
     const isDemo = demoAuth === 'true';
-    // _setIsProduction(!isDemo); // Commented out - variable not used
 
     // SIEMPRE usar datos demo para respetar la lgica de negocio
     // No cargar datos reales hasta que el sistema est completamente implementado
-    // setMatches(demoMatches); // Commented out - variable not used
+    setMatches(demoMatches);
     logger.info('?? Matches demo cargados (respetando lgica de negocio):', { count: demoMatches.length, isDemo });
   }, []);
 
-  const currentMatches = demoMatches; // Siempre usar datos demo para respetar lgica de negocio
+  const currentMatches = matches; // Siempre usar datos demo para respetar lgica de negocio
   const filteredMatches = currentMatches.filter(match => {
     switch (filter) {
       case 'new':
@@ -141,300 +130,263 @@ const Matches = () => {
     }
   });
 
-  const handleSuperLike = (matchId: number) => {
-    // Super like logic
-    logger.info('Super like:', { matchId });
-  };
-
   const handleStartChat = (matchId: number) => {
     // Navigate to chat or start conversation
     logger.info('Start chat:', { matchId });
   };
 
+  const handleViewProfile = (matchId: number) => {
+    // Navigate to profile
+    logger.info('View profile:', { matchId });
+  };
+
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Advanced Animated Background */}
-      <div className="fixed inset-0 z-0">
-        {/* Base Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-secondary/20"></div>
-        
-        {/* Animated Gradient Orbs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-accent/20 to-secondary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-32 left-20 w-96 h-96 bg-gradient-to-r from-secondary/20 to-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        
-        {/* Floating Hearts */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(12)].map((_, i) => (
-            <Heart 
-              key={i}
-              className={`absolute text-primary/10 animate-float-slow`}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 2}s`,
-                fontSize: `${Math.random() * 20 + 10}px`
-              }}
-              fill="currentColor"
-            />
-          ))}
-        </div>
-        
-        {/* Floating Crowns */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(6)].map((_, i) => (
-            <Crown 
-              key={i}
-              className={`absolute text-accent/10 animate-pulse`}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 4}s`,
-                fontSize: `${Math.random() * 15 + 8}px`
-              }}
-            />
-          ))}
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900 to-gray-900 p-4 sm:p-6">
+      <HeaderNav />
       
-      <div className="relative z-10">
-        {hasActiveSession ? <Navigation /> : <HeaderNav />}
-      
-        <main className={`container mx-auto px-2 sm:px-4 py-4 sm:py-8 max-w-6xl ${hasActiveSession ? 'pt-4' : 'pt-24'}`}>
-          {/* Back Button */}
-          <div className="mb-6">
-            <UnifiedButton 
-              variant="outline" 
-              onClick={() => navigate('/')}
-              className="bg-gray-800/50 backdrop-blur-sm border-gray-600 hover:bg-gray-700/50 transition-all duration-300 text-gray-200 hover:text-white"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Volver al Inicio
-            </UnifiedButton>
+      <main className="max-w-6xl mx-auto mt-6 space-y-8">
+        {/* Estadísticas */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Tarjeta de nuevos matches */}
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-300">Nuevos Matches</p>
+                <p className="text-2xl font-bold text-white">
+                  {currentMatches.filter(m => m.status === 'new').length}
+                </p>
+              </div>
+              <div className="bg-orange-500/20 p-3 rounded-full">
+                <Flame className="h-5 w-5 text-orange-400" />
+              </div>
+            </div>
           </div>
 
-          {/* Page Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-              Tus Matches
-              <span className="block bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
-                Conexiones Swinger
-              </span>
-            </h1>
-            <p className="text-xl text-white/90 max-w-2xl mx-auto drop-shadow-md">
-              Parejas y solteros verificados que han mostrado inters mutuo contigo en la comunidad swinger
-            </p>
+          {/* Tarjeta de conversaciones */}
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-blue-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-300">Conversaciones</p>
+                <p className="text-2xl font-bold text-white">
+                  {currentMatches.filter(m => m.hasUnreadMessage).length}
+                </p>
+              </div>
+              <div className="bg-blue-500/20 p-3 rounded-full">
+                <MessageCircle className="h-5 w-5 text-blue-400" />
+              </div>
+            </div>
           </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <UnifiedCard className="bg-white/5 backdrop-blur-sm border-white/10 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-200 font-medium">Total Matches</p>
-                  <p className="text-3xl font-bold text-white drop-shadow-lg">{currentMatches.length}</p>
-                </div>
-                <div className="bg-purple-500/30 p-3 rounded-full shadow-md">
-                  <Heart className="h-6 w-6 text-purple-300" fill="currentColor" />
-                </div>
+          {/* Tarjeta de compatibilidad */}
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-yellow-500/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-300">Compatibilidad</p>
+                <p className="text-2xl font-bold text-white">
+                  {currentMatches.length > 0 
+                    ? `${Math.round(currentMatches.reduce((acc, m) => acc + m.compatibility, 0) / currentMatches.length)}%` 
+                    : '0%'}
+                </p>
               </div>
-            </UnifiedCard>
-
-            <UnifiedCard className="bg-white/5 backdrop-blur-sm border-white/10 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-200 font-medium">Nuevos Matches</p>
-                  <p className="text-3xl font-bold text-white drop-shadow-lg">
-                    {currentMatches.filter(m => m.status === 'new').length}
-                  </p>
-                </div>
-                <div className="bg-orange-500/30 p-3 rounded-full shadow-md">
-                  <Flame className="h-6 w-6 text-orange-300" />
-                </div>
+              <div className="bg-yellow-500/20 p-3 rounded-full">
+                <Crown className="h-5 w-5 text-yellow-400" />
               </div>
-            </UnifiedCard>
-
-            <UnifiedCard className="bg-white/5 backdrop-blur-sm border-white/10 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-200 font-medium">Conversaciones</p>
-                  <p className="text-3xl font-bold text-white drop-shadow-lg">
-                    {currentMatches.filter(m => m.hasUnreadMessage).length}
-                  </p>
-                </div>
-                <div className="bg-blue-500/30 p-3 rounded-full shadow-md">
-                  <MessageCircle className="h-6 w-6 text-blue-300" />
-                </div>
-              </div>
-            </UnifiedCard>
-
-            <UnifiedCard className="bg-white/5 backdrop-blur-sm border-white/10 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-200 font-medium">Compatibilidad</p>
-                  <p className="text-3xl font-bold text-white drop-shadow-lg">
-                    {currentMatches.length > 0 ? `${Math.round(currentMatches.reduce((acc, m) => acc + m.compatibility, 0) / currentMatches.length)}%` : '0%'}
-                  </p>
-                </div>
-                <div className="bg-yellow-500/30 p-3 rounded-full shadow-md">
-                  <Crown className="h-6 w-6 text-yellow-300" />
-                </div>
-              </div>
-            </UnifiedCard>
+            </div>
           </div>
+        </div>
 
-        {/* Filters */}
+        {/* Filtros */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mb-8"
         >
-          <div className="flex flex-wrap gap-2 justify-center mb-6">
-            <UnifiedButton
-              variant={filter === 'all' ? 'default' : 'outline'}
-              onClick={() => setFilter('all')}
-              className={`flex items-center gap-2 ${
-                filter === 'all' 
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg' 
-                  : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
-              }`}
-            >
-              <Users className="h-4 w-4" />
-              Todos ({currentMatches.length})
-            </UnifiedButton>
-            <UnifiedButton
-              variant={filter === 'new' ? 'default' : 'outline'}
-              onClick={() => setFilter('new')}
-              className={`flex items-center gap-2 ${
-                filter === 'new' 
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg' 
-                  : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
-              }`}
-            >
-              <Flame className="h-4 w-4" />
-              Nuevos ({currentMatches.filter(m => m.status === 'new').length})
-            </UnifiedButton>
-            <UnifiedButton
-              variant={filter === 'recent' ? 'default' : 'outline'}
-              onClick={() => setFilter('recent')}
-              className={`flex items-center gap-2 ${
-                filter === 'recent' 
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg' 
-                  : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
-              }`}
-            >
-              <Sparkles className="h-4 w-4" />
-              Recientes ({currentMatches.filter(m => m.matchedAt.includes('horas') || m.matchedAt.includes('Ayer')).length})
-            </UnifiedButton>
-            <UnifiedButton
-              variant={filter === 'unread' ? 'default' : 'outline'}
-              onClick={() => setFilter('unread')}
-              className={`flex items-center gap-2 ${
-                filter === 'unread' 
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 shadow-lg' 
-                  : 'bg-gray-800/50 text-gray-200 border-gray-600 hover:bg-gray-700/50 hover:text-white'
-              }`}
-            >
-              <MessageCircle className="h-4 w-4" />
-              No ledos ({currentMatches.filter(m => m.hasUnreadMessage).length})
-            </UnifiedButton>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {[
+              { id: 'all', label: 'Todos', icon: Users, count: currentMatches.length },
+              { 
+                id: 'new', 
+                label: 'Nuevos', 
+                icon: Flame, 
+                count: currentMatches.filter(m => m.status === 'new').length 
+              },
+              { 
+                id: 'recent', 
+                label: 'Recientes', 
+                icon: Sparkles, 
+                count: currentMatches.filter(m => m.matchedAt.includes('horas') || m.matchedAt.includes('Ayer')).length 
+              },
+              { 
+                id: 'unread', 
+                label: 'No leídos', 
+                icon: MessageCircle, 
+                count: currentMatches.filter(m => m.hasUnreadMessage).length 
+              }
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setFilter(item.id as any)}
+                className={`px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 transition-all ${
+                  filter === item.id
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
+                    : 'bg-gray-800/50 text-gray-200 hover:bg-gray-700/50 border border-gray-600/50'
+                }`}
+              >
+                <item.icon className="h-4 w-4" />
+                <span>{item.label}</span>
+                <span className="bg-white/10 px-2 py-0.5 rounded-full text-xs">
+                  {item.count}
+                </span>
+              </button>
+            ))}
           </div>
         </motion.div>
 
-        {/* Matches Grid */}
-        {filteredMatches.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-            {isLoading ? (
-              // Loading skeleton
-              [...Array(6)].map((_, index) => (
-                <div key={index} className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 animate-pulse transition-all duration-300">
-                  <div className="h-40 sm:h-48 bg-muted rounded-lg mb-4"></div>
-                  <div className="h-4 bg-muted rounded mb-2"></div>
-                  <div className="h-4 bg-muted rounded w-3/4"></div>
-                </div>
-              ))
-            ) : (
-              filteredMatches.map((match, index) => (
-                <div 
-                  key={match.id}
-                  className={`animate-slide-up animation-delay-${Math.min(index, 10) * 100}`}
-                >
-                  <MatchCard
-                    id={match.id.toString()}
-                    name={match.name}
-                    age={match.age}
-                    avatar={match.image}
-                    compatibility={match.compatibility}
-                    distance={match.distance}
-                    reasons={match.mutualInterests}
-                    verified={match.status === 'new'}
-                    accountType={match.name.includes('&') ? 'couple' : 'single'}
-                    variant="grid"
-                    onLike={() => handleStartChat(match.id)}
-                    onPass={() => logger.info('Pass:', { matchId: match.id })}
-                    onSuperLike={() => handleSuperLike(match.id)}
-                  />
-                </div>
-              ))
-            )}
+        {/* Grid de Matches */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-gray-800/30 rounded-2xl p-4 animate-pulse h-80">
+                <div className="bg-gray-700/50 rounded-lg h-48 mb-4"></div>
+                <div className="h-4 bg-gray-700/50 rounded w-3/4 mb-2"></div>
+                <div className="h-3 bg-gray-700/50 rounded w-1/2"></div>
+              </div>
+            ))}
+          </div>
+        ) : filteredMatches.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredMatches.map((match, _) => (
+              <MatchCard 
+                key={match.id}
+                match={match}
+                onMessage={handleStartChat}
+                onViewProfile={handleViewProfile}
+              />
+            ))}
           </div>
         ) : (
-          <div className="text-center py-12 sm:py-16 px-4">
-            <div className="bg-gradient-to-br from-purple-200/30 to-blue-200/30 rounded-full w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center mx-auto mb-4 shadow-lg border border-purple-300/20 transition-all duration-300 hover:scale-105">
-              <Heart className="h-10 w-10 sm:h-12 sm:w-12 text-white/70" />
+          <div className="text-center py-16 bg-gray-800/30 rounded-2xl border border-dashed border-gray-700/50">
+            <div className="bg-gradient-to-br from-purple-500/10 to-blue-500/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Heart className="h-10 w-10 text-purple-400/50" />
             </div>
-            <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
-              No hay matches con este filtro
-            </h3>
-            <p className="text-sm sm:text-base text-white/70 mb-6 max-w-md mx-auto">
-              Intenta cambiar los filtros o descubre ms parejas y solteros verificados
+            <h3 className="text-xl font-semibold text-white mb-2">No hay matches</h3>
+            <p className="text-gray-400 max-w-md mx-auto mb-6">
+              No se encontraron coincidencias con los filtros actuales. Intenta ajustar tus preferencias.
             </p>
-            <UnifiedButton 
-              variant="love" 
-              size="lg"
-              gradient={true}
-              onClick={() => navigate('/discover')}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg hover:from-purple-700 hover:to-blue-700"
+            <button 
+              onClick={() => setFilter('all')}
+              className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full text-sm font-medium hover:from-purple-700 hover:to-blue-700 transition-all"
             >
-              <Users className="mr-2 h-5 w-5" />
-              Descubrir Perfiles Swinger
-            </UnifiedButton>
+              Ver todos los matches
+            </button>
           </div>
         )}
-        </main>
+      </main>
+    </div>
+  );
+};
+
+// Componente MatchCard mejorado
+const MatchCard = ({ 
+  match, 
+  onMessage, 
+  onViewProfile 
+}: { 
+  match: Match;
+  onMessage: (id: number) => void;
+  onViewProfile: (id: number) => void;
+}) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -5 }}
+      transition={{ type: 'spring', stiffness: 300 }}
+      className="bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/50 hover:border-purple-500/30 transition-all duration-300 group"
+    >
+      {/* Imagen de perfil */}
+      <div className="relative h-64 overflow-hidden">
+        <img
+          src={match.image}
+          alt={match.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        
+        {/* Badge de estado */}
+        {match.status === 'new' && (
+          <div className="absolute top-3 right-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded-full flex items-center">
+            <span className="w-1.5 h-1.5 bg-white rounded-full mr-1.5 animate-pulse"></span>
+            NUEVO
+          </div>
+        )}
+        
+        {/* Overlay de información */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-4 flex flex-col justify-end">
+          <div className="flex justify-between items-end">
+            <div>
+              <h3 className="text-xl font-bold text-white">{match.name}</h3>
+              <div className="flex items-center text-sm text-gray-200">
+                <span>{match.age} años</span>
+                <span className="mx-2">•</span>
+                <span>{match.distance} km</span>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full text-sm text-white">
+              {match.compatibility}%
+            </div>
+          </div>
+        </div>
       </div>
       
-      {/* Custom Styles */}
-      <style>{`
-        @keyframes blob {
-          0%, 100% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
+      {/* Contenido de la tarjeta */}
+      <div className="p-4">
+        {/* Intereses en común */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {match.mutualInterests.slice(0, 3).map((interest, i) => (
+            <span 
+              key={i}
+              className="text-xs bg-purple-900/40 text-purple-100 px-3 py-1 rounded-full border border-purple-500/20"
+            >
+              {interest}
+            </span>
+          ))}
+          {match.mutualInterests.length > 3 && (
+            <span className="text-xs bg-gray-700/50 text-gray-300 px-3 py-1 rounded-full">
+              +{match.mutualInterests.length - 3}
+            </span>
+          )}
+        </div>
         
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
+        {/* Botones de acción */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => onMessage(match.id)}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-medium transition-all ${
+              match.hasUnreadMessage
+                ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg'
+                : 'bg-gray-700/50 text-gray-200 hover:bg-gray-600/50 border border-gray-600/30'
+            }`}
+          >
+            <MessageCircle className="h-4 w-4" />
+            {match.hasUnreadMessage ? 'Nuevo mensaje' : 'Mensaje'}
+          </button>
+          
+          <button
+            onClick={() => onViewProfile(match.id)}
+            className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-medium text-white bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600/30 transition-all"
+          >
+            <User className="h-4 w-4" />
+            Ver perfil
+          </button>
+        </div>
         
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        
-        .animate-float-slow {
-          animation: float-slow 6s ease-in-out infinite;
-        }
-        
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
-    </div>
+        {/* Fecha del match */}
+        <div className="mt-3 text-center">
+          <span className="text-xs text-gray-400">Conectado {match.matchedAt.toLowerCase()}</span>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 
