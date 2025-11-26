@@ -109,7 +109,7 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@rollup/wasm-node": "^4.53.2",
-    "@sentry/react": "^10.24.0",
+    "@sentry/react": "^10.27.0",
     "@sentry/vite-plugin": "^4.6.0",
     "@solana/web3.js": "^1.98.4",
     "@supabase/supabase-js": "^2.81.0",
