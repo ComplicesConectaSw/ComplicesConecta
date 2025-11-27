@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/features/auth/useAuth';
 import { logger } from '@/lib/logger';
+import { FloatingNav, type FloatingNavItem } from '@/shared/ui/floating-navbar';
 
 interface HeaderNavProps {
   className?: string;
@@ -65,6 +66,30 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
     { name: 'Eventos', path: '/events', icon: Calendar },
     { name: 'Tokens', path: '/tokens', icon: DollarSign },
     { name: 'NFTs', path: '/nfts', icon: Image }
+  ];
+
+  // Navegación pública flotante para visitantes (sin sesión) - funnel básico
+  const publicNavItems: FloatingNavItem[] = [
+    {
+      name: 'Inicio',
+      link: '/',
+      icon: <Heart className="w-4 h-4" />,
+    },
+    {
+      name: 'Explorar',
+      link: '/discover',
+      icon: <Search className="w-4 h-4" />,
+    },
+    {
+      name: 'NFTs',
+      link: '/nfts',
+      icon: <Image className="w-4 h-4" />,
+    },
+    {
+      name: 'Acerca de',
+      link: '/about',
+      icon: <Building2 className="w-4 h-4" />,
+    },
   ];
 
   // Items secundarios - en menú desplegable
@@ -133,6 +158,11 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
 
   return (
     <>
+      {/* Navbar flotante solo para visitantes (sin sesión/auth) */}
+      {!isAuthenticated() && (
+        <FloatingNav navItems={publicNavItems} />
+      )}
+
       {/* Header Principal con gradiente difuminado */}
       <header className={`header-nav-main fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 

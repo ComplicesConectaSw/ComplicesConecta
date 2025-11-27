@@ -18,6 +18,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { AppFactory } from '@/demo/AppFactory';
 import { useAuth } from '@/features/auth/useAuth';
 import Navigation from '@/components/Navigation';
+import HeaderNav from '@/components/HeaderNav';
 
 // ============================================================================
 // ESTRATEGIA DE CARGA DE PÁGINAS
@@ -147,11 +148,13 @@ const queryClient = new QueryClient({
 
 const App = () => {
   // Hook para obtener el estado del perfil del usuario
-  const { profile, isAuthenticated } = useAuth();
-  
-  // Determinar si mostrar Navigation (cuando hay perfil activo)
-  // isAuthenticated es una función, por eso la llamamos con ()
-  const showProfileNavigation = isAuthenticated() && Boolean(profile);
+  const { profile, isAuthenticated, user } = useAuth();
+
+  // Determinar estado de sesión y navegación
+  const isAuthFn = typeof isAuthenticated === 'function' ? isAuthenticated() : Boolean(isAuthenticated);
+  const hasSession = Boolean(user) || isAuthFn;
+  // Navigation inferior solo cuando hay perfil activo y sesión
+  const showProfileNavigation = hasSession && Boolean(profile);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -170,6 +173,9 @@ const App = () => {
                         {/* <FloatingParticles count={15} /> */}
                         <AnimationSettingsButton />
                         <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                          {/* Navbar condicional según estado de sesión */}
+                          {!hasSession && <HeaderNav />}
+
                           <PageTransitionWrapper>
                             <Suspense fallback={<PageLoader />}>
                               <Routes>
@@ -270,9 +276,11 @@ const App = () => {
                             </Routes>
                           </Suspense>
                         </PageTransitionWrapper>
-                        
-                        {/* Navegación condicional: mostrar Navigation solo cuando hay perfil activo - DENTRO de Router */}
-                        {showProfileNavigation && (
+
+                        {/* Navegación condicional: 
+                           - Visitante (sin sesión): HeaderNav ya renderizado arriba
+                           - Usuario con sesión/perfil: Navigation inferior */}
+                        {hasSession && showProfileNavigation && (
                           <div className="fixed bottom-0 left-0 right-0 z-50">
                             <Navigation />
                           </div>

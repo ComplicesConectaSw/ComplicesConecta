@@ -31,23 +31,28 @@ export class WalletProtectionService {
 
   private protectWindowProperties(): void {
     const criticalProperties = ['ethereum', 'solana', 'tronWeb', 'bybit'];
-    
+
     criticalProperties.forEach(prop => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
       if (prop in window) {
         this.protectedProperties.add(prop);
-        
-        // Hacer la propiedad configurable para evitar errores
+
         try {
           const descriptor = Object.getOwnPropertyDescriptor(window, prop);
-          if (descriptor && !descriptor.configurable) {
-            Object.defineProperty(window, prop, {
-              ...descriptor,
-              configurable: true,
-              writable: true
-            });
+
+          // Si la extensión ya definió la propiedad como no configurable, NO intentar redefinirla
+          if (descriptor && descriptor.configurable === false) {
+            logger.debug(`${prop} ya está definido por una extensión y es no configurable. No se redefine.`);
+            return;
           }
+
+          // Si es configurable, no necesitamos cambiar nada aquí; solo registramos
+          logger.debug(`${prop} está disponible y configurable. Protegido sin redefinir.`);
         } catch (error) {
-          logger.warn(`No se pudo proteger la propiedad ${prop}`, { error });
+          logger.warn(`No se pudo inspeccionar la propiedad ${prop}`, { error });
         }
       }
     });
@@ -86,11 +91,18 @@ export class WalletProtectionService {
     try {
       const win = window as WindowWithWallets;
       if (win.ethereum) {
-        Object.defineProperty(window, 'ethereum', {
-          value: win.ethereum,
-          writable: false,
-          configurable: true
-        });
+        const descriptor = Object.getOwnPropertyDescriptor(window, 'ethereum');
+
+        // Solo redefinir si la propiedad es configurable; de lo contrario, respetar la definición de la extensión
+        if (!descriptor || descriptor.configurable !== false) {
+          Object.defineProperty(window, 'ethereum', {
+            value: win.ethereum,
+            writable: false,
+            configurable: true
+          });
+        } else {
+          logger.debug('ethereum ya definido por extensión como no configurable. No se redefine.');
+        }
       }
     } catch (error) {
       logger.warn('MetaMask conflict handled', { error });
@@ -102,11 +114,17 @@ export class WalletProtectionService {
     try {
       const win = window as WindowWithWallets;
       if (win.solana) {
-        Object.defineProperty(window, 'solana', {
-          value: win.solana,
-          writable: false,
-          configurable: true
-        });
+        const descriptor = Object.getOwnPropertyDescriptor(window, 'solana');
+
+        if (!descriptor || descriptor.configurable !== false) {
+          Object.defineProperty(window, 'solana', {
+            value: win.solana,
+            writable: false,
+            configurable: true
+          });
+        } else {
+          logger.debug('solana ya definido por extensión como no configurable. No se redefine.');
+        }
       }
     } catch (error) {
       logger.warn('Solana conflict handled', { error });
@@ -118,11 +136,17 @@ export class WalletProtectionService {
     try {
       const win = window as WindowWithWallets;
       if (win.tronWeb) {
-        Object.defineProperty(window, 'tronWeb', {
-          value: win.tronWeb,
-          writable: false,
-          configurable: true
-        });
+        const descriptor = Object.getOwnPropertyDescriptor(window, 'tronWeb');
+
+        if (!descriptor || descriptor.configurable !== false) {
+          Object.defineProperty(window, 'tronWeb', {
+            value: win.tronWeb,
+            writable: false,
+            configurable: true
+          });
+        } else {
+          logger.debug('tronWeb ya definido por extensión como no configurable. No se redefine.');
+        }
       }
     } catch (error) {
       logger.warn('TronLink conflict handled', { error });
@@ -134,11 +158,17 @@ export class WalletProtectionService {
     try {
       const win = window as WindowWithWallets;
       if (win.bybit) {
-        Object.defineProperty(window, 'bybit', {
-          value: win.bybit,
-          writable: false,
-          configurable: true
-        });
+        const descriptor = Object.getOwnPropertyDescriptor(window, 'bybit');
+
+        if (!descriptor || descriptor.configurable !== false) {
+          Object.defineProperty(window, 'bybit', {
+            value: win.bybit,
+            writable: false,
+            configurable: true
+          });
+        } else {
+          logger.debug('bybit ya definido por extensión como no configurable. No se redefine.');
+        }
       }
     } catch (error) {
       logger.warn('Bybit conflict handled', { error });

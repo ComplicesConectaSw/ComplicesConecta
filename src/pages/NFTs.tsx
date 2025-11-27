@@ -24,6 +24,7 @@ import {
   Verified,
   DollarSign
 } from 'lucide-react';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
 
 const NFTs: React.FC = () => {
   const navigate = useNavigate();
@@ -454,38 +455,16 @@ const NFTs: React.FC = () => {
             <p className="text-lg text-white/70 text-center mb-12 max-w-2xl mx-auto">
               Los NFTs ofrecen valor económico, social y técnico para creadores y coleccionistas
             </p>
-            
-            <div className="grid md:grid-cols-3 gap-8">
-              {nftBenefits.map((category, index) => (
-                <motion.div
-                  key={category.category}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <Card className="bg-white/10 backdrop-blur-xl border border-white/20 h-full">
-                    <CardHeader>
-                      <CardTitle className="text-2xl font-bold text-white flex items-center gap-3">
-                        <div className={`p-3 rounded-lg bg-gradient-to-r ${category.color} text-white`}>
-                          {category.icon}
-                        </div>
-                        {category.category}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="space-y-3">
-                        {category.benefits.map((benefit, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-white/80">
-                            <Star className="h-4 w-4 text-yellow-400 flex-shrink-0 mt-0.5" />
-                            <span className="text-sm">{benefit}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
+
+            <HoverEffect
+              items={nftBenefits.map((category) => ({
+                title: category.category,
+                description: category.benefits[0] || '',
+                link: '#',
+                icon: category.icon,
+              }))}
+              className="pt-2"
+            />
           </motion.div>
 
           {/* Condiciones de NFTs */}

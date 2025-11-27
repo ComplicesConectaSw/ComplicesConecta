@@ -44,6 +44,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { walletService, WalletService } from '@/services/WalletService';
 import { nftService } from '@/services/NFTService';
 import { useProfileTheme } from '@/features/profile/useProfileTheme';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
+import { ComplianceSignupForm } from '@/shared/ui/compliance-signup-form';
+import { EventsCarousel } from '@/shared/ui/events-carousel';
+import { VipBookingModal } from '@/shared/ui/vip-booking-modal';
+import { FileUpload } from '@/shared/ui/file-upload';
+import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
@@ -89,6 +95,7 @@ const ProfileSingle: React.FC = () => {
   });
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]);
+  const [showVipModal, setShowVipModal] = useState(false);
   
   // Estados para funcionalidades blockchain
   const [_walletInfo, setWalletInfo] = useState<any>(null);
@@ -652,13 +659,29 @@ Información del perfil:
       {/* Header con navegacin */}
       <div className="relative z-10">
         <div className="pt-20 pb-6 px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="profile-header-title">{displayName}</h1>
-            <p className="profile-header-username">@{displayNickname}</p>
-            <p className="text-sm text-white/60">ID: {displayProfileId}</p>
-            {checkAuth() &&
-              <p className="profile-header-email">{user?.email || 'Usuario'}</p>
-            }
+          <div className="max-w-4xl mx-auto text-center space-y-4">
+            <div>
+              <h1 className="profile-header-title">{displayName}</h1>
+              <p className="profile-header-username">@{displayNickname}</p>
+              <p className="text-sm text-white/60">ID: {displayProfileId}</p>
+              {checkAuth() && (
+                <p className="profile-header-email">{user?.email || 'Usuario'}</p>
+              )}
+            </div>
+
+            <VanishSearchInput
+              placeholders={[
+                'Buscar parejas en Ciudad de México...',
+                'Eventos exclusivos este fin de semana...',
+                'Clubs verificados con alberca...',
+                'Cenas románticas Lifestyle...',
+                'Usuarios con intereses en Viajes...',
+              ]}
+              onSubmit={(val) => {
+                // Búsqueda demo: integrar con motor real más adelante
+                console.log('Buscando:', val);
+              }}
+            />
           </div>
         </div>
       </div>
@@ -1224,21 +1247,78 @@ Información del perfil:
             onCommentPost={handleCommentPost}
           />
 
-          {/* Intereses */}
+          {/* Intereses - grid demo con efecto hover */}
           <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
             <CardHeader>
               <CardTitle className="text-white">Mis Intereses</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Música', 'Gastronomía', 'Arte', 'Fotografía', 'Eventos Sofisticados'].map((interest) => (
-                  <Badge 
-                    key={interest} 
-                    className="bg-gradient-to-r from-purple-500/20 to-blue-600/20 text-white border-purple-400/30 hover:bg-purple-500/30 transition-colors"
+              <HoverEffect
+                items={[
+                  {
+                    title: 'Lifestyle Exclusivo',
+                    description: 'Conexiones seleccionadas para un círculo íntimo y sofisticado.',
+                    link: '#',
+                    icon: <TrendingUp className="w-5 h-5" />,
+                  },
+                  {
+                    title: 'Eventos VIP',
+                    description: 'Acceso prioritario a fiestas privadas y experiencias lifestyle.',
+                    link: '#',
+                    icon: <Calendar className="w-5 h-5" />,
+                  },
+                  {
+                    title: 'Privacidad Total',
+                    description: 'Perfiles protegidos, control parental y contenido sensible blindado.',
+                    link: '#',
+                    icon: <Lock className="w-5 h-5" />,
+                  },
+                  {
+                    title: 'Verificación Real',
+                    description: 'Perfiles verificados para minimizar cuentas falsas y riesgos.',
+                    link: '#',
+                    icon: <CheckCircle className="w-5 h-5" />,
+                  },
+                  {
+                    title: 'Chat Encriptado',
+                    description: 'Mensajes diseñados para máxima discreción y seguridad.',
+                    link: '#',
+                    icon: <MessageCircle className="w-5 h-5" />,
+                  },
+                  {
+                    title: 'Match Inteligente',
+                    description: 'Recomendaciones basadas en intereses y compatibilidad real.',
+                    link: '#',
+                    icon: <Users className="w-5 h-5" />,
+                  },
+                ]}
+                className="pt-2"
+              />
+            </CardContent>
+          </Card>
+
+          {/* Experiencias demo: eventos, registro rápido y verificación KYC */}
+          <Card className="bg-black/60 backdrop-blur-xl border border-purple-500/30 text-white">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Calendar className="w-5 h-5" />
+                Próximas experiencias lifestyle
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <EventsCarousel />
+              <div className="grid gap-4 lg:grid-cols-2">
+                <ComplianceSignupForm />
+                <div className="space-y-4">
+                  <FileUpload />
+                  <Button
+                    onClick={() => setShowVipModal(true)}
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold flex items-center justify-center gap-2"
                   >
-                    {interest}
-                  </Badge>
-                ))}
+                    <Calendar className="w-4 h-4" />
+                    Ver opciones VIP demo
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -1567,6 +1647,11 @@ Información del perfil:
           console.log('Perfil reportado por:', reason);
           // Aqu se implementar la lgica de reporte
         }}
+      />
+
+      <VipBookingModal
+        open={showVipModal}
+        onClose={() => setShowVipModal(false)}
       />
     </div>
   );

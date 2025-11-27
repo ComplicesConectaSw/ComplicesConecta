@@ -29,6 +29,12 @@ import { ReportDialog } from '@/components/swipe/ReportDialog';
 import { ProfileNavTabs } from '@/profiles/shared/ProfileNavTabs';
 import { ImageModal } from '@/profiles/shared/ImageModal';
 import { ParentalControl } from '@/components/profile/ParentalControl';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
+import { ComplianceSignupForm } from '@/shared/ui/compliance-signup-form';
+import { EventsCarousel } from '@/shared/ui/events-carousel';
+import { VipBookingModal } from '@/shared/ui/vip-booking-modal';
+import { FileUpload } from '@/shared/ui/file-upload';
+import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
 import { walletService, WalletService } from '@/services/WalletService';
 import { nftService } from '@/services/NFTService';
 
@@ -49,6 +55,7 @@ const ProfileCouple: React.FC = () => {
   const [imageLikes, setImageLikes] = useState<{[key: string]: number}>({});
   const [imageUserLikes, setImageUserLikes] = useState<{[key: string]: boolean}>({});
   const [_imageComments, _setImageComments] = useState<{[key: string]: string[]}>({});
+  const [showVipModal, setShowVipModal] = useState(false);
   
   // Función para hacer funcional el botón "Ver Fotos Privadas"
   const handleViewPrivatePhotos = () => {
@@ -314,6 +321,11 @@ const ProfileCouple: React.FC = () => {
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-secondary/10 to-primary/15 animate-gradient-y"></div>
           </div>
+
+      <VipBookingModal
+        open={showVipModal}
+        onClose={() => setShowVipModal(false)}
+      />
           
           <div className="absolute inset-0">
             <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
@@ -350,13 +362,28 @@ const ProfileCouple: React.FC = () => {
       <div className="relative z-10 flex flex-col min-h-screen">
         {/* Header centrado */}
         <div className="profile-header-container">
-          <div className="max-w-36rem mx-auto text-center">
-            <h1 className="profile-header-title">{profile.couple_name || 'Perfil de Pareja'}</h1>
-            <p className="profile-header-username">{profile.username || '@sofiayleo_sw'}</p>
-            <p className="text-sm text-white/60">ID: {(profile as any).profile_id || 'CC-2025-002'}</p>
-            {isAuthenticated() && user && (
-              <p className="profile-header-email">{user.email || 'Usuario'}</p>
-            )}
+          <div className="max-w-36rem mx-auto text-center space-y-4">
+            <div>
+              <h1 className="profile-header-title">{profile.couple_name || 'Perfil de Pareja'}</h1>
+              <p className="profile-header-username">{profile.username || '@sofiayleo_sw'}</p>
+              <p className="text-sm text-white/60">ID: {(profile as any).profile_id || 'CC-2025-002'}</p>
+              {isAuthenticated() && user && (
+                <p className="profile-header-email">{user.email || 'Usuario'}</p>
+              )}
+            </div>
+
+            <VanishSearchInput
+              placeholders={[
+                'Buscar parejas en Ciudad de México...',
+                'Eventos exclusivos este fin de semana...',
+                'Clubs verificados con alberca...',
+                'Cenas románticas Lifestyle...',
+                'Usuarios con intereses en Viajes...',
+              ]}
+              onSubmit={(val) => {
+                console.log('Buscando:', val);
+              }}
+            />
           </div>
         </div>
         
@@ -615,6 +642,73 @@ const ProfileCouple: React.FC = () => {
                 </CardContent>
               </Card>
             )}
+
+            {/* Beneficios demo para parejas - grid con efecto hover */}
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white">
+              <CardContent className="pt-4">
+                <HoverEffect
+                  items={[
+                    {
+                      title: 'Intercambio Seguro',
+                      description: 'Acuerdos claros, control parental y consentimiento doble en cada paso.',
+                      link: '#',
+                      icon: <Heart className="w-5 h-5 text-pink-300" />,
+                    },
+                    {
+                      title: 'Fiestas Privadas',
+                      description: 'Invitaciones a eventos cerrados con parejas verificadas y anfitriones confiables.',
+                      link: '#',
+                      icon: <Crown className="w-5 h-5 text-yellow-300" />,
+                    },
+                    {
+                      title: 'Clubes Verificados',
+                      description: 'Acceso a clubes lifestyle auditados para seguridad y discreción.',
+                      link: '#',
+                      icon: <Users className="w-5 h-5 text-purple-200" />,
+                    },
+                    {
+                      title: 'Viajes Lifestyle',
+                      description: 'Escapadas seleccionadas para parejas afines en destinos exclusivos.',
+                      link: '#',
+                      icon: <MapPin className="w-5 h-5 text-blue-200" />,
+                    },
+                    {
+                      title: 'Comunidad Selecta',
+                      description: 'Perfiles curados para minimizar fricción y maximizar compatibilidad.',
+                      link: '#',
+                      icon: <Verified className="w-5 h-5 text-green-300" />,
+                    },
+                    {
+                      title: 'Parejas Afines',
+                      description: 'Algoritmos que priorizan intereses, límites y estilo de relación.',
+                      link: '#',
+                      icon: <Baby className="w-5 h-5 text-pink-200" />,
+                    },
+                  ]}
+                  className="pt-2"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Experiencias demo compartidas: eventos, registro rápido y verificación KYC */}
+            <Card className="bg-black/60 backdrop-blur-xl border border-purple-500/30 text-white">
+              <CardContent className="space-y-6 pt-4">
+                <EventsCarousel />
+                <div className="grid gap-4 lg:grid-cols-2">
+                  <ComplianceSignupForm />
+                  <div className="space-y-4">
+                    <FileUpload />
+                    <Button
+                      onClick={() => setShowVipModal(true)}
+                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold flex items-center justify-center gap-2"
+                    >
+                      <Heart className="w-4 h-4" />
+                      Ver experiencias VIP demo
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Profile Navigation Tabs - Estilo Twitter/Instagram */}
             <ProfileNavTabs 
