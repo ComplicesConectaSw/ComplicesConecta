@@ -4,7 +4,7 @@ import { Button } from '@/shared/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Lock, Unlock, Check, X } from 'lucide-react';
 import { PrivateImageRequest } from './PrivateImageRequest';
-import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
+import { SafeImage } from '@/shared/ui/SafeImage';
 
 interface PrivateImage {
   id: string;
@@ -168,11 +168,10 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
                     className="relative aspect-square cursor-pointer group"
                     onClick={() => handleImageClick(image.id)}
                   >
-                    <ImageWithFallback
+                    <SafeImage
                       src={image.thumbnail || image.url}
                       alt="Imagen privada"
                       fallbackType="private"
-                      fallbackText="Imagen no disponible"
                       className="w-full h-full rounded-lg overflow-hidden"
                     />
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
@@ -210,11 +209,10 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
             <div className="relative max-w-4xl max-h-full w-full" onClick={(e) => e.stopPropagation()}>
               <Card className="bg-black/40 backdrop-blur-2xl border-white/20 overflow-hidden">
                 <CardContent className="p-2 sm:p-4">
-                  <ImageWithFallback
+                  <SafeImage
                     src={images.find(img => img.id === selectedImage)?.url || ''}
                     alt="Imagen privada ampliada"
                     fallbackType="private"
-                    fallbackText="Imagen no disponible"
                     className="max-h-[80vh] w-full"
                   />
                   <Button

@@ -37,6 +37,7 @@ import { FileUpload } from '@/shared/ui/file-upload';
 import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
 import { walletService, WalletService } from '@/services/WalletService';
 import { nftService } from '@/services/NFTService';
+import { SafeImage } from '@/shared/ui/SafeImage';
 
 const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
@@ -738,8 +739,8 @@ const ProfileCouple: React.FC = () => {
                     // Si está bloqueado, NO hacer nada - el usuario debe usar el modal de PIN
                   }}
                   className={`text-xs px-3 py-1.5 flex items-center gap-1.5 transition-all ${
-                    isParentalLocked 
-                      ? 'bg-red-600/80 hover:bg-red-700/80 text-white cursor-default' 
+                    isParentalLocked
+                      ? 'bg-red-600/80 hover:bg-red-700/80 text-white cursor-default'
                       : 'bg-orange-600/80 hover:bg-orange-700/80 text-white hover:scale-105'
                   }`}
                   disabled={isParentalLocked}
@@ -762,43 +763,36 @@ const ProfileCouple: React.FC = () => {
                   )}
                 </Button>
               </div>
+
               <div
                 className="grid grid-cols-2 sm:grid-cols-3 gap-4 cursor-pointer"
                 onClick={() => {
                   if (isOwnProfile) {
-                    // Si está bloqueado, mostrar el modal de control parental
-                    // El modal ya está en la página y se muestra automáticamente cuando isParentalLocked es true
                     if (!isParentalLocked) {
-                      // Si no está bloqueado, mostrar las imágenes directamente
                       setDemoPrivateUnlocked(true);
                     }
-                    // Si está bloqueado, el modal ya está visible y el usuario debe ingresar el PIN
                   } else {
                     setShowPrivateImageRequest(true);
                   }
                 }}
               >
-                <div className={`aspect-square rounded-lg overflow-hidden relative ${demoPrivateUnlocked && isOwnProfile && !isParentalLocked ? '' : 'filter blur-lg'}`}>
-                  <div className="relative w-full h-full">
-                    <img 
-                      src="/src/assets/people/couple/privado/coupleprivjpg.jpg" 
-                      alt="Foto privada 1" 
-                      className={`w-full h-full object-cover ${demoPrivateUnlocked ? 'private-image-protection' : 'private-image-interactive'}`}
-                      onContextMenu={(e) => e.preventDefault()}
-                      draggable={false}
-                    />
-                    {demoPrivateUnlocked && (
-                      <div className="absolute inset-0 pointer-events-none">
-                        <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                          ComplicesConecta
-                        </div>
-                        <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                          © Privado
-                        </div>
-                      </div>
-                    )}
+                <div className="relative aspect-square rounded-lg overflow-hidden">
+                  <SafeImage
+                    src="/src/assets/people/couple/privado/coupleprivjpg.jpg"
+                    alt="Foto privada bloqueada"
+                    fallbackType="private"
+                    className={`w-full h-full ${
+                      demoPrivateUnlocked && isOwnProfile && !isParentalLocked ? '' : 'filter blur-lg'
+                    } ${demoPrivateUnlocked && !isParentalLocked ? 'private-image-protection' : 'private-image-interactive'}`}
+                  />
+                  <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                    © Privado
                   </div>
-                  {!demoPrivateUnlocked && <div className="absolute inset-0 bg-black/50 flex items-center justify-center"><Lock className="w-12 h-12 text-white" /></div>}
+                  {!demoPrivateUnlocked && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <Lock className="w-12 h-12 text-white" />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

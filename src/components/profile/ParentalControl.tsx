@@ -5,6 +5,7 @@ import { Button } from '@/shared/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/shared/lib/cn';
 
 interface ParentalControlProps {
   isLocked: boolean;
@@ -206,131 +207,141 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
 
   // Panel de configuración cuando está desbloqueado
   return (
-    <Card className="mb-4 border-green-200 bg-white/5 backdrop-blur-xl">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-green-600" />
-            <CardTitle className="text-lg text-green-700">
-              Control Parental
-            </CardTitle>
+    <div className="w-full space-y-6 p-6 rounded-3xl bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+      {/* Encabezado */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/20">
+            <Shield className="w-6 h-6 text-purple-400" />
           </div>
-          <Badge className="bg-green-500 text-white">
-            Desbloqueado
-          </Badge>
+          <div>
+            <h3 className="text-lg font-bold text-white">Control Parental</h3>
+            <p className="text-sm text-zinc-400">Gestiona la seguridad y visibilidad</p>
+          </div>
         </div>
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        {timeRemaining > 0 && restrictionLevel !== 'soft' && (
-          <div className="flex items-center gap-2 text-sm text-orange-600 bg-orange-50 p-2 rounded">
-            <Clock className="h-4 w-4" />
-            <span>Auto-bloqueo en: {formatTime(timeRemaining)}</span>
-          </div>
-        )}
-
-        <TooltipProvider>
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-gray-700">Nivel de Restricción</label>
-            <div className="grid grid-cols-3 gap-2">
-              {(['soft', 'medium', 'strict'] as const).map((level) => {
-                const label = level.charAt(0).toUpperCase() + level.slice(1);
-                const tooltipText =
-                  level === 'soft'
-                    ? 'Ligero: Solo aplica sobre la galería privada, sin bloqueo al iniciar sesión.'
-                    : level === 'strict'
-                      ? 'Estricto: El perfil puede iniciar bloqueado desde login y requiere PIN siempre.'
-                      : 'Moderado: Auto-bloqueo en 5 minutos, recomendado para la mayoría de usuarios.';
-
-                return (
-                  <Tooltip key={level}>
-                    <TooltipTrigger asChild>
-                      <Button
-                        onClick={() => handleRestrictionChange(level)}
-                        variant={restrictionLevel === level ? "default" : "outline"}
-                        size="sm"
-                        className={`${restrictionLevel === level ? getRestrictionColor(level) + ' text-white font-bold border-2' : 'bg-white/50'} transition-all duration-300 hover:scale-105`}
-                      >
-                        {label}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs text-xs">
-                      {tooltipText}
-                    </TooltipContent>
-                  </Tooltip>
-                );
-              })}
-            </div>
-            <p className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
-            {getRestrictionDescription(restrictionLevel)}
-            </p>
-          </div>
-        </TooltipProvider>
-
-        <div className="flex gap-2">
-          <Button
-            onClick={() => onToggle(true)}
-            variant="outline"
-            size="sm"
-            className="flex-1 border-red-300 text-red-600 hover:bg-red-50"
-          >
-            <Lock className="h-4 w-4 mr-1" />
-            Bloquear Ahora
-          </Button>
-          
-          <Button
-            onClick={() => {
-              const newPin = prompt('Nuevo PIN (4 dígitos):', savedPin);
-              if (newPin && newPin.length === 4 && /^\d+$/.test(newPin)) {
-                handlePinChange(newPin);
-                alert('PIN actualizado');
-              }
-            }}
-            variant="outline"
-            size="sm"
-            className="flex-1"
-          >
-            <Settings className="h-4 w-4 mr-1" />
-            Cambiar PIN
-          </Button>
+        <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          Activo
         </div>
+      </div>
 
-        <div className="text-xs text-gray-600 space-y-2 bg-gray-50 rounded-lg p-3">
-          <div className="space-y-1">
-            <p className="font-bold text-green-600">🟢 SUAVE (Básico):</p>
-            <ul className="ml-4 space-y-0.5 text-gray-700">
-              <li>• Contenido sensible oculto con blur</li>
-              <li>• NO hay auto-bloqueo automático</li>
-              <li>• Perfecto para usuarios responsables</li>
-            </ul>
-          </div>
-          
-          <div className="space-y-1">
-            <p className="font-bold text-orange-600">🟡 MODERADO (Recomendado):</p>
-            <ul className="ml-4 space-y-0.5 text-gray-700">
-              <li>• Auto-bloqueo tras 5 min de inactividad</li>
-              <li>• Temporizador visible en pantalla</li>
-              <li>• Balance entre seguridad y comodidad</li>
-            </ul>
-          </div>
-          
-          <div className="space-y-1">
-            <p className="font-bold text-red-600">🔴 ESTRICTO (Máxima Seguridad):</p>
-            <ul className="ml-4 space-y-0.5 text-gray-700">
-              <li>• Auto-bloqueo tras 5 min de inactividad</li>
-              <li>• Requiere PIN para cada desbloqueo</li>
-              <li>• NO permite bypass temporal</li>
-              <li>• Máxima protección parental</li>
-            </ul>
-          </div>
-          
-          <p className="mt-2 pt-2 border-t border-gray-200">
-            <strong>📌 PIN actual:</strong> <span className="font-mono bg-gray-200 px-2 py-0.5 rounded">{savedPin}</span>
-            <br />
-            <span className="text-gray-500 text-xs">Click en "Cambiar PIN" para modificar</span>
-          </p>
+      {/* Temporizador de auto-bloqueo */}
+      {timeRemaining > 0 && restrictionLevel !== 'soft' && (
+        <div className="flex items-center gap-2 text-sm text-amber-300 bg-amber-500/10 p-3 rounded-xl border border-amber-500/30">
+          <Clock className="h-4 w-4" />
+          <span>Auto-bloqueo en: {formatTime(timeRemaining)}</span>
         </div>
-      </CardContent>
-    </Card>
+      )}
+
+      {/* Barra de Nivel (Selector) */}
+      <div className="grid grid-cols-3 gap-2 p-1 rounded-xl bg-black/60 border border-white/10">
+        {(['soft', 'medium', 'strict'] as const).map((level) => {
+          const label = level.charAt(0).toUpperCase() + level.slice(1);
+          const tooltipText =
+            level === 'soft'
+              ? 'Ligero: Solo aplica sobre la galería privada, sin bloqueo al iniciar sesión.'
+              : level === 'strict'
+                ? 'Estricto: El perfil puede iniciar bloqueado desde login y requiere PIN siempre.'
+                : 'Moderado: Auto-bloqueo en 5 minutos, recomendado para la mayoría de usuarios.';
+
+          return (
+            <TooltipProvider key={level}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    onClick={() => handleRestrictionChange(level)}
+                    className={cn(
+                      'py-2 text-sm font-medium rounded-lg transition-all duration-300 w-full',
+                      restrictionLevel === level
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-900/40 border border-white/20'
+                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5 border border-white/5'
+                    )}
+                  >
+                    {label}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs text-xs bg-black/80 border border-white/10 text-zinc-100">
+                  {tooltipText}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          );
+        })}
+      </div>
+
+      {/* Info del Nivel */}
+      <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
+        <div className="flex items-center gap-2 text-purple-300 text-sm font-medium">
+          <Clock className="w-4 h-4" />
+          <span>Auto-bloqueo: 5 min inactividad</span>
+        </div>
+        <p className="text-xs text-zinc-300 leading-relaxed">
+          Protección activa contra contenido sensible. Se requerirá PIN para acceder a galerías privadas.
+        </p>
+      </div>
+
+      {/* Acciones */}
+      <div className="grid grid-cols-2 gap-4">
+        <Button
+          variant="outline"
+          className="border-red-500/40 text-red-400 hover:bg-red-500/10 hover:border-red-400/60"
+          onClick={() => onToggle(true)}
+        >
+          <Lock className="w-4 h-4 mr-2" /> Bloquear Ahora
+        </Button>
+        <Button
+          variant="outline"
+          className="border-white/20 text-zinc-200 hover:bg-white/5"
+          onClick={() => {
+            const newPin = prompt('Nuevo PIN (4 dígitos):', savedPin);
+            if (newPin && newPin.length === 4 && /^\d+$/.test(newPin)) {
+              handlePinChange(newPin);
+              alert('PIN actualizado');
+            }
+          }}
+        >
+          Cambiar PIN
+        </Button>
+      </div>
+
+      {/* Descripción de niveles */}
+      <div className="text-xs text-zinc-300 space-y-2 bg-black/40 rounded-xl p-4 border border-white/10">
+        <div className="space-y-1">
+          <p className="font-bold text-green-300">🟢 SUAVE (Básico):</p>
+          <ul className="ml-4 space-y-0.5 text-zinc-300">
+            <li>• Contenido sensible oculto con blur</li>
+            <li>• NO hay auto-bloqueo automático</li>
+            <li>• Perfecto para usuarios responsables</li>
+          </ul>
+        </div>
+        
+        <div className="space-y-1">
+          <p className="font-bold text-amber-300">🟡 MODERADO (Recomendado):</p>
+          <ul className="ml-4 space-y-0.5 text-zinc-300">
+            <li>• Auto-bloqueo tras 5 min de inactividad</li>
+            <li>• Temporizador visible en pantalla</li>
+            <li>• Balance entre seguridad y comodidad</li>
+          </ul>
+        </div>
+        
+        <div className="space-y-1">
+          <p className="font-bold text-red-300">🔴 ESTRICTO (Máxima Seguridad):</p>
+          <ul className="ml-4 space-y-0.5 text-zinc-300">
+            <li>• Auto-bloqueo tras 5 min de inactividad</li>
+            <li>• Requiere PIN para cada desbloqueo</li>
+            <li>• NO permite bypass temporal</li>
+            <li>• Máxima protección parental</li>
+          </ul>
+        </div>
+        
+        <p className="mt-2 pt-2 border-t border-white/10">
+          <strong>📌 PIN actual:</strong>{' '}
+          <span className="font-mono bg-white/10 px-2 py-0.5 rounded border border-white/20">{savedPin}</span>
+          <br />
+          <span className="text-zinc-500 text-[11px]">Click en "Cambiar PIN" para modificar</span>
+        </p>
+      </div>
+    </div>
   );
-};
+}

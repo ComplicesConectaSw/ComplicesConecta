@@ -50,6 +50,7 @@ import { EventsCarousel } from '@/shared/ui/events-carousel';
 import { VipBookingModal } from '@/shared/ui/vip-booking-modal';
 import { FileUpload } from '@/shared/ui/file-upload';
 import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
+import { SafeImage } from '@/shared/ui/SafeImage';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
@@ -697,19 +698,17 @@ Información del perfil:
                 <div className="relative flex-shrink-0 mx-auto sm:mx-0">
                   <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden bg-gradient-to-br from-purple-400 to-blue-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold mx-auto">
                     {profile.avatar_url && profile.avatar_url !== '/placeholder.svg' ? (
-                      <img
+                      <SafeImage
                         src={profile.avatar_url}
                         alt={profile.name || 'Avatar'}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
+                        fallbackType="avatar"
+                        className="w-full h-full"
                       />
-                    ) : null}
-                    <span className={profile.avatar_url && profile.avatar_url !== '/placeholder.svg' ? 'hidden' : ''}>
-                      {profile.name?.[0]?.toUpperCase() || 'U'}
-                    </span>
+                    ) : (
+                      <span>
+                        {profile.name?.[0]?.toUpperCase() || 'U'}
+                      </span>
+                    )}
                   </div>
                   {profile.is_verified && (
                     <div className="absolute -top-2 -right-2 bg-blue-500 rounded-full p-1">
@@ -1031,14 +1030,14 @@ Información del perfil:
                         <div key={nft.id || index} className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-all cursor-pointer group">
                           <div className="aspect-square rounded mb-2 overflow-hidden relative">
                             {nft.image ? (
-                              <img 
+                              <SafeImage 
                                 src={nft.image} 
                                 alt={`NFT #${nft.token_id}`}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                                className="w-full h-full group-hover:scale-110 transition-transform"
                               />
                             ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
-                                <Images className="w-6 h-6 text-white" />
+                              <div className="w-full h-full bg-gradient-to-br from-purple-500/30 to-blue-500/30 flex items-center justify-center">
+                                <Images className="w-8 h-8 text-white/40" />
                               </div>
                             )}
                             <div className="absolute top-1 right-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">
@@ -1344,37 +1343,25 @@ Información del perfil:
               {/* Galera pblica siempre visible */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
                 <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
-                  <img 
+                  <SafeImage 
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face" 
                     alt="Foto pública 1"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face';
-                    }}
+                    className="w-full h-full"
                   />
-                  <Camera className="w-8 h-8 text-white hidden" />
                 </div>
                 <div className="aspect-square bg-gradient-to-br from-purple-400 to-blue-600 rounded-lg flex items-center justify-center overflow-hidden">
-                  <img 
+                  <SafeImage 
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face" 
                     alt="Foto pública 2"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face';
-                    }}
+                    className="w-full h-full"
                   />
-                  <Camera className="w-8 h-8 text-white hidden" />
                 </div>
                 <div className="aspect-square bg-gradient-to-br from-blue-400 to-teal-600 rounded-lg flex items-center justify-center overflow-hidden">
-                  <img 
+                  <SafeImage 
                     src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" 
                     alt="Foto pública 3"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face';
-                    }}
+                    className="w-full h-full"
                   />
-                  <Camera className="w-8 h-8 text-white hidden" />
                 </div>
               </div>
 
@@ -1559,24 +1546,27 @@ Información del perfil:
                     <p className="text-white/60 text-xs mb-2">✅ Vista con acceso (tu perfil):</p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                       <div className="aspect-square rounded-lg overflow-hidden relative border-2 border-green-500/50">
-                        <img 
+                        <SafeImage 
                           src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
                           alt="Foto privada 1"
-                          className="w-full h-full object-cover"
+                          fallbackType="private"
+                          className="w-full h-full"
                         />
                       </div>
                       <div className="aspect-square rounded-lg overflow-hidden relative border-2 border-green-500/50">
-                        <img 
+                        <SafeImage 
                           src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop" 
                           alt="Foto privada 2"
-                          className="w-full h-full object-cover"
+                          fallbackType="private"
+                          className="w-full h-full"
                         />
                       </div>
                       <div className="aspect-square rounded-lg overflow-hidden relative border-2 border-green-500/50">
-                        <img 
+                        <SafeImage 
                           src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=400&fit=crop" 
                           alt="Foto privada 3"
-                          className="w-full h-full object-cover"
+                          fallbackType="private"
+                          className="w-full h-full"
                         />
                       </div>
                     </div>

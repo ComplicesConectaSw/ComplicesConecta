@@ -17,6 +17,7 @@ import { useAuth } from '@/features/auth/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import { safeGetItem } from '@/utils/safeLocalStorage';
+import { SafeImage } from '@/shared/ui/SafeImage';
 
 interface GalleryImage {
   id: string;
@@ -426,9 +427,10 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {(showAll ? publicImages : publicImages.slice(0, imagesPerPage)).map((image) => (
                 <div key={image.id} className="relative group">
-                  <img
-                    src={image.url || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MzZFNkYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNGNDMzOTYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2cpIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+8J+TniBJbWFnZW48L3RleHQ+PC9zdmc+'}
-                    alt={image.caption || 'Imagen'}
+                  <SafeImage
+                    src={image.url}
+                    alt={image.caption}
+                    fallbackType="default"
                     className="w-full h-48 object-cover rounded-lg cursor-pointer"
                     onClick={() => setSelectedImage(image)}
                     onError={(e) => {
@@ -591,10 +593,11 @@ export const EnhancedGallery: React.FC<GalleryProps> = ({
                 <DialogTitle className="text-white">{selectedImage.caption}</DialogTitle>
               </DialogHeader>
               <div className="relative">
-                <img
+                <SafeImage
                   src={selectedImage.url}
                   alt={selectedImage.caption}
-                  className="w-full h-96 object-contain rounded-lg"
+                  fallbackType={selectedImage.isPublic ? 'default' : 'private'}
+                  className="w-full h-96 rounded-lg object-contain"
                 />
                 <div className="absolute bottom-4 left-4 flex space-x-2">
                   <Badge className="bg-green-500/80 text-white">

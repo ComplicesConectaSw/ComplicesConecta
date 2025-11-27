@@ -5,6 +5,7 @@ import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { Badge } from '@/components/ui/badge';
 import { Heart, X, Star, MapPin, Users, Sparkles } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
+import { SafeImage } from '@/shared/ui/SafeImage';
 import {
   Dialog,
   DialogContent,
@@ -99,16 +100,11 @@ export const MatchCard: React.FC<MatchCardProps> = ({
         <UnifiedCard glass hover className="overflow-hidden">
           <div className="relative">
             <div className="aspect-[3/4] relative">
-              <img
+              <SafeImage
                 src={avatar || images[0] || 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=600&fit=crop&crop=face'}
                 alt={name}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  if (target.src !== 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=600&fit=crop&crop=face') {
-                    target.src = 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=600&fit=crop&crop=face';
-                  }
-                }}
+                fallbackType="avatar"
+                className="w-full h-full"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
               

@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/useToast";
 import { ReportDialog } from "@/components/swipe/ReportDialog";
 import { VerificationBadge } from "@/components/ui/verification-badge";
 import { MatchScore } from "@/components/discover/MatchScore";
+import { SafeImage } from '@/shared/ui/SafeImage';
 
 interface SwipeCardProps {
   profile: {
@@ -45,7 +46,7 @@ export const SwipeCard = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     const startX = e.clientX;
     const startY = e.clientY;
@@ -104,7 +105,7 @@ export const SwipeCard = ({
   const handleSuperLike = () => {
     onSuperLike(profile.id);
     toast({
-      title: "🌟 ¡Super Like enviado!",
+      title: "¡Super Like enviado!",
       description: `Has enviado un Super Like a ${profile.name}`,
     });
     resetCard();
@@ -189,14 +190,10 @@ export const SwipeCard = ({
 
           {/* Profile Image */}
           <div className="relative overflow-hidden">
-            <img 
-              src={profile.image}
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.onerror = null; // Prevent infinite loop
-                target.src = '/compliceslogo.png';
-              }} 
+            <SafeImage
+              src={profile.image || '/compliceslogo.png'}
               alt={profile.name}
+              fallbackType="avatar"
               className="w-full object-cover"
               draggable={false}
             />

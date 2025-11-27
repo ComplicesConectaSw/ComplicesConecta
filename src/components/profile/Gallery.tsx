@@ -18,6 +18,7 @@ import { invitationService } from '@/lib/invitations';
 import { useAuth } from '@/features/auth/useAuth';
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 import { logger } from '@/lib/logger';
+import { SafeImage } from '@/shared/ui/SafeImage';
 
 interface GalleryImage {
   id: number;
@@ -195,10 +196,11 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
                   onClick={() => setSelectedImage(image)}
                 >
                   <div className="aspect-square">
-                    <img 
+                    <SafeImage 
                       src={image.url} 
                       alt={image.caption || 'Foto'}
-                      className="w-full h-full object-cover"
+                      fallbackType={image.isPublic ? 'default' : 'private'}
+                      className="w-full h-full"
                     />
                   </div>
                   
@@ -373,10 +375,11 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
               </div>
               
               <div className="aspect-video mb-4">
-                <img 
+                <SafeImage 
                   src={selectedImage.url} 
                   alt={selectedImage.caption || 'Foto'}
-                  className="w-full h-full object-cover rounded-lg"
+                  fallbackType={selectedImage.isPublic ? 'default' : 'private'}
+                  className="w-full h-full rounded-lg"
                 />
               </div>
               

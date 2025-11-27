@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { logger } from '@/lib/logger';
 import { useAuth } from '@/features/auth/useAuth';
 import { safeGetItem } from '@/utils/safeLocalStorage';
+import { SafeImage } from '@/shared/ui/SafeImage';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production
@@ -307,10 +308,11 @@ const MatchCard = ({
     >
       {/* Imagen de perfil */}
       <div className="relative h-64 overflow-hidden">
-        <img
+        <SafeImage
           src={match.image}
           alt={match.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          fallbackType="avatar"
+          className="w-full h-full group-hover:scale-105 transition-transform duration-500"
         />
         
         {/* Badge de estado */}
