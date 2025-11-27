@@ -104,7 +104,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
                 src={avatar || images[0] || 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=600&fit=crop&crop=face'}
                 alt={name}
                 fallbackType="avatar"
-                className="w-full h-full"
+                className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
               
