@@ -1,0 +1,54 @@
+name: AI Vercel Fixer
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_id:
+        description: 'The ID of the failed Vercel deployment'
+        required: true
+
+jobs:
+  get_logs:
+    name: Get Vercel Deployment Logs
+    runs-on: ubuntu-latest
+    outputs:
+      logs: ${{ steps.get_logs.outputs.logs }}
+    steps:
+      - name: Get deployment logs
+        id: get_logs
+        run: |
+          logs=$(curl -s -L -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" "https://api.vercel.com/v2/deployments/${{ github.event.inputs.deployment_id }}/events?projectId=${{ secrets.VERCEL_PROJECT_ID }}")
+          echo "::set-output name=logs::$logs"
+
+  analyze_and_fix:
+    name: Analyze and Fix
+    runs-on: ubuntu-latest
+    needs: get_logs
+    steps:
+      - uses: actions/checkout@v4
+      - uses: vercel/ai-action@v2
+        id: ai_fix
+        with:
+          prompt: |
+            The following Vercel deployment failed. Please analyze the logs and suggest a fix.
+
+            Logs:
+            ${{ needs.get_logs.outputs.logs }}
+
+            Please provide the corrected code.
+          model: 'openai/gpt-4o'
+          api-key: ${{ secrets.AI_GATEWAY_API_KEY }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'fix: AI suggested fix for Vercel deployment failure'
+          title: 'AI Fix for Vercel Deployment Failure'
+          body: |
+            The AI suggested the following fix for the Vercel deployment failure:
+
+            ```
+            ${{ steps.ai_fix.outputs.text }}
+            ```
+          branch: ai-fix-${{ github.run_id }}
+          base: master

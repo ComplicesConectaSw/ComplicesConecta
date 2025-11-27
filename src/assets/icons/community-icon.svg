@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="community" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#40407a"/>
+      <stop offset="50%" style="stop-color:#c44569"/>
+      <stop offset="100%" style="stop-color:#ff6b9d"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- People in circle -->
+  <g fill="url(#community)">
+    <!-- Person 1 -->
+    <circle cx="50" cy="25" r="8"/>
+    <ellipse cx="50" cy="40" rx="6" ry="10"/>
+    
+    <!-- Person 2 -->
+    <circle cx="75" cy="50" r="8"/>
+    <ellipse cx="75" cy="65" rx="6" ry="10"/>
+    
+    <!-- Person 3 -->
+    <circle cx="50" cy="75" r="8"/>
+    <ellipse cx="50" cy="60" rx="6" ry="10"/>
+    
+    <!-- Person 4 -->
+    <circle cx="25" cy="50" r="8"/>
+    <ellipse cx="25" cy="65" rx="6" ry="10"/>
+  </g>
+  
+  <!-- Connection lines -->
+  <g stroke="url(#community)" stroke-width="2" opacity="0.6">
+    <line x1="50" y1="35" x2="70" y2="45"/>
+    <line x1="70" y1="55" x2="55" y2="70"/>
+    <line x1="45" y1="70" x2="30" y2="55"/>
+    <line x1="30" y1="45" x2="45" y2="35"/>
+  </g>
+  
+  <!-- Center heart -->
+  <path d="M50 55 C50 55, 45 50, 45 47 C45 45, 47 43, 49 43 C49.5 43, 50 43.5, 50 43.5 C50 43.5, 50.5 43, 51 43 C53 43, 55 45, 55 47 C55 50, 50 55, 50 55 Z" fill="#ffd700"/>
+</svg>

@@ -1,0 +1,41 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: complicesconecta:latest
+    ports:
+      - "3000:3000"
+    environment:
+      # CRÍTICO: La clave de New Relic debe pasarse como variable de entorno
+      # Obtener desde archivo .env o variables de entorno del sistema
+      - NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY:-6f647c9c6eaa46100c049ab77e900462FFFFNRAL}
+      # hCaptcha Configuration (site key para frontend)
+      - VITE_HCAPTCHA_SITE_KEY=${VITE_HCAPTCHA_SITE_KEY:-ES_7a3e04d5078346a79d1a105ea17cd320}
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    depends_on:
+      - newrelic-infra
+
+  # New Relic Infrastructure Agent para monitoreo de Docker
+  newrelic-infra:
+    container_name: newrelic-infra
+    build:
+      context: .
+      dockerfile: Dockerfile.newrelic-infra
+    cap_add:
+      - SYS_PTRACE
+    network_mode: host
+    pid: host
+    privileged: true
+    volumes:
+      - "/:/host:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    restart: unless-stopped

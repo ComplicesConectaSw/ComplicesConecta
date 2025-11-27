@@ -1,0 +1,18 @@
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6b46c1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d53f8c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- C-shaped ring -->
+  <path d="M20,12 A20,20 0 1,1 20,52" fill="none" stroke="url(#grad1)" stroke-width="6" stroke-linecap="round"/>
+  <!-- Nodes (people as circles) -->
+  <circle cx="38" cy="24" r="4" fill="url(#grad1)"/>
+  <circle cx="50" cy="36" r="4" fill="url(#grad1)"/>
+  <circle cx="26" cy="36" r="4" fill="url(#grad1)"/>
+  <!-- Connections -->
+  <line x1="38" y1="24" x2="26" y2="36" stroke="url(#grad1)" stroke-width="2"/>
+  <line x1="38" y1="24" x2="50" y2="36" stroke="url(#grad1)" stroke-width="2"/>
+  <line x1="26" y1="36" x2="50" y2="36" stroke="url(#grad1)" stroke-width="2"/>
+</svg>

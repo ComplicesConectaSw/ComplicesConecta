@@ -1,0 +1,28 @@
+{
+  "timestamp": "2025-11-15T10:21:15.775Z",
+  "current": {
+    "total": 155,
+    "critical": 14,
+    "missing": 1,
+    "unused": 109
+  },
+  "plan": {
+    "install": [
+      "@radix-ui/react-button"
+    ],
+    "remove": [
+      "@capacitor/android",
+      "@capacitor/app",
+      "@capacitor/browser",
+      "@capacitor/camera",
+      "@capacitor/cli"
+    ],
+    "consolidate": []
+  },
+  "recommendations": [
+    "Instalar dependencias críticas primero",
+    "Verificar compilación después de cada instalación",
+    "Remover dependencias no usadas gradualmente",
+    "Consolidar dependencias similares"
+  ]
+}

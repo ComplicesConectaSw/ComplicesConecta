@@ -1,0 +1,61 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Build
+dist
+build
+.next
+
+# Testing
+coverage
+.nyc_output
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+__tests__
+tests
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+docs
+docs-unified
+audit-files
+backups
+2025-01-22
+
+# Archivos de resumen de sesiones
+*_SESION_*.md
+*_FINAL_*.md
+*_COMPLETADA_*.md
+RESUMEN_*.md
+REPORTE_*.md
+SINCRONIZACION_*.md
+
+# Misc
+.DS_Store
+Thumbs.db
+*.log
+
+# Directorio de backups fuera del proyecto
+../bck/
+bck/
+

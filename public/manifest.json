@@ -1,0 +1,95 @@
+{
+  "name": "ComplicesConectaSW - Conecta Social Comunidad",
+  "short_name": "ComplicesConecta",
+  "description": "Plataforma premium de conexión social para adultos",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": ["social", "dating", "lifestyle"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/placeholder.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Descubrir",
+      "short_name": "Descubrir",
+      "description": "Descubre nuevos matches",
+      "url": "/discover",
+      "icons": [
+        {
+          "src": "/placeholder.svg",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Chats",
+      "short_name": "Chats",
+      "description": "Ver tus conversaciones",
+      "url": "/chat",
+      "icons": [
+        {
+          "src": "/placeholder.svg",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Perfil",
+      "short_name": "Perfil",
+      "description": "Ver tu perfil",
+      "url": "/profile",
+      "icons": [
+        {
+          "src": "/placeholder.svg",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "media",
+          "accept": ["image/*"]
+        }
+      ]
+    }
+  },
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "protocol_handlers": [
+    {
+      "protocol": "web+complices",
+      "url": "/?action=%s"
+    }
+  ]
+}
+

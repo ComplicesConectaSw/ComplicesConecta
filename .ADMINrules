@@ -1,0 +1,117 @@
+# 🎯 REGLAS INQUEBRANTABLES COMPLICESCONECTA v3.6.3
+# Configuración Consolidada de IA para Cursor + Reglas de Proyecto
+# Versión: 3.6.3
+# Fecha: 15 de Noviembre, 2025
+
+## 🚨 REGLAS INQUEBRANTABLES DE PROYECTO (v3.6.3)
+
+### 1. Lógica de Negocio y Flujos Críticos
+1.1 → **NO romper lógica de negocio** (matching IA, tokens, clubs, moderación)  
+1.2 → **NO romper flujos** (registro → discover → match → chat → check-in)  
+1.3 → **NO crear archivos nuevos** sin verificar existencia previa  
+1.4 → **NO eliminar archivos** sin comprobación + pregunta  
+1.5 → **NO inventar elementos**. Solo lo que existe en el proyecto + web research si aplica  
+
+### 2. Gestión de Ramas y Commits
+1.6 → Rama `master` = **PRODUCCIÓN** (Vercel). Trabajo actual en `feature/desarrollo-actual`  
+1.7 → **Commits en español MX**, con fecha y hora: `feat: agrega check-in clubs - 15 Nov 2025 14:30`  
+1.8 → **Actualizar memorias** al avanzar significativamente y al finalizar sesión  
+
+### 3. Documentación OBLIGATORIA
+1.9 → **Verificar al inicio y actualizar al final**:  
+   - `RELEASE_NOTES_v3.4.1.md`  
+   - `README.md`  
+   - `README_IA.md`  
+   - `README_DEVOPS.md`  
+   - `project-structure-tree.md`  
+   - `DIAGRAMAS_FLUJOS_v3.5.0.md`  
+   - `COMPLICESCONECTA_PRESENTACION_PUBLICA.md`  
+   - `CHANGELOG.md`  
+
+### 4. Supabase y Docker
+- **Verificar Docker en línea** y login a Supabase antes de proceder  
+- **Verificar tablas locales y remotas** estén aplicadas correctamente  
+- **Alinear tablas** local/remoto si es necesario  
+- **Notificar tablas faltantes** antes de crearlas  
+
+### 5. Gestión de Cambios Grandes
+- **Modificaciones grandes** → trabajar en otra rama  
+- **Verificar master operativa** antes de continuar  
+- **feature/desarrollo-actual** debe estar actualizada con master  
+- **Al finalizar**: si operativa → subir a master, sino → crear .md con detalles  
+
+## 🤖 CONFIGURACIÓN DE IA INTELIGENTE
+
+### Reglas de IA para Desarrollo TypeScript
+- **Siempre usar TypeScript estricto** con tipos explícitos
+- **100% Type Safety** - verificar null checks y type assertions
+- **Preferir async/await** sobre Promises
+- **Usar logger** para todos los logs (no console.log en producción)
+- **Verificar supabase null** antes de usarlo
+- **Manejar errores** con try-catch y logging apropiado
+
+### Reglas de IA para Código Limpio
+- **Comentarios en español** para documentación
+- **Nombres en inglés** para variables y funciones
+- **Interfaces TypeScript** para todos los tipos de datos
+- **Validar inputs** antes de procesar
+- **Early returns** para reducir anidación
+- **Event handlers tipados** (ErrorEvent, PromiseRejectionEvent, etc.)
+
+### Reglas de IA para Optimización
+- **Cachear consultas costosas**
+- **Lazy loading** para componentes pesados
+- **Optimizar imágenes** antes de subir
+- **React.memo** para componentes estables
+- **Debounce** para búsquedas y filtros
+- **Code splitting** y chunks optimizados
+
+### Reglas de IA para Seguridad
+- **Nunca exponer API keys** en el código
+- **Validar inputs** del usuario
+- **Sanitizar datos** antes de BD
+- **Prepared statements** para SQL
+- **Verificar permisos** antes de operaciones sensibles
+- **Cumplimiento Ley Olimpia** México
+
+## 🎵 CONFIGURACIÓN MPC (Music Production Controller)
+
+### Reglas para Controladores MIDI
+- **Proteger procesos MPC** y controladores MIDI
+- **Optimizar latencia** para audio en tiempo real
+- **No cerrar procesos** relacionados con audio/MIDI
+- **Prioridad alta** para procesos de audio
+- **Servicios de audio** siempre activos
+
+### Reglas para VirtualDJ
+- **VirtualDJ procesos críticos** - todas las versiones
+- **No optimizar** procesos relacionados con VirtualDJ
+- **Servicios de red activos** para streaming
+- **Proteger controladoras USB** de audio
+
+## 🔧 CONFIGURACIÓN DE HERRAMIENTAS DE DESARROLLO
+
+### Reglas para Herramientas de Desarrollo API
+- **Solo existen localmente** - no en código público
+- **Scripts protegidos** en .gitignore
+- **API keys en .env** - nunca en código
+- **Servicios opcionales** - verificar habilitación
+- **No documentar** en documentación pública
+
+## 📋 REGLAS GENERALES
+
+### Entorno y Comunicación
+- **Consola**: PowerShell (Windows) - NUNCA Linux
+- **Idioma**: Español es-MX UTF-8
+- **Dudas**: PREGUNTAR ANTES de proceder
+- **Recomendaciones**: Siempre bienvenidas
+- **Reportar dudas** sobre reglas
+
+### Testing y Calidad
+- **Tests para funciones críticas**
+- **Mocks para servicios externos**
+- **Verificar edge cases**
+- **Tests de integración** para flujos completos
+- **npm run type-check** debe pasar siempre
+- **npm run lint** sin errores ni warnings
+

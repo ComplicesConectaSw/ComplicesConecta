@@ -1,0 +1,254 @@
+{
+    "ArchivosFaltantes":  [
+
+                          ],
+    "ImportsIncorrectos":  [
+                               {
+                                   "ImportCorrecto":  "@/profiles/shared/Profiles",
+                                   "Archivo":  "src\\components\\performance\\CodeSplittingManager.tsx",
+                                   "Tipo":  "Page",
+                                   "ImportIncorrecto":  "@/pages/Profiles"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Button",
+                                   "Archivo":  "src\\profiles\\shared\\AnimatedProfileCard.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/button"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Card",
+                                   "Archivo":  "src\\profiles\\shared\\AnimatedProfileCard.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/card"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/lib/cn",
+                                   "Archivo":  "src\\profiles\\shared\\AnimatedProfileCard.tsx",
+                                   "Tipo":  "Util",
+                                   "ImportIncorrecto":  "@/lib/utils"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Button",
+                                   "Archivo":  "src\\profiles\\shared\\MainProfileCard.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/button"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/lib/cn",
+                                   "Archivo":  "src\\profiles\\shared\\MainProfileCard.tsx",
+                                   "Tipo":  "Util",
+                                   "ImportIncorrecto":  "@/lib/utils"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Button",
+                                   "Archivo":  "src\\profiles\\shared\\ProfileDetail.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/button"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Card",
+                                   "Archivo":  "src\\profiles\\shared\\ProfileDetail.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/card"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/lib/cn",
+                                   "Archivo":  "src\\profiles\\shared\\ProfileImagePlaceholder.tsx",
+                                   "Tipo":  "Util",
+                                   "ImportIncorrecto":  "@/lib/utils"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Button",
+                                   "Archivo":  "src\\profiles\\shared\\ProfileNavTabs.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/button"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Card",
+                                   "Archivo":  "src\\profiles\\shared\\ProfileNavTabs.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/card"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/lib/cn",
+                                   "Archivo":  "src\\profiles\\shared\\ProfileNavTabs.tsx",
+                                   "Tipo":  "Util",
+                                   "ImportIncorrecto":  "@/lib/utils"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Button",
+                                   "Archivo":  "src\\profiles\\shared\\Profiles.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/button"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Card",
+                                   "Archivo":  "src\\profiles\\shared\\Profiles.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/card"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Input",
+                                   "Archivo":  "src\\profiles\\shared\\Profiles.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/input"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Card",
+                                   "Archivo":  "src\\profiles\\shared\\ProfileStats.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/card"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Button",
+                                   "Archivo":  "src\\profiles\\shared\\ProfileTabs.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/button"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/ui/Card",
+                                   "Archivo":  "src\\profiles\\shared\\ProfileTabs.tsx",
+                                   "Tipo":  "UI",
+                                   "ImportIncorrecto":  "@/components/ui/card"
+                               },
+                               {
+                                   "ImportCorrecto":  "@/shared/lib/cn",
+                                   "Archivo":  "src\\profiles\\shared\\ProfileTabs.tsx",
+                                   "Tipo":  "Util",
+                                   "ImportIncorrecto":  "@/lib/utils"
+                               }
+                           ],
+    "Duplicados":  [
+                       {
+                           "Nombre":  "index.ts",
+                           "Ruta":  "src\\components\\admin\\panels\\index.ts"
+                       },
+                       {
+                           "Nombre":  "index.ts",
+                           "Ruta":  "src\\components\\discover\\index.ts"
+                       },
+                       {
+                           "Nombre":  "index.ts",
+                           "Ruta":  "src\\lib\\index.ts"
+                       },
+                       {
+                           "Nombre":  "index.ts",
+                           "Ruta":  "src\\types\\index.ts"
+                       },
+                       {
+                           "Nombre":  "NotificationSystem.tsx",
+                           "Ruta":  "src\\components\\animations\\NotificationSystem.tsx"
+                       },
+                       {
+                           "Nombre":  "NotificationSystem.tsx",
+                           "Ruta":  "src\\components\\notifications\\NotificationSystem.tsx"
+                       },
+                       {
+                           "Nombre":  "TermsModal.tsx",
+                           "Ruta":  "src\\components\\auth\\TermsModal.tsx"
+                       },
+                       {
+                           "Nombre":  "TermsModal.tsx",
+                           "Ruta":  "src\\components\\ui\\TermsModal.tsx"
+                       },
+                       {
+                           "Nombre":  "VIPEvents.tsx",
+                           "Ruta":  "src\\components\\premium\\VIPEvents.tsx"
+                       },
+                       {
+                           "Nombre":  "VIPEvents.tsx",
+                           "Ruta":  "src\\pages\\VIPEvents.tsx"
+                       },
+                       {
+                           "Nombre":  "VirtualGifts.tsx",
+                           "Ruta":  "src\\components\\premium\\VirtualGifts.tsx"
+                       },
+                       {
+                           "Nombre":  "VirtualGifts.tsx",
+                           "Ruta":  "src\\pages\\VirtualGifts.tsx"
+                       },
+                       {
+                           "Nombre":  "ProfileThemeDemo.tsx",
+                           "Ruta":  "src\\components\\profile\\ProfileThemeDemo.tsx"
+                       },
+                       {
+                           "Nombre":  "ProfileThemeDemo.tsx",
+                           "Ruta":  "src\\pages\\ProfileThemeDemo.tsx"
+                       },
+                       {
+                           "Nombre":  "button.tsx",
+                           "Ruta":  "src\\components\\ui\\button.tsx"
+                       },
+                       {
+                           "Nombre":  "button.tsx",
+                           "Ruta":  "src\\shared\\ui\\Button.tsx"
+                       },
+                       {
+                           "Nombre":  "card.tsx",
+                           "Ruta":  "src\\components\\ui\\card.tsx"
+                       },
+                       {
+                           "Nombre":  "card.tsx",
+                           "Ruta":  "src\\shared\\ui\\Card.tsx"
+                       },
+                       {
+                           "Nombre":  "input.tsx",
+                           "Ruta":  "src\\components\\ui\\input.tsx"
+                       },
+                       {
+                           "Nombre":  "input.tsx",
+                           "Ruta":  "src\\shared\\ui\\Input.tsx"
+                       },
+                       {
+                           "Nombre":  "ConsentVerificationService.ts",
+                           "Ruta":  "src\\services\\ConsentVerificationService.ts"
+                       },
+                       {
+                           "Nombre":  "ConsentVerificationService.ts",
+                           "Ruta":  "src\\services\\ai\\ConsentVerificationService.ts"
+                       },
+                       {
+                           "Nombre":  "validation.ts",
+                           "Ruta":  "src\\shared\\lib\\validation.ts"
+                       },
+                       {
+                           "Nombre":  "validation.ts",
+                           "Ruta":  "src\\utils\\validation.ts"
+                       },
+                       {
+                           "Nombre":  "supabase.ts",
+                           "Ruta":  "src\\tests\\mocks\\supabase.ts"
+                       },
+                       {
+                           "Nombre":  "supabase.ts",
+                           "Ruta":  "src\\types\\supabase.ts"
+                       }
+                   ],
+    "Resumen":  {
+                    "TotalArchivos":  578
+                },
+    "Obsoletos":  [
+
+                  ],
+    "DirectoriosVacios":  [
+                              "src\\app",
+                              "src\\assets",
+                              "src\\scripts",
+                              "src\\widgets",
+                              "src\\app\\(admin)",
+                              "src\\app\\(auth)",
+                              "src\\app\\(clubs)",
+                              "src\\app\\(discover)",
+                              "src\\app\\(profile)",
+                              "src\\assets\\events",
+                              "src\\assets\\icons",
+                              "src\\assets\\images",
+                              "src\\assets\\lifestyle",
+                              "src\\assets\\people",
+                              "src\\assets\\people\\couple",
+                              "src\\assets\\people\\female",
+                              "src\\assets\\people\\male",
+                              "src\\assets\\people\\privado",
+                              "src\\components\\couples"
+                          ]
+}

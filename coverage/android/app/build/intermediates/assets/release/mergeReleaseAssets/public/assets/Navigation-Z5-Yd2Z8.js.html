@@ -1,0 +1,88 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for android/app/build/intermediates/assets/release/mergeReleaseAssets/public/assets/Navigation-Z5-Yd2Z8.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../../../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../../../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../../../../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../../../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../../../../../../../../index.html">All files</a> / <a href="index.html">android/app/build/intermediates/assets/release/mergeReleaseAssets/public/assets</a> Navigation-Z5-Yd2Z8.js</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/1</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import{r as g,u as b,ar as x,V as v,S as y,q as P,H as I,W as l,aa as c,j as s,a8 as i}from"./index-74aJIhuM.js";import{U as N}from"./user-plus-D6Y1a58c.js";function j(){const e="production";return g.useMemo(()=&gt;({phase:e,isBeta:e==="beta",isPremium:e==="vip",isVIP:e==="vip",features:{requests:!0,chatPublic:!0,chatPrivate:!0,profileVisibility:!0,galleryPublicPrivate:!0,messagingPrivacy:!0,eventsVIP:e!=="beta",ghostMode:e!=="beta",virtualGifts:e!=="beta",superLikes:e!=="beta",stories:e!=="beta"}}),[e])}const C=({className:e})=&gt;{const r=b(),u=x(),{features:d}=j(),p=localStorage.getItem("demo_authenticated")==="true",m=localStorage.getItem("demo_user"),o=[{id:"feed",icon:v,label:"Inicio",path:"/feed"},{id:"discover",icon:y,label:"Descubrir",path:"/discover"},{id:"chat",icon:P,label:"Chat",path:"/chat"},{id:"matches",icon:I,label:"Matches",path:"/matches"}];if(!p||!m)return null;const f=d.requests?[...o.slice(0,3),{id:"requests",icon:N,label:"Solicitudes",path:"/requests"},...o.slice(3),{id:"profile",icon:l,label:"Perfil",path:"/profile"},{id:"settings",icon:c,label:"Configuración",path:"/edit-profile-single"}]:[...o,{id:"profile",icon:l,label:"Perfil",path:"/profile"},{id:"settings",icon:c,label:"Configuración",path:"/edit-profile-single"}],h=t=&gt;{const n=localStorage.getItem("demo_user"),a=localStorage.getItem("userType");if(!n&amp;&amp;t!=="/auth"){r("/auth");return}r(t==="/profile"?a==="couple"?"/profile-couple":"/profile-single":t)};return s.jsx("nav",{className:i("fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-t border-border/50","px-4 py-2 safe-area-pb",e),children:s.jsx("div",{className:"flex items-center justify-around max-w-md mx-auto",children:f.map(t=&gt;{const n=t.icon,a=u.pathname===t.path;return s.jsxs("button",{onClick:()=&gt;h(t.path),className:i("flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200","min-w-[60px] min-h-[60px] group",a?"bg-primary/10 text-primary":"text-muted-foreground hover:text-foreground hover:bg-muted/50"),children:[s.jsx(n,{className:i("w-5 h-5 mb-1 transition-all duration-200",a?"scale-110":"group-hover:scale-105")}),s.jsx("span",{className:i("text-xs font-medium transition-all duration-200",a?"text-primary":"text-muted-foreground"),children:t.label})]},t.id)})})})};export{C as N,j as u};<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span></span>
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-09-06T14:23:27.027Z
+            </div>
+        <script src="../../../../../../../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../../../../../../../sorter.js"></script>
+        <script src="../../../../../../../../../block-navigation.js"></script>
+    </body>
+</html>
+    

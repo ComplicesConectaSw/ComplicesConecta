@@ -1,0 +1,45 @@
+# Don't ignore package-lock.json - Vercel needs it for dependency resolution
+# package-lock.json
+
+# Ignore GitHub workflows
+.github/
+
+# Ignore development files
+.env.local
+.env.development
+*.log
+
+# Ignore build artifacts that might cause conflicts
+node_modules/
+dist/
+.cache/
+
+# Ignore test files and coverage
+coverage/
+playwright-report/
+playwright-report-e2e/
+test-results/
+*.spec.ts
+*.test.ts
+*.test.tsx
+src/tests/
+
+# Ignore development tools
+.vscode/
+*.code-workspace
+check-imports*.ps1
+eslint.config copy.js
+
+# Ignore documentation and reports
+IMPORT_AUDIT_REPORT.md
+IMPORT_CORRECTIONS_REPORT.md
+*.md
+!README.md
+
+# Ignore Android build files (too large for Vercel)
+android/
+*.apk
+*.aab
+sentry-wizard.exe
+dist/app-release.apk
+public/app-release.apk

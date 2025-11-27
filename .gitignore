@@ -1,0 +1,328 @@
+# ============================================================================
+# .gitignore - ComplicesConecta v3.6.3
+# ============================================================================
+# Versión optimizada y organizada
+# Fecha: 2025-11-08
+# ============================================================================
+
+# ============================================================================
+# DEPENDENCIAS
+# ============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ============================================================================
+# BUILD ARTIFACTS
+# ============================================================================
+dist/
+dist-ssr/
+build/
+.vite/
+.vite-cache/
+*.tsbuildinfo
+tsconfig.*.tsbuildinfo
+vite.config.*.timestamp-*
+
+# Android Build
+android/app/build/
+android/app/release/
+android/gradle/
+android/.gradle/
+android/.fastRequest/
+android/local.properties
+*.apk
+*.aab
+public/app-release.apk
+
+# Generated HTML files
+dist/*.html
+*.generated.html
+android/app/src/main/assets/public/*.html
+
+# Source maps (excepto tipos)
+*.map
+!*.d.ts.map
+
+# Bundle analysis reports
+stats.html
+bundle-analyzer-report.html
+webpack-bundle-analyzer-report.html
+
+# ============================================================================
+# ENVIRONMENT VARIABLES & SECRETS (CRITICAL SECURITY)
+# ============================================================================
+.env
+.env.*
+!.env.example
+.env.local
+.env.production
+.env.development
+.env.test
+.env.demo
+.env.circleci
+.env*.local
+
+# API Keys & Secrets
+*.key
+*.pem
+*.cert
+*.crt
+secrets/
+config/secrets/
+.secrets/
+**/secrets/
+
+# Vercel
+.vercel/
+.vercel.json
+VERCEL_OIDC_TOKEN
+
+# Supabase
+**/supabase/config.toml
+**/supabase/.env
+supabase/.temp/
+supabase/.branches/
+supabase/functions/_utils/
+
+# Sentry
+sentry.properties
+sentry-wizard.exe
+
+# ============================================================================
+# DATABASE FILES
+# ============================================================================
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# ============================================================================
+# LOGS & TEMPORARY FILES
+# ============================================================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Temporary & Cache
+.cache/
+.temp/
+.tmp/
+temp/
+tmp/
+*.tmp
+*.temp
+*_temp.*
+*_old.*
+*_backup.*
+*.backup.*
+**/* copy*
+**/* copy.*
+*.env copy*
+*.env copy.*
+
+# ============================================================================
+# EDITOR & IDE FILES
+# ============================================================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ============================================================================
+# TESTING & COVERAGE
+# ============================================================================
+coverage/
+.nyc_output/
+*.lcov
+playwright-report/
+playwright-report-e2e/
+test-results/
+*.html.js
+*.js.html
+test_*.md
+
+# ============================================================================
+# DOCKER
+# ============================================================================
+.docker/
+docker-compose.override.yml
+*.dockerfile.backup
+.dockerignore.backup
+docker-data/
+docker-volumes/
+
+# ============================================================================
+# TOKEN SYSTEM & WORLD ID (SENSITIVE)
+# ============================================================================
+worldid-integration/
+token-system-spec-updated/
+**/token-system-spec/
+**/DEV_README.md
+**/INTEGRATION_PROMPT.md
+**/referrals.sql
+**/GTKToken.sol
+**/StakingGTK.sol
+GITIGNORE_SNIPPET.txt
+token-system-spec-updated/docs/
+worldid-integration/prompts/INTEGRATION_PROMPT.md
+worldid-integration/token-system-spec/DEV_README.md
+
+# ============================================================================
+# IA & MCP (SENSITIVE - API Keys)
+# Solo existen localmente, sin referencias explícitas en el proyecto público
+# ============================================================================
+scripts/verify-grok.js
+scripts/grok-mcp-server.js
+scripts/grok-verification.js
+scripts/mpc-controller-server.js
+scripts/verify-apidog.js
+.cursor/grok-config.json
+.cursor/mcp.json
+.cursor/ai-config.json
+.cursor/settings.json
+GROK_CONFIGURADO.md
+.nore
+**/*grok*
+**/*mcp*
+**/*ai-assistant*
+**/*mpc-controller*
+**/*apidog*
+
+# ============================================================================
+# SCRIPTS OBSOLETOS Y TEMPORALES
+# ============================================================================
+scripts/audit.js
+scripts/execute-migrations.js
+scripts/migrate.js
+scripts/run-migrations.ts
+scripts/import-templates.ts
+scripts/temp/
+scripts/*_temp.sql
+scripts/*_fix.sql
+scripts/*_create_*.sql
+scripts/*_admin*.sql
+scripts/step_by_step.sql
+scripts/simple_fix.sql
+scripts/create_admin_profile.sql
+scripts/fix_rls_profiles.sql
+scripts/create_missing_tables.sql
+regenerate-types.js
+apply-migrations.js
+
+# SQL temporales
+step*.sql
+*_create_*.sql
+*_policies*.sql
+*_insert_*.sql
+
+# ============================================================================
+# DOCUMENTACIÓN Y REPORTES (NO SUBIR A GIT)
+# ============================================================================
+docs-unified/
+scripts/
+reports/
+workflows-desactivados/
+audit-files/
+backups/
+2025-01-22/
+dev-scripts/
+
+# Archivos de documentación y análisis (root only)
+/ANALISIS_*.md
+/REPORTE_*.md
+/RESUMEN_*.md
+/DOCUMENTACION_*.md
+/MEMORIAS_*.md
+/PLAN_*.md
+/ComplicesConecta_Diagnostico*.md
+/DEPENDENCIAS_*.md
+/*_AUDITORIA_*.md
+/*_CONSOLIDADO_*.md
+/*_UNIFICADO_*.md
+/*_CONSOLIDADA_*.md
+/*_UNIFICADA_*.md
+/*_DIAGNOSTICO_*.md
+/*_DIAGNOSTICO*.md
+/*_HALLAZGOS*.md
+/*_SOLUCIONES_*.md
+/*_VALIDACION_*.md
+/*_COMPARACION_*.md
+/*_CORRECCIONES_*.md
+/*_ESTILOS_*.md
+/*_COMPONENTES_*.md
+/*_DUPLICADOS_*.md
+/*_CONFLICTOS_*.md
+
+# Archivos con información sensible
+docs-unified/deployment/DEPLOY.md
+docs-unified/deployment/VERCEL_SETUP.md
+docs-unified/deployment/DEPLOYMENT_INSTRUCTIONS.md
+docs-unified/tests/worldid/WORLDID_FUNCTION_TEST.md
+
+# ============================================================================
+# ARCHIVOS TEMPORALES Y PATCHES
+# ============================================================================
+*.patch
+*.diff
+diff.patch
+project-structure.md
+
+# ============================================================================
+# SCRIPTS Y ARCHIVOS SENSIBLES
+# ============================================================================
+GIT_HUB_Menu.ps1/
+fix-supabase.ps1/
+.GIT_HUB_Menu.ps1/
+.fix-supabase.ps1/
+*GIT_HUB_Menu.ps1*
+*fix-supabase.ps1*
+
+# ============================================================================
+# BACKUPS
+# ============================================================================
+../bck/
+bck/
+*.backup
+*_backup.*
+
+# ============================================================================
+# GRADLE
+# ============================================================================
+.gradle_temp/
+.gradle/
+
+# ============================================================================
+# BUILD ARTIFACTS CON TOKENS EMBEBIDOS
+# ============================================================================
+android/app/build/intermediates/assets/release/mergeReleaseAssets/public/js/*.js
+android/app/src/main/assets/public/js/*.js
+dist/js/*.js
+
+# ============================================================================
+# END OF .gitignore
+# ============================================================================
+
+.vercel

@@ -1,0 +1,5 @@
+FROM newrelic/infrastructure:latest
+
+# Copiar el archivo de configuración de New Relic
+ADD newrelic-infra.yml /etc/newrelic-infra.yml
+

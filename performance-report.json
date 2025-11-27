@@ -1,0 +1,3691 @@
+{
+  "files": [
+    {
+      "file": "types\\supabase-generated.ts",
+      "size": 236497,
+      "sizeKB": 230.95
+    },
+    {
+      "file": "types\\supabase.ts",
+      "size": 236497,
+      "sizeKB": 230.95
+    },
+    {
+      "file": "pages\\TokensInfo.tsx",
+      "size": 65711,
+      "sizeKB": 64.17
+    },
+    {
+      "file": "profiles\\single\\ProfileSingle.tsx",
+      "size": 54091,
+      "sizeKB": 52.82
+    },
+    {
+      "file": "lib\\advancedFeatures.ts",
+      "size": 51085,
+      "sizeKB": 49.89
+    },
+    {
+      "file": "pages\\Investors.tsx",
+      "size": 45455,
+      "sizeKB": 44.39
+    },
+    {
+      "file": "pages\\Chat.tsx",
+      "size": 41241,
+      "sizeKB": 40.27
+    },
+    {
+      "file": "pages\\ModeratorDashboard.tsx",
+      "size": 40913,
+      "sizeKB": 39.95
+    },
+    {
+      "file": "app\\(discover)\\Discover.tsx",
+      "size": 38360,
+      "sizeKB": 37.46
+    },
+    {
+      "file": "profiles\\couple\\EditProfileCouple.tsx",
+      "size": 35883,
+      "sizeKB": 35.04
+    },
+    {
+      "file": "profiles\\shared\\Profiles.tsx",
+      "size": 34983,
+      "sizeKB": 34.16
+    },
+    {
+      "file": "components\\admin\\AnalyticsPanel.tsx",
+      "size": 34978,
+      "sizeKB": 34.16
+    },
+    {
+      "file": "app\\(auth)\\Auth.tsx",
+      "size": 34128,
+      "sizeKB": 33.33
+    },
+    {
+      "file": "services\\ContentModerationService.ts",
+      "size": 33853,
+      "sizeKB": 33.06
+    },
+    {
+      "file": "app\\(admin)\\AdminProduction.tsx",
+      "size": 33457,
+      "sizeKB": 32.67
+    },
+    {
+      "file": "services\\AdvancedCacheService.ts",
+      "size": 33399,
+      "sizeKB": 32.62
+    },
+    {
+      "file": "components\\admin\\UserManagementPanel.tsx",
+      "size": 30171,
+      "sizeKB": 29.46
+    },
+    {
+      "file": "lib\\notifications.ts",
+      "size": 30070,
+      "sizeKB": 29.37
+    },
+    {
+      "file": "app\\(admin)\\AdminDashboard.tsx",
+      "size": 29790,
+      "sizeKB": 29.09
+    },
+    {
+      "file": "services\\postsService.ts",
+      "size": 29447,
+      "sizeKB": 28.76
+    },
+    {
+      "file": "pages\\Index.tsx",
+      "size": 28723,
+      "sizeKB": 28.05
+    },
+    {
+      "file": "components\\stories\\StoriesContainer.tsx",
+      "size": 28578,
+      "sizeKB": 27.91
+    },
+    {
+      "file": "utils\\captureConsoleErrors.ts",
+      "size": 27761,
+      "sizeKB": 27.11
+    },
+    {
+      "file": "profiles\\couple\\CoupleDashboard.tsx",
+      "size": 27751,
+      "sizeKB": 27.1
+    },
+    {
+      "file": "profiles\\couple\\ProfileCouple.tsx",
+      "size": 27574,
+      "sizeKB": 26.93
+    },
+    {
+      "file": "services\\WalletService.ts",
+      "size": 27416,
+      "sizeKB": 26.77
+    },
+    {
+      "file": "pages\\FAQ.tsx",
+      "size": 27005,
+      "sizeKB": 26.37
+    },
+    {
+      "file": "components\\admin\\PerformancePanel.tsx",
+      "size": 26840,
+      "sizeKB": 26.21
+    },
+    {
+      "file": "components\\admin\\TokenSystemPanel.tsx",
+      "size": 26456,
+      "sizeKB": 25.84
+    },
+    {
+      "file": "components\\admin\\AlertConfigPanel.tsx",
+      "size": 26444,
+      "sizeKB": 25.82
+    },
+    {
+      "file": "app\\(admin)\\AdminPartners.tsx",
+      "size": 26082,
+      "sizeKB": 25.47
+    },
+    {
+      "file": "pages\\Tokens.tsx",
+      "size": 25908,
+      "sizeKB": 25.3
+    },
+    {
+      "file": "profiles\\couple\\CoupleRegistrationForm.tsx",
+      "size": 25619,
+      "sizeKB": 25.02
+    },
+    {
+      "file": "components\\profile\\EnhancedGallery.tsx",
+      "size": 25448,
+      "sizeKB": 24.85
+    },
+    {
+      "file": "app\\(admin)\\AdminModerators.tsx",
+      "size": 25115,
+      "sizeKB": 24.53
+    },
+    {
+      "file": "profiles\\couple\\AdvancedCoupleService.ts",
+      "size": 25077,
+      "sizeKB": 24.49
+    },
+    {
+      "file": "pages\\Events.tsx",
+      "size": 25004,
+      "sizeKB": 24.42
+    },
+    {
+      "file": "pages\\ProjectInfo.tsx",
+      "size": 24961,
+      "sizeKB": 24.38
+    },
+    {
+      "file": "lib\\multimediaSecurity.ts",
+      "size": 24897,
+      "sizeKB": 24.31
+    },
+    {
+      "file": "components\\admin\\SecurityPanel.tsx",
+      "size": 24729,
+      "sizeKB": 24.15
+    },
+    {
+      "file": "pages\\Premium.tsx",
+      "size": 24729,
+      "sizeKB": 24.15
+    },
+    {
+      "file": "components\\ui\\sidebar.tsx",
+      "size": 24698,
+      "sizeKB": 24.12
+    },
+    {
+      "file": "app\\(admin)\\Admin.tsx",
+      "size": 24487,
+      "sizeKB": 23.91
+    },
+    {
+      "file": "pages\\NFTs.tsx",
+      "size": 24355,
+      "sizeKB": 23.78
+    },
+    {
+      "file": "pages\\News.tsx",
+      "size": 24292,
+      "sizeKB": 23.72
+    },
+    {
+      "file": "components\\HeaderNav.tsx",
+      "size": 23747,
+      "sizeKB": 23.19
+    },
+    {
+      "file": "profiles\\single\\EditProfileSingle.tsx",
+      "size": 23676,
+      "sizeKB": 23.12
+    },
+    {
+      "file": "profiles\\shared\\ProfileDetail.tsx",
+      "size": 23178,
+      "sizeKB": 22.63
+    },
+    {
+      "file": "app\\(admin)\\AdminCareerApplications.tsx",
+      "size": 22879,
+      "sizeKB": 22.34
+    },
+    {
+      "file": "services\\ReportService.ts",
+      "size": 22598,
+      "sizeKB": 22.07
+    },
+    {
+      "file": "pages\\Legal.tsx",
+      "size": 22504,
+      "sizeKB": 21.98
+    },
+    {
+      "file": "tests\\androidSecurity.test.ts",
+      "size": 22476,
+      "sizeKB": 21.95
+    },
+    {
+      "file": "pages\\Moderators.tsx",
+      "size": 22371,
+      "sizeKB": 21.85
+    },
+    {
+      "file": "components\\analytics\\AdvancedAnalyticsDashboard.tsx",
+      "size": 22134,
+      "sizeKB": 21.62
+    },
+    {
+      "file": "lib\\intelligentAutomation.ts",
+      "size": 22129,
+      "sizeKB": 21.61
+    },
+    {
+      "file": "services\\NFTService.ts",
+      "size": 22086,
+      "sizeKB": 21.57
+    },
+    {
+      "file": "components\\admin\\AdvancedModerationPanel.tsx",
+      "size": 22035,
+      "sizeKB": 21.52
+    },
+    {
+      "file": "components\\profile\\NFTGalleryManager.tsx",
+      "size": 21948,
+      "sizeKB": 21.43
+    },
+    {
+      "file": "tests\\system-integration.test.ts",
+      "size": 21538,
+      "sizeKB": 21.03
+    },
+    {
+      "file": "app\\(clubs)\\Clubs.tsx",
+      "size": 21494,
+      "sizeKB": 20.99
+    },
+    {
+      "file": "components\\ai\\ContentModerationModal.tsx",
+      "size": 21475,
+      "sizeKB": 20.97
+    },
+    {
+      "file": "profiles\\single\\SingleRegistrationForm.tsx",
+      "size": 21308,
+      "sizeKB": 20.81
+    },
+    {
+      "file": "services\\SecurityService.ts",
+      "size": 21266,
+      "sizeKB": 20.77
+    },
+    {
+      "file": "components\\premium\\PrivateMatches.tsx",
+      "size": 21160,
+      "sizeKB": 20.66
+    },
+    {
+      "file": "services\\AdvancedAnalyticsService.ts",
+      "size": 21146,
+      "sizeKB": 20.65
+    },
+    {
+      "file": "pages\\ModeratorRequest.tsx",
+      "size": 20939,
+      "sizeKB": 20.45
+    },
+    {
+      "file": "services\\SmartMatchingService.ts",
+      "size": 20851,
+      "sizeKB": 20.36
+    },
+    {
+      "file": "tests\\biometric-auth.test.ts",
+      "size": 19971,
+      "sizeKB": 19.5
+    },
+    {
+      "file": "tests\\security\\biometric-auth.test.ts",
+      "size": 19971,
+      "sizeKB": 19.5
+    },
+    {
+      "file": "tests\\media-access.test.ts",
+      "size": 19959,
+      "sizeKB": 19.49
+    },
+    {
+      "file": "pages\\TokensLegal.tsx",
+      "size": 19958,
+      "sizeKB": 19.49
+    },
+    {
+      "file": "tests\\Neo4jService.test.ts",
+      "size": 19935,
+      "sizeKB": 19.47
+    },
+    {
+      "file": "components\\admin\\AnalyticsDashboard.tsx",
+      "size": 19756,
+      "sizeKB": 19.29
+    },
+    {
+      "file": "components\\ai\\SmartMatchingModal.tsx",
+      "size": 19738,
+      "sizeKB": 19.28
+    },
+    {
+      "file": "services\\SecurityAuditService.ts",
+      "size": 19625,
+      "sizeKB": 19.17
+    },
+    {
+      "file": "pages\\TokensTerms.tsx",
+      "size": 19369,
+      "sizeKB": 18.92
+    },
+    {
+      "file": "tests\\integration\\system-integration.test.ts",
+      "size": 19335,
+      "sizeKB": 18.88
+    },
+    {
+      "file": "profiles\\shared\\profile-cache.test.ts",
+      "size": 19279,
+      "sizeKB": 18.83
+    },
+    {
+      "file": "components\\tokens\\TokenChatBot.tsx",
+      "size": 19263,
+      "sizeKB": 18.81
+    },
+    {
+      "file": "lib\\backup-system.ts",
+      "size": 19189,
+      "sizeKB": 18.74
+    },
+    {
+      "file": "pages\\Invest.tsx",
+      "size": 19157,
+      "sizeKB": 18.71
+    },
+    {
+      "file": "lib\\ai\\smartMatching.ts",
+      "size": 19138,
+      "sizeKB": 18.69
+    },
+    {
+      "file": "services\\ErrorAlertService.ts",
+      "size": 19044,
+      "sizeKB": 18.6
+    },
+    {
+      "file": "pages\\ChatAuthenticated.tsx",
+      "size": 18906,
+      "sizeKB": 18.46
+    },
+    {
+      "file": "services\\InvitationsService.ts",
+      "size": 18837,
+      "sizeKB": 18.4
+    },
+    {
+      "file": "pages\\Matches.tsx",
+      "size": 18757,
+      "sizeKB": 18.32
+    },
+    {
+      "file": "services\\ai\\AILayerService.ts",
+      "size": 18699,
+      "sizeKB": 18.26
+    },
+    {
+      "file": "components\\ui\\MatchCard.tsx",
+      "size": 18623,
+      "sizeKB": 18.19
+    },
+    {
+      "file": "features\\auth\\useAuth.ts",
+      "size": 18455,
+      "sizeKB": 18.02
+    },
+    {
+      "file": "services\\ReferralTokensService.ts",
+      "size": 18397,
+      "sizeKB": 17.97
+    },
+    {
+      "file": "components\\chat\\ChatRoom.tsx",
+      "size": 18387,
+      "sizeKB": 17.96
+    },
+    {
+      "file": "services\\APMService.ts",
+      "size": 18204,
+      "sizeKB": 17.78
+    },
+    {
+      "file": "components\\admin\\SecurityDashboard.tsx",
+      "size": 18176,
+      "sizeKB": 17.75
+    },
+    {
+      "file": "hooks\\useTokens.ts",
+      "size": 18062,
+      "sizeKB": 17.64
+    },
+    {
+      "file": "lib\\ai\\contentModeration.ts",
+      "size": 17989,
+      "sizeKB": 17.57
+    },
+    {
+      "file": "pages\\Careers.tsx",
+      "size": 17764,
+      "sizeKB": 17.35
+    },
+    {
+      "file": "components\\cache\\CacheDashboard.tsx",
+      "size": 17746,
+      "sizeKB": 17.33
+    },
+    {
+      "file": "tests\\unit\\Neo4jService.test.ts",
+      "size": 17580,
+      "sizeKB": 17.17
+    },
+    {
+      "file": "services\\ConsentVerificationService.ts",
+      "size": 17568,
+      "sizeKB": 17.16
+    },
+    {
+      "file": "services\\graph\\Neo4jService.ts",
+      "size": 17493,
+      "sizeKB": 17.08
+    },
+    {
+      "file": "components\\notifications\\NotificationBell.tsx",
+      "size": 17458,
+      "sizeKB": 17.05
+    },
+    {
+      "file": "pages\\Requests.tsx",
+      "size": 17320,
+      "sizeKB": 16.91
+    },
+    {
+      "file": "services\\PerformanceMonitoringService.ts",
+      "size": 17293,
+      "sizeKB": 16.89
+    },
+    {
+      "file": "components\\ui\\TemplateIntegrator.tsx",
+      "size": 17204,
+      "sizeKB": 16.8
+    },
+    {
+      "file": "services\\DataPrivacyService.ts",
+      "size": 17182,
+      "sizeKB": 16.78
+    },
+    {
+      "file": "services\\ai\\ConsentVerificationService.ts",
+      "size": 17180,
+      "sizeKB": 16.78
+    },
+    {
+      "file": "pages\\Marketplace.tsx",
+      "size": 17089,
+      "sizeKB": 16.69
+    },
+    {
+      "file": "tests\\performance.test.ts",
+      "size": 17072,
+      "sizeKB": 16.67
+    },
+    {
+      "file": "pages\\Guidelines.tsx",
+      "size": 16975,
+      "sizeKB": 16.58
+    },
+    {
+      "file": "components\\admin\\ReportsManagement.tsx",
+      "size": 16933,
+      "sizeKB": 16.54
+    },
+    {
+      "file": "components\\stories\\StoryViewer.tsx",
+      "size": 16876,
+      "sizeKB": 16.48
+    },
+    {
+      "file": "pages\\About.tsx",
+      "size": 16830,
+      "sizeKB": 16.44
+    },
+    {
+      "file": "components\\profile\\Gallery.tsx",
+      "size": 16718,
+      "sizeKB": 16.33
+    },
+    {
+      "file": "components\\tokens\\TokenDashboard.tsx",
+      "size": 16553,
+      "sizeKB": 16.17
+    },
+    {
+      "file": "services\\TokenAnalyticsService.ts",
+      "size": 16420,
+      "sizeKB": 16.04
+    },
+    {
+      "file": "profiles\\shared\\ProfileTabs.tsx",
+      "size": 16197,
+      "sizeKB": 15.82
+    },
+    {
+      "file": "lib\\data.ts",
+      "size": 16159,
+      "sizeKB": 15.78
+    },
+    {
+      "file": "tests\\security\\media-access.test.ts",
+      "size": 16063,
+      "sizeKB": 15.69
+    },
+    {
+      "file": "tests\\ReportService.test.ts",
+      "size": 15973,
+      "sizeKB": 15.6
+    },
+    {
+      "file": "components\\settings\\PrivacySettings.tsx",
+      "size": 15914,
+      "sizeKB": 15.54
+    },
+    {
+      "file": "components\\security\\MediaUploadSecure.tsx",
+      "size": 15851,
+      "sizeKB": 15.48
+    },
+    {
+      "file": "tests\\unit\\performance.test.ts",
+      "size": 15663,
+      "sizeKB": 15.3
+    },
+    {
+      "file": "services\\TokenService.ts",
+      "size": 15609,
+      "sizeKB": 15.24
+    },
+    {
+      "file": "components\\animations\\NotificationSystem.tsx",
+      "size": 15576,
+      "sizeKB": 15.21
+    },
+    {
+      "file": "components\\admin\\WebhookConfigPanel.tsx",
+      "size": 15571,
+      "sizeKB": 15.21
+    },
+    {
+      "file": "features\\chat\\ChatSummaryService.ts",
+      "size": 15531,
+      "sizeKB": 15.17
+    },
+    {
+      "file": "services\\LoadBalancingService.ts",
+      "size": 15531,
+      "sizeKB": 15.17
+    },
+    {
+      "file": "pages\\TemplateDemo.tsx",
+      "size": 15418,
+      "sizeKB": 15.06
+    },
+    {
+      "file": "profiles\\couple\\CoupleProfileCard.tsx",
+      "size": 15286,
+      "sizeKB": 14.93
+    },
+    {
+      "file": "profiles\\shared\\ProfileReportsPanel.tsx",
+      "size": 15265,
+      "sizeKB": 14.91
+    },
+    {
+      "file": "components\\blockchain\\StakingWidget.tsx",
+      "size": 15226,
+      "sizeKB": 14.87
+    },
+    {
+      "file": "components\\admin\\HistoricalCharts.tsx",
+      "size": 15202,
+      "sizeKB": 14.85
+    },
+    {
+      "file": "pages\\Settings.tsx",
+      "size": 15161,
+      "sizeKB": 14.81
+    },
+    {
+      "file": "services\\UserVerificationService.ts",
+      "size": 15005,
+      "sizeKB": 14.65
+    },
+    {
+      "file": "pages\\VideoChat.tsx",
+      "size": 14995,
+      "sizeKB": 14.64
+    },
+    {
+      "file": "services\\SustainableEventsService.ts",
+      "size": 14987,
+      "sizeKB": 14.64
+    },
+    {
+      "file": "services\\PredictiveMatchingService.ts",
+      "size": 14933,
+      "sizeKB": 14.58
+    },
+    {
+      "file": "pages\\Shop.tsx",
+      "size": 14855,
+      "sizeKB": 14.51
+    },
+    {
+      "file": "features\\chat\\ChatPrivacyService.ts",
+      "size": 14705,
+      "sizeKB": 14.36
+    },
+    {
+      "file": "components\\blockchain\\ConsentModal.tsx",
+      "size": 14695,
+      "sizeKB": 14.35
+    },
+    {
+      "file": "components\\animations\\EnhancedComponents.tsx",
+      "size": 14685,
+      "sizeKB": 14.34
+    },
+    {
+      "file": "components\\admin\\ModerationMetrics.tsx",
+      "size": 14667,
+      "sizeKB": 14.32
+    },
+    {
+      "file": "tests\\mobile.test.ts",
+      "size": 14666,
+      "sizeKB": 14.32
+    },
+    {
+      "file": "profiles\\shared\\MainProfileCard.tsx",
+      "size": 14658,
+      "sizeKB": 14.31
+    },
+    {
+      "file": "pages\\Privacy.tsx",
+      "size": 14581,
+      "sizeKB": 14.24
+    },
+    {
+      "file": "components\\accessibility\\AccessibilityAudit.tsx",
+      "size": 14194,
+      "sizeKB": 13.86
+    },
+    {
+      "file": "components\\forms\\ModeratorApplicationForm.tsx",
+      "size": 14099,
+      "sizeKB": 13.77
+    },
+    {
+      "file": "App.tsx",
+      "size": 14084,
+      "sizeKB": 13.75
+    },
+    {
+      "file": "components\\navigation\\ResponsiveNavigation.tsx",
+      "size": 13988,
+      "sizeKB": 13.66
+    },
+    {
+      "file": "components\\modals\\InstallAppModal.tsx",
+      "size": 13974,
+      "sizeKB": 13.65
+    },
+    {
+      "file": "features\\profile\\CoupleProfilesService.ts",
+      "size": 13612,
+      "sizeKB": 13.29
+    },
+    {
+      "file": "components\\gamification\\Gamification.tsx",
+      "size": 13552,
+      "sizeKB": 13.23
+    },
+    {
+      "file": "profiles\\shared\\ProfileAnalytics.tsx",
+      "size": 13508,
+      "sizeKB": 13.19
+    },
+    {
+      "file": "lib\\security\\fileValidator.ts",
+      "size": 13469,
+      "sizeKB": 13.15
+    },
+    {
+      "file": "services\\TestingService.ts",
+      "size": 13418,
+      "sizeKB": 13.1
+    },
+    {
+      "file": "tests\\AILayerService.test.ts",
+      "size": 13408,
+      "sizeKB": 13.09
+    },
+    {
+      "file": "tests\\unit\\AILayerService.test.ts",
+      "size": 13408,
+      "sizeKB": 13.09
+    },
+    {
+      "file": "services\\WebhookService.ts",
+      "size": 13385,
+      "sizeKB": 13.07
+    },
+    {
+      "file": "features\\profile\\useCoupleProfile.ts",
+      "size": 13344,
+      "sizeKB": 13.03
+    },
+    {
+      "file": "services\\CDNService.ts",
+      "size": 13316,
+      "sizeKB": 13
+    },
+    {
+      "file": "features\\chat\\useVideoChat.ts",
+      "size": 13237,
+      "sizeKB": 12.93
+    },
+    {
+      "file": "services\\NFTGalleryService.ts",
+      "size": 13166,
+      "sizeKB": 12.86
+    },
+    {
+      "file": "pages\\TokensPrivacy.tsx",
+      "size": 13142,
+      "sizeKB": 12.83
+    },
+    {
+      "file": "components\\mobile\\PWAManager.tsx",
+      "size": 13004,
+      "sizeKB": 12.7
+    },
+    {
+      "file": "tests\\roles.test.ts",
+      "size": 12994,
+      "sizeKB": 12.69
+    },
+    {
+      "file": "tests\\unit\\roles.test.ts",
+      "size": 12994,
+      "sizeKB": 12.69
+    },
+    {
+      "file": "components\\mobile\\TouchGestureManager.tsx",
+      "size": 12993,
+      "sizeKB": 12.69
+    },
+    {
+      "file": "pages\\Security.tsx",
+      "size": 12905,
+      "sizeKB": 12.6
+    },
+    {
+      "file": "profiles\\shared\\AnimatedProfileCard.tsx",
+      "size": 12850,
+      "sizeKB": 12.55
+    },
+    {
+      "file": "pages\\Donations.tsx",
+      "size": 12789,
+      "sizeKB": 12.49
+    },
+    {
+      "file": "lib\\requests.ts",
+      "size": 12755,
+      "sizeKB": 12.46
+    },
+    {
+      "file": "lib\\invitations.ts",
+      "size": 12748,
+      "sizeKB": 12.45
+    },
+    {
+      "file": "pages\\Support.tsx",
+      "size": 12703,
+      "sizeKB": 12.41
+    },
+    {
+      "file": "utils\\androidSecurity.ts",
+      "size": 12660,
+      "sizeKB": 12.36
+    },
+    {
+      "file": "profiles\\couple\\CoupleImageGallery.tsx",
+      "size": 12643,
+      "sizeKB": 12.35
+    },
+    {
+      "file": "services\\HistoricalMetricsService.ts",
+      "size": 12590,
+      "sizeKB": 12.29
+    },
+    {
+      "file": "services\\QueryOptimizationService.ts",
+      "size": 12577,
+      "sizeKB": 12.28
+    },
+    {
+      "file": "lib\\security\\dataEncryption.ts",
+      "size": 12522,
+      "sizeKB": 12.23
+    },
+    {
+      "file": "services\\AnalyticsService.ts",
+      "size": 12516,
+      "sizeKB": 12.22
+    },
+    {
+      "file": "lib\\analytics-metrics.ts",
+      "size": 12369,
+      "sizeKB": 12.08
+    },
+    {
+      "file": "components\\discover\\PreferenceSearch.tsx",
+      "size": 12360,
+      "sizeKB": 12.07
+    },
+    {
+      "file": "components\\ui\\EventCard.tsx",
+      "size": 12334,
+      "sizeKB": 12.04
+    },
+    {
+      "file": "components\\WelcomeModal.tsx",
+      "size": 12327,
+      "sizeKB": 12.04
+    },
+    {
+      "file": "pages\\Terms.tsx",
+      "size": 12324,
+      "sizeKB": 12.04
+    },
+    {
+      "file": "features\\profile\\ProfileReportService.ts",
+      "size": 12211,
+      "sizeKB": 11.92
+    },
+    {
+      "file": "demo\\demoData.ts",
+      "size": 12174,
+      "sizeKB": 11.89
+    },
+    {
+      "file": "components\\discover\\AdvancedFilters.tsx",
+      "size": 12137,
+      "sizeKB": 11.85
+    },
+    {
+      "file": "features\\auth\\useBiometricAuth.ts",
+      "size": 12110,
+      "sizeKB": 11.83
+    },
+    {
+      "file": "tests\\e2e\\cross-browser.spec.ts",
+      "size": 12058,
+      "sizeKB": 11.78
+    },
+    {
+      "file": "components\\stories\\StoryService.ts",
+      "size": 12049,
+      "sizeKB": 11.77
+    },
+    {
+      "file": "utils\\imageProcessing.ts",
+      "size": 12020,
+      "sizeKB": 11.74
+    },
+    {
+      "file": "components\\admin\\panels\\ReportsPanel.tsx",
+      "size": 12019,
+      "sizeKB": 11.74
+    },
+    {
+      "file": "components\\templates\\ChatTemplate.tsx",
+      "size": 11979,
+      "sizeKB": 11.7
+    },
+    {
+      "file": "profiles\\couple\\CouplePhotoSection.tsx",
+      "size": 11882,
+      "sizeKB": 11.6
+    },
+    {
+      "file": "components\\ui\\chart.tsx",
+      "size": 11869,
+      "sizeKB": 11.59
+    },
+    {
+      "file": "profiles\\shared\\ProfileReportService.test.ts",
+      "size": 11855,
+      "sizeKB": 11.58
+    },
+    {
+      "file": "components\\RequestCard.tsx",
+      "size": 11795,
+      "sizeKB": 11.52
+    },
+    {
+      "file": "pages\\Feed.tsx",
+      "size": 11768,
+      "sizeKB": 11.49
+    },
+    {
+      "file": "components\\tokens\\StakingModal.tsx",
+      "size": 11716,
+      "sizeKB": 11.44
+    },
+    {
+      "file": "profiles\\shared\\ProfileThemeShowcase.tsx",
+      "size": 11673,
+      "sizeKB": 11.4
+    },
+    {
+      "file": "services\\ApidogService.ts",
+      "size": 11659,
+      "sizeKB": 11.39
+    },
+    {
+      "file": "features\\profile\\useProfileTheme.ts",
+      "size": 11625,
+      "sizeKB": 11.35
+    },
+    {
+      "file": "components\\auth\\TermsModal.tsx",
+      "size": 11452,
+      "sizeKB": 11.18
+    },
+    {
+      "file": "hooks\\usePushNotifications.ts",
+      "size": 11439,
+      "sizeKB": 11.17
+    },
+    {
+      "file": "tests\\PyTorchScoringModel.test.ts",
+      "size": 11264,
+      "sizeKB": 11
+    },
+    {
+      "file": "tests\\unit\\PyTorchScoringModel.test.ts",
+      "size": 11264,
+      "sizeKB": 11
+    },
+    {
+      "file": "features\\chat\\useRealtimeChat.ts",
+      "size": 11203,
+      "sizeKB": 10.94
+    },
+    {
+      "file": "components\\images\\ImageGallery.tsx",
+      "size": 11200,
+      "sizeKB": 10.94
+    },
+    {
+      "file": "components\\admin\\DesktopNotificationSettings.tsx",
+      "size": 11071,
+      "sizeKB": 10.81
+    },
+    {
+      "file": "components\\notifications\\NotificationCenter.tsx",
+      "size": 11053,
+      "sizeKB": 10.79
+    },
+    {
+      "file": "components\\tokens\\TokenBalance.tsx",
+      "size": 11030,
+      "sizeKB": 10.77
+    },
+    {
+      "file": "components\\swipe\\SwipeCard.tsx",
+      "size": 10980,
+      "sizeKB": 10.72
+    },
+    {
+      "file": "components\\feedback\\UserFeedbackForm.tsx",
+      "size": 10952,
+      "sizeKB": 10.7
+    },
+    {
+      "file": "tests\\auth.test.ts",
+      "size": 10909,
+      "sizeKB": 10.65
+    },
+    {
+      "file": "services\\GoogleServices.ts",
+      "size": 10821,
+      "sizeKB": 10.57
+    },
+    {
+      "file": "pages\\NotFound.tsx",
+      "size": 10788,
+      "sizeKB": 10.54
+    },
+    {
+      "file": "tests\\TokenAnalyticsService.test.ts",
+      "size": 10740,
+      "sizeKB": 10.49
+    },
+    {
+      "file": "pages\\ChatInfo.tsx",
+      "size": 10733,
+      "sizeKB": 10.48
+    },
+    {
+      "file": "components\\auth\\ThemeInfoModal.tsx",
+      "size": 10721,
+      "sizeKB": 10.47
+    },
+    {
+      "file": "integrations\\supabase\\client.ts",
+      "size": 10712,
+      "sizeKB": 10.46
+    },
+    {
+      "file": "lib\\zod-schemas-extended.ts",
+      "size": 10692,
+      "sizeKB": 10.44
+    },
+    {
+      "file": "tests\\Chat.test.tsx",
+      "size": 10646,
+      "sizeKB": 10.4
+    },
+    {
+      "file": "components\\ui\\ChatBubble.tsx",
+      "size": 10644,
+      "sizeKB": 10.39
+    },
+    {
+      "file": "utils\\webVitals.ts",
+      "size": 10601,
+      "sizeKB": 10.35
+    },
+    {
+      "file": "profiles\\shared\\ProfileReportModal.tsx",
+      "size": 10597,
+      "sizeKB": 10.35
+    },
+    {
+      "file": "tests\\e2e\\images.spec.ts",
+      "size": 10595,
+      "sizeKB": 10.35
+    },
+    {
+      "file": "services\\ModerationMetricsService.ts",
+      "size": 10544,
+      "sizeKB": 10.3
+    },
+    {
+      "file": "components\\video\\VideoCallWindow.tsx",
+      "size": 10483,
+      "sizeKB": 10.24
+    },
+    {
+      "file": "profiles\\shared\\ProfileNavTabs.tsx",
+      "size": 10445,
+      "sizeKB": 10.2
+    },
+    {
+      "file": "components\\settings\\NotificationSettings.tsx",
+      "size": 10411,
+      "sizeKB": 10.17
+    },
+    {
+      "file": "components\\settings\\LocationSettings.tsx",
+      "size": 10389,
+      "sizeKB": 10.15
+    },
+    {
+      "file": "components\\security\\BiometricAuth.tsx",
+      "size": 10323,
+      "sizeKB": 10.08
+    },
+    {
+      "file": "components\\performance\\ImageOptimizer.tsx",
+      "size": 10310,
+      "sizeKB": 10.07
+    },
+    {
+      "file": "hooks\\useAdvancedModeration.ts",
+      "size": 10295,
+      "sizeKB": 10.05
+    },
+    {
+      "file": "components\\animations\\InteractiveAnimations.tsx",
+      "size": 10256,
+      "sizeKB": 10.02
+    },
+    {
+      "file": "hooks\\usePerformanceOptimization.ts",
+      "size": 10204,
+      "sizeKB": 9.96
+    },
+    {
+      "file": "hooks\\useGeolocation.ts",
+      "size": 10162,
+      "sizeKB": 9.92
+    },
+    {
+      "file": "components\\premium\\VIPEvents.tsx",
+      "size": 10151,
+      "sizeKB": 9.91
+    },
+    {
+      "file": "features\\clubs\\clubFlyerImageProcessing.ts",
+      "size": 10048,
+      "sizeKB": 9.81
+    },
+    {
+      "file": "lib\\app-config.ts",
+      "size": 10042,
+      "sizeKB": 9.81
+    },
+    {
+      "file": "components\\stories\\StoryReportDialog.tsx",
+      "size": 9975,
+      "sizeKB": 9.74
+    },
+    {
+      "file": "components\\performance\\CodeSplittingManager.tsx",
+      "size": 9878,
+      "sizeKB": 9.65
+    },
+    {
+      "file": "lib\\simpleChatService.ts",
+      "size": 9812,
+      "sizeKB": 9.58
+    },
+    {
+      "file": "tests\\integration\\supabase-integration.test.ts",
+      "size": 9777,
+      "sizeKB": 9.55
+    },
+    {
+      "file": "tests\\supabase-integration.test.ts",
+      "size": 9777,
+      "sizeKB": 9.55
+    },
+    {
+      "file": "profiles\\couple\\CoupleImageUpload.tsx",
+      "size": 9775,
+      "sizeKB": 9.55
+    },
+    {
+      "file": "components\\stories\\CreateStory.tsx",
+      "size": 9740,
+      "sizeKB": 9.51
+    },
+    {
+      "file": "tests\\unit\\androidSecurity.test.ts",
+      "size": 9709,
+      "sizeKB": 9.48
+    },
+    {
+      "file": "components\\security\\ProtectedMedia.tsx",
+      "size": 9687,
+      "sizeKB": 9.46
+    },
+    {
+      "file": "lib\\media.ts",
+      "size": 9644,
+      "sizeKB": 9.42
+    },
+    {
+      "file": "profiles\\shared\\profiles.test.ts",
+      "size": 9597,
+      "sizeKB": 9.37
+    },
+    {
+      "file": "tests\\e2e\\accessibility.spec.ts",
+      "size": 9555,
+      "sizeKB": 9.33
+    },
+    {
+      "file": "components\\ui\\TermsModal.tsx",
+      "size": 9552,
+      "sizeKB": 9.33
+    },
+    {
+      "file": "components\\auth\\EmailVerification.tsx",
+      "size": 9549,
+      "sizeKB": 9.33
+    },
+    {
+      "file": "pages\\Info.tsx",
+      "size": 9510,
+      "sizeKB": 9.29
+    },
+    {
+      "file": "components\\chat\\ChatWithLocation.tsx",
+      "size": 9492,
+      "sizeKB": 9.27
+    },
+    {
+      "file": "services\\DesktopNotificationService.ts",
+      "size": 9412,
+      "sizeKB": 9.19
+    },
+    {
+      "file": "tests\\localStorage-migration.test.ts",
+      "size": 9383,
+      "sizeKB": 9.16
+    },
+    {
+      "file": "tests\\unit\\localStorage-migration.test.ts",
+      "size": 9383,
+      "sizeKB": 9.16
+    },
+    {
+      "file": "tests\\components\\Chat.test.tsx",
+      "size": 9342,
+      "sizeKB": 9.12
+    },
+    {
+      "file": "tests\\unit\\zod-validation.test.ts",
+      "size": 9295,
+      "sizeKB": 9.08
+    },
+    {
+      "file": "tests\\zod-validation.test.ts",
+      "size": 9295,
+      "sizeKB": 9.08
+    },
+    {
+      "file": "components\\templates\\ButtonEffectsTemplate.tsx",
+      "size": 9288,
+      "sizeKB": 9.07
+    },
+    {
+      "file": "components\\settings\\BiometricSettings.tsx",
+      "size": 9262,
+      "sizeKB": 9.04
+    },
+    {
+      "file": "services\\IntegrationTester.ts",
+      "size": 9218,
+      "sizeKB": 9
+    },
+    {
+      "file": "features\\profile\\coupleProfiles.ts",
+      "size": 9186,
+      "sizeKB": 8.97
+    },
+    {
+      "file": "profiles\\shared\\ProfileNavigation.tsx",
+      "size": 9173,
+      "sizeKB": 8.96
+    },
+    {
+      "file": "hooks\\useWorldID.ts",
+      "size": 9165,
+      "sizeKB": 8.95
+    },
+    {
+      "file": "pages\\Dashboard.tsx",
+      "size": 9165,
+      "sizeKB": 8.95
+    },
+    {
+      "file": "services\\ai\\models\\PyTorchScoringModel.ts",
+      "size": 9145,
+      "sizeKB": 8.93
+    },
+    {
+      "file": "components\\animations\\AnimationProvider.tsx",
+      "size": 9127,
+      "sizeKB": 8.91
+    },
+    {
+      "file": "services\\events\\VirtualEventsService.ts",
+      "size": 9118,
+      "sizeKB": 8.9
+    },
+    {
+      "file": "profiles\\shared\\ProfileCard.tsx",
+      "size": 9095,
+      "sizeKB": 8.88
+    },
+    {
+      "file": "profiles\\couple\\useCouplePhotos.ts",
+      "size": 9075,
+      "sizeKB": 8.86
+    },
+    {
+      "file": "tests\\unit\\ReportService.test.ts",
+      "size": 9035,
+      "sizeKB": 8.82
+    },
+    {
+      "file": "features\\profile\\coupleProfilesCompatibility.ts",
+      "size": 8899,
+      "sizeKB": 8.69
+    },
+    {
+      "file": "lib\\images.ts",
+      "size": 8886,
+      "sizeKB": 8.68
+    },
+    {
+      "file": "components\\blockchain\\NFTMintButton.tsx",
+      "size": 8873,
+      "sizeKB": 8.67
+    },
+    {
+      "file": "components\\animations\\AnimationSettings.tsx",
+      "size": 8863,
+      "sizeKB": 8.66
+    },
+    {
+      "file": "hooks\\useInterests.ts",
+      "size": 8861,
+      "sizeKB": 8.65
+    },
+    {
+      "file": "profiles\\shared\\DiscoverProfileCard.tsx",
+      "size": 8792,
+      "sizeKB": 8.59
+    },
+    {
+      "file": "hooks\\useAdvancedAnalytics.ts",
+      "size": 8674,
+      "sizeKB": 8.47
+    },
+    {
+      "file": "components\\swipe\\ReportDialog.tsx",
+      "size": 8669,
+      "sizeKB": 8.47
+    },
+    {
+      "file": "tests\\e2e\\requests.spec.ts",
+      "size": 8618,
+      "sizeKB": 8.42
+    },
+    {
+      "file": "components\\notifications\\PushNotificationSettings.tsx",
+      "size": 8474,
+      "sizeKB": 8.28
+    },
+    {
+      "file": "pages\\StoriesInfo.tsx",
+      "size": 8382,
+      "sizeKB": 8.19
+    },
+    {
+      "file": "hooks\\useScreenshotProtection.ts",
+      "size": 8343,
+      "sizeKB": 8.15
+    },
+    {
+      "file": "services\\PushNotificationService.ts",
+      "size": 8342,
+      "sizeKB": 8.15
+    },
+    {
+      "file": "utils\\reportExport.ts",
+      "size": 8339,
+      "sizeKB": 8.14
+    },
+    {
+      "file": "components\\ui\\FilterDemoCard.tsx",
+      "size": 8335,
+      "sizeKB": 8.14
+    },
+    {
+      "file": "lib\\security\\rateLimiter.ts",
+      "size": 8323,
+      "sizeKB": 8.13
+    },
+    {
+      "file": "components\\auth\\NicknameValidator.tsx",
+      "size": 8289,
+      "sizeKB": 8.09
+    },
+    {
+      "file": "components\\profile\\PrivateImageGallery.tsx",
+      "size": 8274,
+      "sizeKB": 8.08
+    },
+    {
+      "file": "lib\\secureMediaService.ts",
+      "size": 8261,
+      "sizeKB": 8.07
+    },
+    {
+      "file": "components\\Footer.tsx",
+      "size": 8255,
+      "sizeKB": 8.06
+    },
+    {
+      "file": "components\\forms\\EmailValidationForm.tsx",
+      "size": 8246,
+      "sizeKB": 8.05
+    },
+    {
+      "file": "components\\ui\\menubar.tsx",
+      "size": 8212,
+      "sizeKB": 8.02
+    },
+    {
+      "file": "components\\AdminNav.tsx",
+      "size": 8190,
+      "sizeKB": 8
+    },
+    {
+      "file": "components\\animations\\GlobalAnimations.tsx",
+      "size": 8173,
+      "sizeKB": 7.98
+    },
+    {
+      "file": "utils\\wallets.ts",
+      "size": 8152,
+      "sizeKB": 7.96
+    },
+    {
+      "file": "services\\geo\\S2Service.ts",
+      "size": 8139,
+      "sizeKB": 7.95
+    },
+    {
+      "file": "profiles\\couple\\CoupleProfileHeader.tsx",
+      "size": 7947,
+      "sizeKB": 7.76
+    },
+    {
+      "file": "components\\SendRequestDialog.tsx",
+      "size": 7909,
+      "sizeKB": 7.72
+    },
+    {
+      "file": "components\\security\\DynamicWatermark.tsx",
+      "size": 7873,
+      "sizeKB": 7.69
+    },
+    {
+      "file": "lib\\zod-schemas.ts",
+      "size": 7869,
+      "sizeKB": 7.68
+    },
+    {
+      "file": "components\\profile\\ImageUpload.tsx",
+      "size": 7802,
+      "sizeKB": 7.62
+    },
+    {
+      "file": "services\\notifications\\OneSignalService.ts",
+      "size": 7782,
+      "sizeKB": 7.6
+    },
+    {
+      "file": "profiles\\single\\EditProfileSingle.test.tsx",
+      "size": 7775,
+      "sizeKB": 7.59
+    },
+    {
+      "file": "services\\RateLimitService.ts",
+      "size": 7734,
+      "sizeKB": 7.55
+    },
+    {
+      "file": "profiles\\shared\\ProfileSettings.tsx",
+      "size": 7702,
+      "sizeKB": 7.52
+    },
+    {
+      "file": "components\\performance\\LazyComponentLoader.tsx",
+      "size": 7699,
+      "sizeKB": 7.52
+    },
+    {
+      "file": "tests\\e2e\\admin-login.spec.ts",
+      "size": 7625,
+      "sizeKB": 7.45
+    },
+    {
+      "file": "config\\datadog-rum.config.ts",
+      "size": 7587,
+      "sizeKB": 7.41
+    },
+    {
+      "file": "main.tsx",
+      "size": 7560,
+      "sizeKB": 7.38
+    },
+    {
+      "file": "tests\\unit\\TokenAnalyticsService.test.ts",
+      "size": 7510,
+      "sizeKB": 7.33
+    },
+    {
+      "file": "components\\ui\\dropdown-menu.tsx",
+      "size": 7497,
+      "sizeKB": 7.32
+    },
+    {
+      "file": "components\\modals\\EventsModal.tsx",
+      "size": 7496,
+      "sizeKB": 7.32
+    },
+    {
+      "file": "services\\nft\\NFTVerificationService.ts",
+      "size": 7474,
+      "sizeKB": 7.3
+    },
+    {
+      "file": "components\\BetaBanner.tsx",
+      "size": 7456,
+      "sizeKB": 7.28
+    },
+    {
+      "file": "components\\ui\\SkeletonComponents.tsx",
+      "size": 7450,
+      "sizeKB": 7.28
+    },
+    {
+      "file": "components\\ui\\context-menu.tsx",
+      "size": 7448,
+      "sizeKB": 7.27
+    },
+    {
+      "file": "tests\\mocks\\supabase.ts",
+      "size": 7440,
+      "sizeKB": 7.27
+    },
+    {
+      "file": "components\\ui\\ThemeSelector.tsx",
+      "size": 7409,
+      "sizeKB": 7.24
+    },
+    {
+      "file": "components\\discover\\LocationSelector.tsx",
+      "size": 7402,
+      "sizeKB": 7.23
+    },
+    {
+      "file": "features\\profile\\useProfileCache.ts",
+      "size": 7382,
+      "sizeKB": 7.21
+    },
+    {
+      "file": "components\\chat\\SummaryModal.tsx",
+      "size": 7341,
+      "sizeKB": 7.17
+    },
+    {
+      "file": "components\\premium\\PricingPlans.tsx",
+      "size": 7288,
+      "sizeKB": 7.12
+    },
+    {
+      "file": "components\\ui\\carousel.tsx",
+      "size": 7247,
+      "sizeKB": 7.08
+    },
+    {
+      "file": "utils\\safeLocalStorage.ts",
+      "size": 7221,
+      "sizeKB": 7.05
+    },
+    {
+      "file": "lib\\errorHandling.ts",
+      "size": 7213,
+      "sizeKB": 7.04
+    },
+    {
+      "file": "tests\\e2e\\critical-flows.spec.ts",
+      "size": 7213,
+      "sizeKB": 7.04
+    },
+    {
+      "file": "hooks\\useAdvancedCache.ts",
+      "size": 7212,
+      "sizeKB": 7.04
+    },
+    {
+      "file": "tests\\realtime-chat.test.ts",
+      "size": 7185,
+      "sizeKB": 7.02
+    },
+    {
+      "file": "services\\reportAIClassification.ts",
+      "size": 7154,
+      "sizeKB": 6.99
+    },
+    {
+      "file": "tests\\e2e\\auth-flow.spec.ts",
+      "size": 7144,
+      "sizeKB": 6.98
+    },
+    {
+      "file": "utils\\imageOptimization.ts",
+      "size": 7030,
+      "sizeKB": 6.87
+    },
+    {
+      "file": "tests\\PushNotificationService.test.ts",
+      "size": 7009,
+      "sizeKB": 6.84
+    },
+    {
+      "file": "tests\\unit\\PushNotificationService.test.ts",
+      "size": 7009,
+      "sizeKB": 6.84
+    },
+    {
+      "file": "lib\\tokenPremium.ts",
+      "size": 6932,
+      "sizeKB": 6.77
+    },
+    {
+      "file": "components\\accessibility\\AccessibilityProvider.tsx",
+      "size": 6921,
+      "sizeKB": 6.76
+    },
+    {
+      "file": "components\\auth\\WorldIDButton.tsx",
+      "size": 6920,
+      "sizeKB": 6.76
+    },
+    {
+      "file": "tests\\unit\\mobile.test.ts",
+      "size": 6894,
+      "sizeKB": 6.73
+    },
+    {
+      "file": "tests\\integration\\send-email.test.ts",
+      "size": 6842,
+      "sizeKB": 6.68
+    },
+    {
+      "file": "tests\\send-email.test.ts",
+      "size": 6842,
+      "sizeKB": 6.68
+    },
+    {
+      "file": "components\\ui\\MobileOptimizer.tsx",
+      "size": 6799,
+      "sizeKB": 6.64
+    },
+    {
+      "file": "utils\\preloading.ts",
+      "size": 6774,
+      "sizeKB": 6.62
+    },
+    {
+      "file": "services\\ai\\EmotionalAIService.ts",
+      "size": 6728,
+      "sizeKB": 6.57
+    },
+    {
+      "file": "components\\chat\\ChatContainer.tsx",
+      "size": 6705,
+      "sizeKB": 6.55
+    },
+    {
+      "file": "app\\(admin)\\AdminAnalytics.tsx",
+      "size": 6678,
+      "sizeKB": 6.52
+    },
+    {
+      "file": "tests\\e2e\\registration.spec.ts",
+      "size": 6669,
+      "sizeKB": 6.51
+    },
+    {
+      "file": "demo\\RealProvider.tsx",
+      "size": 6659,
+      "sizeKB": 6.5
+    },
+    {
+      "file": "tests\\unit\\auth.test.ts",
+      "size": 6634,
+      "sizeKB": 6.48
+    },
+    {
+      "file": "components\\animations\\PageTransitions.tsx",
+      "size": 6618,
+      "sizeKB": 6.46
+    },
+    {
+      "file": "components\\modals\\FeatureModal.tsx",
+      "size": 6590,
+      "sizeKB": 6.44
+    },
+    {
+      "file": "services\\digitalFingerprint.ts",
+      "size": 6562,
+      "sizeKB": 6.41
+    },
+    {
+      "file": "components\\ui\\ThemeProvider.tsx",
+      "size": 6527,
+      "sizeKB": 6.37
+    },
+    {
+      "file": "components\\android\\AndroidOptimizedApp.tsx",
+      "size": 6523,
+      "sizeKB": 6.37
+    },
+    {
+      "file": "profiles\\shared\\ProfileFilters.tsx",
+      "size": 6521,
+      "sizeKB": 6.37
+    },
+    {
+      "file": "utils\\dynamicImports.ts",
+      "size": 6476,
+      "sizeKB": 6.32
+    },
+    {
+      "file": "lib\\storage.ts",
+      "size": 6404,
+      "sizeKB": 6.25
+    },
+    {
+      "file": "hooks\\useRealtimeNotifications.ts",
+      "size": 6399,
+      "sizeKB": 6.25
+    },
+    {
+      "file": "lib\\redis-cache.ts",
+      "size": 6375,
+      "sizeKB": 6.23
+    },
+    {
+      "file": "components\\auth\\EmailValidation.tsx",
+      "size": 6305,
+      "sizeKB": 6.16
+    },
+    {
+      "file": "components\\premium\\VirtualGifts.tsx",
+      "size": 6304,
+      "sizeKB": 6.16
+    },
+    {
+      "file": "lib\\tokens.ts",
+      "size": 6302,
+      "sizeKB": 6.15
+    },
+    {
+      "file": "components\\Navigation.tsx",
+      "size": 6288,
+      "sizeKB": 6.14
+    },
+    {
+      "file": "components\\chat\\ConsentIndicator.tsx",
+      "size": 6254,
+      "sizeKB": 6.11
+    },
+    {
+      "file": "config\\sentry.config.ts",
+      "size": 6231,
+      "sizeKB": 6.08
+    },
+    {
+      "file": "components\\premium\\PremiumFeatures.tsx",
+      "size": 6210,
+      "sizeKB": 6.06
+    },
+    {
+      "file": "components\\invitations\\InvitationDialog.tsx",
+      "size": 6200,
+      "sizeKB": 6.05
+    },
+    {
+      "file": "hooks\\useSupabaseTheme.ts",
+      "size": 6174,
+      "sizeKB": 6.03
+    },
+    {
+      "file": "profiles\\single\\ProfileSingle.test.tsx",
+      "size": 6089,
+      "sizeKB": 5.95
+    },
+    {
+      "file": "services\\permanentBan.ts",
+      "size": 6044,
+      "sizeKB": 5.9
+    },
+    {
+      "file": "profiles\\shared\\ProfileLoadingScreen.tsx",
+      "size": 6020,
+      "sizeKB": 5.88
+    },
+    {
+      "file": "profiles\\couple\\CoupleCard.tsx",
+      "size": 5977,
+      "sizeKB": 5.84
+    },
+    {
+      "file": "services\\ai\\PredictiveGraphMatchingService.ts",
+      "size": 5956,
+      "sizeKB": 5.82
+    },
+    {
+      "file": "components\\modals\\CompatibilityModal.tsx",
+      "size": 5923,
+      "sizeKB": 5.78
+    },
+    {
+      "file": "components\\LoginLoadingScreen.tsx",
+      "size": 5899,
+      "sizeKB": 5.76
+    },
+    {
+      "file": "pages\\Blog.tsx",
+      "size": 5876,
+      "sizeKB": 5.74
+    },
+    {
+      "file": "components\\settings\\ExplicitInterestsEditor.tsx",
+      "size": 5839,
+      "sizeKB": 5.7
+    },
+    {
+      "file": "tests\\components\\TokenDashboard.test.tsx",
+      "size": 5796,
+      "sizeKB": 5.66
+    },
+    {
+      "file": "tests\\TokenDashboard.test.tsx",
+      "size": 5796,
+      "sizeKB": 5.66
+    },
+    {
+      "file": "lib\\logger.ts",
+      "size": 5784,
+      "sizeKB": 5.65
+    },
+    {
+      "file": "components\\ui\\select.tsx",
+      "size": 5777,
+      "sizeKB": 5.64
+    },
+    {
+      "file": "components\\ui\\AnimatedLoader.tsx",
+      "size": 5738,
+      "sizeKB": 5.6
+    },
+    {
+      "file": "components\\ui\\AnimatedTabs.tsx",
+      "size": 5709,
+      "sizeKB": 5.58
+    },
+    {
+      "file": "tests\\invitations.test.ts",
+      "size": 5604,
+      "sizeKB": 5.47
+    },
+    {
+      "file": "tests\\unit\\invitations.test.ts",
+      "size": 5604,
+      "sizeKB": 5.47
+    },
+    {
+      "file": "utils\\validation.ts",
+      "size": 5568,
+      "sizeKB": 5.44
+    },
+    {
+      "file": "lib\\imageService.ts",
+      "size": 5556,
+      "sizeKB": 5.43
+    },
+    {
+      "file": "profiles\\shared\\ProfileReportsPanel.test.tsx",
+      "size": 5513,
+      "sizeKB": 5.38
+    },
+    {
+      "file": "components\\HeroSection.tsx",
+      "size": 5509,
+      "sizeKB": 5.38
+    },
+    {
+      "file": "components\\ErrorBoundary.tsx",
+      "size": 5502,
+      "sizeKB": 5.37
+    },
+    {
+      "file": "lib\\features.ts",
+      "size": 5478,
+      "sizeKB": 5.35
+    },
+    {
+      "file": "utils\\testDebugger.ts",
+      "size": 5452,
+      "sizeKB": 5.32
+    },
+    {
+      "file": "utils\\showEnvInfo.ts",
+      "size": 5411,
+      "sizeKB": 5.28
+    },
+    {
+      "file": "components\\android\\LazyImageLoader.tsx",
+      "size": 5370,
+      "sizeKB": 5.24
+    },
+    {
+      "file": "tests\\e2e\\realtime-chat.spec.ts",
+      "size": 5342,
+      "sizeKB": 5.22
+    },
+    {
+      "file": "tests\\unit\\webVitals.test.ts",
+      "size": 5285,
+      "sizeKB": 5.16
+    },
+    {
+      "file": "components\\accessibility\\ContrastFixer.tsx",
+      "size": 5272,
+      "sizeKB": 5.15
+    },
+    {
+      "file": "components\\LoadingScreen.tsx",
+      "size": 5233,
+      "sizeKB": 5.11
+    },
+    {
+      "file": "components\\modals\\PremiumModal.tsx",
+      "size": 5219,
+      "sizeKB": 5.1
+    },
+    {
+      "file": "tests\\mocks\\performance.ts",
+      "size": 5196,
+      "sizeKB": 5.07
+    },
+    {
+      "file": "components\\ui\\navigation-menu.tsx",
+      "size": 5178,
+      "sizeKB": 5.06
+    },
+    {
+      "file": "tests\\integration\\rls-policies.test.ts",
+      "size": 5173,
+      "sizeKB": 5.05
+    },
+    {
+      "file": "tests\\rls-policies.test.ts",
+      "size": 5173,
+      "sizeKB": 5.05
+    },
+    {
+      "file": "components\\android\\AndroidThemeProvider.tsx",
+      "size": 5164,
+      "sizeKB": 5.04
+    },
+    {
+      "file": "examples\\hcaptcha-example.tsx",
+      "size": 5075,
+      "sizeKB": 4.96
+    },
+    {
+      "file": "components\\ui\\command.tsx",
+      "size": 5070,
+      "sizeKB": 4.95
+    },
+    {
+      "file": "profiles\\shared\\ShareProfile.tsx",
+      "size": 5055,
+      "sizeKB": 4.94
+    },
+    {
+      "file": "services\\WalletProtectionService.ts",
+      "size": 5037,
+      "sizeKB": 4.92
+    },
+    {
+      "file": "utils\\safeWalletInit.ts",
+      "size": 5036,
+      "sizeKB": 4.92
+    },
+    {
+      "file": "components\\admin\\ExportButton.tsx",
+      "size": 5010,
+      "sizeKB": 4.89
+    },
+    {
+      "file": "components\\profile\\PrivateImageRequest.tsx",
+      "size": 5002,
+      "sizeKB": 4.88
+    },
+    {
+      "file": "components\\ui\\toast.tsx",
+      "size": 4976,
+      "sizeKB": 4.86
+    },
+    {
+      "file": "tests\\unit\\realtime-chat.test.ts",
+      "size": 4962,
+      "sizeKB": 4.85
+    },
+    {
+      "file": "tests\\auth.e2e.test.ts",
+      "size": 4939,
+      "sizeKB": 4.82
+    },
+    {
+      "file": "tests\\e2e\\auth.e2e.test.ts",
+      "size": 4939,
+      "sizeKB": 4.82
+    },
+    {
+      "file": "components\\HCaptchaWidget.tsx",
+      "size": 4894,
+      "sizeKB": 4.78
+    },
+    {
+      "file": "components\\chat\\ChatInput.tsx",
+      "size": 4871,
+      "sizeKB": 4.76
+    },
+    {
+      "file": "config\\posthog.config.ts",
+      "size": 4867,
+      "sizeKB": 4.75
+    },
+    {
+      "file": "components\\ui\\AccessibilityEnhancer.tsx",
+      "size": 4835,
+      "sizeKB": 4.72
+    },
+    {
+      "file": "tests\\emailService.test.ts",
+      "size": 4770,
+      "sizeKB": 4.66
+    },
+    {
+      "file": "tests\\unit\\emailService.test.ts",
+      "size": 4770,
+      "sizeKB": 4.66
+    },
+    {
+      "file": "lib\\lifestyle-interests.ts",
+      "size": 4735,
+      "sizeKB": 4.62
+    },
+    {
+      "file": "components\\chat\\MessageList.tsx",
+      "size": 4673,
+      "sizeKB": 4.56
+    },
+    {
+      "file": "profiles\\single\\SingleCard.tsx",
+      "size": 4650,
+      "sizeKB": 4.54
+    },
+    {
+      "file": "profiles\\shared\\ProfileReportButton.tsx",
+      "size": 4594,
+      "sizeKB": 4.49
+    },
+    {
+      "file": "lib\\supabase-logger.ts",
+      "size": 4584,
+      "sizeKB": 4.48
+    },
+    {
+      "file": "components\\ui\\alert-dialog.tsx",
+      "size": 4559,
+      "sizeKB": 4.45
+    },
+    {
+      "file": "utils\\reactFallbacks.ts",
+      "size": 4547,
+      "sizeKB": 4.44
+    },
+    {
+      "file": "config\\demo-production.ts",
+      "size": 4538,
+      "sizeKB": 4.43
+    },
+    {
+      "file": "lib\\matching.ts",
+      "size": 4516,
+      "sizeKB": 4.41
+    },
+    {
+      "file": "tests\\matching.test.ts",
+      "size": 4515,
+      "sizeKB": 4.41
+    },
+    {
+      "file": "tests\\unit\\matching.test.ts",
+      "size": 4515,
+      "sizeKB": 4.41
+    },
+    {
+      "file": "types\\index.ts",
+      "size": 4487,
+      "sizeKB": 4.38
+    },
+    {
+      "file": "components\\modals\\SuperLikesModal.tsx",
+      "size": 4455,
+      "sizeKB": 4.35
+    },
+    {
+      "file": "components\\social\\GroupCard.tsx",
+      "size": 4437,
+      "sizeKB": 4.33
+    },
+    {
+      "file": "components\\ui\\sheet.tsx",
+      "size": 4385,
+      "sizeKB": 4.28
+    },
+    {
+      "file": "tests\\setup.ts",
+      "size": 4379,
+      "sizeKB": 4.28
+    },
+    {
+      "file": "lib\\visual-validation.ts",
+      "size": 4315,
+      "sizeKB": 4.21
+    },
+    {
+      "file": "components\\ui\\form.tsx",
+      "size": 4265,
+      "sizeKB": 4.17
+    },
+    {
+      "file": "utils\\lazyComponents.ts",
+      "size": 4265,
+      "sizeKB": 4.17
+    },
+    {
+      "file": "services\\galleryCommission.ts",
+      "size": 4254,
+      "sizeKB": 4.15
+    },
+    {
+      "file": "services\\VideoChatService.ts",
+      "size": 4244,
+      "sizeKB": 4.14
+    },
+    {
+      "file": "components\\ui\\VisualHierarchy.tsx",
+      "size": 4223,
+      "sizeKB": 4.12
+    },
+    {
+      "file": "hooks\\useToast.ts",
+      "size": 4147,
+      "sizeKB": 4.05
+    },
+    {
+      "file": "hooks\\useConsentVerification.ts",
+      "size": 4126,
+      "sizeKB": 4.03
+    },
+    {
+      "file": "profiles\\shared\\ProfileGrid.tsx",
+      "size": 4072,
+      "sizeKB": 3.98
+    },
+    {
+      "file": "hooks\\usePersistedState.ts",
+      "size": 4041,
+      "sizeKB": 3.95
+    },
+    {
+      "file": "shared\\ui\\Modal.tsx",
+      "size": 3973,
+      "sizeKB": 3.88
+    },
+    {
+      "file": "components\\ThemeModal.tsx",
+      "size": 3964,
+      "sizeKB": 3.87
+    },
+    {
+      "file": "lib\\infoCards.ts",
+      "size": 3928,
+      "sizeKB": 3.84
+    },
+    {
+      "file": "components\\chat\\ChatList.tsx",
+      "size": 3903,
+      "sizeKB": 3.81
+    },
+    {
+      "file": "services\\moderatorTimer.ts",
+      "size": 3871,
+      "sizeKB": 3.78
+    },
+    {
+      "file": "tests\\unit\\useToast.test.ts",
+      "size": 3853,
+      "sizeKB": 3.76
+    },
+    {
+      "file": "types\\blockchain.ts",
+      "size": 3842,
+      "sizeKB": 3.75
+    },
+    {
+      "file": "utils\\emailService.ts",
+      "size": 3811,
+      "sizeKB": 3.72
+    },
+    {
+      "file": "tests\\PerformanceMonitoringService.test.ts",
+      "size": 3746,
+      "sizeKB": 3.66
+    },
+    {
+      "file": "tests\\unit\\PerformanceMonitoringService.test.ts",
+      "size": 3746,
+      "sizeKB": 3.66
+    },
+    {
+      "file": "utils\\platformDetection.ts",
+      "size": 3725,
+      "sizeKB": 3.64
+    },
+    {
+      "file": "lib\\validations\\moderator.ts",
+      "size": 3696,
+      "sizeKB": 3.61
+    },
+    {
+      "file": "components\\ui\\OptimizedImage.tsx",
+      "size": 3690,
+      "sizeKB": 3.6
+    },
+    {
+      "file": "components\\ui\\ThemeToggle.tsx",
+      "size": 3574,
+      "sizeKB": 3.49
+    },
+    {
+      "file": "components\\ui\\GlassCard.tsx",
+      "size": 3550,
+      "sizeKB": 3.47
+    },
+    {
+      "file": "utils\\walletProtection.ts",
+      "size": 3518,
+      "sizeKB": 3.44
+    },
+    {
+      "file": "shared\\ui\\Button.tsx",
+      "size": 3515,
+      "sizeKB": 3.43
+    },
+    {
+      "file": "components\\ui\\UnifiedInput.tsx",
+      "size": 3499,
+      "sizeKB": 3.42
+    },
+    {
+      "file": "profiles\\shared\\profile-management.spec.ts",
+      "size": 3405,
+      "sizeKB": 3.33
+    },
+    {
+      "file": "components\\modals\\ActionButtonsModal.tsx",
+      "size": 3325,
+      "sizeKB": 3.25
+    },
+    {
+      "file": "components\\ui\\UnifiedTabs.tsx",
+      "size": 3293,
+      "sizeKB": 3.22
+    },
+    {
+      "file": "tests\\e2e\\navigation.spec.ts",
+      "size": 3274,
+      "sizeKB": 3.2
+    },
+    {
+      "file": "components\\ui\\FloatingElements.tsx",
+      "size": 3246,
+      "sizeKB": 3.17
+    },
+    {
+      "file": "components\\ui\\UnifiedModal.tsx",
+      "size": 3160,
+      "sizeKB": 3.09
+    },
+    {
+      "file": "components\\ui\\drawer.tsx",
+      "size": 3127,
+      "sizeKB": 3.05
+    },
+    {
+      "file": "components\\discover\\DiscoverSidebar.tsx",
+      "size": 3108,
+      "sizeKB": 3.04
+    },
+    {
+      "file": "utils\\hcaptcha-verify.ts",
+      "size": 3096,
+      "sizeKB": 3.02
+    },
+    {
+      "file": "types\\global.d.ts",
+      "size": 3093,
+      "sizeKB": 3.02
+    },
+    {
+      "file": "components\\auth\\InterestsSelector.tsx",
+      "size": 3070,
+      "sizeKB": 3
+    },
+    {
+      "file": "components\\ui\\InfoCard.tsx",
+      "size": 3048,
+      "sizeKB": 2.98
+    },
+    {
+      "file": "lib\\roles.ts",
+      "size": 3011,
+      "sizeKB": 2.94
+    },
+    {
+      "file": "components\\ui\\LazyImage.tsx",
+      "size": 2992,
+      "sizeKB": 2.92
+    },
+    {
+      "file": "utils\\emailValidation.ts",
+      "size": 2962,
+      "sizeKB": 2.89
+    },
+    {
+      "file": "components\\ui\\ResponsiveContainer.tsx",
+      "size": 2960,
+      "sizeKB": 2.89
+    },
+    {
+      "file": "components\\DecorativeHearts.tsx",
+      "size": 2932,
+      "sizeKB": 2.86
+    },
+    {
+      "file": "tests\\webVitals.test.ts",
+      "size": 2904,
+      "sizeKB": 2.84
+    },
+    {
+      "file": "components\\ui\\table.tsx",
+      "size": 2886,
+      "sizeKB": 2.82
+    },
+    {
+      "file": "components\\ui\\pagination.tsx",
+      "size": 2868,
+      "sizeKB": 2.8
+    },
+    {
+      "file": "hooks\\ai\\useModelLoader.ts",
+      "size": 2863,
+      "sizeKB": 2.8
+    },
+    {
+      "file": "components\\ui\\breadcrumb.tsx",
+      "size": 2820,
+      "sizeKB": 2.75
+    },
+    {
+      "file": "components\\ui\\AnimatedButton.tsx",
+      "size": 2810,
+      "sizeKB": 2.74
+    },
+    {
+      "file": "components\\ui\\UnifiedButton.tsx",
+      "size": 2797,
+      "sizeKB": 2.73
+    },
+    {
+      "file": "types\\supabase-helpers.ts",
+      "size": 2764,
+      "sizeKB": 2.7
+    },
+    {
+      "file": "components\\ui\\FeatureCards.tsx",
+      "size": 2743,
+      "sizeKB": 2.68
+    },
+    {
+      "file": "utils\\tiktokShare.ts",
+      "size": 2733,
+      "sizeKB": 2.67
+    },
+    {
+      "file": "demo\\DemoProvider.tsx",
+      "size": 2728,
+      "sizeKB": 2.66
+    },
+    {
+      "file": "components\\discover\\MatchScore.tsx",
+      "size": 2679,
+      "sizeKB": 2.62
+    },
+    {
+      "file": "components\\chat\\SummaryButton.tsx",
+      "size": 2671,
+      "sizeKB": 2.61
+    },
+    {
+      "file": "components\\ui\\calendar.tsx",
+      "size": 2665,
+      "sizeKB": 2.6
+    },
+    {
+      "file": "lib\\storage-manager.ts",
+      "size": 2609,
+      "sizeKB": 2.55
+    },
+    {
+      "file": "tests\\mocks\\tensorflow.ts",
+      "size": 2580,
+      "sizeKB": 2.52
+    },
+    {
+      "file": "components\\auth\\AdminRoute.tsx",
+      "size": 2573,
+      "sizeKB": 2.51
+    },
+    {
+      "file": "components\\modals\\ComingSoonModal.tsx",
+      "size": 2546,
+      "sizeKB": 2.49
+    },
+    {
+      "file": "components\\ui\\ResponsiveGrid.tsx",
+      "size": 2534,
+      "sizeKB": 2.47
+    },
+    {
+      "file": "components\\ui\\EnhancedNavigation.tsx",
+      "size": 2533,
+      "sizeKB": 2.47
+    },
+    {
+      "file": "components\\ui\\UnifiedCard.tsx",
+      "size": 2518,
+      "sizeKB": 2.46
+    },
+    {
+      "file": "hooks\\useOnlineStatus.ts",
+      "size": 2516,
+      "sizeKB": 2.46
+    },
+    {
+      "file": "components\\auth\\ModeratorRoute.tsx",
+      "size": 2482,
+      "sizeKB": 2.42
+    },
+    {
+      "file": "components\\auth\\PasswordValidator.tsx",
+      "size": 2479,
+      "sizeKB": 2.42
+    },
+    {
+      "file": "hooks\\useModeratorTimer.ts",
+      "size": 2448,
+      "sizeKB": 2.39
+    },
+    {
+      "file": "components\\ui\\WhyChooseSection.tsx",
+      "size": 2445,
+      "sizeKB": 2.39
+    },
+    {
+      "file": "components\\ProtectedRoute.tsx",
+      "size": 2360,
+      "sizeKB": 2.3
+    },
+    {
+      "file": "services\\nft\\PolygonStubService.ts",
+      "size": 2347,
+      "sizeKB": 2.29
+    },
+    {
+      "file": "hooks\\index.ts",
+      "size": 2334,
+      "sizeKB": 2.28
+    },
+    {
+      "file": "utils\\suppress-wallet-errors.ts",
+      "size": 2287,
+      "sizeKB": 2.23
+    },
+    {
+      "file": "components\\ui\\input-otp.tsx",
+      "size": 2249,
+      "sizeKB": 2.2
+    },
+    {
+      "file": "tests\\setup\\playwright-setup.ts",
+      "size": 2183,
+      "sizeKB": 2.13
+    },
+    {
+      "file": "components\\ui\\CrossBrowserOptimizer.tsx",
+      "size": 2174,
+      "sizeKB": 2.12
+    },
+    {
+      "file": "components\\ui\\AnimatedCard.tsx",
+      "size": 2170,
+      "sizeKB": 2.12
+    },
+    {
+      "file": "components\\ui\\LogoutButton.tsx",
+      "size": 2141,
+      "sizeKB": 2.09
+    },
+    {
+      "file": "features\\chat\\useChatSummary.ts",
+      "size": 2125,
+      "sizeKB": 2.08
+    },
+    {
+      "file": "profiles\\shared\\useProfileQuery.ts",
+      "size": 2110,
+      "sizeKB": 2.06
+    },
+    {
+      "file": "utils\\mobile.ts",
+      "size": 2095,
+      "sizeKB": 2.05
+    },
+    {
+      "file": "lib\\sentry.ts",
+      "size": 2088,
+      "sizeKB": 2.04
+    },
+    {
+      "file": "tests\\useToast.test.ts",
+      "size": 2085,
+      "sizeKB": 2.04
+    },
+    {
+      "file": "lib\\ai\\graphMatchingModel.ts",
+      "size": 2076,
+      "sizeKB": 2.03
+    },
+    {
+      "file": "components\\ui\\accordion.tsx",
+      "size": 2037,
+      "sizeKB": 1.99
+    },
+    {
+      "file": "components\\ui\\tabs.tsx",
+      "size": 2007,
+      "sizeKB": 1.96
+    },
+    {
+      "file": "components\\sharing\\TikTokShareButton.tsx",
+      "size": 1984,
+      "sizeKB": 1.94
+    },
+    {
+      "file": "shared\\ui\\Card.tsx",
+      "size": 1960,
+      "sizeKB": 1.91
+    },
+    {
+      "file": "components\\ui\\verification-badge.tsx",
+      "size": 1929,
+      "sizeKB": 1.88
+    },
+    {
+      "file": "types\\google.types.ts",
+      "size": 1917,
+      "sizeKB": 1.87
+    },
+    {
+      "file": "components\\chat\\TypingIndicator.tsx",
+      "size": 1915,
+      "sizeKB": 1.87
+    },
+    {
+      "file": "lib\\env-utils.ts",
+      "size": 1896,
+      "sizeKB": 1.85
+    },
+    {
+      "file": "pages\\Stories.tsx",
+      "size": 1835,
+      "sizeKB": 1.79
+    },
+    {
+      "file": "components\\ui\\toggle-group.tsx",
+      "size": 1802,
+      "sizeKB": 1.76
+    },
+    {
+      "file": "components\\ui\\resizable.tsx",
+      "size": 1756,
+      "sizeKB": 1.71
+    },
+    {
+      "file": "components\\AppSidebar.tsx",
+      "size": 1745,
+      "sizeKB": 1.7
+    },
+    {
+      "file": "components\\ui\\scroll-area.tsx",
+      "size": 1692,
+      "sizeKB": 1.65
+    },
+    {
+      "file": "context\\AppContext.tsx",
+      "size": 1688,
+      "sizeKB": 1.65
+    },
+    {
+      "file": "components\\sidebar\\NavGroup.tsx",
+      "size": 1671,
+      "sizeKB": 1.63
+    },
+    {
+      "file": "lib\\distance-utils.ts",
+      "size": 1653,
+      "sizeKB": 1.61
+    },
+    {
+      "file": "components\\ui\\alert.tsx",
+      "size": 1647,
+      "sizeKB": 1.61
+    },
+    {
+      "file": "utils\\clearStorage.ts",
+      "size": 1641,
+      "sizeKB": 1.6
+    },
+    {
+      "file": "profiles\\shared\\UserProfile.tsx",
+      "size": 1625,
+      "sizeKB": 1.59
+    },
+    {
+      "file": "components\\matches\\MatchFilters.tsx",
+      "size": 1617,
+      "sizeKB": 1.58
+    },
+    {
+      "file": "components\\ui\\badge.tsx",
+      "size": 1595,
+      "sizeKB": 1.56
+    },
+    {
+      "file": "types\\security.types.ts",
+      "size": 1552,
+      "sizeKB": 1.52
+    },
+    {
+      "file": "components\\ui\\radio-group.tsx",
+      "size": 1513,
+      "sizeKB": 1.48
+    },
+    {
+      "file": "hooks\\useFeatures.ts",
+      "size": 1505,
+      "sizeKB": 1.47
+    },
+    {
+      "file": "services\\events\\SustainabilityService.ts",
+      "size": 1492,
+      "sizeKB": 1.46
+    },
+    {
+      "file": "components\\ui\\toggle.tsx",
+      "size": 1482,
+      "sizeKB": 1.45
+    },
+    {
+      "file": "components\\layout\\ResponsiveLayout.tsx",
+      "size": 1479,
+      "sizeKB": 1.44
+    },
+    {
+      "file": "components\\ui\\avatar.tsx",
+      "size": 1457,
+      "sizeKB": 1.42
+    },
+    {
+      "file": "tests\\mocks\\hcaptcha.mock.ts",
+      "size": 1456,
+      "sizeKB": 1.42
+    },
+    {
+      "file": "profiles\\shared\\ProfileStats.tsx",
+      "size": 1427,
+      "sizeKB": 1.39
+    },
+    {
+      "file": "tests\\setup\\test-utils.tsx",
+      "size": 1328,
+      "sizeKB": 1.3
+    },
+    {
+      "file": "demo\\AppFactory.tsx",
+      "size": 1327,
+      "sizeKB": 1.3
+    },
+    {
+      "file": "components\\DismissibleBanner.tsx",
+      "size": 1318,
+      "sizeKB": 1.29
+    },
+    {
+      "file": "components\\ui\\popover.tsx",
+      "size": 1263,
+      "sizeKB": 1.23
+    },
+    {
+      "file": "debug.tsx",
+      "size": 1235,
+      "sizeKB": 1.21
+    },
+    {
+      "file": "components\\stories\\StoryTypes.ts",
+      "size": 1221,
+      "sizeKB": 1.19
+    },
+    {
+      "file": "types\\react.types.ts",
+      "size": 1221,
+      "sizeKB": 1.19
+    },
+    {
+      "file": "components\\ui\\hover-card.tsx",
+      "size": 1215,
+      "sizeKB": 1.19
+    },
+    {
+      "file": "types\\content-moderation.types.ts",
+      "size": 1211,
+      "sizeKB": 1.18
+    },
+    {
+      "file": "types\\chat-summary.types.ts",
+      "size": 1183,
+      "sizeKB": 1.16
+    },
+    {
+      "file": "components\\ui\\tooltip.tsx",
+      "size": 1177,
+      "sizeKB": 1.15
+    },
+    {
+      "file": "hooks\\useIsomorphicLayoutEffect.ts",
+      "size": 1173,
+      "sizeKB": 1.15
+    },
+    {
+      "file": "components\\ui\\switch.tsx",
+      "size": 1170,
+      "sizeKB": 1.14
+    },
+    {
+      "file": "types\\wallet.types.ts",
+      "size": 1143,
+      "sizeKB": 1.12
+    },
+    {
+      "file": "components\\ui\\slider.tsx",
+      "size": 1107,
+      "sizeKB": 1.08
+    },
+    {
+      "file": "components\\ui\\checkbox.tsx",
+      "size": 1088,
+      "sizeKB": 1.06
+    },
+    {
+      "file": "EnvDebug.tsx",
+      "size": 1061,
+      "sizeKB": 1.04
+    },
+    {
+      "file": "components\\index.ts",
+      "size": 1053,
+      "sizeKB": 1.03
+    },
+    {
+      "file": "components\\AppLayout.tsx",
+      "size": 1046,
+      "sizeKB": 1.02
+    },
+    {
+      "file": "components\\ui\\textarea.tsx",
+      "size": 1039,
+      "sizeKB": 1.01
+    },
+    {
+      "file": "shared\\ui\\Input.tsx",
+      "size": 1022,
+      "sizeKB": 1
+    },
+    {
+      "file": "services\\index.ts",
+      "size": 1015,
+      "sizeKB": 0.99
+    },
+    {
+      "file": "types\\analytics.types.ts",
+      "size": 969,
+      "sizeKB": 0.95
+    },
+    {
+      "file": "components\\admin\\panels\\index.ts",
+      "size": 962,
+      "sizeKB": 0.94
+    },
+    {
+      "file": "components\\ui\\sonner.tsx",
+      "size": 923,
+      "sizeKB": 0.9
+    },
+    {
+      "file": "hooks\\useScrollHide.ts",
+      "size": 894,
+      "sizeKB": 0.87
+    },
+    {
+      "file": "profiles\\shared\\CollapsedUserProfile.tsx",
+      "size": 824,
+      "sizeKB": 0.8
+    },
+    {
+      "file": "components\\ui\\progress.tsx",
+      "size": 807,
+      "sizeKB": 0.79
+    },
+    {
+      "file": "components\\ui\\toaster.tsx",
+      "size": 804,
+      "sizeKB": 0.79
+    },
+    {
+      "file": "components\\ui\\separator.tsx",
+      "size": 789,
+      "sizeKB": 0.77
+    },
+    {
+      "file": "hooks\\use-mobile.tsx",
+      "size": 764,
+      "sizeKB": 0.75
+    },
+    {
+      "file": "lib\\index.ts",
+      "size": 758,
+      "sizeKB": 0.74
+    },
+    {
+      "file": "components\\ui\\label.tsx",
+      "size": 738,
+      "sizeKB": 0.72
+    },
+    {
+      "file": "profiles\\couple\\CoupleProfilesService.ts",
+      "size": 728,
+      "sizeKB": 0.71
+    },
+    {
+      "file": "services\\ChatPrivacyService.ts",
+      "size": 667,
+      "sizeKB": 0.65
+    },
+    {
+      "file": "components\\blockchain\\index.ts",
+      "size": 576,
+      "sizeKB": 0.56
+    },
+    {
+      "file": "profiles\\shared\\ProfileThemeDemo.tsx",
+      "size": 564,
+      "sizeKB": 0.55
+    },
+    {
+      "file": "components\\sidebar\\QuickActions.tsx",
+      "size": 560,
+      "sizeKB": 0.55
+    },
+    {
+      "file": "components\\ModeIndicator.tsx",
+      "size": 539,
+      "sizeKB": 0.53
+    },
+    {
+      "file": "components\\discover\\index.ts",
+      "size": 517,
+      "sizeKB": 0.5
+    },
+    {
+      "file": "entities\\club.ts",
+      "size": 513,
+      "sizeKB": 0.5
+    },
+    {
+      "file": "pages\\VirtualGifts.tsx",
+      "size": 423,
+      "sizeKB": 0.41
+    },
+    {
+      "file": "pages\\VIPEvents.tsx",
+      "size": 408,
+      "sizeKB": 0.4
+    },
+    {
+      "file": "profiles\\shared\\profile.ts",
+      "size": 405,
+      "sizeKB": 0.4
+    },
+    {
+      "file": "utils\\safeLayoutEffect.ts",
+      "size": 341,
+      "sizeKB": 0.33
+    },
+    {
+      "file": "components\\ui\\collapsible.tsx",
+      "size": 324,
+      "sizeKB": 0.32
+    },
+    {
+      "file": "shared\\lib\\format.ts",
+      "size": 305,
+      "sizeKB": 0.3
+    },
+    {
+      "file": "components\\ui\\skeleton.tsx",
+      "size": 280,
+      "sizeKB": 0.27
+    },
+    {
+      "file": "profiles\\shared\\EnhancedGallery.tsx",
+      "size": 253,
+      "sizeKB": 0.25
+    },
+    {
+      "file": "shared\\lib\\validation.ts",
+      "size": 249,
+      "sizeKB": 0.24
+    },
+    {
+      "file": "entities\\user.ts",
+      "size": 227,
+      "sizeKB": 0.22
+    },
+    {
+      "file": "profiles\\couple\\TermsModal.tsx",
+      "size": 221,
+      "sizeKB": 0.22
+    },
+    {
+      "file": "profiles\\single\\TermsModal.tsx",
+      "size": 217,
+      "sizeKB": 0.21
+    },
+    {
+      "file": "components\\notifications\\NotificationSystem.tsx",
+      "size": 179,
+      "sizeKB": 0.17
+    },
+    {
+      "file": "shared\\lib\\cn.ts",
+      "size": 172,
+      "sizeKB": 0.17
+    },
+    {
+      "file": "lib\\utils.ts",
+      "size": 166,
+      "sizeKB": 0.16
+    },
+    {
+      "file": "components\\ui\\aspect-ratio.tsx",
+      "size": 145,
+      "sizeKB": 0.14
+    },
+    {
+      "file": "profiles\\couple\\PasswordValidator.tsx",
+      "size": 132,
+      "sizeKB": 0.13
+    },
+    {
+      "file": "profiles\\single\\PasswordValidator.tsx",
+      "size": 132,
+      "sizeKB": 0.13
+    },
+    {
+      "file": "profiles\\couple\\InterestsSelector.tsx",
+      "size": 115,
+      "sizeKB": 0.11
+    },
+    {
+      "file": "profiles\\couple\\NicknameValidator.tsx",
+      "size": 115,
+      "sizeKB": 0.11
+    },
+    {
+      "file": "profiles\\single\\InterestsSelector.tsx",
+      "size": 115,
+      "sizeKB": 0.11
+    },
+    {
+      "file": "profiles\\single\\NicknameValidator.tsx",
+      "size": 115,
+      "sizeKB": 0.11
+    },
+    {
+      "file": "vite-env.d.ts",
+      "size": 38,
+      "sizeKB": 0.04
+    },
+    {
+      "file": "pages\\LegalNew.tsx",
+      "size": 0,
+      "sizeKB": 0
+    }
+  ],
+  "totalSize": 6532138,
+  "complexity": {
+    "Components": {
+      "count": 223,
+      "totalSize": 1821719,
+      "avgSize": 7.98,
+      "largest": {
+        "file": "admin\\AnalyticsPanel.tsx",
+        "size": 34978,
+        "sizeKB": 34.16
+      }
+    },
+    "Pages": {
+      "count": 46,
+      "totalSize": 853997,
+      "avgSize": 18.13,
+      "largest": {
+        "file": "TokensInfo.tsx",
+        "size": 65711,
+        "sizeKB": 64.17
+      }
+    },
+    "Profiles": {
+      "count": 49,
+      "totalSize": 533672,
+      "avgSize": 10.64,
+      "largest": {
+        "file": "single\\ProfileSingle.tsx",
+        "size": 54091,
+        "sizeKB": 52.82
+      }
+    }
+  },
+  "dependencies": {
+    "deps": [
+      "@capacitor/android",
+      "@capacitor/app",
+      "@capacitor/browser",
+      "@capacitor/camera",
+      "@capacitor/cli",
+      "@capacitor/clipboard",
+      "@capacitor/core",
+      "@capacitor/device",
+      "@capacitor/filesystem",
+      "@capacitor/geolocation",
+      "@capacitor/haptics",
+      "@capacitor/ios",
+      "@capacitor/keyboard",
+      "@capacitor/local-notifications",
+      "@capacitor/network",
+      "@capacitor/push-notifications",
+      "@capacitor/share",
+      "@capacitor/splash-screen",
+      "@capacitor/status-bar",
+      "@capacitor/toast",
+      "@datadog/browser-logs",
+      "@datadog/browser-rum",
+      "@heroicons/react",
+      "@hookform/resolvers",
+      "@huggingface/inference",
+      "@huggingface/transformers",
+      "@openzeppelin/contracts-upgradeable",
+      "@radix-ui/react-accordion",
+      "@radix-ui/react-alert-dialog",
+      "@radix-ui/react-aspect-ratio",
+      "@radix-ui/react-avatar",
+      "@radix-ui/react-checkbox",
+      "@radix-ui/react-collapsible",
+      "@radix-ui/react-context-menu",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+      "@radix-ui/react-hover-card",
+      "@radix-ui/react-label",
+      "@radix-ui/react-menubar",
+      "@radix-ui/react-navigation-menu",
+      "@radix-ui/react-popover",
+      "@radix-ui/react-progress",
+      "@radix-ui/react-radio-group",
+      "@radix-ui/react-scroll-area",
+      "@radix-ui/react-select",
+      "@radix-ui/react-separator",
+      "@radix-ui/react-slider",
+      "@radix-ui/react-slot",
+      "@radix-ui/react-switch",
+      "@radix-ui/react-tabs",
+      "@radix-ui/react-toast",
+      "@radix-ui/react-toggle",
+      "@radix-ui/react-toggle-group",
+      "@radix-ui/react-tooltip",
+      "@rollup/wasm-node",
+      "@sentry/react",
+      "@sentry/vite-plugin",
+      "@solana/web3.js",
+      "@supabase/supabase-js",
+      "@tailwindcss/postcss",
+      "@tanstack/react-query",
+      "@tensorflow/tfjs",
+      "@types/qrcode",
+      "@types/speakeasy",
+      "@types/uuid",
+      "@vitejs/plugin-react",
+      "@worldcoin/idkit",
+      "autoprefixer",
+      "capacitor",
+      "class-variance-authority",
+      "clsx",
+      "cmdk",
+      "compression",
+      "crypto-js",
+      "date-fns",
+      "embla-carousel-react",
+      "express",
+      "framer-motion",
+      "glob",
+      "hcaptcha",
+      "input-otp",
+      "install",
+      "lucide-react",
+      "neo4j-driver",
+      "newrelic",
+      "next-themes",
+      "node-fetch",
+      "onnxruntime-web",
+      "openai",
+      "postcss",
+      "qrcode",
+      "react",
+      "react-day-picker",
+      "react-dom",
+      "react-hook-form",
+      "react-is",
+      "react-resizable-panels",
+      "react-router-dom",
+      "recharts",
+      "s2-geometry",
+      "serve-static",
+      "sonner",
+      "speakeasy",
+      "stripe",
+      "supabase",
+      "tailwind-merge",
+      "tailwindcss",
+      "tailwindcss-animate",
+      "terser",
+      "tronweb",
+      "tsx",
+      "typescript",
+      "uuid",
+      "vaul",
+      "vite",
+      "web-vitals",
+      "web3",
+      "yarn",
+      "zod"
+    ],
+    "devDeps": [
+      "@eslint/js",
+      "@nomicfoundation/hardhat-chai-matchers",
+      "@nomicfoundation/hardhat-ethers",
+      "@nomiclabs/hardhat-ethers",
+      "@openzeppelin/contracts",
+      "@playwright/test",
+      "@tailwindcss/typography",
+      "@testing-library/dom",
+      "@testing-library/jest-dom",
+      "@testing-library/react",
+      "@testing-library/user-event",
+      "@types/crypto-js",
+      "@types/node",
+      "@types/react",
+      "@types/react-dom",
+      "@vitest/coverage-v8",
+      "concurrently",
+      "dotenv",
+      "eslint",
+      "eslint-formatter-compact",
+      "eslint-formatter-table",
+      "eslint-import-resolver-typescript",
+      "eslint-plugin-import",
+      "eslint-plugin-react",
+      "eslint-plugin-react-hooks",
+      "eslint-plugin-react-refresh",
+      "eslint-plugin-unused-imports",
+      "ethers",
+      "globals",
+      "hardhat",
+      "husky",
+      "jiti",
+      "jsdom",
+      "path",
+      "typescript-eslint",
+      "vitest"
+    ],
+    "packageJson": {
+      "name": "complices-conecta-sw",
+      "private": true,
+      "version": "3.5.1",
+      "type": "module",
+      "scripts": {
+        "vercel-build": "npm run build",
+        "dev": "vite",
+        "dev:tunnel": "concurrently \"npm run dev\" \"npm run tunnel:ngrok\"",
+        "tunnel:ngrok": "ngrok http 8080",
+        "tunnel:cloudflare": "cloudflared tunnel --url http://localhost:8080",
+        "tunnel:lt": "lt --port 8080",
+        "tunnel:vercel": "vercel dev",
+        "build": "tsc --noEmit --skipLibCheck && vite build",
+        "build:dev": "vite build --mode development",
+        "lint": "npx eslint .",
+        "lint:fix": "npx eslint . --fix",
+        "preview": "vite preview",
+        "backfill:s2": "tsx scripts/backfill-s2-cells.ts",
+        "sync:neo4j": "tsx scripts/sync-postgres-to-neo4j.ts",
+        "verify:neo4j": "tsx scripts/verify-neo4j.ts",
+        "setup:neo4j-indexes": "tsx scripts/setup-neo4j-indexes.ts",
+        "explain:analyze:remote": "tsx scripts/run-explain-analyze-remote.ts",
+        "test": "npx vitest",
+        "test:ui": "npx vitest --ui",
+        "test:run": "npx vitest run",
+        "type-check": "tsc --noEmit",
+        "test:e2e": "npx playwright test",
+        "test:e2e:ui": "npx playwright test --ui",
+        "test:integration": "npx vitest run tests/integration",
+        "format:check": "npx prettier --check .",
+        "format:fix": "npx prettier --write .",
+        "audit:check": "node scripts/audit-checker.js",
+        "audit:security": "npm audit && npm run audit:check",
+        "precommit": "npm run lint && npm run type-check && npm run test",
+        "scaffold:templates": "npx tsx scripts/import-templates.ts",
+        "audit:repo": "npx tsx scripts/audit-project.ts --report",
+        "audit:fix": "npx tsx scripts/audit-project.ts --fix",
+        "test:lint-robust": "node scripts/test-lint-robust.cjs",
+        "test:type-robust": "node scripts/test-type-check-robust.cjs",
+        "validate:types": "node scripts/validate-supabase-types.cjs",
+        "build:analyze": "vite build --mode production && npx vite-bundle-visualizer",
+        "grok:verify": "node scripts/verify-grok.js",
+        "apidog:verify": "node scripts/verify-apidog.js",
+        "update:types": "echo 'Para regenerar tipos ejecutar: npx supabase gen types typescript --project-id YOUR_PROJECT_ID > src/types/supabase.ts'",
+        "security:progress": "node scripts/security-progress-check.js",
+        "token:verify": "node scripts/verify-token.js",
+        "security:scan": "node scripts/security-check.js",
+        "prepare": "echo 'Husky prepare script disabled for deployment compatibility'"
+      },
+      "dependencies": {
+        "@capacitor/android": "^7.4.4",
+        "@capacitor/app": "^7.1.0",
+        "@capacitor/browser": "^7.0.2",
+        "@capacitor/camera": "^7.0.2",
+        "@capacitor/cli": "^7.4.4",
+        "@capacitor/clipboard": "^7.0.2",
+        "@capacitor/core": "^7.4.4",
+        "@capacitor/device": "^7.0.2",
+        "@capacitor/filesystem": "^7.1.4",
+        "@capacitor/geolocation": "^7.1.5",
+        "@capacitor/haptics": "^7.0.2",
+        "@capacitor/ios": "^7.4.4",
+        "@capacitor/keyboard": "^7.0.3",
+        "@capacitor/local-notifications": "^7.0.3",
+        "@capacitor/network": "^7.0.2",
+        "@capacitor/push-notifications": "^7.0.3",
+        "@capacitor/share": "^7.0.2",
+        "@capacitor/splash-screen": "^7.0.3",
+        "@capacitor/status-bar": "^7.0.3",
+        "@capacitor/toast": "^7.0.2",
+        "@datadog/browser-logs": "^6.23.0",
+        "@datadog/browser-rum": "^6.23.0",
+        "@heroicons/react": "^2.2.0",
+        "@hookform/resolvers": "^5.2.2",
+        "@huggingface/inference": "^4.13.2",
+        "@huggingface/transformers": "^3.7.6",
+        "@openzeppelin/contracts-upgradeable": "^4.9.6",
+        "@radix-ui/react-accordion": "^1.2.12",
+        "@radix-ui/react-alert-dialog": "^1.1.15",
+        "@radix-ui/react-aspect-ratio": "^1.1.8",
+        "@radix-ui/react-avatar": "^1.1.11",
+        "@radix-ui/react-checkbox": "^1.3.3",
+        "@radix-ui/react-collapsible": "^1.1.12",
+        "@radix-ui/react-context-menu": "^2.2.16",
+        "@radix-ui/react-dialog": "^1.1.15",
+        "@radix-ui/react-dropdown-menu": "^2.1.16",
+        "@radix-ui/react-hover-card": "^1.1.15",
+        "@radix-ui/react-label": "^2.1.8",
+        "@radix-ui/react-menubar": "^1.1.16",
+        "@radix-ui/react-navigation-menu": "^1.2.14",
+        "@radix-ui/react-popover": "^1.1.15",
+        "@radix-ui/react-progress": "^1.1.8",
+        "@radix-ui/react-radio-group": "^1.3.8",
+        "@radix-ui/react-scroll-area": "^1.2.10",
+        "@radix-ui/react-select": "^2.2.6",
+        "@radix-ui/react-separator": "^1.1.8",
+        "@radix-ui/react-slider": "^1.3.6",
+        "@radix-ui/react-slot": "^1.2.4",
+        "@radix-ui/react-switch": "^1.2.6",
+        "@radix-ui/react-tabs": "^1.1.13",
+        "@radix-ui/react-toast": "^1.2.15",
+        "@radix-ui/react-toggle": "^1.1.10",
+        "@radix-ui/react-toggle-group": "^1.1.11",
+        "@radix-ui/react-tooltip": "^1.2.8",
+        "@rollup/wasm-node": "^4.53.2",
+        "@sentry/react": "^10.24.0",
+        "@sentry/vite-plugin": "^4.6.0",
+        "@solana/web3.js": "^1.98.4",
+        "@supabase/supabase-js": "^2.81.0",
+        "@tailwindcss/postcss": "^4.1.17",
+        "@tanstack/react-query": "^5.90.7",
+        "@tensorflow/tfjs": "^4.22.0",
+        "@types/qrcode": "^1.5.6",
+        "@types/speakeasy": "^2.0.10",
+        "@types/uuid": "^10.0.0",
+        "@vitejs/plugin-react": "^4.7.0",
+        "@worldcoin/idkit": "^1.5.0",
+        "autoprefixer": "^10.4.21",
+        "capacitor": "^0.5.6",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
+        "cmdk": "^1.1.1",
+        "compression": "^1.8.1",
+        "crypto-js": "^4.2.0",
+        "date-fns": "^4.1.0",
+        "embla-carousel-react": "^8.6.0",
+        "express": "^5.1.0",
+        "framer-motion": "^11.18.2",
+        "glob": "^11.0.3",
+        "hcaptcha": "^0.2.0",
+        "input-otp": "^1.4.2",
+        "install": "^0.13.0",
+        "lucide-react": "^0.451.0",
+        "neo4j-driver": "^5.28.2",
+        "newrelic": "^13.6.2",
+        "next-themes": "^0.4.6",
+        "node-fetch": "^2.7.0",
+        "onnxruntime-web": "^1.23.0",
+        "openai": "^6.7.0",
+        "postcss": "^8.5.6",
+        "qrcode": "^1.5.4",
+        "react": "^18.3.1",
+        "react-day-picker": "^9.11.1",
+        "react-dom": "^18.3.1",
+        "react-hook-form": "^7.65.0",
+        "react-is": "^19.2.0",
+        "react-resizable-panels": "^3.0.6",
+        "react-router-dom": "^6.30.1",
+        "recharts": "^3.3.0",
+        "s2-geometry": "^1.2.10",
+        "serve-static": "^2.2.0",
+        "sonner": "^2.0.7",
+        "speakeasy": "^2.0.0",
+        "stripe": "^19.3.1",
+        "supabase": "^2.54.11",
+        "tailwind-merge": "^3.3.1",
+        "tailwindcss": "^3.4.18",
+        "tailwindcss-animate": "^1.0.7",
+        "terser": "^5.44.0",
+        "tronweb": "^6.1.0",
+        "tsx": "^4.20.6",
+        "typescript": "^5.9.3",
+        "uuid": "^11.1.0",
+        "vaul": "^1.1.2",
+        "vite": "^7.1.12",
+        "web-vitals": "^5.1.0",
+        "web3": "^4.16.0",
+        "yarn": "^1.22.22",
+        "zod": "^4.1.12"
+      },
+      "devDependencies": {
+        "@eslint/js": "^9.39.1",
+        "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+        "@nomicfoundation/hardhat-ethers": "^4.0.3",
+        "@nomiclabs/hardhat-ethers": "^2.2.3",
+        "@openzeppelin/contracts": "^4.9.6",
+        "@playwright/test": "^1.56.1",
+        "@tailwindcss/typography": "^0.5.19",
+        "@testing-library/dom": "^10.4.1",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.0",
+        "@testing-library/user-event": "^14.6.1",
+        "@types/crypto-js": "^4.2.2",
+        "@types/node": "^24.10.0",
+        "@types/react": "^18.3.26",
+        "@types/react-dom": "^19.2.2",
+        "@vitest/coverage-v8": "^3.2.4",
+        "concurrently": "^9.2.1",
+        "dotenv": "^17.2.3",
+        "eslint": "^9.39.1",
+        "eslint-formatter-compact": "^8.40.0",
+        "eslint-formatter-table": "^7.32.1",
+        "eslint-import-resolver-typescript": "^4.4.4",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^5.2.0",
+        "eslint-plugin-react-refresh": "^0.4.24",
+        "eslint-plugin-unused-imports": "^4.3.0",
+        "ethers": "^5.8.0",
+        "globals": "^16.5.0",
+        "hardhat": "^3.0.14",
+        "husky": "^9.1.7",
+        "jiti": "^2.6.1",
+        "jsdom": "^26.1.0",
+        "path": "^0.12.7",
+        "typescript-eslint": "^8.46.4",
+        "vitest": "^3.2.4"
+      }
+    }
+  },
+  "imports": {
+    "importCounts": {
+      "react": 13,
+      "@/shared/ui/Button": 12,
+      "@/shared/ui/Card": 11,
+      "@/components/ui/badge": 12,
+      "react-router-dom": 10,
+      "@/lib/tokens": 1,
+      "@/components/HeaderNav": 6,
+      "@/components/Navigation": 4,
+      "@/features/auth/useAuth": 9,
+      "@/components/DecorativeHearts": 5,
+      "framer-motion": 5,
+      "@/services/TokenAnalyticsService": 2,
+      "@/components/sharing/TikTokShareButton": 1,
+      "@/config/posthog.config": 2,
+      "@/profiles/shared/ProfileNavTabs": 1,
+      "@/lib/logger": 13,
+      "@/hooks/usePersistedState": 2,
+      "@/types/supabase": 5,
+      "@/components/profile/PrivateImageRequest": 1,
+      "@/components/profile/PrivateImageGallery": 1,
+      "@/components/swipe/ReportDialog": 1,
+      "@/components/ui/tabs": 7,
+      "@/services/WalletService": 1,
+      "@/services/NFTService": 1,
+      "@/integrations/supabase/client": 12,
+      "@/lib/notifications": 1,
+      "lucide-react": 4,
+      "@/components/ui/UnifiedButton": 1,
+      "@/components/ui/UnifiedInput": 1,
+      "@/hooks/useFeatures": 1,
+      "@/hooks/useToast": 8,
+      "@/lib/data": 2,
+      "@/lib/invitations": 1,
+      "@/lib/simpleChatService": 1,
+      "@/components/chat/ConsentIndicator": 1,
+      "@/hooks/useConsentVerification": 1,
+      "@/utils/safeLocalStorage": 3,
+      "@/components/AdminNav": 1,
+      "@/shared/ui/Modal": 2,
+      "@/components/ui/textarea": 3,
+      "@/components/ui/select": 4,
+      "@/lib/roles": 1,
+      "@/services/permanentBan": 1,
+      "uuid": 1,
+      "@/components/ui/slider": 1,
+      "@/components/modals/SuperLikesModal": 1,
+      "@/components/modals/PremiumModal": 1,
+      "@/components/modals/CompatibilityModal": 1,
+      "@/components/modals/EventsModal": 1,
+      "@/hooks/useGeolocation": 3,
+      "@/lib/media": 1,
+      "@/lib/distance-utils": 1,
+      "@/features/profile/coupleProfiles": 2,
+      "@/demo/demoData": 1,
+      "@/lib/infoCards": 1,
+      "@/components/ui/FilterDemoCard": 1,
+      "@/profiles/couple/CoupleProfileCard": 1,
+      "@/profiles/shared/AnimatedProfileCard": 1,
+      "@/components/ui/AnimatedButton": 1,
+      "@/components/ui/GlassCard": 1,
+      "@/shared/ui/Input": 5,
+      "@/components/profile/ImageUpload": 1,
+      "@/lib/lifestyle-interests": 1,
+      "@/components/settings/ExplicitInterestsEditor": 1,
+      "@/features/profile/useProfileTheme": 2,
+      "@/components/accessibility/ContrastFixer": 1,
+      "@/lib/analytics-metrics": 1,
+      "@/components/ui/label": 1,
+      "@/components/LoginLoadingScreen": 1,
+      "@/components/ui/ResponsiveContainer": 1,
+      "@/types/content-moderation.types": 1,
+      "@supabase/supabase-js": 1,
+      "@/services/notifications/OneSignalService": 1,
+      "@/types/supabase-generated": 1,
+      "./PerformanceMonitoringService": 1
+    },
+    "externalImports": [
+      "react",
+      "react-router-dom",
+      "framer-motion",
+      "lucide-react",
+      "uuid",
+      "@supabase/supabase-js"
+    ],
+    "internalImports": [
+      "@/shared/ui/Button",
+      "@/shared/ui/Card",
+      "@/components/ui/badge",
+      "@/lib/tokens",
+      "@/components/HeaderNav",
+      "@/components/Navigation",
+      "@/features/auth/useAuth",
+      "@/components/DecorativeHearts",
+      "@/services/TokenAnalyticsService",
+      "@/components/sharing/TikTokShareButton",
+      "@/config/posthog.config",
+      "@/profiles/shared/ProfileNavTabs",
+      "@/lib/logger",
+      "@/hooks/usePersistedState",
+      "@/types/supabase",
+      "@/components/profile/PrivateImageRequest",
+      "@/components/profile/PrivateImageGallery",
+      "@/components/swipe/ReportDialog",
+      "@/components/ui/tabs",
+      "@/services/WalletService",
+      "@/services/NFTService",
+      "@/integrations/supabase/client",
+      "@/lib/notifications",
+      "@/components/ui/UnifiedButton",
+      "@/components/ui/UnifiedInput",
+      "@/hooks/useFeatures",
+      "@/hooks/useToast",
+      "@/lib/data",
+      "@/lib/invitations",
+      "@/lib/simpleChatService",
+      "@/components/chat/ConsentIndicator",
+      "@/hooks/useConsentVerification",
+      "@/utils/safeLocalStorage",
+      "@/components/AdminNav",
+      "@/shared/ui/Modal",
+      "@/components/ui/textarea",
+      "@/components/ui/select",
+      "@/lib/roles",
+      "@/services/permanentBan",
+      "@/components/ui/slider",
+      "@/components/modals/SuperLikesModal",
+      "@/components/modals/PremiumModal",
+      "@/components/modals/CompatibilityModal",
+      "@/components/modals/EventsModal",
+      "@/hooks/useGeolocation",
+      "@/lib/media",
+      "@/lib/distance-utils",
+      "@/features/profile/coupleProfiles",
+      "@/demo/demoData",
+      "@/lib/infoCards",
+      "@/components/ui/FilterDemoCard",
+      "@/profiles/couple/CoupleProfileCard",
+      "@/profiles/shared/AnimatedProfileCard",
+      "@/components/ui/AnimatedButton",
+      "@/components/ui/GlassCard",
+      "@/shared/ui/Input",
+      "@/components/profile/ImageUpload",
+      "@/lib/lifestyle-interests",
+      "@/components/settings/ExplicitInterestsEditor",
+      "@/features/profile/useProfileTheme",
+      "@/components/accessibility/ContrastFixer",
+      "@/lib/analytics-metrics",
+      "@/components/ui/label",
+      "@/components/LoginLoadingScreen",
+      "@/components/ui/ResponsiveContainer",
+      "@/types/content-moderation.types",
+      "@/services/notifications/OneSignalService",
+      "@/types/supabase-generated",
+      "./PerformanceMonitoringService"
+    ]
+  },
+  "recommendations": [
+    {
+      "type": "Bundle Size",
+      "priority": "High",
+      "description": "4 archivos > 50KB detectados",
+      "action": "Considerar code splitting o lazy loading",
+      "files": [
+        "types\\supabase-generated.ts",
+        "types\\supabase.ts",
+        "pages\\TokensInfo.tsx"
+      ]
+    },
+    {
+      "type": "Dependencies",
+      "priority": "Medium",
+      "description": "155 dependencias totales",
+      "action": "Revisar y eliminar dependencias no utilizadas",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      # Usar imagen base con Node.js 20.19+ (requerido por Vite 7.2.2)
+      - image: cimg/node:20.19
+    steps:
+      - checkout:
+          # Usar HTTPS en lugar de SSH para evitar problemas con ssh
+          path: ~/project
+      - run:
+          name: Setup Git
+          command: |
+            # Git ya está instalado en cimg/node
+            # Configurar git para usar HTTPS en lugar de SSH
+            git config --global url."https://github.com/".insteadOf git@github.com:
+            git config --global url."https://".insteadOf git://
+            # Verificar que git funciona
+            git --version
+      - run:
+          name: Install Dependencies
+          command: |
+            cd ~/project
+            npm ci
+      - run:
+          name: Type Check
+          command: |
+            cd ~/project
+            npm run type-check
+      - run:
+          name: Lint
+          command: |
+            cd ~/project
+            npm run lint
+      - run:
+          name: Build
+          command: |
+            cd ~/project
+            npm run build
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build

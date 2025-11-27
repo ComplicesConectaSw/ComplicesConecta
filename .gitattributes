@@ -1,0 +1,37 @@
+# Git Attributes - ComplicesConecta v3.6.3
+# Configuración de line endings para evitar warnings
+
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Force LF for specific files
+*.js text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Force CRLF for Windows batch files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Android specific files - keep as-is to avoid warnings
+android/**/*.gradle text eol=lf
+android/**/*.xml text eol=lf
+android/**/*.json text eol=lf
+android/**/*.properties text eol=lf

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/placeholder.svg" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ComplicesConecta" />
+    <title>ComplicesConectaSW - Conecta Social Comunidad</title>
+    <meta name="description" content="ComplicesConectaSW - Plataforma de conexión social" />
+    <meta name="author" content="ComplicesConectaSW" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://complicesconecta.com" />
+    <meta property="og:title" content="ComplicesConectaSW - Conecta Social Comunidad" />
+    <meta property="og:description" content="ComplicesConectaSW - Plataforma de conexión social" />
+    <meta property="og:image" content="/placeholder.svg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@ComplicesConectaSW" />
+    <meta name="twitter:image" content="/placeholder.svg" />
+
+    <!-- Wallet Protection Script -->
+    <script>
+      (function() {
+        if (window.hasWalletProtection) return;
+        const WALLET_ERROR_KEYWORDS = ['metamask','phantom','solana','ethereum','wallet','tronlink','bybit',"property 'solana'","property 'ethereum'",'non-configurable','read-only','redefine property','bybit:page provider inject code','TronWeb is already initiated'];
+        const isWalletError = (e) => {
+          if (!e) return false;
+          const text = `${(e.message||'')} ${(e.stack||'')} ${(e.name||'')}`.toLowerCase();
+          return WALLET_ERROR_KEYWORDS.some(kw => text.includes(kw));
+        };
+        const handleError = (e) => {
+          if (isWalletError(e.error || e.reason)) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            return true;
+          }
+          return false;
+        };
+        window.addEventListener('error', handleError, true);
+        window.addEventListener('unhandledrejection', handleError, true);
+        const wrapConsole = (method) => {
+          const original = console[method];
+          console[method] = (...args) => {
+            if (args.some(arg => typeof arg === 'string' && WALLET_ERROR_KEYWORDS.some(kw => arg.toLowerCase().includes(kw))) || (args[0] instanceof Error && isWalletError(args[0]))) return;
+            original.apply(console, args);
+          };
+        };
+        wrapConsole('error');
+        wrapConsole('warn');
+        try {
+          ['ethereum','solana'].forEach(prop => {
+            if (window[prop]) Object.defineProperty(window, prop, { writable: false, configurable: false });
+          });
+        } catch (e) {}
+        window.hasWalletProtection = true;
+      })();
+    </script>
+    
+    <!-- Preload & Fonts -->
+    <link rel="modulepreload" href="/assets/tsx/main-C9B2Hg8B.tsx" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'" crossorigin="anonymous" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"></noscript>
+
+    <!-- Initial Loader Styles -->
+    <style>
+      @keyframes spin { to { transform: rotate(360deg); } }
+      #initial-loader {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #6b21a8 0%, #3b82f6 100%);
+      }
+      #initial-loader-content {
+        color: white;
+        text-align: center;
+      }
+      #initial-loader-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(255,255,255,0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/js/index-D_Gm3FJv.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-react-CJURwVk7.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-ui-BnuEHXA3.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-supabase-BLFYEWpS.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/vendor-utils-DKTdfq--.js">
+    <link rel="modulepreload" crossorigin href="/assets/js/pages-large-BVuVG8kE.js">
+    <link rel="stylesheet" crossorigin href="/assets/css/index-BF-9A4Q9.css">
+  </head>
+
+  <body>
+    <div id="root">
+      <div id="initial-loader">
+        <div id="initial-loader-content">
+          <div id="initial-loader-spinner"></div>
+          <p>Cargando...</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

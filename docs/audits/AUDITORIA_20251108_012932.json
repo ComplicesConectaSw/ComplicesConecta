@@ -1,0 +1,38 @@
+﻿{
+    "DirectoriosVacios":  [
+                              "src\\assets",
+                              "src\\scripts",
+                              "src\\widgets",
+                              "src\\app\\(profile)",
+                              "src\\assets\\events",
+                              "src\\assets\\icons",
+                              "src\\assets\\images",
+                              "src\\assets\\lifestyle",
+                              "src\\assets\\people",
+                              "src\\assets\\people\\couple",
+                              "src\\assets\\people\\female",
+                              "src\\assets\\people\\male",
+                              "src\\assets\\people\\privado",
+                              "src\\components\\couples"
+                          ],
+    "ArchivosFaltantes":  [
+
+                          ],
+    "ImportsIncorrectos":  [
+
+                           ],
+    "Duplicados":  [
+                       "index.ts",
+                       "NotificationSystem.tsx",
+                       "TermsModal.tsx",
+                       "VIPEvents.tsx",
+                       "VirtualGifts.tsx",
+                       "ProfileThemeDemo.tsx",
+                       "button.tsx",
+                       "card.tsx",
+                       "input.tsx",
+                       "ConsentVerificationService.ts",
+                       "validation.ts",
+                       "supabase.ts"
+                   ]
+}

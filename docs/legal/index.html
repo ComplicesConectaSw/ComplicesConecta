@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marco Legal - ComplicesConecta</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcf7f, #4ecdc4);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-icon {
+            font-size: 1.8rem;
+        }
+
+        .card p {
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .document-list {
+            list-style: none;
+        }
+
+        .document-list li {
+            margin-bottom: 0.8rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .document-list li:last-child {
+            border-bottom: none;
+        }
+
+        .document-link {
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 10px;
+        }
+
+        .document-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .document-link::before {
+            content: '📄';
+            font-size: 1.2rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-item h4 {
+            margin-bottom: 0.5rem;
+            color: #ffd93d;
+        }
+
+        .contact-item a {
+            color: #ffffff;
+            text-decoration: none;
+            opacity: 0.9;
+        }
+
+        .contact-item a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .warning-section {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            margin: 3rem 0;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .warning-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0.8;
+        }
+
+        .jurisdiction-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📚 Marco Legal ComplicesConecta</h1>
+            <p>Documentación legal completa para la plataforma swinger más exclusiva de México</p>
+            <div class="version-badge">v3.0.0 - Production Ready</div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3><span class="card-icon">⚖️</span>Términos Legales</h3>
+                <p>Documentos fundamentales que rigen el uso de la plataforma</p>
+                <ul class="document-list">
+                    <li><a href="./TERMS_OF_SERVICE.md" class="document-link">Términos de Servicio</a></li>
+                    <li><a href="./PRIVACY_POLICY.md" class="document-link">Política de Privacidad</a></li>
+                    <li><a href="./DISCLAIMER.md" class="document-link">Descargo de Responsabilidad</a></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><span class="card-icon">🇲🇽</span>Cumplimiento México</h3>
+                <p>Marco normativo específico para la jurisdicción mexicana</p>
+                <ul class="document-list">
+                    <li><a href="./LEGAL_COMPLIANCE_MEXICO.md" class="document-link">Cumplimiento Legal México</a></li>
+                    <li><a href="./LEGAL_SUMMARY_REPORT.md" class="document-link">Reporte Resumen Legal</a></li>
+                </ul>
+                <div class="jurisdiction-badges">
+                    <span class="badge">LFPDPPP</span>
+                    <span class="badge">PROFECO</span>
+                    <span class="badge">IFT</span>
+                    <span class="badge">INAI</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><span class="card-icon">📜</span>Licencias y Derechos</h3>
+                <p>Propiedad intelectual y derechos de autor</p>
+                <ul class="document-list">
+                    <li><a href="../LICENSE" class="document-link">Licencia MIT</a></li>
+                    <li><a href="../COPYRIGHT" class="document-link">Derechos de Autor</a></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><span class="card-icon">🌐</span>Cumplimiento Internacional</h3>
+                <p>Estándares y regulaciones internacionales</p>
+                <div class="jurisdiction-badges">
+                    <span class="badge">GDPR (EU)</span>
+                    <span class="badge">CCPA (US)</span>
+                    <span class="badge">PIPEDA (CA)</span>
+                    <span class="badge">ISO 27001</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="warning-section">
+            <h3>🔞 Advertencia Importante</h3>
+            <p><strong>Esta plataforma está dirigida exclusivamente a personas mayores de 18 años.</strong><br>
+            El acceso y uso por menores de edad está estrictamente prohibido.<br>
+            El uso de ComplicesConecta implica la aceptación completa de todos los términos legales.</p>
+        </div>
+
+        <div class="card">
+            <h3><span class="card-icon">📞</span>Contactos Legales</h3>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <h4>Legal General</h4>
+                    <a href="mailto:legal@complicesconecta.com">legal@complicesconecta.com</a>
+                </div>
+                <div class="contact-item">
+                    <h4>Privacidad</h4>
+                    <a href="mailto:privacidad@complicesconecta.com">privacidad@complicesconecta.com</a>
+                </div>
+                <div class="contact-item">
+                    <h4>Derechos ARCO</h4>
+                    <a href="mailto:derechos@complicesconecta.com">derechos@complicesconecta.com</a>
+                </div>
+                <div class="contact-item">
+                    <h4>Emergencias</h4>
+                    <a href="mailto:emergencias@complicesconecta.com">emergencias@complicesconecta.com</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p><strong>© 2025 ComplicesConecta - Juan Carlos Méndez Nataren</strong></p>
+            <p>Todos los derechos reservados - Marco Legal Completo v3.0.0</p>
+            <p>Última actualización: 22 de Septiembre, 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Animación suave para los enlaces
+        document.querySelectorAll('.document-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Agregar efecto visual al hacer clic
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'translateX(5px)';
+                }, 150);
+            });
+        });
+
+        // Efecto parallax suave en el scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach((card, index) => {
+                const speed = 0.5 + (index * 0.1);
+                card.style.transform = `translateY(${scrolled * speed * 0.1}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

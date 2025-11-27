@@ -1,0 +1,809 @@
+/**
+ * Correcciones UI Consolidadas - ComplicesConecta v3.5.0
+ * Consolidación de todos los archivos de fixes CSS en un solo archivo
+ * Fecha: 2025-11-06
+ * 
+ * Archivos consolidados:
+ * - ui-fixes-contraste.css
+ * - info-text-visibility.css
+ * - header-nav-protection.css
+ * - responsive-fixes.css
+ * - text-overflow-fixes.css
+ * - text-visibility-fixes.css
+ */
+
+/* ============================================
+   SECCIÓN 1: CORRECCIONES DE CONTRASTE UI
+   ============================================ */
+
+/* ===== MEJORAS DE CONTRASTE EN HOVER ===== */
+
+/* Botones con hover mejorado */
+/* Firefox: Usar selectores de atributo en lugar de escapes complejos */
+[class*="hover:bg-white/10"]:hover,
+[class*="bg-white/10"]:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Botones con fondo transparente mejorado */
+[class*="bg-white/10"] {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[class*="border-white/20"] {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ===== MEJORAS ESPECÍFICAS PARA ELEMENTOS CRÍTICOS ===== */
+
+/* Botones de navegación */
+/* Firefox: Usar selectores de atributo */
+[class*="hover:bg-white/20"]:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Tarjetas con fondo transparente */
+[class*="bg-white/10"][class*="backdrop-blur-md"] {
+  background-color: rgba(255, 255, 255, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+/* ===== CORRECCIONES DE RESPONSIVIDAD ===== */
+
+/* Asegurar que textos importantes no desaparezcan en móvil */
+@media (max-width: 640px) {
+  /* Firefox: Usar selectores de atributo en lugar de escapes */
+  [class*="hidden"][class*="sm:inline"] {
+    display: inline !important;
+    font-size: 0.75rem !important;
+  }
+  
+  /* Iconos más consistentes en móvil */
+  [class*="h-3"][class*="w-3"][class*="sm:h-4"][class*="sm:w-4"] {
+    height: 1rem !important;
+    width: 1rem !important;
+  }
+}
+
+/* ===== MEJORAS DE ACCESIBILIDAD ===== */
+
+/* Mejor contraste para elementos focuseables */
+/* Firefox: Usar selector de atributo */
+[class*="focus:outline-none"]:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5) !important;
+  outline-offset: 2px !important;
+}
+
+/* Sombras mejoradas para mejor definición */
+.shadow-lg {
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.3), 
+              0 4px 6px -2px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ===== CORRECCIONES ESPECÍFICAS DETECTADAS ===== */
+
+/* AdminModerators.tsx - Botones con mejor contraste */
+/* Firefox: Usar selectores de atributo */
+[class*="bg-white/10"][class*="border-white/20"][class*="text-white"][class*="hover:bg-white/20"] {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+[class*="bg-white/10"][class*="border-white/20"][class*="text-white"][class*="hover:bg-white/20"]:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+/* Tabs con mejor visibilidad */
+[data-state="active"][class*="bg-white/20"] {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ===== ANIMACIONES SUAVES ===== */
+
+/* Transiciones mejoradas para todos los elementos hover */
+/* Firefox: Usar selectores de atributo */
+[class*="hover:bg-white/10"],
+[class*="hover:bg-white/20"],
+[class*="bg-white/10"],
+[class*="border-white/20"] {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* ===== MODO OSCURO ESPECÍFICO ===== */
+
+@media (prefers-color-scheme: dark) {
+  .text-white {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  
+  [class*="bg-white/10"] {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+  }
+}
+
+/* ============================================
+   SECCIÓN 2: VISIBILIDAD DE TEXTO INFORMATIVO
+   ============================================ */
+
+/* ===== TEXTOS EN CARDS CON FONDO PURPLE ===== */
+
+/* Todos los textos blancos en cards purple - Mejorar contraste */
+/* Firefox: Usar selectores de atributo en lugar de escapes complejos */
+[class*="bg-purple-800/90"] .text-white,
+[class*="bg-purple-800/90"] p,
+[class*="bg-purple-800/90"] h3,
+[class*="bg-purple-800/90"] li {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  font-weight: 600;
+}
+
+[class*="bg-purple-800/90"] [class*="text-white/90"],
+[class*="bg-purple-800/90"] [class*="text-white/70"] {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  font-weight: 600;
+}
+
+/* Títulos en cards */
+[class*="bg-purple-800/90"] h3,
+[class*="bg-purple-800/90"] .text-xl {
+  font-weight: 700;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+/* Descripciones */
+[class*="bg-purple-800/90"] p {
+  font-weight: 500;
+  line-height: 1.7;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+/* ===== CARDS CON GRADIENTE ===== */
+/* Firefox: Usar selectores de atributo */
+[class*="bg-gradient-to-r"][class*="from-purple-600/90"] .text-white,
+[class*="bg-gradient-to-r"][class*="from-purple-700/90"] .text-white {
+  color: #ffffff !important;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+  font-weight: 600;
+}
+
+/* ===== TEXTOS CON OPACIDAD - MEJORAR ===== */
+
+/* Reemplazar todos los text-white/X con text-white sólido */
+/* Firefox: Usar selectores de atributo */
+[class*="text-white/90"] {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+}
+
+[class*="text-white/70"] {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+}
+
+[class*="text-white/80"] {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+}
+
+/* ===== STATS CARDS ===== */
+
+/* Números grandes */
+.text-3xl.font-bold.text-white {
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.9);
+  font-weight: 800;
+}
+
+/* Labels */
+.text-white.font-medium {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  font-weight: 600;
+}
+
+/* ===== DROP SHADOWS MEJORADOS ===== */
+
+.drop-shadow-sm {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8)) !important;
+}
+
+.drop-shadow-md {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9)) !important;
+}
+
+.drop-shadow-lg {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.9)) !important;
+}
+
+/* ===== RESPONSIVE - ANDROID OPTIMIZED ===== */
+
+/* Android Mobile - Optimización específica */
+@media screen and (max-width: 768px) {
+  /* Firefox: Usar selectores de atributo */
+  [class*="bg-purple-800/90"] .text-white {
+    font-weight: 700 !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95) !important;
+    font-size: 16px; /* Evita zoom automático en Android */
+    /* Firefox rechaza -webkit-text-size-adjust y text-size-adjust, eliminado para compatibilidad */
+  }
+  
+  /* Firefox rechaza -webkit-text-size-adjust incluso en @supports, eliminado completamente */
+  /* El font-size: 16px es suficiente para prevenir zoom automático */
+  
+  [class*="text-white/90"],
+  [class*="text-white/70"] {
+    font-weight: 600 !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95) !important;
+    font-size: 16px;
+  }
+  
+  /* Cards en móvil Android */
+  [class*="bg-purple-800/90"] {
+    padding: 16px !important;
+    margin: 8px !important;
+  }
+  
+  /* Textos en cards móvil */
+  [class*="bg-purple-800/90"] h3 {
+    font-size: 18px !important;
+    line-height: 1.4 !important;
+  }
+  
+  [class*="bg-purple-800/90"] p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+}
+
+/* Android pequeño (360px - Galaxy S5, etc) */
+@media screen and (max-width: 360px) {
+  /* Firefox: Usar selectores de atributo */
+  [class*="bg-purple-800/90"] .text-white {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+  }
+  
+  [class*="bg-purple-800/90"] h3 {
+    font-size: 16px !important;
+  }
+  
+  [class*="bg-purple-800/90"] p {
+    font-size: 13px !important;
+  }
+  
+  /* Touch targets más grandes en Android pequeño */
+  [class*="bg-purple-800/90"] button {
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+  }
+}
+
+/* Android landscape */
+@media screen and (orientation: landscape) and (max-width: 768px) {
+  /* Firefox: Usar selectores de atributo */
+  [class*="bg-purple-800/90"] {
+    padding: 12px !important;
+  }
+  
+  [class*="bg-purple-800/90"] h3 {
+    font-size: 16px !important;
+  }
+  
+  [class*="bg-purple-800/90"] p {
+    font-size: 13px !important;
+  }
+}
+
+/* ===== CORRECCIONES TEXTOS GRISES EN ANDROID ===== */
+
+/* Todos los textos grises en fondos purple - Forzar blanco en Android */
+/* Firefox: Usar selectores de atributo */
+[class*="bg-purple-800/90"] .text-gray-600,
+[class*="bg-purple-800/90"] .text-gray-500,
+[class*="bg-purple-800/90"] .text-gray-400,
+[class*="bg-purple-800/90"] .text-gray-300,
+.bg-gradient-to-r .text-gray-600,
+.bg-gradient-to-r .text-gray-500,
+.bg-gradient-to-r .text-gray-400 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9) !important;
+  font-weight: 600 !important;
+}
+
+/* Textos grises en cards purple */
+[class*="bg-purple-800/90"] p.text-gray-600,
+[class*="bg-purple-800/90"] span.text-gray-600,
+[class*="bg-purple-800/90"] div.text-gray-600 {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Android específico - Mejorar contraste */
+@media screen and (max-width: 768px) {
+  /* Forzar blancos en todos los grises sobre purple */
+  /* Firefox: Usar selectores de atributo */
+  [class*="bg-purple-800/90"] .text-gray-600,
+  [class*="bg-purple-800/90"] .text-gray-500,
+  [class*="bg-purple-800/90"] .text-gray-400 {
+    color: #ffffff !important;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 1) !important;
+    font-weight: 600 !important;
+    -webkit-font-smoothing: antialiased;
+    /* Firefox no reconoce -moz-osx-font-smoothing, solo usar -webkit-font-smoothing */
+  }
+}
+
+/* ===== ACCESIBILIDAD WCAG AAA ===== */
+
+/* Contraste mínimo 7:1 */
+[class*="bg-purple-800/90"] * {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* ===== ANDROID WEBVIEW OPTIMIZATIONS ===== */
+
+/* Prevenir zoom automático en inputs */
+@media screen and (max-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+    /* Firefox rechaza -webkit-text-size-adjust, usar solo en navegadores que lo soporten */
+  }
+  
+  /* Firefox rechaza -webkit-text-size-adjust incluso en @supports, eliminado completamente */
+  /* El font-size: 16px es suficiente para prevenir zoom automático */
+  
+  /* Touch targets más grandes */
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* ============================================
+   SECCIÓN 3: PROTECCIÓN DEL HEADER NAV
+   ============================================ */
+
+/* ===== HEADER NAV PROTECTION - v3.5.1 ===== */
+/* Protección específica para HeaderNav gradiente difuminado */
+/* Evitar que otros estilos sobrescriban el gradiente purple/blue */
+
+.header-nav-main,
+header.header-nav-main {
+  /* Proteger gradiente difuminado */
+  background-image: linear-gradient(to bottom, 
+    rgba(88, 28, 135, 0.95) 0%, 
+    rgba(107, 33, 168, 0.90) 50%, 
+    rgba(126, 34, 206, 0.80) 100%
+  ) !important;
+  
+  /* Asegurar backdrop blur funcione */
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
+  
+  /* Proteger borde */
+  border-bottom: 1px solid rgba(168, 85, 247, 0.3) !important;
+}
+
+/* Cuando está scrolled */
+/* Firefox: Usar selectores de atributo en lugar de escapes complejos */
+.header-nav-main[class*="bg-gradient-to-b"][class*="from-purple-900/90"] {
+  background-image: linear-gradient(to bottom, 
+    rgba(88, 28, 135, 0.90) 0%, 
+    rgba(107, 33, 168, 0.85) 50%, 
+    transparent 100%
+  ) !important;
+}
+
+/* Proteger animación del corazón */
+.header-nav-main .animate-heart-beat,
+.header-nav-main .animate-heart-float {
+  animation: heartBeat 1.5s ease-in-out infinite, 
+             heartFloat 3s ease-in-out infinite !important;
+}
+
+/* Proteger gradiente del texto del logo */
+/* Firefox: Usar selectores de atributo en lugar de escapes complejos */
+.header-nav-main span[class*="bg-gradient-to-r"][class*="from-purple-300"][class*="via-pink-300"] {
+  background: linear-gradient(to right, 
+    rgba(196, 181, 253, 1) 0%, 
+    rgba(249, 168, 212, 1) 50%, 
+    rgba(147, 197, 253, 1) 100%
+  ) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  background-size: 200% 200% !important;
+}
+
+/* Asegurar que ningún estilo global sobrescriba el header */
+body header.header-nav-main,
+html header.header-nav-main {
+  background: inherit !important;
+  background-image: inherit !important;
+}
+
+/* Protección contra estilos responsive que puedan interferir */
+@media (max-width: 1024px) {
+  .header-nav-main {
+    background-image: inherit !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-nav-main {
+    background-image: inherit !important;
+  }
+}
+
+/* ============================================
+   SECCIÓN 4: CORRECCIONES RESPONSIVE
+   ============================================ */
+
+/* Prevenir overflow en textos largos */
+.break-words {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Scrollbar hide para navegación horizontal */
+/* Nota: scrollbar-width es estándar moderno con fallbacks para otros navegadores */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE y Edge legacy */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Asegurar que dropdowns no se corten */
+[data-radix-popper-content-wrapper] {
+  z-index: 200 !important;
+}
+
+/* Responsive para tablets (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .header-nav-main nav {
+    gap: 0.5rem;
+  }
+  
+  .header-nav-main button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Responsive para móviles grandes (480px - 768px) */
+@media (min-width: 480px) and (max-width: 767px) {
+  .header-nav-main {
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* Responsive para móviles pequeños (hasta 480px) */
+@media (max-width: 479px) {
+  .header-nav-main {
+    padding: 0.5rem;
+  }
+  
+  .header-nav-main button {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* TV y pantallas grandes (1920px+) */
+@media (min-width: 1920px) {
+  .header-nav-main {
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+}
+
+/* Asegurar que las tarjetas no se corten */
+.card-content,
+.card-header {
+  overflow: visible;
+}
+
+/* Prevenir texto truncado en tarjetas */
+.card-title {
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+}
+
+/* Mejorar visibilidad en todos los navegadores */
+* {
+  -webkit-font-smoothing: antialiased;
+  /* Firefox no reconoce -moz-osx-font-smoothing, solo usar -webkit-font-smoothing */
+}
+
+/* Asegurar compatibilidad cross-browser */
+@supports not (backdrop-filter: blur(10px)) {
+  .backdrop-blur-md {
+    background-color: rgba(88, 28, 135, 0.95);
+  }
+}
+
+/* Fix para iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  .header-nav-main {
+    position: sticky; /* Firefox no reconoce -webkit-sticky, usar sticky estándar */
+  }
+}
+
+/* ============================================
+   SECCIÓN 5: CORRECCIONES DE DESBORDAMIENTO DE TEXTO
+   ============================================ */
+
+/* Basic text truncation */
+.text-truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Multi-line text truncation */
+.text-truncate-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
+  text-overflow: ellipsis;
+}
+
+.text-truncate-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
+  text-overflow: ellipsis;
+}
+
+/* Correcciones específicas para componentes */
+.profile-name,
+.user-name,
+.chat-message-text,
+.notification-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.profile-bio,
+.event-description,
+.card-description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+/* Navegación y botones */
+.nav-item-text,
+.button-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Headers y títulos */
+.page-title,
+.section-title,
+.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* Contenedores de texto responsivos */
+.text-container {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.text-container-strict {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Correcciones para móviles */
+@media (max-width: 640px) {
+  .mobile-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+  }
+  
+  .mobile-truncate-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
+    text-overflow: ellipsis;
+  }
+}
+
+/* Correcciones para tabletas */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tablet-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 250px;
+  }
+}
+
+/* Correcciones específicas para elementos comunes */
+.username,
+.email-display,
+.location-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+  .message-preview,
+  .notification-preview {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
+    text-overflow: ellipsis;
+    max-height: 3em;
+    line-height: 1.5;
+  }
+
+/* Correcciones para formularios */
+.form-label,
+.input-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.form-error,
+.validation-message {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Correcciones para listas */
+.list-item-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.list-item-description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
+  text-overflow: ellipsis;
+}
+
+/* Correcciones para badges y etiquetas */
+.badge-text,
+.tag-text,
+.status-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
+
+/* Correcciones para contenido dinámico */
+.dynamic-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.dynamic-content.strict {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Utilidades de ancho máximo */
+.max-w-truncate {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.max-w-truncate-sm {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.max-w-truncate-md {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.max-w-truncate-lg {
+  max-width: 350px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Correcciones para flex containers */
+.flex-truncate {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flex-truncate-2 {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  /* Firefox no reconoce line-clamp sin prefijo, usar solo -webkit-line-clamp */
+  text-overflow: ellipsis;
+}
+
+/* ============================================
+   SECCIÓN 6: CORRECCIONES DE VISIBILIDAD DE TEXTO
+   ============================================ */
+   
+/* NOTA: Esta sección fue eliminada porque las reglas ya están 
+   consolidadas en consolidated-styles.css para evitar duplicados.
+   Las reglas de visibilidad de texto están en:
+   - consolidated-styles.css (líneas 507-652)
+   - Se mantienen solo las correcciones específicas de ui-fixes
+   en las secciones anteriores (1-5).
+*/
+

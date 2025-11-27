@@ -1,0 +1,182 @@
+body {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.card {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.button {
+  background-color: #8b00ff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.profile-header-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.profile-header-username {
+  color: #c084fc;
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.profile-header-email {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+}
+
+.profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.badge-age {
+  background-color: rgba(168, 85, 247, 0.3);
+  color: white;
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  font-weight: 600;
+}
+
+.badge-gender {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: white;
+  border: 1px solid rgba(59, 130, 246, 0.5);
+}
+
+.badge-orientation {
+  background-color: rgba(236, 72, 153, 0.3);
+  color: white;
+  border: 1px solid rgba(236, 72, 153, 0.5);
+}
+
+.badge-location {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.welcome-modal-container {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: opacity 0.3s ease-in-out;
+}
+
+.env-debug-container {
+  padding: 20px;
+  background: #000;
+  color: #0f0;
+  font-family: monospace;
+}
+
+.chat-scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+.chat-message-text {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.legend-text-white {
+  color: #fff;
+}
+
+.edit-profile-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366f1 100%);
+}
+
+.theme-preview-box {
+  background: var(--preview-bg, #374151);
+}
+
+.theme-preview-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.progress-85 {
+  width: 85%;
+}
+
+/* Ripple effect for AnimatedButton */
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  animation: ripple 0.6s linear;
+  width: 10px;
+  height: 10px;
+  left: var(--ripple-x);
+  top: var(--ripple-y);
+  transform: translate(-50%, -50%);
+}
+
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
+}
+
+/* Protección anti-copia para imágenes privadas */
+.private-image-protection {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
+.private-image-interactive {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: auto;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}

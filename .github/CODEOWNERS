@@ -1,0 +1,20 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# these owners will be requested for review when someone
+# opens a pull request.
+*       @wakko1991
+
+# Auth package
+/packages/shared/auth/  @wakko1991
+
+# Web application
+/web/   @wakko1991
+
+# Mobile application
+/mobile/    @wakko1991
+
+# Configuration files
+/.github/   @wakko1991
+/*.json     @wakko1991
+/*.js       @wakko1991
+/*.ts       @wakko1991

@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.dbclient-js": "javascript",
+			"plyconfig.json": "jsonc"
+		},
+		"gitConfigUser.selectedProfile": "complciesconectaswvsco",
+		"CodeGPT.apiKey": "Gemini CLI",
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}

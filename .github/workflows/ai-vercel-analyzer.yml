@@ -1,0 +1,57 @@
+name: Vercel Deployment Analyzer
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  analyze_for_vercel:
+    name: Analyze for Vercel Deployment Issues
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Get PR diff
+        id: pr_diff
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
+          git diff --unified=0 origin/${{ github.event.pull_request.base.ref }} > pr_diff.txt
+          echo "DIFF=$(cat pr_diff.txt)" >> $GITHUB_OUTPUT
+
+      - name: Analyze changes with AI
+        id: ai_analysis
+        uses: vercel/ai-action@v2
+        with:
+          api-key: ${{ secrets.AI_GATEWAY_API_KEY }}
+          model: 'openai/gpt-4o'
+          system: |
+            You are an expert software engineer specializing in Vercel deployments for complex React and Vite projects. 
+            Your task is to analyze code changes from a pull request diff and identify potential issues that could cause a Vercel build or deployment to fail.
+            Focus on:
+            - Dependency conflicts in package.json.
+            - Incorrect environment variable usage (process.env).
+            - Framework-specific configuration errors (Vite, React).
+            - Vercel-specific settings in vercel.json or build scripts.
+            - Broken imports or path issues.
+            Provide a concise summary of potential problems and suggest specific code fixes. If there are no issues, simply respond with "No issues found."
+          prompt: |
+            Analyze the following code changes for potential Vercel deployment issues:
+            
+            ${{ steps.pr_diff.outputs.DIFF }}
+
+      - name: Comment on PR with analysis
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `### Vercel Deployment Analysis 🤖\n\n${{ steps.ai_analysis.outputs.text }}`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
