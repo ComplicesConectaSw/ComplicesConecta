@@ -58,191 +58,68 @@
 ```
 conecta-social-comunidad-main/
 ├── src/                          # Frontend React + TypeScript
-│   ├── components/               # Componentes reutilizables
-│   │   ├── chat/                 # Sistema de chat (ACTUALIZADO v3.5.0)
-│   │   │   ├── ChatRoom.tsx              # Componente principal con privacidad (NUEVO v3.5.0)
-│   │   │   ├── MessageList.tsx           # Lista de mensajes (NUEVO v3.5.0)
-│   │   │   ├── RealtimeChatWindow.tsx    # Ventana de chat tiempo real
-│   │   │   ├── ChatWithLocation.tsx      # Chat con geolocalización
-│   │   │   └── ... (componentes existentes)
-│   │   ├── discover/             # Funcionalidad de descubrimiento
-│   │   ├── events/               # Gestión de eventos VIP
-│   │   ├── profile/              # Gestión de perfiles
-│   │   │   └── NFTGalleryManager.tsx # Gestor de galerías NFT (NUEVO v3.5.0)
-│   │   ├── tokens/               # Componentes de tokens (ACTUALIZADO v3.5.0)
-│   │   │   ├── TokenBalance.tsx       # Balance con sección NFT (NUEVO v3.5.0)
-│   │   │   ├── TokenDashboard.tsx    # Dashboard con sección NFT (NUEVO v3.5.0)
-│   │   │   ├── TokenChatBot.tsx      # Chat bot de tokens
-│   │   │   └── StakingModal.tsx       # Modal de staking con tips NFT (NUEVO v3.5.0)
-│   │   ├── images/               # Componentes de imágenes (ACTUALIZADO v3.5.0)
-│   │   │   ├── ImageGallery.tsx      # Galería con badge NFT (NUEVO v3.5.0)
-│   │   │   └── ImageUpload.tsx        # Subida con opción NFT (NUEVO v3.5.0)
-│   │   ├── ui/                   # Componentes UI base
-│   │   ├── auth/                 # Componentes de autenticación
-│   │   ├── demo/                 # Componentes de demostración
-│   │   ├── animations/           # Sistema de animaciones
-│   │   ├── analytics/            # Componentes de análisis
-│   │   ├── admin/                # Dashboard administrativo (ACTUALIZADO v3.4.1)
-│   │   │   ├── panels/           # Subpaneles modulares (6 paneles)
-│   │   │   ├── SecurityDashboard.tsx          # Panel de seguridad avanzado
-│   │   │   ├── AdvancedModerationPanel.tsx    # Panel de moderación con IA
-│   │   │   ├── AnalyticsDashboard.tsx         # Dashboard analytics completo (4 pestañas)
-│   │   │   ├── ModerationMetrics.tsx          # Métricas de moderación (NUEVO v3.4.1)
-│   │   │   ├── HistoricalCharts.tsx           # Gráficos históricos Recharts (NUEVO v3.4.1)
-│   │   │   ├── WebhookConfigPanel.tsx         # Sistema de webhooks (NUEVO v3.4.1)
-│   │   │   ├── AlertConfigPanel.tsx           # Configuración de alertas (NUEVO v3.4.1)
-│   │   │   ├── ExportButton.tsx               # Exportación de reportes (NUEVO v3.4.1)
-│   │   │   └── NotificationSettings.tsx       # Notificaciones desktop (NUEVO v3.4.1)
-│   │   ├── analytics/            # Componentes de análisis (ACTUALIZADO v3.4.1)
-│   │   │   └── AdvancedAnalyticsDashboard.tsx # Dashboard analytics avanzado
-│   │   ├── cache/                # Componentes de caché (NUEVO v3.4.0)
-│   │   │   └── CacheDashboard.tsx # Dashboard de monitoreo de caché
-│   │   ├── couples/              # Componentes de parejas (NUEVO v3.4.0)
-│   │   │   └── CoupleDashboard.tsx # Dashboard especializado para parejas
-│   │   ├── notifications/        # Componentes de notificaciones (NUEVO v3.4.0)
-│   │   │   └── NotificationCenter.tsx # Centro de notificaciones
-│   │   └── theme/                # Sistema de temas visuales
-│   ├── pages/                    # Páginas principales de la app
-│   │   ├── Clubs.tsx                    # Página pública de clubs (NUEVO v3.5.0)
-│   │   ├── AdminPartners.tsx            # Panel admin partners (NUEVO v3.5.0)
-│   │   ├── ModeratorDashboard.tsx      # Dashboard moderación (ACTUALIZADO v3.5.0)
-│   │   ├── Invest.tsx                   # Landing donativos (NUEVO v3.5.0)
-│   │   ├── Shop.tsx                     # Shop CMPX tokens (NUEVO v3.5.0)
-│   ├── profiles/                 # Perfiles organizados (NUEVO v3.6.0)
-│   │   ├── single/               # Perfiles individuales
-│   │   │   ├── ProfileSingle.tsx        # Página de perfil individual
-│   │   │   ├── EditProfileSingle.tsx    # Edición de perfil individual
-│   │   │   ├── SingleCard.tsx           # Tarjeta de perfil individual
-│   │   │   └── SingleRegistrationForm.tsx # Formulario de registro individual
-│   │   ├── couple/               # Perfiles de parejas
-│   │   │   ├── ProfileCouple.tsx        # Página de perfil de pareja
-│   │   │   ├── EditProfileCouple.tsx    # Edición de perfil de pareja
-│   │   │   ├── CoupleCard.tsx           # Tarjeta de perfil de pareja
-│   │   │   ├── CoupleProfileCard.tsx    # Tarjeta de perfil de pareja
-│   │   │   ├── CouplePhotoSection.tsx    # Sección de fotos de pareja
-│   │   │   ├── CoupleImageGallery.tsx   # Galería de imágenes de pareja
-│   │   │   ├── CoupleImageUpload.tsx    # Subida de imágenes de pareja
-│   │   │   ├── CoupleProfileHeader.tsx  # Encabezado de perfil de pareja
-│   │   │   ├── CoupleDashboard.tsx      # Dashboard de pareja
-│   │   │   └── CoupleRegistrationForm.tsx # Formulario de registro de pareja
-│   │   └── shared/               # Componentes compartidos de perfiles
-│   │       ├── Profiles.tsx             # Lista de perfiles
-│   │       ├── ProfileDetail.tsx        # Detalle de perfil
-│   │       ├── ProfileCard.tsx          # Tarjeta de perfil
-│   │       ├── MainProfileCard.tsx      # Tarjeta principal de perfil
-│   │       ├── AnimatedProfileCard.tsx  # Tarjeta animada de perfil
-│   │       ├── ProfileImagePlaceholder.tsx # Placeholder de imagen
-│   │       ├── ProfileTabs.tsx         # Pestañas de perfil
-│   │       ├── ProfileNavTabs.tsx       # Navegación de pestañas
-│   │       └── ProfileStats.tsx         # Estadísticas de perfil
-│   ├── features/                 # Lógica reutilizable (NUEVO v3.6.0)
-│   │   ├── auth/                 # Autenticación
-│   │   │   ├── useAuth.ts               # Hook de autenticación
-│   │   │   └── useBiometricAuth.ts      # Hook de autenticación biométrica
-│   │   ├── profile/              # Perfiles
-│   │   │   ├── useProfileQuery.ts       # Hook de consulta de perfil
-│   │   │   ├── useProfileCache.ts       # Hook de caché de perfil
-│   │   │   ├── useCoupleProfile.ts      # Hook de perfil de pareja
-│   │   │   ├── useProfileTheme.ts       # Hook de tema de perfil
-│   │   │   ├── CoupleProfilesService.ts # Servicio de perfiles de pareja
-│   │   │   ├── ProfileReportService.ts  # Servicio de reportes de perfil
-│   │   │   ├── coupleProfiles.ts       # Utilidades de perfiles de pareja
-│   │   │   └── coupleProfilesCompatibility.ts # Compatibilidad de perfiles
-│   │   ├── clubs/                # Clubs
-│   │   │   └── clubFlyerImageProcessing.ts # Procesamiento de imágenes de flyers
-│   │   └── chat/                 # Chat
-│   │       ├── useRealtimeChat.ts       # Hook de chat en tiempo real
-│   │       ├── useVideoChat.ts          # Hook de video chat
-│   │       ├── useChatSummary.ts        # Hook de resumen de chat
-│   │       ├── ChatPrivacyService.ts    # Servicio de privacidad de chat
-│   │       └── ChatSummaryService.ts   # Servicio de resumen de chat
-│   ├── shared/                   # Componentes y utilidades compartidas (NUEVO v3.6.0)
-│   │   ├── ui/                   # Componentes UI base
-│   │   │   ├── Button.tsx         # Componente Button
-│   │   │   ├── Card.tsx           # Componente Card
-│   │   │   ├── Input.tsx          # Componente Input
-│   │   │   └── Modal.tsx          # Componente Modal/Dialog
-│   │   ├── lib/                   # Utilidades compartidas
-│   │   │   ├── cn.ts              # Utilidad para clases CSS (cn)
-│   │   │   ├── format.ts          # Utilidades de formato
-│   │   │   └── validation.ts     # Utilidades de validación
-│   │   └── hooks/                 # (Eliminado - hooks movidos a src/hooks/)
-│   ├── entities/                 # Entidades y tipos de dominio (NUEVO v3.6.0)
-│   │   ├── user.ts                # Entidad User
-│   │   ├── profile.ts             # Entidad Profile
-│   │   └── club.ts                # Entidad Club
-│   ├── hooks/                    # Custom React hooks (UNIFICADO v3.6.2)
-│   │   ├── useGeolocation.ts          # Hook de geolocalización (compartido)
-│   │   ├── usePersistedState.ts       # Hook de estado persistente (compartido)
-│   │   ├── useIsomorphicLayoutEffect.ts # Hook de layout effect isomórfico (compartido)
-│   │   ├── useToast.ts                # Hook de toast/notificaciones (compartido)
-│   │   ├── useAdvancedAnalytics.ts    # Hook para analytics avanzados
-│   │   ├── useAdvancedCache.ts        # Hook para gestión de caché
-│   │   ├── useAdvancedModeration.ts   # Hook para moderación
-│   │   ├── useRealtimeNotifications.ts # Hook para notificaciones tiempo real
-│   │   └── useWorldID.ts              # Hook para World ID (ACTUALIZADO v3.4.1)
-│   ├── utils/                    # Utilidades y helpers
-│   ├── integrations/             # Integraciones (Supabase, APIs)
-│   ├── lib/                      # Librerías y configuraciones
-│   │   ├── index.ts                       # Archivo maestro de imports (NUEVO v3.6.0)
-│   │   ├── env-utils.ts                  # Helper variables de entorno Vite/Node.js (NUEVO v3.5.0)
-│   │   └── logger.ts                      # Logger (ACTUALIZADO v3.5.0 - compatible Vite/Node.js)
-│   ├── services/                 # Servicios de negocio (ACTUALIZADO v3.5.0)
-│   │   ├── graph/                # Servicios de grafo (NUEVO v3.5.0)
-│   │   │   └── Neo4jService.ts                # Graph database Neo4j (NUEVO v3.5.0)
-│   │   ├── ChatPrivacyService.ts              # Movido a features/chat/ (v3.6.0)
-│   │   ├── permanentBan.ts              # Baneo permanente (NUEVO v3.5.0)
-│   │   ├── digitalFingerprint.ts        # Huella digital (NUEVO v3.5.0)
-│   │   ├── galleryCommission.ts         # Comisiones galerías (NUEVO v3.5.0)
-│   │   ├── moderatorTimer.ts            # Timer moderadores (NUEVO v3.5.0)
-│   │   ├── reportAIClassification.ts    # Clasificación IA reportes (NUEVO v3.5.0)
-│   │   ├── clubFlyerImageProcessing.ts  # Movido a features/clubs/ (v3.6.0)
-│   │   ├── SmartMatchingService.ts            # Matching con IA + Neo4j (NUEVO v3.5.0)
-│   │   ├── DataPrivacyService.ts              # GDPR compliance (NUEVO v3.5.0)
-│   │   ├── UserVerificationService.ts         # Verificación unificada (NUEVO v3.5.0)
-│   │   ├── TokenService.ts                    # Gestión de tokens (NUEVO v3.5.0)
-│   │   ├── ai/                                # Servicios de IA (ACTUALIZADO v3.5.0)
-│   │   │   ├── AILayerService.ts              # Capa base ML (ACTUALIZADO v3.5.0)
-│   │   │   ├── ConsentVerificationService.ts  # Verificación consentimiento chats (NUEVO v3.5.0)
-│   │   │   └── ChatSummaryService.ts         # Resúmenes automáticos de chats
-│   │   ├── nft/                               # Servicios NFT (NUEVO v3.5.0)
-│   │   │   └── NFTGalleryService.ts           # Galerías NFT con GTK staking (NUEVO v3.5.0)
-│   │   ├── matching/                          # Servicios de matching (ACTUALIZADO v3.5.0)
-│   │   │   └── GraphMatchingService.ts       # Matching predictivo Neo4j + IA (NUEVO v3.5.0)
-│   │   ├── events/                            # Servicios de eventos (ACTUALIZADO v3.5.0)
-│   │   │   └── VirtualEventsService.ts        # Eventos virtuales sostenibles (NUEVO v3.5.0)
-│   │   ├── PerformanceMonitoringService.ts    # Monitoreo de performance (ACTUALIZADO v3.4.1)
-│   │   ├── ErrorAlertService.ts               # Sistema de alertas (NUEVO v3.4.1)
-│   │   ├── ModerationMetricsService.ts        # Métricas de moderación (NUEVO v3.4.1)
-│   │   ├── HistoricalMetricsService.ts        # Métricas históricas (NUEVO v3.4.1)
-│   │   ├── WebhookService.ts                  # Sistema de webhooks (NUEVO v3.4.1)
-│   │   ├── DesktopNotificationService.ts      # Notificaciones desktop (NUEVO v3.4.1)
-│   │   ├── AdvancedAnalyticsService.ts        # Analytics avanzados
-│   │   ├── AdvancedCacheService.ts            # Caché multi-nivel
-│   │   ├── AdvancedCoupleService.ts           # Servicio de parejas
-│   │   ├── SecurityAuditService.ts            # Auditoría de seguridad
-│   │   └── PushNotificationService.ts         # Notificaciones push
-│   ├── styles/                   # Estilos globales organizados (NUEVO v3.6.1)
-│   │   ├── index.css              # Estilos principales (importa subdirectorios)
-│   │   ├── consolidated-styles.css      # Estilos consolidados (1,175+ líneas)
-│   │   ├── animations.css               # Animaciones personalizadas (193 líneas)
-│   │   ├── decorative-hearts.css        # Elementos decorativos
-│   │   ├── ui-fixes-consolidated.css    # Correcciones UI consolidadas
-│   │   ├── base/                  # Estilos base (NUEVO v3.6.1)
-│   │   │   └── base.css           # Reset, variables y estilos base
-│   │   ├── components/            # Estilos de componentes (NUEVO v3.6.1)
-│   │   │   └── components.css     # Estilos para componentes UI
-│   │   ├── utils/                 # Utilidades de estilos (NUEVO v3.6.1)
-│   │   │   └── utils.css          # Utilidades CSS personalizadas
-│   │   └── profiles/              # Estilos de perfiles (NUEVO v3.6.1)
-│   │       ├── single.css         # Estilos para perfiles individuales
-│   │       └── couple.css         # Estilos para perfiles de parejas
-│   ├── index.css                 # Estilos globales principales (433 líneas)
-│   ├── config/                   # Configuraciones (NUEVO v3.4.1)
-│   │   ├── sentry.config.ts      # Integración Sentry completa
-│   │   └── datadog-rum.config.ts # Datadog RUM configuration
-│   └── assets/                   # Recursos estáticos
+│   ├── App.tsx                   # Componente raíz de la SPA
+│   ├── EnvDebug.tsx              # Herramienta de depuración de entorno
+│   ├── debug.tsx                 # Pantalla de debug
+│   ├── main.tsx                  # Punto de entrada Vite/React
+│   ├── index.css                 # Estilos globales principales
+│   ├── vite-env.d.ts             # Tipos de entorno Vite
+│   ├── app/                      # Nuevo router basado en app/ (layouts/páginas)
+│   ├── assets/                   # Recursos estáticos (imágenes, SVG, etc.)
+│   ├── components/               # Componentes reutilizables (UI + features)
+│   ├── config/                   # Configuraciones (Sentry, Datadog, etc.)
+│   ├── context/                  # React Context providers compartidos
+│   ├── demo/                     # Flujos y pantallas de demo
+│   ├── entities/                 # Entidades y tipos de dominio
+│   ├── examples/                 # Ejemplos aislados / sandboxes
+│   ├── features/                 # Lógica reusable por feature (auth, chat, profile, etc.)
+│   ├── hooks/                    # Custom React hooks compartidos
+│   ├── integrations/             # Integraciones externas (Supabase, APIs, etc.)
+│   ├── lib/                      # Librerías y utilidades de infraestructura
+│   ├── pages/                    # Páginas clásicas (routing legacy)
+│   ├── profiles/                 # Perfiles (single, couple, shared)
+│   ├── services/                 # Servicios de negocio (AI, matching, NFT, etc.)
+│   ├── shared/                   # UI compartida (componentes, lib, hooks)
+│   ├── styles/                   # Sistema de estilos consolidado (CSS)
+│   ├── tests/                    # Tests unitarios/e2e específicos de frontend
+│   ├── types/                    # Tipos globales y contratos TS
+│   └── utils/                    # Utilidades genéricas (helpers, format, etc.)
 ├── supabase/                     # Backend Supabase (ACTUALIZADO v3.4.1)
+src/profiles/                      # Perfiles organizados (single / couple / shared)
+├── single/                        # Perfiles individuales
+│   ├── ProfileSingle.tsx          # Página de perfil individual (control parental + NFTs + eventos)
+│   ├── EditProfileSingle.tsx      # Edición de perfil individual
+│   ├── SingleCard.tsx             # Tarjeta de perfil individual (listados)
+│   ├── SingleRegistrationForm.tsx # Formulario de registro individual (Supabase + profiles)
+│   ├── SingleProfileHeader.tsx    # Encabezado del perfil individual
+│   └── ...                        # Otros componentes auxiliares
+├── couple/                        # Perfiles de parejas
+│   ├── ProfileCouple.tsx          # Página de perfil de pareja (control parental + NFTs shared)
+│   ├── EditProfileCouple.tsx      # Edición de perfil de pareja
+│   ├── CoupleCard.tsx             # Tarjeta resumen de pareja
+│   ├── CoupleProfileCard.tsx      # Tarjeta de detalle de pareja
+│   ├── CouplePhotoSection.tsx     # Sección de fotos de pareja (privadas/públicas)
+│   ├── CoupleImageGallery.tsx     # Galería de imágenes de pareja
+│   ├── CoupleImageUpload.tsx      # Subida de imágenes de pareja
+│   ├── CoupleProfileHeader.tsx    # Encabezado de perfil de pareja
+│   ├── CoupleDashboard.tsx        # Dashboard de pareja (estadísticas, acciones rápidas)
+│   ├── CoupleRegistrationForm.tsx # Formulario de registro de pareja
+│   ├── AdvancedCoupleService.ts   # Lógica avanzada de parejas (matching, reglas de negocio)
+│   ├── CoupleProfilesService.ts   # Servicio de integración de perfiles de pareja
+│   ├── InterestsSelector.tsx      # Selector de intereses de pareja
+│   ├── NicknameValidator.tsx      # Validador de alias/nickname de pareja
+│   ├── PasswordValidator.tsx      # Validador de password de pareja
+│   ├── TermsModal.tsx             # Modal de términos y condiciones para parejas
+│   └── useCouplePhotos.ts         # Hook para gestionar fotos de pareja
+└── shared/                        # Componentes compartidos entre tipos de perfil  
+    ├──Profiles.tsx               # Lista de perfiles (filtro/búsqueda)  
+    ├── ProfileDetail.tsx          # Vista detallada de perfil (single/couple unificado)
+    ├── ProfileCard.tsx            # Tarjeta básica de perfil
+    ├── MainProfileCard.tsx        # Tarjeta principal (hero perfil)
+    ├── AnimatedProfileCard.tsx    # Tarjeta con animaciones avanzadas
+    ├── DiscoverProfileCard.tsx    # Card para sección Discover
+    ├── ProfileGrid.tsx            # Grid de perfiles
+    ├
 │   ├── functions/                # Edge Functions serverless
 │   │   ├── send-email/           # Sistema de emails
 │   │   ├── push-notifications/   # Notificaciones push
@@ -250,7 +127,7 @@ conecta-social-comunidad-main/
 │   └── migrations/               # Migraciones de base de datos (20 migraciones)
 │       ├── 20250122000003_create_security_tables_fixed.sql    # Tablas seguridad
 │       ├── 20250122000004_create_couple_tables.sql            # Tablas parejas
-│       ├── 20251029000000_create_monitoring_tables.sql        # Tablas monitoreo (NUEVO v3.4.1)
+│       ├── 20251029000000_create_monitoring_tables.sql        # Tablas monitoreo (NUEVO v3. 4.    1)
 │       ├── 20251029100000_create_interests_tables.sql         # Tablas intereses (NUEVO v3.4.1)
 │       ├── 20251029100001_create_worldid_verifications.sql    # World ID (NUEVO v3.4.1)
 │       ├── 20251106_05_create_club_system.sql            # Sistema de clubs (NUEVO v3.5.0)
