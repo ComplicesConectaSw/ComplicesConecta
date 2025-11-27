@@ -32,7 +32,7 @@ import { ParentalControl } from '@/components/profile/ParentalControl';
 import { HoverEffect } from '@/components/ui/card-hover-effect';
 import { ComplianceSignupForm } from '@/shared/ui/compliance-signup-form';
 import { EventsCarousel } from '@/shared/ui/events-carousel';
-import { VipBookingModal } from '@/shared/ui/vip-booking-modal';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalTrigger } from '@/components/modals/animated-modal';
 import { FileUpload } from '@/shared/ui/file-upload';
 import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
 import { walletService, WalletService } from '@/services/WalletService';
@@ -56,7 +56,6 @@ const ProfileCouple: React.FC = () => {
   const [imageLikes, setImageLikes] = useState<{[key: string]: number}>({});
   const [imageUserLikes, setImageUserLikes] = useState<{[key: string]: boolean}>({});
   const [_imageComments, _setImageComments] = useState<{[key: string]: string[]}>({});
-  const [showVipModal, setShowVipModal] = useState(false);
   
   // Función para hacer funcional el botón "Ver Fotos Privadas"
   const handleViewPrivatePhotos = () => {
@@ -322,12 +321,6 @@ const ProfileCouple: React.FC = () => {
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/20 via-transparent to-accent/20 animate-gradient-x"></div>
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-secondary/10 to-primary/15 animate-gradient-y"></div>
           </div>
-
-      <VipBookingModal
-        open={showVipModal}
-        onClose={() => setShowVipModal(false)}
-      />
-          
           <div className="absolute inset-0">
             <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-float-slow"></div>
             <div className="absolute top-40 right-32 w-48 h-48 bg-accent/8 rounded-full blur-2xl animate-float-reverse"></div>
@@ -699,13 +692,27 @@ const ProfileCouple: React.FC = () => {
                   <ComplianceSignupForm />
                   <div className="space-y-4">
                     <FileUpload />
-                    <Button
-                      onClick={() => setShowVipModal(true)}
-                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold flex items-center justify-center gap-2"
-                    >
-                      <Heart className="w-4 h-4" />
-                      Ver experiencias VIP demo
-                    </Button>
+                    <Modal>
+                      <ModalTrigger className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold flex items-center justify-center gap-2 rounded-xl py-3 shadow-lg">
+                        <Heart className="w-4 h-4" />
+                        <span>Ver experiencias VIP demo</span>
+                      </ModalTrigger>
+
+                      <ModalBody>
+                        <ModalContent>
+                          <h4 className="text-lg md:text-2xl text-white font-bold text-center mb-8">
+                            Experiencias para Parejas
+                          </h4>
+                          <div className="text-center text-neutral-300 space-y-4">
+                            <p>Conecta con otras parejas verificadas en un entorno seguro.</p>
+                            {/* TODO: Reutilizar contenido existente de experiencias VIP para parejas si se define un bloque específico */}
+                          </div>
+                        </ModalContent>
+                        <ModalFooter className="gap-4">
+                          <button className="bg-purple-600 text-white px-4 py-2 rounded-md">Continuar</button>
+                        </ModalFooter>
+                      </ModalBody>
+                    </Modal>
                   </div>
                 </div>
               </CardContent>

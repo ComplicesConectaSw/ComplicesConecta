@@ -47,7 +47,7 @@ import { useProfileTheme } from '@/features/profile/useProfileTheme';
 import { HoverEffect } from '@/components/ui/card-hover-effect';
 import { ComplianceSignupForm } from '@/shared/ui/compliance-signup-form';
 import { EventsCarousel } from '@/shared/ui/events-carousel';
-import { VipBookingModal } from '@/shared/ui/vip-booking-modal';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalTrigger } from '@/components/modals/animated-modal';
 import { FileUpload } from '@/shared/ui/file-upload';
 import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
 import { SafeImage } from '@/shared/ui/SafeImage';
@@ -96,7 +96,6 @@ const ProfileSingle: React.FC = () => {
   });
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]);
-  const [showVipModal, setShowVipModal] = useState(false);
   
   // Estados para funcionalidades blockchain
   const [_walletInfo, setWalletInfo] = useState<any>(null);
@@ -1310,13 +1309,33 @@ Información del perfil:
                 <ComplianceSignupForm />
                 <div className="space-y-4">
                   <FileUpload />
-                  <Button
-                    onClick={() => setShowVipModal(true)}
-                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold flex items-center justify-center gap-2"
-                  >
-                    <Calendar className="w-4 h-4" />
-                    Ver opciones VIP demo
-                  </Button>
+                  <Modal>
+                    <ModalTrigger className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold flex items-center justify-center gap-2 rounded-xl py-3 shadow-lg hover:scale-[1.02] transition-all">
+                      <Calendar className="w-4 h-4" />
+                      Ver opciones VIP demo
+                    </ModalTrigger>
+
+                    <ModalBody>
+                      <ModalContent>
+                        <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
+                          Reserva tu Experiencia VIP
+                        </h4>
+                        <div className="py-10 flex flex-wrap gap-x-4 gap-y-6 items-start justify-center max-w-sm mx-auto text-neutral-300">
+                          <p className="text-center">Accede a eventos exclusivos, fiestas privadas y matchmaking prioritario.</p>
+                          {/* TODO: Inyectar aquí el contenido actual de VipBookingModal si se quiere reutilizar texto al 100% */}
+                        </div>
+                      </ModalContent>
+
+                      <ModalFooter className="gap-4">
+                        <button className="px-4 py-2 bg-gray-200 text-black dark:bg-black dark:border-black dark:text-white border border-gray-300 rounded-md text-sm">
+                          Cancelar
+                        </button>
+                        <button className="bg-purple-600 text-white text-sm px-4 py-2 rounded-md hover:bg-purple-700">
+                          Solicitar Acceso
+                        </button>
+                      </ModalFooter>
+                    </ModalBody>
+                  </Modal>
                 </div>
               </div>
             </CardContent>
@@ -1639,10 +1658,6 @@ Información del perfil:
         }}
       />
 
-      <VipBookingModal
-        open={showVipModal}
-        onClose={() => setShowVipModal(false)}
-      />
     </div>
   );
 };
