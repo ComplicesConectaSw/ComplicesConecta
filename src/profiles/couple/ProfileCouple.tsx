@@ -785,7 +785,7 @@ const ProfileCouple: React.FC = () => {
               >
                 <div className="relative aspect-square rounded-lg overflow-hidden">
                   <SafeImage
-                    src="/src/assets/people/couple/privado/coupleprivjpg.jpg"
+                    src="/assets/people/couple/privado/coupleprivjpg.jpg"
                     alt="Foto privada bloqueada"
                     fallbackType="private"
                     className={`w-full h-full ${
@@ -817,26 +817,26 @@ const ProfileCouple: React.FC = () => {
                     images={[
                       {
                         id: '1',
-                        url: '/src/assets/people/couple/privado/coupleprivjpg.jpg',
-                        thumbnail: '/src/assets/people/couple/privado/coupleprivjpg.jpg',
+                        url: '/assets/people/couple/privado/coupleprivjpg.jpg',
+                        thumbnail: '/assets/people/couple/privado/coupleprivjpg.jpg',
                         uploadedAt: new Date()
                       },
                       {
                         id: '2',
-                        url: '/src/assets/people/couple/privado/privadicouple2.jpg',
-                        thumbnail: '/src/assets/people/couple/privado/privadicouple2.jpg',
+                        url: '/assets/people/couple/privado/privadicouple2.jpg',
+                        thumbnail: '/assets/people/couple/privado/privadicouple2.jpg',
                         uploadedAt: new Date()
                       },
                       {
                         id: '3',
-                        url: '/src/assets/people/couple/privado/privado couplple4.jpg',
-                        thumbnail: '/src/assets/people/couple/privado/privado couplple4.jpg',
+                        url: '/assets/people/couple/privado/privado couplple4.jpg',
+                        thumbnail: '/assets/people/couple/privado/privado couplple4.jpg',
                         uploadedAt: new Date()
                       },
                       {
                         id: '4',
-                        url: '/src/assets/people/couple/privado/privadocouple (3).jpg',
-                        thumbnail: '/src/assets/people/couple/privado/privadocouple (3).jpg',
+                        url: '/assets/people/couple/privado/privadocouple (3).jpg',
+                        thumbnail: '/assets/people/couple/privado/privadocouple (3).jpg',
                         uploadedAt: new Date()
                       }
                     ]}

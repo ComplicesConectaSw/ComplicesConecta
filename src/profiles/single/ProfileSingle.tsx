@@ -142,21 +142,21 @@ const ProfileSingle: React.FC = () => {
   const privateImages = [
     { 
       id: '1', 
-      url: '/src/assets/people/male/privado/0CD28qq-editado.jpg', 
+      url: '/assets/people/male/privado/0CD28qq-editado.jpg', 
       caption: 'Foto artística en blanco y negro 📸',
       likes: imageLikes['1'] || 12,
       userLiked: imageUserLikes['1'] || false
     },
     { 
       id: '2', 
-      url: '/src/assets/people/male/privado/45Xas2E.jpg', 
+      url: '/assets/people/male/privado/45Xas2E.jpg', 
       caption: 'Sesión profesional de estudio 🎭',
       likes: imageLikes['2'] || 8,
       userLiked: imageUserLikes['2'] || false
     },
     { 
       id: '3', 
-      url: '/src/assets/people/male/privado/4Jyc0cr-editado.jpg', 
+      url: '/assets/people/male/privado/4Jyc0cr-editado.jpg', 
       caption: 'Momento íntimo y personal 💫',
       likes: imageLikes['3'] || 15,
       userLiked: imageUserLikes['3'] || false
@@ -1451,12 +1451,11 @@ Información del perfil:
                       }}
                     >
                       <div className="relative w-full h-full">
-                        <img 
-                          src="/src/assets/people/male/privado/0CD28qq-editado.jpg" 
+                        <SafeImage 
+                          src="/assets/people/male/privado/0CD28qq-editado.jpg" 
                           alt="Foto privada bloqueada"
+                          fallbackType="private"
                           className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile && !isParentalLocked ? '' : 'filter blur-lg'} ${demoPrivateUnlocked && !isParentalLocked ? 'private-image-protection' : 'private-image-interactive'}`}
-                          onContextMenu={(e) => e.preventDefault()}
-                          draggable={false}
                         />
                         {demoPrivateUnlocked && (
                           <div className="absolute inset-0 pointer-events-none">
@@ -1492,12 +1491,11 @@ Información del perfil:
                       }}
                     >
                       <div className="relative w-full h-full">
-                        <img 
-                          src="/src/assets/people/male/privado/45Xas2E.jpg" 
+                        <SafeImage 
+                          src="/assets/people/male/privado/45Xas2E.jpg" 
                           alt="Foto privada bloqueada"
+                          fallbackType="private"
                           className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'} ${demoPrivateUnlocked ? 'private-image-protection' : 'private-image-interactive'}`}
-                          onContextMenu={(e) => e.preventDefault()}
-                          draggable={false}
                         />
                         {demoPrivateUnlocked && (
                           <div className="absolute inset-0 pointer-events-none">
@@ -1532,12 +1530,11 @@ Información del perfil:
                       }}
                     >
                       <div className="relative w-full h-full">
-                        <img 
-                          src="/src/assets/people/male/privado/4Jyc0cr-editado.jpg" 
+                        <SafeImage 
+                          src="/assets/people/male/privado/4Jyc0cr-editado.jpg" 
                           alt="Foto privada bloqueada"
+                          fallbackType="private"
                           className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'} ${demoPrivateUnlocked ? 'private-image-protection' : 'private-image-interactive'}`}
-                          onContextMenu={(e) => e.preventDefault()}
-                          draggable={false}
                         />
                         {demoPrivateUnlocked && (
                           <div className="absolute inset-0 pointer-events-none">
