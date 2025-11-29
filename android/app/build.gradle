@@ -1,7 +1,7 @@
 
 plugins {
     id 'com.android.application'
-    // id 'io.sentry.android.gradle' version '5.12.1' // TEMPORALMENTE DESHABILITADO
+    id 'io.sentry.android.gradle' version '5.12.1'
 }
 
 android {
@@ -11,8 +11,8 @@ android {
         applicationId "com.complicesconecta.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 366
-        versionName "3.6.6"
+        versionCode 1
+        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -35,8 +35,8 @@ android {
         release {
             def keystorePropertiesFile = rootProject.file("keystore.properties")
             if (keystorePropertiesFile.exists()) {
-                def keystoreProperties = new Properties ()
-                keystoreProperties.load = (new FileInputStream(keystorePropertiesFile))
+                def keystoreProperties = new Properties()
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
                 storeFile rootProject.file(keystoreProperties['storeFile'])
                 storePassword keystoreProperties['storePassword']
                 keyAlias keystoreProperties['keyAlias']
@@ -88,25 +88,37 @@ apply from: 'capacitor.build.gradle'
 
 try {
     def servicesJSON = file('google-services.json')
-    if (servicesJSON.text) {
+    if (servicesJSON != null && servicesJSON.exists() && servicesJSON.text) {
         apply plugin: 'com.google.gms.google-services'
     }
-}
-catch (Exception ) {
-    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+} catch(Exception ignored) {
+    logger.lifecycle("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
 
 
-/* sentry {   
+sentry {
     org = "complicesconecta"
     projectName = "android"
+
+    // this will upload your source code to Sentry to show it as part of the stack traces
+    // disable if you don't want to expose your sources
     includeSourceContext = true
+    
+    // Auto upload ProGuard/R8 mapping files (habilitado si hay token configurado)
     autoUploadProguardMapping = project.findProperty("SENTRY_AUTH_TOKEN") != null || System.getenv("SENTRY_AUTH_TOKEN") != null
+    
+    // Auto upload source bundle files (habilitado si hay token configurado)
     autoUploadSourceContext = project.findProperty("SENTRY_AUTH_TOKEN") != null || System.getenv("SENTRY_AUTH_TOKEN") != null
+    
+    // Skip upload tasks if no auth token is configured
     tracingInstrumentation {
-        enabled = false 
+        enabled = false
     }
-} */
+}
 
 // Configurar token de Sentry desde gradle.properties o variable de entorno
 def sentryToken = project.findProperty("SENTRY_AUTH_TOKEN") ?: System.getenv("SENTRY_AUTH_TOKEN")
@@ -120,4 +132,3 @@ if (sentryToken) {
         logger.warn("Sentry auth token not configured. Skipping ${it.name} task.")
     }
 }
-
