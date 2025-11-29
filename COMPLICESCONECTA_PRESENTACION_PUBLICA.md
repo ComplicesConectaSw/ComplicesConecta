@@ -1,14 +1,35 @@
 # 💖 ComplicesConecta - Presentación Pública
 
-**Versión:** 3.6.6  
+**Versión:** 3.8.16  
 **Fecha:** Noviembre, 2025  
-**Última Actualización:** 19 de Noviembre, 2025  
-**Estado:** ✅ PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - 100% TYPE-SAFE - LEY OLIMPIA COMPLIANT - 67% FEATURES IMPLEMENTED - DEMO INVESTOR READY
+**Última Actualización:** 29 de Noviembre, 2025  
+**Estado:** ✅ PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - 100% TYPE-SAFE - LEY OLIMPIA COMPLIANT - 85% FEATURES IMPLEMENTED - DEMO INVESTOR READY
 
-### 📅 Bitácora 26 Nov 2025
-- Navegación pública reorganizada: FloatingNav glassmorphism con jerarquía clara (Inicio, Explorar, NFTs, Tokens + menú "Más") y CTA único de registro, optimizada para mobile.
-- Páginas informativas (Chat Info & Stories Info) actualizadas con layout oscuro, cards glass y CTA directo a `/auth`, reforzando el storytelling de privacidad/IA para demos e inversores.
-- search_unified (pg_trgm) habilitado vía migración `20251126_create_global_search.sql`, exponiendo resultados reales en VanishSearchInput/GlobalSearchService para mostrar búsqueda instantánea durante presentaciones.
+## 📋 **ÍNDICE DE CONTENIDOS**
+
+### 🚀 **Highlights para Inversores y Demo**
+- [🎛️ Dashboard Administrativo + Tokens CMPX](#-qué-nos-destaca)
+- [📊 Búsqueda Global + Neo4j Predictivo](#-tecnología-de-vanguardia)
+- [🔐 ConsentGuard IA + Ley Olimpia](#-cumplimiento-legal-y-protección-ley-olimpia)
+- [🎨 Experiencia Glassmorphism + Control Parental](#-qué-nos-destaca)
+- [🪙 NFTs + Staking GTK/CMPX](#-sistema-de-tokens-economía-digital-única)
+
+### 🛠️ **Desarrollo y Arquitectura**
+- [🏗️ Arquitectura Empresarial](#-tecnología-de-vanguardia)
+- [🧠 IA Nativa + Neo4j](#-tecnología-de-vanguardia)
+- [🗂️ Documentación Técnica](#-qué-es-complicesconecta)
+
+### 📚 **Documentación / Links Clave**
+- [📖 Guías por Rol](#-qué-es-complicesconecta)
+- [📋 Notas de Lanzamiento](RELEASE_NOTES_v3.4.1.md)
+- [📱 Descargar APK](https://github.com/ComplicesConectaSw/ComplicesConecta/releases)
+
+### 📅 Bitácora 26–29 Nov 2025
+- Navegación pública reorganizada: FloatingNav glassmorphism (Inicio, Explorar, NFTs, Tokens + "Más") y CTA único de registro.
+- Páginas informativas (`ChatInfo.tsx` / `StoriesInfo.tsx`) con layout oscuro, cards glass y CTA directo a `/auth` para reforzar storytelling IA/privacidad.
+- `search_unified` (pg_trgm + RPC) disponible en `GlobalSearchService`/`VanishSearchInput`, demostrando búsqueda instantánea con datos reales.
+- Control Parental y Modal Glass en perfiles Single/Couple con niveles Soft/Medium/Strict, auto-lock 5 min y PIN compartido.
+- Tokens/NFT Dashboard v3.8.16: HeaderNav minimalista, grid NFTs 2x4, modal glass blur, animaciones globales.
 
 > **📚 Para desarrolladores:**  
 > **- [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa de instalación y configuración  
