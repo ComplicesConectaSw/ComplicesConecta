@@ -5,6 +5,16 @@
 -- =====================================================
 -- CAMPOS PARA FUNCIONALIDADES SWINGER ESPECÍFICAS
 -- =====================================================
+-- Asegurar que la tabla base exista antes de aplicar campos extendidos
+CREATE TABLE IF NOT EXISTS public.couple_profiles (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now(),
+  name text,
+  bio text,
+  location text
+);
 
 ALTER TABLE couple_profiles 
 ADD COLUMN IF NOT EXISTS looking_for VARCHAR(50) DEFAULT 'friendship' CHECK (looking_for IN ('friendship', 'dating', 'casual', 'serious', 'swinger', 'threesome', 'group')),

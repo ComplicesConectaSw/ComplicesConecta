@@ -4,6 +4,13 @@
 -- Descripción: Añadir campos faltantes a gallery_permissions
 -- =====================================================
 
+-- Asegurar que la tabla base exista antes de aplicar correcciones
+CREATE TABLE IF NOT EXISTS public.gallery_permissions (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  profile_id uuid,
+  created_at timestamptz DEFAULT now()
+);
+
 -- Añadir columnas faltantes si no existen
 DO $$ 
 BEGIN
@@ -12,7 +19,7 @@ BEGIN
         WHERE table_name = 'gallery_permissions' 
         AND column_name = 'gallery_owner_id'
     ) THEN
-        ALTER TABLE gallery_permissions ADD COLUMN gallery_owner_id UUID REFERENCES profiles(id) ON DELETE CASCADE;
+        ALTER TABLE gallery_permissions ADD COLUMN gallery_owner_id UUID;
     END IF;
     
     IF NOT EXISTS (

@@ -4,6 +4,14 @@
 -- Descripción: Asegurar que updated_at existe en invitations
 -- =====================================================
 
+-- Asegurar que la tabla base exista antes de aplicar correcciones
+CREATE TABLE IF NOT EXISTS public.invitations (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  from_profile uuid,
+  to_profile uuid,
+  created_at timestamptz DEFAULT now()
+);
+
 -- Añadir columna updated_at si no existe
 DO $$ 
 BEGIN

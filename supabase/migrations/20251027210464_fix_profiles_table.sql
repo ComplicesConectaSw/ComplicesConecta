@@ -4,6 +4,15 @@
 -- Descripción: Asegurar que is_premium existe en profiles
 -- =====================================================
 
+-- Asegurar que la tabla base exista antes de aplicar correcciones
+CREATE TABLE IF NOT EXISTS public.profiles (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  name text NOT NULL,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
 -- Añadir columna is_premium si no existe
 DO $$ 
 BEGIN
