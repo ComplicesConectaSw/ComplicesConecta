@@ -24,31 +24,51 @@ $$ language 'plpgsql';
 -- Crear triggers faltantes para otras tablas (PostgreSQL no soporta IF NOT EXISTS en triggers)
 DO $$ 
 BEGIN
-    -- Trigger para gallery_commissions
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_trigger 
-        WHERE tgname = 'trigger_gallery_commissions_updated_at'
+
+    -- Trigger para gallery_commissions (solo si existe la tabla)
+
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'gallery_commissions'
     ) THEN
-        CREATE TRIGGER trigger_gallery_commissions_updated_at 
-            BEFORE UPDATE ON gallery_commissions 
-            FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-        RAISE NOTICE '✅ Trigger trigger_gallery_commissions_updated_at creado';
+        IF NOT EXISTS (
+            SELECT 1 FROM pg_trigger 
+            WHERE tgname = 'trigger_gallery_commissions_updated_at'
+        ) THEN 
+            CREATE TRIGGER trigger_gallery_commissions_updated_at 
+                BEFORE UPDATE ON gallery_commissions 
+                FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 
+            RAISE NOTICE '✅ Trigger trigger_gallery_commissions_updated_at creado'; 
+        ELSE 
+            RAISE NOTICE '⚠️ Trigger trigger_gallery_commissions_updated_at ya existe'; 
+        END IF; 
     ELSE
-        RAISE NOTICE '⚠️ Trigger trigger_gallery_commissions_updated_at ya existe';
+        RAISE NOTICE '⚠️ Tabla gallery_commissions no existe; se omite creación de trigger';
     END IF;
 
-    -- Trigger para invitation_statistics
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_trigger 
-        WHERE tgname = 'trigger_invitation_statistics_updated_at'
+    -- Trigger para invitation_statistics (solo si existe la tabla)
+
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'invitation_statistics'
     ) THEN
-        CREATE TRIGGER trigger_invitation_statistics_updated_at 
-            BEFORE UPDATE ON invitation_statistics 
-            FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-        RAISE NOTICE '✅ Trigger trigger_invitation_statistics_updated_at creado';
+        IF NOT EXISTS (
+            SELECT 1 FROM pg_trigger 
+            WHERE tgname = 'trigger_invitation_statistics_updated_at'
+        ) THEN 
+            CREATE TRIGGER trigger_invitation_statistics_updated_at 
+                BEFORE UPDATE ON invitation_statistics 
+                FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 
+            RAISE NOTICE '✅ Trigger trigger_invitation_statistics_updated_at creado'; 
+        ELSE 
+            RAISE NOTICE '⚠️ Trigger trigger_invitation_statistics_updated_at ya existe'; 
+        END IF; 
     ELSE
-        RAISE NOTICE '⚠️ Trigger trigger_invitation_statistics_updated_at ya existe';
+        RAISE NOTICE '⚠️ Tabla invitation_statistics no existe; se omite creación de trigger';
     END IF;
+
 END $$;
 
 -- Verificar que todas las políticas RLS existen

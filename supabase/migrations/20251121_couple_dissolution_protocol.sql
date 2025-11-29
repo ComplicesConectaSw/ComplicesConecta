@@ -89,14 +89,43 @@ CREATE TABLE IF NOT EXISTS frozen_assets (
 
 -- 5. ÍNDICES PARA PERFORMANCE Y CONSULTAS CRÍTICAS
 
--- Disputas activas por deadline
-CREATE INDEX IF NOT EXISTS idx_couple_disputes_active_deadline 
-ON couple_disputes(deadline_at, status) 
-WHERE status = 'PENDING_AGREEMENT';
+-- Disputas activas por deadline (solo si existe la columna status)
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'couple_disputes'
+          AND column_name = 'status'
+    ) THEN
+        CREATE INDEX IF NOT EXISTS idx_couple_disputes_active_deadline 
+        ON couple_disputes(deadline_at, status) 
+        WHERE status = 'PENDING_AGREEMENT';
+    ELSE
+        RAISE NOTICE '⚠️ Columna status no existe en couple_disputes; se omite índice idx_couple_disputes_active_deadline.';
+    END IF;
+END $$;
 
--- Disputas por pareja
-CREATE INDEX IF NOT EXISTS idx_couple_disputes_couple 
-ON couple_disputes(couple_id, status);
+-- Disputas por pareja (solo si existen las columnas couple_id/status)
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'couple_disputes'
+          AND column_name = 'couple_id'
+    ) AND EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'couple_disputes'
+          AND column_name = 'status'
+    ) THEN
+        CREATE INDEX IF NOT EXISTS idx_couple_disputes_couple 
+        ON couple_disputes(couple_id, status);
+    ELSE
+        RAISE NOTICE '⚠️ Columnas couple_id/status no existen en couple_disputes; se omite índice idx_couple_disputes_couple.';
+    END IF;
+END $$;
 
 -- Activos congelados por disputa
 CREATE INDEX IF NOT EXISTS idx_frozen_assets_dispute 
@@ -305,23 +334,44 @@ $$ LANGUAGE plpgsql;
 -- RLS para couple_disputes: Solo los partners pueden ver sus disputas
 ALTER TABLE couple_disputes ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Partners can view own disputes" ON couple_disputes
-    FOR SELECT USING (
-        EXISTS (
-            SELECT 1 FROM couple_profiles cp 
-            WHERE cp.id = couple_id 
-              AND (cp.partner_1_id = auth.uid() OR cp.partner_2_id = auth.uid())
-        )
-    );
+DO $$
+BEGIN
+    -- Solo crear políticas si existen las columnas partner_1_id y partner_2_id en couple_profiles
+    IF EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'couple_profiles'
+          AND column_name = 'partner_1_id'
+    )
+    AND EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'couple_profiles'
+          AND column_name = 'partner_2_id'
+    ) THEN
 
-CREATE POLICY "Partners can update own disputes" ON couple_disputes
-    FOR UPDATE USING (
-        EXISTS (
-            SELECT 1 FROM couple_profiles cp 
-            WHERE cp.id = couple_id 
-              AND (cp.partner_1_id = auth.uid() OR cp.partner_2_id = auth.uid())
-        )
-    );
+        CREATE POLICY "Partners can view own disputes" ON couple_disputes
+            FOR SELECT USING (
+                EXISTS (
+                    SELECT 1 FROM couple_profiles cp 
+                    WHERE cp.id = couple_id 
+                      AND (cp.partner_1_id = auth.uid() OR cp.partner_2_id = auth.uid())
+                )
+            );
+
+        CREATE POLICY "Partners can update own disputes" ON couple_disputes
+            FOR UPDATE USING (
+                EXISTS (
+                    SELECT 1 FROM couple_profiles cp 
+                    WHERE cp.id = couple_id 
+                      AND (cp.partner_1_id = auth.uid() OR cp.partner_2_id = auth.uid())
+                )
+            );
+
+    ELSE
+        RAISE NOTICE '⚠️ Columnas partner_1_id/partner_2_id no existen en couple_profiles; se omiten políticas de couple_disputes.';
+    END IF;
+END $$;
 
 -- RLS para frozen_assets: Solo propietarios pueden ver
 ALTER TABLE frozen_assets ENABLE ROW LEVEL SECURITY;
@@ -331,13 +381,62 @@ CREATE POLICY "Owners can view own frozen assets" ON frozen_assets
 
 -- 9. COMENTARIOS PARA DOCUMENTACIÓN LEGAL
 
-COMMENT ON TABLE couple_disputes IS 'Protocolo de disolución de parejas con cuenta regresiva de 72 horas';
-COMMENT ON COLUMN couple_disputes.deadline_at IS 'Timestamp límite para acuerdo (72h desde inicio)';
-COMMENT ON COLUMN couple_disputes.frozen_assets_snapshot IS 'Snapshot JSONB de activos congelados como evidencia';
-COMMENT ON COLUMN couple_disputes.status IS 'PENDING_AGREEMENT: esperando acuerdo, RESOLVED_TRANSFERRED: resuelto, EXPIRED_FORFEITED: confiscado';
+DO $$
+BEGIN
+    -- Comentarios sobre couple_disputes: solo si existen las columnas esperadas
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'couple_disputes'
+    ) THEN
+        COMMENT ON TABLE couple_disputes IS 'Protocolo de disolución de parejas con cuenta regresiva de 72 horas';
 
-COMMENT ON TABLE frozen_assets IS 'Detalle de activos individuales congelados durante disputa';
-COMMENT ON COLUMN frozen_assets.asset_type IS 'Tipo: CMPX_TOKEN, GTK_TOKEN, NFT';
+        IF EXISTS (
+            SELECT 1 FROM information_schema.columns
+            WHERE table_schema = 'public'
+              AND table_name = 'couple_disputes'
+              AND column_name = 'deadline_at'
+        ) THEN
+            COMMENT ON COLUMN couple_disputes.deadline_at IS 'Timestamp límite para acuerdo (72h desde inicio)';
+        END IF;
+
+        IF EXISTS (
+            SELECT 1 FROM information_schema.columns
+            WHERE table_schema = 'public'
+              AND table_name = 'couple_disputes'
+              AND column_name = 'frozen_assets_snapshot'
+        ) THEN
+            COMMENT ON COLUMN couple_disputes.frozen_assets_snapshot IS 'Snapshot JSONB de activos congelados como evidencia';
+        END IF;
+
+        IF EXISTS (
+            SELECT 1 FROM information_schema.columns
+            WHERE table_schema = 'public'
+              AND table_name = 'couple_disputes'
+              AND column_name = 'status'
+        ) THEN
+            COMMENT ON COLUMN couple_disputes.status IS 'PENDING_AGREEMENT: esperando acuerdo, RESOLVED_TRANSFERRED: resuelto, EXPIRED_FORFEITED: confiscado';
+        END IF;
+    END IF;
+
+    -- Comentarios sobre frozen_assets: solo si existe la tabla
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'frozen_assets'
+    ) THEN
+        COMMENT ON TABLE frozen_assets IS 'Detalle de activos individuales congelados durante disputa';
+
+        IF EXISTS (
+            SELECT 1 FROM information_schema.columns
+            WHERE table_schema = 'public'
+              AND table_name = 'frozen_assets'
+              AND column_name = 'asset_type'
+        ) THEN
+            COMMENT ON COLUMN frozen_assets.asset_type IS 'Tipo: CMPX_TOKEN, GTK_TOKEN, NFT';
+        END IF;
+    END IF;
+END $$;
 
 COMMENT ON FUNCTION get_expired_disputes() IS 'Obtiene disputas vencidas para procesamiento automático (cron job)';
 COMMENT ON FUNCTION get_dispute_time_remaining(UUID) IS 'Calcula tiempo restante en formato HH:MM:SS para UI';
@@ -345,18 +444,29 @@ COMMENT ON FUNCTION create_assets_snapshot(UUID) IS 'Crea snapshot JSONB de acti
 
 -- 10. DATOS DE CONFIGURACIÓN
 
--- Insertar configuración del sistema para el protocolo
-INSERT INTO app_config (key, value, description) VALUES 
-('DISSOLUTION_GRACE_PERIOD_HOURS', '72', 'Horas de gracia para resolver disputas de pareja')
-ON CONFLICT (key) DO UPDATE SET 
-    value = EXCLUDED.value,
-    updated_at = NOW();
+DO $$
+BEGIN
+    -- Insertar configuración del sistema para el protocolo solo si existe app_config
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'app_config'
+    ) THEN
+        INSERT INTO app_config (key, value, description) VALUES 
+        ('DISSOLUTION_GRACE_PERIOD_HOURS', '72', 'Horas de gracia para resolver disputas de pareja')
+        ON CONFLICT (key) DO UPDATE SET 
+            value = EXCLUDED.value,
+            updated_at = NOW();
 
-INSERT INTO app_config (key, value, description) VALUES 
-('DISSOLUTION_CRON_ENABLED', 'true', 'Habilitar procesamiento automático de disputas expiradas')
-ON CONFLICT (key) DO UPDATE SET 
-    value = EXCLUDED.value,
-    updated_at = NOW();
+        INSERT INTO app_config (key, value, description) VALUES 
+        ('DISSOLUTION_CRON_ENABLED', 'true', 'Habilitar procesamiento automático de disputas expiradas')
+        ON CONFLICT (key) DO UPDATE SET 
+            value = EXCLUDED.value,
+            updated_at = NOW();
+    ELSE
+        RAISE NOTICE '⚠️ Tabla app_config no existe; se omite configuración del protocolo de disolución.';
+    END IF;
+END $$;
 
 -- =====================================================
 -- FIN DE MIGRACIÓN - PROTOCOLO DE DISOLUCIÓN IMPLEMENTADO

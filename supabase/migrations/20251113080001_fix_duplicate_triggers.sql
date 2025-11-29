@@ -6,10 +6,7 @@
 -- CORREGIR TRIGGER DUPLICADO: trigger_update_club_ratings
 -- =====================================================
 
--- Eliminar trigger si existe para evitar duplicados
-DROP TRIGGER IF EXISTS trigger_update_club_ratings ON club_reviews;
-
--- Verificar si la función existe, si no, crearla
+-- Verificar/crear función (disponible aunque no exista la tabla)
 CREATE OR REPLACE FUNCTION update_club_ratings()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -35,11 +32,25 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Recrear el trigger
-CREATE TRIGGER trigger_update_club_ratings
-    AFTER INSERT OR UPDATE OR DELETE ON club_reviews
-    FOR EACH ROW
-    EXECUTE FUNCTION update_club_ratings();
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'club_reviews'
+    ) THEN
+        -- Eliminar trigger duplicado si existe
+        DROP TRIGGER IF EXISTS trigger_update_club_ratings ON club_reviews;
+
+        -- Recrear trigger
+        CREATE TRIGGER trigger_update_club_ratings
+            AFTER INSERT OR UPDATE OR DELETE ON club_reviews
+            FOR EACH ROW
+            EXECUTE FUNCTION update_club_ratings();
+    ELSE
+        RAISE NOTICE 'Tabla club_reviews no existe en este entorno; se omite fix de trigger.';
+    END IF;
+END $$;
 
 -- =====================================================
 -- VERIFICAR Y CORREGIR OTRAS FUNCIONES FALTANTES
@@ -108,16 +119,24 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- Agregar columnas de rating si no existen en la tabla clubs
 DO $$ 
 BEGIN
-    -- Agregar average_rating si no existe
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
-                   WHERE table_name = 'clubs' AND column_name = 'average_rating') THEN
-        ALTER TABLE clubs ADD COLUMN average_rating DECIMAL(3,2) DEFAULT 0.0;
-    END IF;
-    
-    -- Agregar total_reviews si no existe
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
-                   WHERE table_name = 'clubs' AND column_name = 'total_reviews') THEN
-        ALTER TABLE clubs ADD COLUMN total_reviews INTEGER DEFAULT 0;
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'clubs'
+    ) THEN
+        -- Agregar average_rating si no existe
+        IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                       WHERE table_name = 'clubs' AND column_name = 'average_rating') THEN
+            ALTER TABLE clubs ADD COLUMN average_rating DECIMAL(3,2) DEFAULT 0.0;
+        END IF;
+        
+        -- Agregar total_reviews si no existe
+        IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                       WHERE table_name = 'clubs' AND column_name = 'total_reviews') THEN
+            ALTER TABLE clubs ADD COLUMN total_reviews INTEGER DEFAULT 0;
+        END IF;
+    ELSE
+        RAISE NOTICE 'Tabla clubs no existe en este entorno; se omite agregado de columnas.';
     END IF;
 END $$;
 

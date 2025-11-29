@@ -111,69 +111,82 @@ BEGIN
         WHERE tablename = 'analytics_events' 
         AND policyname = 'Admins can view all analytics events'
     ) THEN
-        CREATE POLICY "Admins can view all analytics events" ON analytics_events
-            FOR SELECT USING (
-                EXISTS (
-                    SELECT 1 FROM user_roles 
-                    WHERE user_id = auth.uid() 
-                    AND role IN ('admin', 'superadmin')
-                )
-            );
+        -- Solo crear esta política si existe la tabla user_roles
+        IF EXISTS (
+            SELECT 1 FROM information_schema.tables
+            WHERE table_schema = 'public'
+              AND table_name = 'user_roles'
+        ) THEN
+            CREATE POLICY "Admins can view all analytics events" ON analytics_events
+                FOR SELECT USING (
+                    EXISTS (
+                        SELECT 1 FROM user_roles 
+                        WHERE user_id = auth.uid() 
+                        AND role IN ('admin', 'superadmin')
+                    )
+                );
+        END IF;
     END IF;
 END $$;
 
 -- 6. Corregir tabla invitation_templates (para InvitationsService)
 DO $$ 
 BEGIN
-    -- Verificar si existe la columna name
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'invitation_templates' 
-        AND column_name = 'name'
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'invitation_templates'
     ) THEN
-        ALTER TABLE invitation_templates 
-        ADD COLUMN name TEXT;
+        -- Verificar si existe la columna name
+        IF NOT EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'invitation_templates' 
+            AND column_name = 'name'
+        ) THEN
+            ALTER TABLE invitation_templates 
+            ADD COLUMN name TEXT;
+            
+            -- Migrar datos de template_name a name
+            UPDATE invitation_templates 
+            SET name = template_name 
+            WHERE name IS NULL AND template_name IS NOT NULL;
+            
+            RAISE NOTICE '✅ Columna name agregada a invitation_templates';
+        END IF;
         
-        -- Migrar datos de template_name a name
-        UPDATE invitation_templates 
-        SET name = template_name 
-        WHERE name IS NULL AND template_name IS NOT NULL;
+        -- Verificar columna content
+        IF NOT EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'invitation_templates' 
+            AND column_name = 'content'
+        ) THEN
+            ALTER TABLE invitation_templates 
+            ADD COLUMN content TEXT;
+            
+            -- Migrar datos de template_content a content
+            UPDATE invitation_templates 
+            SET content = template_content 
+            WHERE content IS NULL AND template_content IS NOT NULL;
+            
+            RAISE NOTICE '✅ Columna content agregada a invitation_templates';
+        END IF;
         
-        RAISE NOTICE '✅ Columna name agregada a invitation_templates';
-    END IF;
-    
-    -- Verificar columna content
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'invitation_templates' 
-        AND column_name = 'content'
-    ) THEN
-        ALTER TABLE invitation_templates 
-        ADD COLUMN content TEXT;
-        
-        -- Migrar datos de template_content a content
-        UPDATE invitation_templates 
-        SET content = template_content 
-        WHERE content IS NULL AND template_content IS NOT NULL;
-        
-        RAISE NOTICE '✅ Columna content agregada a invitation_templates';
-    END IF;
-    
-    -- Verificar columna type
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'invitation_templates' 
-        AND column_name = 'type'
-    ) THEN
-        ALTER TABLE invitation_templates 
-        ADD COLUMN type TEXT DEFAULT 'default';
-        
-        -- Migrar datos de invitation_type a type
-        UPDATE invitation_templates 
-        SET type = invitation_type 
-        WHERE type = 'default' AND invitation_type IS NOT NULL;
-        
-        RAISE NOTICE '✅ Columna type agregada a invitation_templates';
+        -- Verificar columna type
+        IF NOT EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'invitation_templates' 
+            AND column_name = 'type'
+        ) THEN
+            ALTER TABLE invitation_templates 
+            ADD COLUMN type TEXT DEFAULT 'default';
+            
+            -- Migrar datos de invitation_type a type
+            UPDATE invitation_templates 
+            SET type = invitation_type 
+            WHERE type = 'default' AND invitation_type IS NOT NULL;
+            
+            RAISE NOTICE '✅ Columna type agregada a invitation_templates';
+        END IF;
     END IF;
 END $$;
 

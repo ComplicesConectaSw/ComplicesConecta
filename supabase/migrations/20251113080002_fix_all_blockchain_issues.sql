@@ -6,11 +6,49 @@
 -- PASO 1: ELIMINAR TRIGGERS DUPLICADOS
 -- =====================================================
 
--- Eliminar todos los triggers problemáticos
-DROP TRIGGER IF EXISTS trigger_update_club_ratings ON club_reviews;
-DROP TRIGGER IF EXISTS trigger_couple_nft_requests_updated_at ON couple_nft_requests;
-DROP TRIGGER IF EXISTS trigger_user_nfts_updated_at ON user_nfts;
-DROP TRIGGER IF EXISTS trigger_user_wallets_updated_at ON user_wallets;
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'club_reviews'
+    ) THEN
+        DROP TRIGGER IF EXISTS trigger_update_club_ratings ON club_reviews;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'couple_nft_requests'
+    ) THEN
+        DROP TRIGGER IF EXISTS trigger_couple_nft_requests_updated_at ON couple_nft_requests;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'user_nfts'
+    ) THEN
+        DROP TRIGGER IF EXISTS trigger_user_nfts_updated_at ON user_nfts;
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'user_wallets'
+    ) THEN
+        DROP TRIGGER IF EXISTS trigger_user_wallets_updated_at ON user_wallets;
+    END IF;
+END $$;
 
 -- =====================================================
 -- PASO 2: CREAR/ACTUALIZAR TABLAS BLOCKCHAIN
@@ -78,25 +116,37 @@ CREATE TABLE IF NOT EXISTS user_wallets (
     updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
 
--- Actualizar testnet_token_claims con columnas faltantes
+-- Actualizar testnet_token_claims con columnas faltantes (solo si existe la tabla)
 DO $$ 
 BEGIN
-    -- Agregar wallet_address si no existe
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
-                   WHERE table_name = 'testnet_token_claims' AND column_name = 'wallet_address') THEN
-        ALTER TABLE testnet_token_claims ADD COLUMN wallet_address TEXT;
-    END IF;
-    
-    -- Agregar network si no existe
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
-                   WHERE table_name = 'testnet_token_claims' AND column_name = 'network') THEN
-        ALTER TABLE testnet_token_claims ADD COLUMN network TEXT DEFAULT 'mumbai';
-    END IF;
-    
-    -- Agregar token_type si no existe
-    IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
-                   WHERE table_name = 'testnet_token_claims' AND column_name = 'token_type') THEN
-        ALTER TABLE testnet_token_claims ADD COLUMN token_type TEXT DEFAULT 'CMPX';
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'testnet_token_claims'
+    ) THEN
+        -- Agregar wallet_address si no existe
+        IF NOT EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'testnet_token_claims' AND column_name = 'wallet_address'
+        ) THEN
+            ALTER TABLE testnet_token_claims ADD COLUMN wallet_address TEXT;
+        END IF;
+
+        -- Agregar network si no existe
+        IF NOT EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'testnet_token_claims' AND column_name = 'network'
+        ) THEN
+            ALTER TABLE testnet_token_claims ADD COLUMN network TEXT DEFAULT 'mumbai';
+        END IF;
+
+        -- Agregar token_type si no existe
+        IF NOT EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'testnet_token_claims' AND column_name = 'token_type'
+        ) THEN
+            ALTER TABLE testnet_token_claims ADD COLUMN token_type TEXT DEFAULT 'CMPX';
+        END IF;
     END IF;
 END $$;
 
@@ -128,10 +178,19 @@ CREATE INDEX IF NOT EXISTS idx_user_wallets_address ON user_wallets(address);
 CREATE INDEX IF NOT EXISTS idx_user_wallets_network ON user_wallets(network);
 
 -- Índices para testnet_token_claims (condicionales)
-CREATE INDEX IF NOT EXISTS idx_testnet_token_claims_user ON testnet_token_claims(user_id);
-CREATE INDEX IF NOT EXISTS idx_testnet_token_claims_wallet ON testnet_token_claims(wallet_address) 
-    WHERE wallet_address IS NOT NULL;
-CREATE INDEX IF NOT EXISTS idx_testnet_token_claims_claimed ON testnet_token_claims(claimed_at DESC);
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'testnet_token_claims'
+    ) THEN
+        CREATE INDEX IF NOT EXISTS idx_testnet_token_claims_user ON testnet_token_claims(user_id);
+        CREATE INDEX IF NOT EXISTS idx_testnet_token_claims_wallet ON testnet_token_claims(wallet_address) 
+            WHERE wallet_address IS NOT NULL;
+        CREATE INDEX IF NOT EXISTS idx_testnet_token_claims_claimed ON testnet_token_claims(claimed_at DESC);
+    END IF;
+END $$;
 
 -- =====================================================
 -- PASO 4: CREAR FUNCIONES
@@ -230,7 +289,16 @@ ALTER TABLE couple_nft_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE daily_token_claims ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_nfts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_wallets ENABLE ROW LEVEL SECURITY;
-ALTER TABLE testnet_token_claims ENABLE ROW LEVEL SECURITY;
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'testnet_token_claims'
+    ) THEN
+        ALTER TABLE testnet_token_claims ENABLE ROW LEVEL SECURITY;
+    END IF;
+END $$;
 
 -- =====================================================
 -- PASO 7: CREAR POLÍTICAS RLS
@@ -280,9 +348,18 @@ CREATE POLICY "Users can manage their own wallets" ON user_wallets
     USING (auth.uid() = user_id);
 
 -- Políticas para testnet_token_claims
-DROP POLICY IF EXISTS "Users can view their testnet claims" ON testnet_token_claims;
-CREATE POLICY "Users can view their testnet claims" ON testnet_token_claims
-    FOR SELECT USING (auth.uid() = user_id);
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public'
+          AND table_name = 'testnet_token_claims'
+    ) THEN
+        DROP POLICY IF EXISTS "Users can view their testnet claims" ON testnet_token_claims;
+        CREATE POLICY "Users can view their testnet claims" ON testnet_token_claims
+            FOR SELECT USING (auth.uid() = user_id);
+    END IF;
+END $$;
 
 -- =====================================================
 -- PASO 8: VERIFICACIÓN FINAL
