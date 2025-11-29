@@ -51,6 +51,7 @@ import { Modal, ModalBody, ModalContent, ModalFooter, ModalTrigger } from '@/com
 import { FileUpload } from '@/shared/ui/file-upload';
 import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
 import { SafeImage } from '@/shared/ui/SafeImage';
+import { cn } from '@/shared/lib/cn';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
@@ -139,6 +140,15 @@ const ProfileSingle: React.FC = () => {
   const _themeConfig = useProfileTheme('single', ['male'], demoTheme);
 
   // Datos de imágenes privadas para el carrusel
+  type PrivateImageItem = {
+    id?: string;
+    url?: string;
+    src?: string;
+    caption?: string;
+    likes?: number;
+    userLiked?: boolean;
+  };
+
   const privateImages = [
     { 
       id: '1', 
@@ -163,6 +173,11 @@ const ProfileSingle: React.FC = () => {
     }
   ];
 
+  const profilePrivateImages = (profile as unknown as { privateImages?: (PrivateImageItem | string)[] })?.privateImages;
+  const galleryImages: (PrivateImageItem | string)[] = Array.isArray(profilePrivateImages) && profilePrivateImages.length > 0
+    ? profilePrivateImages
+    : privateImages;
+
   // Funciones para el modal del carrusel
   const handleImageLike = (imageIndex: number) => {
     const imageId = imageIndex.toString();
@@ -181,6 +196,10 @@ const ProfileSingle: React.FC = () => {
   const openImageModal = (index: number) => {
     setSelectedImageIndex(index);
     setShowImageModal(true);
+  };
+
+  const handleImageClick = (index: number) => {
+    openImageModal(index);
   };
 
   const navigateCarousel = (index: number) => {
@@ -1429,130 +1448,47 @@ Información del perfil:
                   </Button>
                 </div>
                 
-                {/* DEMO: SIEMPRE mostrar versión bloqueada primero */}
+                {/* SECCIÓN GALERÍA PRIVADA CORREGIDA */}
                 <div className="mb-4">
                   <p className="text-white/60 text-xs mb-2">🔒 Vista sin acceso (otros usuarios):</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <div
-                      className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
-                      onClick={() => {
-                        if (isOwnProfile) {
+                  <div className="grid grid-cols-3 gap-2 md:gap-4 mt-4">
+                    {galleryImages.map((img: PrivateImageItem | string, idx: number) => {
+                      const imageSource = typeof img === 'string' ? img : img.url ?? img.src ?? '';
+                      return (
+                        <div
+                          key={idx}
+                          className="relative aspect-square rounded-xl overflow-hidden group cursor-pointer"
+                        onClick={() => {
                           if (isParentalLocked) {
-                            // Si está bloqueado, el usuario debe desbloquear primero con el modal
-                            alert('🔒 Contenido bloqueado por Control Parental. Desbloquea usando el PIN en la sección de Control Parental arriba.');
+                            console.log('Abrir PIN');
                           } else {
-                            // Si no está bloqueado, mostrar las imágenes directamente
-                            setDemoPrivateUnlocked(true);
-                            openImageModal(0);
+                            handleImageClick(idx);
                           }
-                        } else {
-                          setShowPrivateImageRequest(true);
-                        }
-                      }}
-                    >
-                      <div className="relative w-full h-full">
-                        <SafeImage 
-                          src="/assets/people/male/privado/0CD28qq-editado.jpg" 
-                          alt="Foto privada bloqueada"
-                          fallbackType="private"
-                          className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile && !isParentalLocked ? '' : 'filter blur-lg'} ${demoPrivateUnlocked && !isParentalLocked ? 'private-image-protection' : 'private-image-interactive'}`}
-                        />
-                        {demoPrivateUnlocked && (
-                          <div className="absolute inset-0 pointer-events-none">
-                            <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                              ComplicesConecta
+                        }}
+                        >
+                          <SafeImage
+                            src={imageSource}
+                            alt="Private content"
+                            fallbackType="private"
+                            className={cn(
+                              'w-full h-full object-cover transition-all duration-500',
+                              isParentalLocked ? 'blur-xl scale-110' : 'blur-0 scale-100'
+                            )}
+                          />
+
+                          {isParentalLocked && (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/20 backdrop-blur-[2px] transition-all group-hover:bg-black/30">
+                              <div className="bg-black/60 p-3 rounded-full border border-white/20 backdrop-blur-md">
+                                <Lock className="w-6 h-6 text-white" />
+                              </div>
+                              <span className="text-xs font-medium text-white mt-2 bg-black/50 px-2 py-1 rounded-md">
+                                Click para desbloquear
+                              </span>
                             </div>
-                            <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                              © Privado
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      {!demoPrivateUnlocked && (
-                        <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center">
-                          <Lock className="w-12 h-12 text-white mb-2" />
-                          <span className="text-white text-xs">Click para solicitar</span>
+                          )}
                         </div>
-                      )}
-                    </div>
-                    <div
-                      className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
-                      onClick={() => {
-                        if (isOwnProfile) {
-                          if (isParentalLocked) {
-                            alert('🔒 Contenido bloqueado por Control Parental. Desbloquea usando el PIN en la sección de Control Parental arriba.');
-                            return;
-                          }
-                          setDemoPrivateUnlocked(true);
-                          openImageModal(1);
-                        } else {
-                          setShowPrivateImageRequest(true);
-                        }
-                      }}
-                    >
-                      <div className="relative w-full h-full">
-                        <SafeImage 
-                          src="/assets/people/male/privado/45Xas2E.jpg" 
-                          alt="Foto privada bloqueada"
-                          fallbackType="private"
-                          className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'} ${demoPrivateUnlocked ? 'private-image-protection' : 'private-image-interactive'}`}
-                        />
-                        {demoPrivateUnlocked && (
-                          <div className="absolute inset-0 pointer-events-none">
-                            <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                              ComplicesConecta
-                            </div>
-                            <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                              © Privado
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      {!demoPrivateUnlocked && (
-                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                          <Lock className="w-12 h-12 text-white" />
-                        </div>
-                      )}
-                    </div>
-                    <div
-                      className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
-                      onClick={() => {
-                        if (isOwnProfile) {
-                          if (isParentalLocked) {
-                            alert('🔒 Contenido bloqueado por Control Parental. Desbloquea usando el PIN en la sección de Control Parental arriba.');
-                            return;
-                          }
-                          setDemoPrivateUnlocked(true);
-                          openImageModal(2);
-                        } else {
-                          setShowPrivateImageRequest(true);
-                        }
-                      }}
-                    >
-                      <div className="relative w-full h-full">
-                        <SafeImage 
-                          src="/assets/people/male/privado/4Jyc0cr-editado.jpg" 
-                          alt="Foto privada bloqueada"
-                          fallbackType="private"
-                          className={`w-full h-full object-cover ${demoPrivateUnlocked && isOwnProfile ? '' : 'filter blur-lg'} ${demoPrivateUnlocked ? 'private-image-protection' : 'private-image-interactive'}`}
-                        />
-                        {demoPrivateUnlocked && (
-                          <div className="absolute inset-0 pointer-events-none">
-                            <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                              ComplicesConecta
-                            </div>
-                            <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                              © Privado
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      {!demoPrivateUnlocked && (
-                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                          <Lock className="w-12 h-12 text-white" />
-                        </div>
-                      )}
-                    </div>
+                      );
+                    })}
                   </div>
                 </div>
                 

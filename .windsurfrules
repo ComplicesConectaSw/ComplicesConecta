@@ -1,4 +1,4 @@
-# 🧠 SYSTEM CONTEXT & RULES - COMPLICES CONECTA v3.6.6
+# 🧠 SYSTEM CONTEXT & RULES - COMPLICES CONECTA v3.8.0
 
 ## 0. ROL & CONTEXTO (SYSTEM PROMPT)
 - **ROL:** Actúa como Lead Architect & Tech Lead de 'ComplicesConecta'.
@@ -30,3 +30,9 @@
 - **Errores:** Si ves un error de Wallet, ignóralo (están silenciados intencionalmente).
 - **Ley Olimpia:** Prioridad absoluta a la verificación de consentimiento en Chat.
 - **Idioma:** Comentarios y Commits en Español MX. Variables en Inglés.
+
+## 6. CONSISTENCIA DE PERFILES (CRÍTICO)
+- **6.1 REGLA DE ESPEJO (SINGLE/COUPLE):** Al aplicar mejoras visuales o componentes en un perfil demo (ej. `ProfileSingle`), APLÍCALOS AUTOMÁTICAMENTE al otro (`ProfileCouple`) en el mismo paso. Respeta las diferencias lógicas (1 usuario vs 2), pero mantén la paridad visual.
+- **6.2 DEMO DRIVEN PRODUCTION:** Los perfiles Demo dictan la Calidad Final. Si integras un componente UI en Demo (ej. Carruseles, Modales), ESTE DEBE funcionar para usuarios reales en Producción.
+  - **Lógica:** `const data = isAuth ? realData : demoData`.
+  - El usuario real debe tener la misma "Mejor Experiencia" que el Demo.
