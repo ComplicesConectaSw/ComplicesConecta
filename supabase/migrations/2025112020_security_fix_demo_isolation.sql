@@ -100,9 +100,19 @@ BEGIN
     CREATE INDEX IF NOT EXISTS idx_profiles_user_id_is_demo 
     ON profiles(user_id, is_demo);
 
-    CREATE INDEX IF NOT EXISTS idx_profiles_is_demo_active 
-    ON profiles(is_demo, is_active) 
-    WHERE is_active = true;
+    -- Índice adicional sólo si existe la columna is_active
+    IF EXISTS (
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = 'public'
+        AND table_name = 'profiles'
+        AND column_name = 'is_active'
+    ) THEN
+      CREATE INDEX IF NOT EXISTS idx_profiles_is_demo_active 
+      ON profiles(is_demo, is_active) 
+      WHERE is_active = true;
+    ELSE
+      RAISE NOTICE '⚠️ Columna is_active no existe en profiles; se omite índice idx_profiles_is_demo_active.';
+    END IF;
 
     -- 9. Comentarios para documentación
     COMMENT ON POLICY "Real users only see real profiles" ON profiles IS 

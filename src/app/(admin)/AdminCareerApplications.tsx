@@ -90,7 +90,7 @@ const AdminCareerApplications = () => {
         return;
       }
 
-      setApplications(data || []);
+      setApplications((data || []) as CareerApplication[]);
       logger.info('? Solicitudes cargadas exitosamente:', { count: data?.length || 0 });
 
     } catch (error: any) {
@@ -105,7 +105,7 @@ const AdminCareerApplications = () => {
     }
   };
 
-  const updateApplicationStatus = async (id: string, newStatus: string) => {
+  const updateApplicationStatus = async (id: string, newStatus: CareerApplication['status']) => {
     try {
       logger.info('?? Actualizando status de solicitud:', { id, newStatus });
 
@@ -137,7 +137,7 @@ const AdminCareerApplications = () => {
       // Actualizar estado local
       setApplications(prev => 
         prev.map(app => 
-          app.id === id ? { ...app, status: newStatus as any } : app
+          app.id === id ? { ...app, status: newStatus } : app
         )
       );
 
@@ -411,7 +411,7 @@ const AdminCareerApplications = () => {
                     </div>
                     
                     <div className="flex gap-1 sm:gap-2 flex-wrap">
-                      {Object.entries(statusLabels).map(([status, label]) => (
+                      {(Object.entries(statusLabels) as [CareerApplication['status'], string][]).map(([status, label]) => (
                         <Button
                           key={status}
                           onClick={() => updateApplicationStatus(application.id, status)}
@@ -515,12 +515,12 @@ const AdminCareerApplications = () => {
 
               <div className="flex gap-2 pt-4 border-t border-white/10">
                 <h4 className="text-white font-semibold">Cambiar Estado:</h4>
-                {Object.entries(statusLabels).map(([status, label]) => (
+                {(Object.entries(statusLabels) as [CareerApplication['status'], string][]).map(([status, label]) => (
                   <Button
                     key={status}
                     onClick={() => {
                       updateApplicationStatus(selectedApplication.id, status);
-                      setSelectedApplication({...selectedApplication, status: status as any});
+                      setSelectedApplication({ ...selectedApplication, status });
                     }}
                     className={`text-xs px-2 py-1 ${
                       selectedApplication.status === status 

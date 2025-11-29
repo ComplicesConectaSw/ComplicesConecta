@@ -47,6 +47,16 @@ $$ LANGUAGE sql STABLE;
 -- 2. Ajustes sobre profiles y couple_profiles
 -- =====================================================
 
+-- Crear tabla profiles si no existe (estructura mínima compatible)
+CREATE TABLE IF NOT EXISTS profiles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
+    display_name TEXT,
+    is_demo BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 DO $$
 BEGIN
     IF EXISTS (

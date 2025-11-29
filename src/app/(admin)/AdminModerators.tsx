@@ -102,7 +102,7 @@ const AdminModerators = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setModerators(data || []);
+      setModerators((data || []) as Moderator[]);
       logger.info('? Moderadores cargados:', { count: data?.length || 0 });
     } catch (error: any) {
       logger.error('? Error al cargar moderadores:', { error: error.message });
@@ -132,7 +132,7 @@ const AdminModerators = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setRequests(data || []);
+      setRequests((data || []) as ModeratorRequest[]);
       logger.info('? Solicitudes cargadas:', { count: data?.length || 0 });
     } catch (error: any) {
       logger.error('? Error al cargar solicitudes:', { error: error.message });
@@ -200,6 +200,7 @@ const AdminModerators = () => {
         .select();
 
       if (error) throw error;
+      const created = (data as { id: string }[] | null)?.[0];
 
       toast({
         title: "Moderador creado exitosamente",
@@ -214,7 +215,7 @@ const AdminModerators = () => {
       // Recargar lista
       await fetchModerators();
       
-      logger.info('? Moderador creado exitosamente:', { id: data[0].id });
+      logger.info('? Moderador creado exitosamente:', { id: created?.id });
 
     } catch (error: any) {
       logger.error('? Error al crear moderador:', { error: error.message });
