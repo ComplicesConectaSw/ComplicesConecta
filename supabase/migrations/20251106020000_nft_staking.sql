@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS nft_verifications (
   nft_token_id TEXT NOT NULL,
   network TEXT NOT NULL CHECK (network IN ('polygon', 'ethereum')),
   minted_with_gtk INTEGER NOT NULL CHECK (minted_with_gtk >= 100),
-  staking_record_id UUID REFERENCES staking_records(id) ON DELETE SET NULL,
+  -- En entornos donde staking_records no existe, evitamos la FK directa
+  staking_record_id UUID,
   verified_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   is_active BOOLEAN NOT NULL DEFAULT true,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

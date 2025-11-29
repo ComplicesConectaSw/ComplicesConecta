@@ -5,6 +5,12 @@
 -- Versión: v3.4.1
 -- =====================================================
 
+CREATE TABLE IF NOT EXISTS public.referral_rewards (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  profile_id uuid,
+  created_at timestamptz DEFAULT now()
+);
+
 -- Agregar campos faltantes si no existen
 DO $$ 
 BEGIN

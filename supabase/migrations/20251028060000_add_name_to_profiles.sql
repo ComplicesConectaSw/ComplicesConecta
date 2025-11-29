@@ -10,10 +10,27 @@
 -- Agregar columna 'name' si no existe
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS name VARCHAR(200);
 
--- Migrar datos existentes: combinar first_name y last_name en name
-UPDATE profiles 
-SET name = TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))
-WHERE name IS NULL OR name = '';
+-- Migrar datos existentes: combinar first_name y last_name en name (solo si existen las columnas)
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'profiles'
+          AND column_name = 'first_name'
+    ) AND EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'profiles'
+          AND column_name = 'last_name'
+    ) THEN
+        UPDATE profiles
+        SET name = TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))
+        WHERE name IS NULL OR name = '';
+    END IF;
+END $$;
 
 -- Establecer valor por defecto para registros sin nombre
 UPDATE profiles 

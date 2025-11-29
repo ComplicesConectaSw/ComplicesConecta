@@ -14,6 +14,9 @@ ALTER TABLE profiles ADD COLUMN IF NOT EXISTS longitude DOUBLE PRECISION;
 -- Agregar columna account_type si no existe
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS account_type TEXT;
 
+-- Agregar columna age si no existe (usada en geographic_hotspots)
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS age INTEGER;
+
 -- Add column if not exists
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS s2_cell_id VARCHAR(20);
 

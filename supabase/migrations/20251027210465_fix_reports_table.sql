@@ -4,6 +4,13 @@
 -- Descripción: Añade campo content_type a reports (alias de report_type)
 -- =====================================================
 
+-- Asegurar que la tabla base exista antes de aplicar correcciones
+CREATE TABLE IF NOT EXISTS public.reports (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  report_type text,
+  created_at timestamptz DEFAULT now()
+);
+
 -- Añadir columna content_type como alias de report_type para compatibilidad
 DO $$ 
 BEGIN
@@ -39,6 +46,25 @@ CREATE TRIGGER sync_reports_content_type_trigger
     FOR EACH ROW
     EXECUTE FUNCTION sync_reports_content_type();
 
--- Actualizar registros existentes
-UPDATE reports SET content_type = report_type WHERE content_type IS NULL;
+-- Actualizar registros existentes (solo si existen las columnas)
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'reports'
+          AND column_name = 'report_type'
+    ) AND EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'reports'
+          AND column_name = 'content_type'
+    ) THEN
+        UPDATE reports
+        SET content_type = report_type
+        WHERE content_type IS NULL;
+    END IF;
+END $$;
 

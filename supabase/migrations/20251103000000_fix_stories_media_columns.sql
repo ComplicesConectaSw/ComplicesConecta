@@ -5,10 +5,13 @@
 -- para compatibilidad con diferentes versiones del código
 -- =====================================================
 
--- Verificar y agregar media_url si no existe
+-- Verificar y agregar media_url si no existe (solo si existe la tabla stories)
 DO $$ 
 BEGIN
-    IF NOT EXISTS (
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public' AND table_name = 'stories'
+    ) AND NOT EXISTS (
         SELECT 1 FROM information_schema.columns 
         WHERE table_name = 'stories' AND column_name = 'media_url'
     ) THEN
@@ -17,10 +20,13 @@ BEGIN
     END IF;
 END $$;
 
--- Verificar y agregar media_urls si no existe
+-- Verificar y agregar media_urls si no existe (solo si existe la tabla stories)
 DO $$ 
 BEGIN
-    IF NOT EXISTS (
+    IF EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public' AND table_name = 'stories'
+    ) AND NOT EXISTS (
         SELECT 1 FROM information_schema.columns 
         WHERE table_name = 'stories' AND column_name = 'media_urls'
     ) THEN
@@ -50,46 +56,59 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Crear trigger para sincronizar automáticamente
-DROP TRIGGER IF EXISTS sync_stories_media_url_trigger ON stories;
-CREATE TRIGGER sync_stories_media_url_trigger
-    BEFORE INSERT OR UPDATE ON stories
-    FOR EACH ROW
-    EXECUTE FUNCTION sync_stories_media_url();
-
--- Sincronizar datos existentes (una sola vez)
--- Solo si ambas columnas existen
+-- Crear trigger para sincronizar automáticamente (solo si existe stories)
 DO $$
 BEGIN
-    -- Sincronizar media_urls -> media_url (solo si media_urls existe)
     IF EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'stories' AND column_name = 'media_urls'
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public' AND table_name = 'stories'
     ) THEN
-        UPDATE stories 
-        SET media_url = media_urls[1]
-        WHERE (media_url IS NULL OR media_url = '') 
-          AND media_urls IS NOT NULL 
-          AND array_length(media_urls, 1) > 0;
-        
-        RAISE NOTICE 'Datos sincronizados de media_urls a media_url';
+        DROP TRIGGER IF EXISTS sync_stories_media_url_trigger ON stories;
+        CREATE TRIGGER sync_stories_media_url_trigger
+            BEFORE INSERT OR UPDATE ON stories
+            FOR EACH ROW
+            EXECUTE FUNCTION sync_stories_media_url();
     END IF;
-    
-    -- Sincronizar media_url -> media_urls (solo si media_urls existe)
+END $$;
+
+-- Sincronizar datos existentes (una sola vez)
+-- Solo si existe la tabla stories y ambas columnas existen
+DO $$
+BEGIN
     IF EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'stories' AND column_name = 'media_urls'
-    ) AND EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'stories' AND column_name = 'media_url'
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public' AND table_name = 'stories'
     ) THEN
-        UPDATE stories 
-        SET media_urls = ARRAY[media_url]
-        WHERE (media_urls IS NULL OR array_length(media_urls, 1) = 0)
-          AND media_url IS NOT NULL 
-          AND media_url != '';
+        -- Sincronizar media_urls -> media_url (solo si media_urls existe)
+        IF EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'stories' AND column_name = 'media_urls'
+        ) THEN
+            UPDATE stories 
+            SET media_url = media_urls[1]
+            WHERE (media_url IS NULL OR media_url = '') 
+              AND media_urls IS NOT NULL 
+              AND array_length(media_urls, 1) > 0;
+            
+            RAISE NOTICE 'Datos sincronizados de media_urls a media_url';
+        END IF;
         
-        RAISE NOTICE 'Datos sincronizados de media_url a media_urls';
+        -- Sincronizar media_url -> media_urls (solo si media_urls y media_url existen)
+        IF EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'stories' AND column_name = 'media_urls'
+        ) AND EXISTS (
+            SELECT 1 FROM information_schema.columns 
+            WHERE table_name = 'stories' AND column_name = 'media_url'
+        ) THEN
+            UPDATE stories 
+            SET media_urls = ARRAY[media_url]
+            WHERE (media_urls IS NULL OR array_length(media_urls, 1) = 0)
+              AND media_url IS NOT NULL 
+              AND media_url != '';
+            
+            RAISE NOTICE 'Datos sincronizados de media_url a media_urls';
+        END IF;
     END IF;
 END $$;
 

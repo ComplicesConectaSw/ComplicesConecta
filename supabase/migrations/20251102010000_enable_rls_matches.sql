@@ -7,6 +7,14 @@
 --              y crea las políticas necesarias para seguridad
 -- =====================================================
 
+-- Asegurar que la tabla base exista en entornos locales mínimos
+CREATE TABLE IF NOT EXISTS public.matches (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    user1_id uuid NOT NULL,
+    user2_id uuid NOT NULL,
+    created_at timestamptz DEFAULT now()
+);
+
 -- Habilitar RLS en tabla matches
 ALTER TABLE matches ENABLE ROW LEVEL SECURITY;
 
