@@ -15,7 +15,7 @@ export const VanishSearchInput: React.FC<VanishSearchInputProps> = ({
   className,
 }) => {
   const [value, setValue] = React.useState("");
-  const [index, setIndex] = React.useState(0);
+  const [_index, setIndex] = React.useState(0);
   const [displayText, setDisplayText] = React.useState(placeholders[0] ?? "");
   const [loading, setLoading] = React.useState(false);
   const [_results, setResults] = React.useState<GlobalSearchResult[]>([]);

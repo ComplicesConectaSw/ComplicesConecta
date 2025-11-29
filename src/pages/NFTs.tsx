@@ -16,7 +16,6 @@ import {
   Lock,
   Users,
   Eye,
-  Star,
   Camera,
   Palette,
   Gem,
