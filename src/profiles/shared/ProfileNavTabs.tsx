@@ -41,6 +41,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
   const [demoPostLikes, setDemoPostLikes] = useState(0);
   const [demoPostComments, setDemoPostComments] = useState(0);
   const [showComments, setShowComments] = useState(false);
+  const [demoPostCount, setDemoPostCount] = useState(0);
 
   const tabs = [
     {
@@ -248,12 +249,18 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                   {isOwnProfile && (
                     <Button
                       onClick={() => {
+                        if (demoPostCount >= 4) {
+                          alert('📸 LÍMITE DEMO\n\nSolo puedes crear hasta 4 posts demo en esta vista.\nRefresca la página para reiniciar.');
+                          return;
+                        }
+
                         onUploadImage?.();
                         setDemoPost({
                           id: `demo-${Date.now()}`,
                           content: '¡Nuevo post demo creado! 🎉',
                           timestamp: new Date().toISOString()
                         });
+                        setDemoPostCount((prev) => prev + 1);
                       }}
                       className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white"
                     >

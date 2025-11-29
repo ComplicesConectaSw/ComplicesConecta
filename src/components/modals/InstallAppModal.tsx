@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Smartphone, Download, Chrome, Globe, CheckCircle } from "lucide-react";
+import { X, Smartphone, Download, Globe, CheckCircle } from "lucide-react";
 import { Button } from "@/shared/ui/Button";
 import { Card, CardContent } from "@/shared/ui/Card";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +21,7 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
   const isAPK = isRunningFromAPK();
 
   const getBrowserInfo = () => {
+    if (typeof navigator === 'undefined') return 'chrome';
     const userAgent = navigator.userAgent.toLowerCase();
     if (userAgent.includes('chrome') && !userAgent.includes('edg')) return 'chrome';
     if (userAgent.includes('firefox')) return 'firefox';
@@ -80,205 +81,161 @@ export const InstallAppModal = ({ isOpen, onClose }: InstallAppModalProps) => {
 
   const currentInstructions = instructions[browser as keyof typeof instructions] || instructions.chrome;
 
+  const handleDownload = () => {
+    try {
+      // FIX: Casting explícito 'as any' para evitar conflictos de tipos
+      const link = document.createElement('a') as HTMLAnchorElement;
+      link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.3.3.0/app-release.apk';
+      link.setAttribute('download', 'app-release.apk');
+      
+      document.body.appendChild(link as any);
+      
+      link.click();
+      
+      // Limpieza del DOM
+      if (document.body.contains(link as any)) {
+        document.body.removeChild(link as any);
+      }
+      
+      // Avanzar paso automáticamente
+      if (currentStep === 0) setCurrentStep(1);
+    } catch (error) {
+      logger.error('Error descarga APK', { error });
+      window.open('https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.3.3.0/app-release.apk', '_blank');
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm">
-      <Card className="w-full max-w-sm sm:max-w-md lg:max-w-lg mx-auto shadow-glow animate-slide-down overflow-hidden max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+      {/* Tarjeta Principal con Estilo Dark Glass (Fondo oscuro forzado) */}
+      <Card className="w-full max-w-lg mx-auto bg-neutral-900 border-white/10 shadow-2xl overflow-hidden rounded-2xl text-white">
         <div className="relative">
+          {/* Botón Cerrar */}
           <Button
             variant="ghost"
             size="sm"
-            className="absolute top-4 right-4 z-10"
+            className="absolute top-4 right-4 z-10 text-white/50 hover:text-white hover:bg-white/10 rounded-full p-2"
             onClick={onClose}
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" />
           </Button>
           
-          <div className="bg-hero-gradient p-4 sm:p-6 text-white text-center rounded-t-lg">
-            <div className="flex items-center justify-center mb-3 sm:mb-4">
+          {/* Header Gradiente */}
+          <div className="bg-gradient-to-r from-purple-900 to-blue-900 p-6 text-white text-center">
+            <div className="flex items-center justify-center mb-4">
               <div className="relative">
                 {isAPK ? (
-                  <CheckCircle className="h-12 w-12 sm:h-16 sm:w-16 text-green-400 animate-pulse" />
+                  <CheckCircle className="h-16 w-16 text-green-400 animate-pulse filter drop-shadow-lg" />
                 ) : (
                   <>
-                    <Smartphone className="h-12 w-12 sm:h-16 sm:w-16 animate-bounce" />
-                    <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2">
-                      <Download className="h-4 w-4 sm:h-6 sm:w-6 text-green-400 animate-pulse" />
+                    <Smartphone className="h-16 w-16 text-white drop-shadow-lg" />
+                    <div className="absolute -top-2 -right-2 bg-white rounded-full p-1">
+                      <Download className="h-4 w-4 text-purple-600" />
                     </div>
                   </>
                 )}
               </div>
             </div>
-            {isAPK ? (
-              <>
-                <h2 className="text-xl sm:text-2xl font-bold mb-2">¡ComplicesConecta Instalada!</h2>
-                <p className="text-white/90 mb-3 sm:mb-4 text-sm sm:text-base">
-                  Ya tienes la aplicación instalada y funcionando correctamente
-                </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
-                  <Badge variant="secondary" className="bg-green-500/20 text-green-100 border-green-400/30 text-xs sm:text-sm">
-                    <CheckCircle className="h-3 w-3 mr-1" />
-                    APK Instalada
-                  </Badge>
-                  <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
-                    v2.1.2 (stable)
-                  </Badge>
-                </div>
-              </>
-            ) : (
-              <>
-                <h2 className="text-xl sm:text-2xl font-bold mb-2">¡Instala ComplicesConecta!</h2>
-                <p className="text-white/90 mb-3 sm:mb-4 text-sm sm:text-base">
-                  Sigue estos pasos para instalar nuestra app en tu dispositivo Android
-                </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
-                  <Badge variant="secondary" className="bg-white/20 text-white border-white/30 text-xs sm:text-sm">
-                    <Globe className="h-3 w-3 mr-1" />
-                    {browserNames[browser as keyof typeof browserNames]}
-                  </Badge>
-                  <Badge variant="secondary" className="bg-green-500/20 text-green-100 border-green-400/30 text-xs sm:text-sm">
-                    v2.1.2 (stable)
-                  </Badge>
-                </div>
-              </>
+            
+            <h2 className="text-2xl font-bold mb-2">
+              {isAPK ? "¡Instalada Correctamente!" : "Instala la App Android"}
+            </h2>
+            
+            {!isAPK && (
+              <div className="flex items-center justify-center gap-3 mt-3">
+                <Badge className="bg-white/20 hover:bg-white/30 text-white border-none">
+                  <Globe className="h-3 w-3 mr-1" />
+                  {browserNames[browser as keyof typeof browserNames]}
+                </Badge>
+                <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
+                  v2.1.2 (stable)
+                </Badge>
+              </div>
             )}
           </div>
           
-          <CardContent className="p-3 sm:p-6 space-y-4 sm:space-y-6 bg-gradient-to-br from-purple-900/20 to-blue-900/20 backdrop-blur-sm">
+          {/* AQUÍ ESTABA EL PROBLEMA: Cambiado a bg-neutral-900/95 para legibilidad */}
+          <CardContent className="p-6 space-y-6 bg-neutral-900/95">
             {isAPK ? (
-              <div className="space-y-4 text-center">
-                <div className="bg-green-900/30 border border-green-500/30 rounded-lg p-4">
-                  <div className="flex items-center justify-center space-x-2 mb-3">
-                    <CheckCircle className="h-6 w-6 text-green-400" />
-                    <h3 className="text-lg font-semibold text-white">¡Aplicación Instalada!</h3>
-                  </div>
-                  <p className="text-sm text-green-100 mb-3">
-                    ComplicesConecta está funcionando correctamente en tu dispositivo Android.
+              // CONTENIDO: YA INSTALADO
+              <div className="space-y-6 text-center">
+                <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4">
+                  <p className="text-green-200 text-sm">
+                    La aplicación está funcionando correctamente. No necesitas hacer nada más.
                   </p>
-                  <div className="space-y-2 text-xs text-green-200">
-                    <p>✅ Versión instalada: v2.1.2</p>
-                    <p>✅ Plataforma: Android APK</p>
-                    <p>✅ Estado: Funcionando correctamente</p>
-                  </div>
                 </div>
                 
-                <div className="bg-blue-900/30 border border-blue-500/30 rounded-lg p-4">
-                  <h4 className="text-sm font-semibold text-white mb-2">Información del Dispositivo:</h4>
-                  <div className="space-y-1 text-xs text-blue-100">
+                {/* Info extra opcional */}
+                <div className="bg-blue-900/20 border border-blue-500/20 rounded-lg p-4 text-xs text-blue-200 text-left space-y-1">
                     <p>📱 Plataforma: {platformInfo.platform}</p>
                     <p>🌐 Navegador: {platformInfo.browser}</p>
-                    <p>🔧 Standalone: {platformInfo.isStandalone ? 'Sí' : 'No'}</p>
-                  </div>
                 </div>
-                
+
                 <Button 
                   onClick={onClose}
-                  className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-900/20"
                 >
-                  <CheckCircle className="w-4 h-4 mr-2" />
-                  Continuar Usando la App
+                  Continuar
                 </Button>
               </div>
             ) : (
+              // CONTENIDO: INSTRUCCIONES DE INSTALACIÓN
               <>
-                <div className="space-y-3 sm:space-y-4">
-                  <h3 className="text-base sm:text-lg font-semibold text-white flex items-center gap-2">
-                    <Chrome className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                    Instrucciones de Instalación
-                  </h3>
-                  
-                  <div className="space-y-2 sm:space-y-3">
-                    {currentInstructions.map((instruction, index) => (
-                      <div 
-                        key={index}
-                        className={`flex items-start space-x-2 sm:space-x-3 p-2 sm:p-3 rounded-lg transition-all duration-300 ${
-                          index === currentStep 
-                            ? 'bg-primary/10 border border-primary/20 shadow-sm' 
-                            : 'bg-muted/30'
-                        }`}
-                      >
-                        <div className={`flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium ${
-                          index < currentStep 
-                            ? 'bg-green-500 text-white' 
-                            : index === currentStep 
-                              ? 'bg-primary text-white animate-pulse' 
-                              : 'bg-white/20 text-white'
-                        }`}>
-                          {index < currentStep ? '✓' : index + 1}
-                        </div>
-                        <p className={`text-xs sm:text-sm leading-relaxed ${
-                          index === currentStep ? 'text-white font-medium' : 'text-white/80'
-                        }`}>
-                          {instruction}
-                        </p>
+                <div className="space-y-4">
+                  {currentInstructions.map((instruction, index) => (
+                    <div 
+                      key={index}
+                      className={`flex items-start space-x-3 p-3 rounded-xl transition-all duration-300 border ${
+                        index === currentStep 
+                          ? 'bg-purple-900/30 border-purple-500/40 shadow-lg shadow-purple-900/30' 
+                          : 'bg-neutral-900/70 border-white/10'
+                      }`}
+                    >
+                      <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mt-0.5 ${
+                        index < currentStep 
+                          ? 'bg-green-500 text-white' 
+                          : index === currentStep 
+                            ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/50' 
+                            : 'bg-neutral-700/80 text-white/60'
+                      }`}>
+                        {index < currentStep ? '✓' : index + 1}
                       </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="bg-amber-900/30 border border-amber-500/30 rounded-lg p-3 sm:p-4">
-                  <div className="flex items-start space-x-2">
-                    <div className="text-amber-400 mt-0.5 text-sm sm:text-base">⚠️</div>
-                    <div className="text-xs sm:text-sm text-amber-100">
-                      <p className="font-medium mb-1 text-white">Importante:</p>
-                      <p>Esta aplicación requiere Android 5.0 o superior. Asegúrate de habilitar la instalación desde fuentes desconocidas en la configuración de tu dispositivo.</p>
+                      <p className={`text-sm leading-relaxed ${
+                        index === currentStep ? 'text-white font-medium' : 'text-zinc-400'
+                      }`}>
+                        {instruction}
+                      </p>
                     </div>
-                  </div>
+                  ))}
                 </div>
 
-                <div className="space-y-2 sm:space-y-3">
-                  <Button 
-                    onClick={() => {
-                      try {
-                        const link = document.createElement('a') as HTMLAnchorElement;
-                        link.href = 'https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.3.3.0/app-release.apk';
-                        link.download = 'app-release.apk';
-                        
-                        // FIX: Usamos 'as any' para evitar el conflicto estricto de tipos con Node
-                        document.body.appendChild(link as any);
-                        
-                        link.click();
-                        
-                        // FIX: Usamos 'as any' aquí también por consistencia
-                        if (document.body.contains(link as any)) {
-                          document.body.removeChild(link as any);
-                        }
-                      } catch (error) {
-                        logger.error('Error al descargar APK:', { error: error instanceof Error ? error.message : String(error) });
-                        window.open('https://github.com/ComplicesConectaSw/ComplicesConecta/releases/download/v.3.3.0/app-release.apk', '_blank');
-                      }
-                    }}
-                    className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-2 sm:py-3 text-sm sm:text-base"
-                  >
-                    <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                    Descargar APK Ahora
-                  </Button>
-                  
-                  <div className="flex gap-2 sm:gap-3">
-                    {currentStep > 0 && (
-                      <Button 
+                {/* Botón Descarga */}
+                <Button 
+                  onClick={handleDownload}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-green-900/20 flex items-center justify-center gap-2 mt-4"
+                >
+                  <Download className="w-5 h-5" />
+                  Descargar APK Ahora
+                </Button>
+
+                {/* Navegación de Pasos Manual */}
+                <div className="flex gap-3 mt-2">
+                    <Button 
                         variant="outline" 
                         onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-                        className="flex-1 text-xs sm:text-sm py-2"
-                      >
+                        disabled={currentStep === 0}
+                        className="flex-1 border-white/20 text-white bg-neutral-900/60 hover:bg-neutral-800/70 disabled:opacity-30"
+                    >
                         Anterior
-                      </Button>
-                    )}
-                    {currentStep < currentInstructions.length - 1 ? (
-                      <Button 
+                    </Button>
+                    <Button 
+                        variant="outline" 
                         onClick={() => setCurrentStep(Math.min(currentInstructions.length - 1, currentStep + 1))}
-                        className="flex-1 text-xs sm:text-sm py-2"
-                      >
+                        disabled={currentStep === currentInstructions.length - 1}
+                        className="flex-1 border-white/20 text-white bg-neutral-900/60 hover:bg-neutral-800/70 disabled:opacity-30"
+                    >
                         Siguiente
-                      </Button>
-                    ) : (
-                      <Button 
-                        onClick={onClose}
-                        className="flex-1 bg-gray-600 hover:bg-gray-700 text-xs sm:text-sm py-2"
-                      >
-                        Cerrar
-                      </Button>
-                    )}
-                  </div>
+                    </Button>
                 </div>
               </>
             )}

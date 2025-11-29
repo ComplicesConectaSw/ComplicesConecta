@@ -24,7 +24,7 @@
 		"captureInput": true,
 		"webContentsDebuggingEnabled": true,
 		"loggingBehavior": "debug",
-		"appendUserAgent": "ComplicesConecta/3.3.0",
+		"appendUserAgent": "ComplicesConecta/3.6.6",
 		"backgroundColor": "#1a1a2e"
 	},
 	"server": {

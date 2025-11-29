@@ -13,5 +13,6 @@
   "typescript.validate.enable": true,
   "typescript.preferences.useLabelDetailsInCompletionEntries": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "typescript.workspaceSymbols.scope": "allOpenProjects"
+  "typescript.workspaceSymbols.scope": "allOpenProjects",
+  "java.configuration.updateBuildConfiguration": "automatic"
 }
