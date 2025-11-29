@@ -380,8 +380,10 @@ export type Database = {
       couple_agreements: {
         Row: {
           agreement_hash: string
+          asset_disposition_clause: string
           couple_id: string
           created_at: string | null
+          death_clause_text: string
           dispute_deadline: string | null
           id: string
           partner_1_id: string
@@ -394,8 +396,10 @@ export type Database = {
         }
         Insert: {
           agreement_hash: string
+          asset_disposition_clause?: string
           couple_id: string
           created_at?: string | null
+          death_clause_text?: string
           dispute_deadline?: string | null
           id?: string
           partner_1_id: string
@@ -408,8 +412,10 @@ export type Database = {
         }
         Update: {
           agreement_hash?: string
+          asset_disposition_clause?: string
           couple_id?: string
           created_at?: string | null
+          death_clause_text?: string
           dispute_deadline?: string | null
           id?: string
           partner_1_id?: string
@@ -1807,6 +1813,15 @@ export type Database = {
           updated_at: string
         }[]
       }
+      get_user_active_consents: {
+        Args: { p_user_id: string }
+        Returns: {
+          consent_type: string
+          consented_at: string
+          document_path: string
+          expires_at: string
+        }[]
+      }
       get_user_daily_claims: {
         Args: { p_date?: string; p_user_id: string }
         Returns: {
@@ -1814,6 +1829,10 @@ export type Database = {
           remaining_limit: number
           token_type: string
         }[]
+      }
+      has_active_couple_agreement: {
+        Args: { p_couple_id: string }
+        Returns: boolean
       }
       is_admin_or_moderator: { Args: never; Returns: boolean }
     }
