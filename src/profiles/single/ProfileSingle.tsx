@@ -13,7 +13,7 @@ import {
   Camera, 
   Download, 
   Flag, 
-  Lock, 
+  Lock,   
   CheckCircle, 
   Baby,
   Award,

@@ -726,81 +726,72 @@ const ProfileCouple: React.FC = () => {
               onCommentPost={handleCommentPost}
             />
 
-            {/* Galería privada mejorada - demo: mostrar bloqueado y ejemplo de desbloqueo */}
-            <div className="mb-4">
+            {/* SECCIÓN GALERÍA PRIVADA (DÚO/PAREJA) BLINDADA */}
+            <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-white font-semibold flex items-center gap-2">
                   <Lock className="w-4 h-4" />
                   Fotos Privadas (4)
                 </h4>
-                <Button
-                  onClick={() => {
-                    // BLOQUEAR es inmediato sin PIN
-                    // DESBLOQUEAR requiere PIN (el modal ya está visible cuando isParentalLocked=true)
-                    if (!isParentalLocked) {
-                      // Bloquear ahora SIN PIN
-                      setIsParentalLocked(true);
-                      setDemoPrivateUnlocked(false);
-                      localStorage.setItem('parentalControlLocked', JSON.stringify(true));
-                    }
-                    // Si está bloqueado, NO hacer nada - el usuario debe usar el modal de PIN
-                  }}
-                  className={`text-xs px-3 py-1.5 flex items-center gap-1.5 transition-all ${
-                    isParentalLocked
-                      ? 'bg-red-600/80 hover:bg-red-700/80 text-white cursor-default'
-                      : 'bg-orange-600/80 hover:bg-orange-700/80 text-white hover:scale-105'
+                {/* Indicador de estado */}
+                <div
+                  className={`text-xs px-3 py-1.5 flex items-center gap-1.5 rounded-full font-medium transition-all ${
+                    isParentalLocked ? 'bg-red-600/80 text-white' : 'bg-green-600/80 text-white'
                   }`}
-                  disabled={isParentalLocked}
                 >
-                  {isParentalLocked ? (
-                    <>
-                      <Lock className="w-3 h-3" />
-                      🔒 Bloqueado (PIN requerido para desbloquear)
-                    </>
-                  ) : demoPrivateUnlocked ? (
-                    <>
-                      <Baby className="w-3 h-3" />
-                      Bloquear Ahora
-                    </>
-                  ) : (
-                    <>
-                      <Lock className="w-3 h-3" />
-                      Click en foto para desbloquear
-                    </>
-                  )}
-                </Button>
+                  {isParentalLocked ? <Lock className="w-3 h-3" /> : <Baby className="w-3 h-3" />}
+                  {isParentalLocked ? 'Protegido' : 'Visible'}
+                </div>
               </div>
 
-              <div
-                className="grid grid-cols-2 sm:grid-cols-3 gap-4 cursor-pointer"
-                onClick={() => {
-                  if (isOwnProfile) {
-                    if (!isParentalLocked) {
-                      setDemoPrivateUnlocked(true);
-                    }
-                  } else {
-                    setShowPrivateImageRequest(true);
-                  }
-                }}
-              >
-                <div className="relative aspect-square rounded-lg overflow-hidden">
-                  <SafeImage
-                    src="/assets/people/couple/privado/coupleprivjpg.jpg"
-                    alt="Foto privada bloqueada"
-                    fallbackType="private"
-                    className={`w-full h-full ${
-                      demoPrivateUnlocked && isOwnProfile && !isParentalLocked ? '' : 'filter blur-lg'
-                    } ${demoPrivateUnlocked && !isParentalLocked ? 'private-image-protection' : 'private-image-interactive'}`}
-                  />
-                  <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                    © Privado
+              {/* Grid Dinámico (Igual que Single) */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 cursor-pointer">
+                {[
+                  '/assets/people/couple/privado/coupleprivjpg.jpg',
+                  '/assets/people/couple/privado/privadicouple2.jpg',
+                  '/assets/people/couple/privado/privado couplple4.jpg',
+                  '/assets/people/couple/privado/privadocouple (3).jpg'
+                ].map((imageSrc, idx) => (
+                  <div
+                    key={imageSrc}
+                    className="relative aspect-square rounded-xl overflow-hidden group"
+                    onClick={() => {
+                      if (isParentalLocked) {
+                        alert('🔒 Contenido protegido. Ingresa el PIN de Control Parental para desbloquear.');
+                        return;
+                      }
+
+                      if (isOwnProfile) {
+                        setDemoPrivateUnlocked(true);
+                      } else {
+                        setShowPrivateImageRequest(true);
+                      }
+
+                      setSelectedImageIndex(idx);
+                      setShowImageModal(true);
+                    }}
+                  >
+                    <SafeImage
+                      src={imageSrc}
+                      alt={`Foto privada ${idx + 1}`}
+                      fallbackType="private"
+                      className={`w-full h-full object-cover transition-all duration-500 ${
+                        isParentalLocked ? 'blur-xl scale-110' : 'blur-0 scale-100'
+                      }`}
+                    />
+
+                    {isParentalLocked && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/20 backdrop-blur-[2px] transition-all group-hover:bg-black/30">
+                        <div className="bg-black/60 p-3 rounded-full border border-white/20 backdrop-blur-md">
+                          <Lock className="w-6 h-6 text-white" />
+                        </div>
+                        <span className="text-xs font-medium text-white mt-2 bg-black/50 px-2 py-1 rounded-md">
+                          Click para desbloquear
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  {!demoPrivateUnlocked && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                      <Lock className="w-12 h-12 text-white" />
-                    </div>
-                  )}
-                </div>
+                ))}
               </div>
             </div>
 
