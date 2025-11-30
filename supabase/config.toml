@@ -1,1 +1,12 @@
+# 1. Configuración general del proyecto (NO pongas major_version aquí)
 project_id = "axtvqnozatbmllvwzuim"
+
+[api]
+enabled = true
+# ... otras configuraciones de api ...
+
+# 2. Busca la sección [db] (o créala si no existe) y pon la versión ahí:
+[db]
+major_version = 15
+port = 54322
+# ... resto de la configuración de db ...

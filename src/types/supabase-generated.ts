@@ -1753,6 +1753,7 @@ export type Database = {
           created_at: string | null
           encrypted_private_key: string
           id: string
+          is_frozen: boolean
           network: string
           updated_at: string | null
           user_id: string
@@ -1762,6 +1763,7 @@ export type Database = {
           created_at?: string | null
           encrypted_private_key: string
           id?: string
+          is_frozen?: boolean
           network?: string
           updated_at?: string | null
           user_id: string
@@ -1771,6 +1773,7 @@ export type Database = {
           created_at?: string | null
           encrypted_private_key?: string
           id?: string
+          is_frozen?: boolean
           network?: string
           updated_at?: string | null
           user_id?: string
@@ -1798,6 +1801,25 @@ export type Database = {
           level: number
           s2_cell_id: string
           user_count: number
+        }[]
+      }
+      create_assets_snapshot: { Args: { p_couple_id: string }; Returns: Json }
+      get_dispute_time_remaining: {
+        Args: { p_dispute_id: string }
+        Returns: {
+          hours_remaining: number
+          is_expired: boolean
+          minutes_remaining: number
+          seconds_remaining: number
+        }[]
+      }
+      get_expired_disputes: {
+        Args: never
+        Returns: {
+          couple_id: string
+          deadline_at: string
+          dispute_id: string
+          hours_expired: number
         }[]
       }
       get_profiles_in_cells: {
@@ -1835,6 +1857,18 @@ export type Database = {
         Returns: boolean
       }
       is_admin_or_moderator: { Args: never; Returns: boolean }
+      search_unified: {
+        Args: { query_text: string }
+        Returns: {
+          id: string
+          image_url: string
+          subtitle: string
+          title: string
+          type: string
+        }[]
+      }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       [_ in never]: never

@@ -350,6 +350,9 @@ BEGIN
           AND column_name = 'partner_2_id'
     ) THEN
 
+        -- Evitar duplicados de la política en re-ejecuciones
+        DROP POLICY IF EXISTS "Partners can view own disputes" ON couple_disputes;
+
         CREATE POLICY "Partners can view own disputes" ON couple_disputes
             FOR SELECT USING (
                 EXISTS (
