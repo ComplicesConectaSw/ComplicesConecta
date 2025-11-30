@@ -1,18 +1,40 @@
 {
-  "css.lint.unknownAtRules": "ignore",
-  "css.validate": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
   "css.customData": [
     ".vscode/css-custom-data.json"
+  ],
+  "css.lint.unknownAtRules": "ignore",
+  "css.validate": true,
+  "deno.enablePaths": [
+    "supabase/functions"
+  ],
+  "deno.lint": true,
+  "deno.unstable": [
+    "bare-node-builtins",
+    "byonm",
+    "sloppy-imports",
+    "unsafe-proto",
+    "webgpu",
+    "broadcast-channel",
+    "worker-options",
+    "cron",
+    "kv",
+    "ffi",
+    "fs",
+    "http",
+    "net"
   ],
   "files.associations": {
     "*.dbclient-js": "javascript",
     "plyconfig.json": "jsonc"
   },
+  "java.configuration.updateBuildConfiguration": "automatic",
   "typescript.preferences.includePackageJsonAutoImports": "on",
-  "typescript.suggest.autoImports": true,
-  "typescript.validate.enable": true,
   "typescript.preferences.useLabelDetailsInCompletionEntries": true,
+  "typescript.suggest.autoImports": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "typescript.workspaceSymbols.scope": "allOpenProjects",
-  "java.configuration.updateBuildConfiguration": "automatic"
+  "typescript.validate.enable": true,
+  "typescript.workspaceSymbols.scope": "allOpenProjects"
 }

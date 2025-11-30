@@ -44,7 +44,7 @@ export const useProfileQuery = () => {
         throw new Error('Supabase no está disponible');
       }
 
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('profiles')
         .update(updates)
         .eq('id', user.id)

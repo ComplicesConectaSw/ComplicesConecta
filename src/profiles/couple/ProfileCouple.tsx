@@ -360,7 +360,7 @@ const ProfileCouple: React.FC = () => {
             <div>
               <h1 className="profile-header-title">{profile.couple_name || 'Perfil de Pareja'}</h1>
               <p className="profile-header-username">{profile.username || '@sofiayleo_sw'}</p>
-              <p className="text-sm text-white/60">ID: {(profile as any).profile_id || 'CC-2025-002'}</p>
+              <p className="text-sm text-white/60">ID: {profile.id || 'CC-2025-002'}</p>
               {isAuthenticated() && user && (
                 <p className="profile-header-email">{user.email || 'Usuario'}</p>
               )}

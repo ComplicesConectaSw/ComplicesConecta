@@ -43,6 +43,8 @@ interface Profile {
   distance?: number;
 }
 
+type ProfileWithScore = Profile & { aiScore?: number };
+
 const Profiles: React.FC = () => {
   const navigate = useNavigate();
   const { user, profile, isAuthenticated } = useAuth();
@@ -50,8 +52,8 @@ const Profiles: React.FC = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
   const [aiSearchMode, setAiSearchMode] = useState(false);
-  const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
-  const [allProfiles, setAllProfiles] = useState<Profile[]>([]);
+  const [filteredProfiles, setFilteredProfiles] = useState<ProfileWithScore[]>([]);
+  const [allProfiles, setAllProfiles] = useState<ProfileWithScore[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [userType, setUserType] = useState<'demo' | 'real' | null>(null);
@@ -320,7 +322,7 @@ const Profiles: React.FC = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Filtrar perfiles basado en la búsqueda
-      let filtered = allProfiles.filter(profile => 
+      let filtered: ProfileWithScore[] = allProfiles.filter(profile => 
         profile.name.toLowerCase().includes(query.toLowerCase()) ||
         profile.bio.toLowerCase().includes(query.toLowerCase()) ||
         profile.location.toLowerCase().includes(query.toLowerCase()) ||
@@ -354,7 +356,7 @@ const Profiles: React.FC = () => {
         }
       }
       
-      filtered = filtered.map(profile => {
+      filtered = filtered.map<ProfileWithScore>((profile) => {
         let score = 0;
         
         // Calcular similitud de intereses
@@ -388,7 +390,7 @@ const Profiles: React.FC = () => {
       });
 
       // Ordenar por score de IA (mayor a menor)
-      filtered.sort((a, b) => (b as any).aiScore - (a as any).aiScore);
+      filtered.sort((a, b) => (b.aiScore ?? 0) - (a.aiScore ?? 0));
       
       setFilteredProfiles(filtered);
       setAiSearchMode(true);
@@ -398,7 +400,7 @@ const Profiles: React.FC = () => {
         results: filtered.length,
         userType,
         topMatch: filtered[0]?.name,
-        topScore: (filtered[0] as any)?.aiScore
+        topScore: filtered[0]?.aiScore ?? 0
       });
     } catch (error) {
       logger.error('âŒ Error en búsqueda IA:', { error });

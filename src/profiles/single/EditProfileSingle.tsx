@@ -20,9 +20,11 @@ import { logger } from '@/lib/logger';
 import { useDemoThemeConfig, getNavbarStyles, useProfileTheme } from '@/features/profile/useProfileTheme';
 import { motion } from 'framer-motion';
 
+type ProfileRow = Tables<'profiles'>;
+
 const EditProfileSingle = () => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<Tables<'profiles'> | any>(null);
+  const [profile, setProfile] = useState<ProfileRow | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     age: "",
@@ -65,16 +67,37 @@ const EditProfileSingle = () => {
         let profileData;
         
         if (user.accountType === 'single' || user.type === 'single') {
-          profileData = generateMockSingle(user.id);
+          const mock = generateMockSingle(user.id);
+          // Adaptar mock al shape mínimo de ProfileRow sólo para persistir en estado tipado
+          profileData = {
+            id: mock.id,
+            user_id: mock.id,
+            name: mock.name,
+            first_name: mock.first_name,
+            last_name: mock.last_name,
+            full_name: `${mock.first_name} ${mock.last_name}`,
+            age: mock.age,
+            account_type: 'single',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            is_demo: true,
+            is_online: false,
+            is_premium: false,
+            display_name: mock.name,
+            latitude: null,
+            longitude: null,
+            s2_cell_id: null,
+            s2_level: null,
+          } satisfies ProfileRow;
           setFormData({
-            name: profileData.first_name + ' ' + profileData.last_name,
-            age: profileData.age.toString(),
-            bio: profileData.bio,
-            location: profileData.location,
-            profession: profileData.profession || '',
-            interests: profileData.interests || [],
+            name: `${mock.first_name} ${mock.last_name}`,
+            age: mock.age.toString(),
+            bio: mock.bio,
+            location: mock.location,
+            profession: mock.profession || '',
+            interests: mock.interests || [],
             explicitInterests: [],
-            avatar: profileData.avatar || ''
+            avatar: mock.avatar || ''
           });
           setUserId(user.id);
           setProfile(profileData);
@@ -95,29 +118,28 @@ const EditProfileSingle = () => {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          const { data: profile, error } = await (supabase as any)
+          const { data: profileData, error } = await supabase
             .from('profiles')
             .select('*')
             .eq('id', user.id)
-            .single();
-          
+            .single<Tables<'profiles'>>();
+
           if (error) {
             logger.error('Error fetching profile:', { error: error.message });
             setError('Error al cargar perfil');
-          } else if (profile) {
-            const profileData = profile as any;
+          } else if (profileData) {
             setFormData({
               name: `${profileData.first_name || ''} ${profileData.last_name || ''}`.trim(),
               age: profileData.age?.toString() || '',
-              bio: profileData.bio || '',
-              location: `${profileData.latitude || ''}, ${profileData.longitude || ''}`,
+              bio: '',
+              location: '',
               profession: '',
               interests: [],
               explicitInterests: [],
               avatar: ''
             });
             setUserId(user.id);
-            setProfile(profile);
+            setProfile(profileData);
             setProfileLoaded(true);
             return;
           }
@@ -136,13 +158,32 @@ const EditProfileSingle = () => {
         explicitInterests: [],
         avatar: newProfile.avatar
       });
-      
-      if (newProfile.id) {
-        setUserId(newProfile.id);
-        setProfile(newProfile);
-        setProfileLoaded(true);
-        setIsLoading(false);
-      }
+
+      const adaptedProfile: ProfileRow = {
+        id: newProfile.id,
+        user_id: newProfile.id,
+        name: newProfile.name,
+        first_name: newProfile.first_name,
+        last_name: newProfile.last_name,
+        full_name: `${newProfile.first_name} ${newProfile.last_name}`,
+        age: newProfile.age,
+        account_type: 'single',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        is_demo: true,
+        is_online: false,
+        is_premium: false,
+        display_name: newProfile.name,
+        latitude: null,
+        longitude: null,
+        s2_cell_id: null,
+        s2_level: null,
+      };
+
+      setUserId(newProfile.id);
+      setProfile(adaptedProfile);
+      setProfileLoaded(true);
+      setIsLoading(false);
     } catch (error) {
       setError('Error inesperado al cargar perfil');
       logger.error('Error loading profile:', { error: String(error) });
@@ -159,8 +200,30 @@ const EditProfileSingle = () => {
         explicitInterests: [],
         avatar: fallbackProfile.avatar
       });
+
+      const adaptedFallback: ProfileRow = {
+        id: fallbackProfile.id,
+        user_id: fallbackProfile.id,
+        name: fallbackProfile.name,
+        first_name: fallbackProfile.first_name,
+        last_name: fallbackProfile.last_name,
+        full_name: `${fallbackProfile.first_name} ${fallbackProfile.last_name}`,
+        age: fallbackProfile.age,
+        account_type: 'single',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        is_demo: true,
+        is_online: false,
+        is_premium: false,
+        display_name: fallbackProfile.name,
+        latitude: null,
+        longitude: null,
+        s2_cell_id: null,
+        s2_level: null,
+      };
+
       setUserId(fallbackProfile.id);
-      setProfile(fallbackProfile);
+      setProfile(adaptedFallback);
       setProfileLoaded(true);
       setIsLoading(false);
     }
@@ -205,15 +268,19 @@ const EditProfileSingle = () => {
         localStorage.setItem('demo_user', JSON.stringify(updatedUser));
         setSuccess('Perfil guardado exitosamente (modo demo)');
       } else {
+        if (!supabase) {
+          setError('Supabase no está disponible');
+          setIsLoading(false);
+          return;
+        }
         // Modo producción - guardar en Supabase
         const nameParts = formData.name.split(' ');
-        const { error } = await (supabase as any)
+        const { error } = await supabase
           .from('profiles')
           .update({
             first_name: nameParts[0] || '',
             last_name: nameParts.slice(1).join(' ') || '',
             age: parseInt(formData.age) || 25,
-            bio: formData.bio,
             updated_at: new Date().toISOString()
           })
           .eq('id', userId);

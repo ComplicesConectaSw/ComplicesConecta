@@ -61,7 +61,14 @@ const ProfileSingle: React.FC = () => {
   const checkAuth = () => {
     return typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
   };
-  const [profile, setProfile] = useState<Database['public']['Tables']['profiles']['Row'] | null>(null);
+  type ProfileRow = Database['public']['Tables']['profiles']['Row'] & {
+    // Campos extendidos solo para UI local (no en DB)
+    nickname?: string | null;
+    profile_id?: string | null;
+    privateImages?: unknown;
+  };
+
+  const [profile, setProfile] = useState<ProfileRow | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
   const [privateImageAccess, setPrivateImageAccess] = usePersistedState<'none' | 'pending' | 'approved' | 'denied'>('private_image_access', 'none');
@@ -173,7 +180,7 @@ const ProfileSingle: React.FC = () => {
     }
   ];
 
-  const profilePrivateImages = (profile as unknown as { privateImages?: (PrivateImageItem | string)[] })?.privateImages;
+  const profilePrivateImages = profile?.privateImages as (PrivateImageItem | string)[] | undefined;
   const galleryImages: (PrivateImageItem | string)[] = Array.isArray(profilePrivateImages) && profilePrivateImages.length > 0
     ? profilePrivateImages
     : privateImages;
@@ -285,7 +292,8 @@ const ProfileSingle: React.FC = () => {
         { id: 1, title: 'Primer Like', description: 'Recibiste tu primer like', icon: Heart, unlocked: true },
         { id: 2, title: 'Perfil Completo', description: 'Completaste tu perfil al 100%', icon: CheckCircle, unlocked: true },
         { id: 3, title: 'Popular', description: 'Recibiste 100 likes', icon: Star, unlocked: false },
-        { id: 4, title: 'Verificado', description: 'Tu perfil fue verificado', icon: Award, unlocked: profile?.is_verified || false }
+        // Sin columna is_verified en profiles; usar siempre false para esta badge
+        { id: 4, title: 'Verificado', description: 'Tu perfil fue verificado', icon: Award, unlocked: false }
       ];
       setAchievements(mockAchievements);
     } catch (error) {
@@ -325,10 +333,10 @@ const ProfileSingle: React.FC = () => {
 📥 FUNCIÓN DE DESCARGA
 
 En versión de producción:
-✅ Datos encriptados
-✅ Formato seguro (PDF/Encriptado)
-✅ Autenticación requerida
-✅ Watermark con ID único
+ Datos encriptados
+ Formato seguro (PDF/Encriptado)
+ Autenticación requerida
+ Watermark 
 
 VERSIÓN DEMO:
 Datos protegidos por seguridad.
@@ -336,7 +344,7 @@ Datos protegidos por seguridad.
 Información del perfil:
 - Nombre: ${profile?.name || 'Demo'}
 - Email: ${user?.email?.substring(0, 3)}***@***
-- Verificado: ${profile?.is_verified ? 'Sí' : 'No'}
+- Verificado: No disponible
 - Fecha: ${new Date().toLocaleDateString()}
     `;
     
@@ -433,12 +441,12 @@ Información del perfil:
     
     // Demo: Simular minteo de NFT
     const nftData = {
-      name: `NFT Perfil - ${profile?.name || 'Usuario'}`,
-      description: 'NFT único del perfil en ComplicesConecta',
+      name: `ComplicesConecta Profile #${Math.floor(Math.random() * 1000)}`,
+      description: 'NFT conmemorativo de tu perfil en ComplicesConecta',
       image: 'https://images.unsplash.com/photo-1634193295627-1cdddf751ebf?w=400',
       attributes: [
         { trait_type: 'Tipo', value: 'Perfil Single' },
-        { trait_type: 'Verificado', value: profile?.is_verified ? 'Sí' : 'No' },
+        { trait_type: 'Verificado', value: 'No disponible' },
         { trait_type: 'Fecha', value: new Date().toLocaleDateString() }
       ],
       tokenId: Math.floor(Math.random() * 10000)
@@ -446,7 +454,7 @@ Información del perfil:
     
     // Mostrar progreso con toast
     // TODO: Reemplazar con componente Toast glassmorphism
-    console.log('⏳ Minteando NFT... Esto puede tardar unos segundos');
+    console.log(' Minteando NFT... Esto puede tardar unos segundos');
     
     // Simular delay de blockchain
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -471,19 +479,29 @@ Información del perfil:
         if (!checkAuth() || !user?.id) {
           logger.warn('Usuario no autenticado o sin ID');
           // DEMO: Perfil demo completo para inversor
-          const demoProfile: any = {
+          const demoProfile: ProfileRow = {
             id: 'demo-user-123',
+            user_id: 'demo-user-123',
             name: 'Ana García',
-            username: '@ana_swinger',
+            display_name: 'Ana García',
             age: 28,
-            gender: 'female',
-            interested_in: 'both', // 'male', 'female', 'both'
-            bio: 'Explorando nuevas experiencias con mente abierta 💫 | Lifestyle enthusiast | CDMX 🇲🇽',
-            location: 'Ciudad de México, México',
-            avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
-            is_verified: true,
+            account_type: 'single',
             created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
+            updated_at: new Date().toISOString(),
+            is_demo: true,
+            is_online: false,
+            is_premium: false,
+            first_name: 'Ana',
+            last_name: 'García',
+            full_name: 'Ana García',
+            latitude: null,
+            longitude: null,
+            s2_cell_id: null,
+            s2_level: null,
+            // Extensiones locales
+            nickname: '@ana_swinger',
+            profile_id: 'CC-2025-001',
+            privateImages: undefined
           };
           setProfile(demoProfile);
           return;
@@ -496,48 +514,29 @@ Información del perfil:
             const parsedUser = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
             
             // Crear perfil demo esttico una sola vez
-            const profileData: Database['public']['Tables']['profiles']['Row'] = {
+            const profileData: ProfileRow = {
               id: parsedUser.id || 'demo-single-1',
-              name: parsedUser.name || 'Sofia Demo',
+              user_id: parsedUser.id || 'demo-single-1',
+              name: parsedUser.name || 'Sofía Demo',
               first_name: parsedUser.first_name || 'Sofía',
               last_name: parsedUser.last_name || 'Demo',
               full_name: 'Sofía Demo',
+              display_name: 'Sofía Demo',
               age: 28,
-              bio: 'Explorando conexiones autinticas en el lifestyle swinger. Disfruto de experiencias discretas, respeto mutuo y encuentros sofisticados. Me encanta viajar, la msica y conocer parejas interesantes.',
-              avatar_url: '/placeholder.svg',
+              account_type: 'single',
               created_at: new Date().toISOString(),
-              gender: 'female',
-              interests: ['Lifestyle Swinger', 'Encuentros Discretos', 'Viajes', 'Musica', 'soft', 'Arte', 'Fotografia erotica', 'Eventos Sofisticados'],
-              is_admin: false,
-              is_premium: false,
-              is_verified: true,
-              location: 'CDMX, Mexico',
-              role: 'user',
-              user_id: parsedUser.id || 'demo-single-1',
               updated_at: new Date().toISOString(),
-              // Campos opcionales
-              account_type: null,
-              age_range_max: null,
-              age_range_min: null,
-              blocked_at: null,
-              blocked_reason: null,
-              is_active: true,
-              is_blocked: false,
               is_demo: true,
               is_online: false,
-              interested_in: null,
-              lifestyle_preferences: null,
-              location_preferences: null,
+              is_premium: false,
               latitude: null,
               longitude: null,
-              looking_for: null,
-              max_distance: null,
-              personality_traits: null,
               s2_cell_id: null,
               s2_level: null,
-              suspension_end_date: null,
-              swinger_experience: null,
-              warnings_count: null
+              // Extensiones locales
+              nickname: parsedUser.username || '@sofia_demo',
+              profile_id: 'CC-2025-002',
+              privateImages: undefined
             };
             
             setProfile(profileData);
@@ -624,10 +623,13 @@ Información del perfil:
     );
   }
 
+  // profile es no nulo a partir de aquí
+  const currentProfile = profile;
+
   // Valores de display seguros para DEMO inversor (fallback cuando faltan datos reales)
-  const displayName = profile.name || 'Ana García';
-  const displayNickname = (profile as any).nickname || 'ana_swinger';
-  const displayProfileId = (profile as any).profile_id || 'CC-2025-001';
+  const displayName = currentProfile.display_name || currentProfile.name || 'Ana García';
+  const displayNickname = currentProfile.nickname || currentProfile.display_name || currentProfile.name || 'ana_swinger';
+  const displayProfileId = currentProfile.profile_id || currentProfile.id || 'CC-2025-001';
   
   // Función para hacer funcional el botón "Ver Fotos Privadas" - USADA EN LÍNEA 660
   const handleViewPrivatePhotos = () => {
@@ -643,25 +645,19 @@ Información del perfil:
       setShowPrivateImageRequest(true);
     }
   };
-  const displayAge = typeof profile.age === 'number' && profile.age > 0 ? profile.age : 28;
-  const displayGenderLabel = profile.gender === 'female'
-    ? '♀️ Femenino'
-    : profile.gender === 'male'
-      ? '♂️ Masculino'
-      : '⚧️ Género no especificado';
+  const displayAge = typeof currentProfile.age === 'number' && currentProfile.age > 0 ? currentProfile.age : 28;
+  // El esquema actual no tiene gender/interested_in; usar etiquetas neutras
+  const displayGenderLabel = '⚧️ Género no especificado';
 
-  const interestedIn = (profile as any).interested_in;
-  const displayOrientationLabel = interestedIn === 'male' && profile.gender === 'female'
-    ? '⚤ Heterosexual'
-    : interestedIn === 'female' && profile.gender === 'male'
-    ? '⚤ Heterosexual'
-    : interestedIn === 'female' && profile.gender === 'female'
-    ? '⚢ Homosexual'
-    : interestedIn === 'male' && profile.gender === 'male'
-    ? '⚣ Homosexual'
-    : interestedIn === 'both'
-    ? '⚥ Bisexual'
-    : '❔ Orientación no especificada';
+  const interestedIn: 'male' | 'female' | 'both' | null = null;
+  const displayOrientationLabel =
+    interestedIn === 'both'
+      ? '⚥ Bisexual'
+      : interestedIn === 'male'
+      ? '⚤ Heterosexual'
+      : interestedIn === 'female'
+      ? '⚢ Homosexual'
+      : '❔ Orientación no especificada';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 profile-page relative overflow-hidden">
@@ -715,20 +711,14 @@ Información del perfil:
                 {/* Avatar */}
                 <div className="relative flex-shrink-0 mx-auto sm:mx-0">
                   <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden bg-gradient-to-br from-purple-400 to-blue-600 flex items-center justify-center text-white text-2xl sm:text-4xl font-bold mx-auto">
-                    {profile.avatar_url && profile.avatar_url !== '/placeholder.svg' ? (
-                      <SafeImage
-                        src={profile.avatar_url}
-                        alt={profile.name || 'Avatar'}
+                    <SafeImage
+                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(currentProfile.display_name || currentProfile.name || 'Usuario')}`}
+                        alt={currentProfile.name || 'Avatar'}
                         fallbackType="avatar"
                         className="w-full h-full"
                       />
-                    ) : (
-                      <span>
-                        {profile.name?.[0]?.toUpperCase() || 'U'}
-                      </span>
-                    )}
                   </div>
-                  {profile.is_verified && (
+                  {false && currentProfile.is_online && (
                     <div className="absolute -top-2 -right-2 bg-blue-500 rounded-full p-1">
                       <CheckCircle className="w-6 h-6 text-white" />
                     </div>
@@ -752,9 +742,9 @@ Información del perfil:
                   </div>
                   
                   {/* Biografa */}
-                  {profile.bio && (
+                  {false && currentProfile.name && (
                     <p className="text-white/90 mb-4 leading-relaxed">
-                      {profile.bio}
+                      {currentProfile.name}
                     </p>
                   )}
 

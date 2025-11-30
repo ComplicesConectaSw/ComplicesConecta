@@ -1,12 +1,366 @@
-# 1. Configuración general del proyecto (NO pongas major_version aquí)
-project_id = "axtvqnozatbmllvwzuim"
+# Para ver la documentación detallada de referencia de configuración, visita:
+# https://supabase.com/docs/guides/local-development/cli/config
+# Una cadena usada para distinguir diferentes proyectos de Supabase en el mismo host.
+# Por defecto usa el nombre del directorio de trabajo al ejecutar `supabase init`.
+project_id = "conecta-social-comunidad-main"
 
 [api]
 enabled = true
-# ... otras configuraciones de api ...
+# Puerto a usar para la URL de la API.
+port = 54321
+# Esquemas a exponer en tu API. Tablas, vistas y procedimientos almacenados en este esquema
+# tendrán endpoints de API. Los esquemas `public` y `graphql_public` se incluyen por defecto.
+schemas = ["public", "graphql_public"]
+# Esquemas extra para agregar al search_path de cada petición.
+extra_search_path = ["public", "extensions"]
+# El número máximo de filas devueltas por una vista, tabla o procedimiento. Limita el tamaño
+# de la carga útil para evitar peticiones accidentales o maliciosas.
+max_rows = 1000
 
-# 2. Busca la sección [db] (o créala si no existe) y pon la versión ahí:
+[api.tls]
+# Habilitar endpoints HTTPS localmente usando un certificado autofirmado.
+enabled = false
+# Rutas al par de certificados autofirmados.
+# cert_path = "../certs/my-cert.pem"
+# key_path = "../certs/my-key.pem"
+
 [db]
-major_version = 15
+# Puerto a usar para la URL de la base de datos local.
 port = 54322
-# ... resto de la configuración de db ...
+# Puerto usado por el comando db diff para inicializar la base de datos sombra (shadow database).
+shadow_port = 54320
+# La versión mayor de la base de datos a usar. Debe ser la misma que tu base de datos remota.
+# Ejecuta `SHOW server_version;` en la base de datos remota para verificar.
+major_version = 17
+
+[db.pooler]
+enabled = false
+# Puerto a usar para el pooler de conexiones local.
+port = 54329
+# Especifica cuándo una conexión al servidor puede ser reutilizada por otros clientes.
+# Configura uno de los modos de pooler soportados: `transaction`, `session`.
+pool_mode = "transaction"
+# Cuántas conexiones al servidor permitir por par usuario/base de datos.
+default_pool_size = 20
+# Número máximo de conexiones de cliente permitidas.
+max_client_conn = 100
+
+# [db.vault]
+# secret_key = "env(SECRET_VALUE)"
+
+[db.migrations]
+# Si se deshabilita, las migraciones se omitirán durante un db push o reset.
+enabled = true
+# Especifica una lista ordenada de archivos de esquema que describen tu base de datos.
+# Soporta patrones glob relativos al directorio supabase: "./schemas/*.sql"
+schema_paths = []
+
+[db.seed]
+# Si se habilita, llena la base de datos (seeds) después de las migraciones durante un db reset.
+enabled = true
+# Especifica una lista ordenada de archivos semilla para cargar durante el db reset.
+# Soporta patrones glob relativos al directorio supabase: "./seeds/*.sql"
+sql_paths = ["./seed.sql"]
+
+[db.network_restrictions]
+# Habilitar la gestión de restricciones de red.
+enabled = false
+# Lista de bloques CIDR IPv4 permitidos para conectar a la base de datos.
+# Por defecto permite todas las conexiones IPv4. Pon un array vacío para bloquear todas las IPs.
+allowed_cidrs = ["0.0.0.0/0"]
+# Lista de bloques CIDR IPv6 permitidos para conectar a la base de datos.
+# Por defecto permite todas las conexiones IPv6. Pon un array vacío para bloquear todas las IPs.
+allowed_cidrs_v6 = ["::/0"]
+
+[realtime]
+enabled = true
+# Vincular realtime vía IPv4 o IPv6. (por defecto: IPv4)
+# ip_version = "IPv6"
+# La longitud máxima en bytes de los encabezados de petición HTTP. (por defecto: 4096)
+# max_header_length = 4096
+
+[studio]
+enabled = true
+# Puerto a usar para Supabase Studio.
+port = 54323
+# URL externa del servidor API al que se conecta el frontend.
+api_url = "http://127.0.0.1"
+# API Key de OpenAI para usar con Supabase AI en Supabase Studio.
+openai_api_key = "env(OPENAI_API_KEY)"
+
+# Servidor de pruebas de correo. Los correos enviados con la configuración local de desarrollo
+# no se envían realmente - en su lugar, son monitoreados y puedes ver los correos que se hubieran
+# enviado desde la interfaz web.
+[inbucket]
+enabled = true
+# Puerto a usar para la interfaz web del servidor de pruebas de correo.
+port = 54324
+# Descomenta para exponer puertos adicionales para probar aplicaciones de usuario que envían correos.
+# smtp_port = 54325
+# pop3_port = 54326
+# admin_email = "admin@email.com"
+# sender_name = "Admin"
+
+[storage]
+enabled = true
+# El tamaño máximo de archivo permitido (ej. "5MB", "500KB").
+file_size_limit = "50MiB"
+
+# La API de transformación de imágenes está disponible en el plan Supabase Pro.
+# [storage.image_transformation]
+# enabled = true
+
+# Descomenta para configurar buckets de almacenamiento local
+# [storage.buckets.images]
+# public = false
+# file_size_limit = "50MiB"
+# allowed_mime_types = ["image/png", "image/jpeg"]
+# objects_path = "./images"
+
+[auth]
+enabled = true
+# La URL base de tu sitio web. Usada como lista blanca para redirecciones y para construir
+# URLs usadas en correos.
+site_url = "http://127.0.0.1:3000"
+# Una lista de URLs *exactas* a las que los proveedores de autenticación pueden redirigir después de autenticar.
+additional_redirect_urls = ["https://127.0.0.1:3000"]
+# Cuánto tiempo son válidos los tokens, en segundos. Por defecto 3600 (1 hora), máximo 604,800 (1 semana).
+jwt_expiry = 3600
+# URL del emisor JWT. Si no se establece, por defecto es la URL de la API local (http://127.0.0.1:<puerto>/auth/v1).
+# jwt_issuer = ""
+# Ruta a la clave de firma JWT. NO confirmes tu archivo de claves de firma en git.
+# signing_keys_path = "./signing_keys.json"
+# Si se deshabilita, el refresh token nunca expirará.
+enable_refresh_token_rotation = true
+# Permite que los refresh tokens sean reutilizados después de expirar, hasta el intervalo especificado en segundos.
+# Requiere enable_refresh_token_rotation = true.
+refresh_token_reuse_interval = 10
+# Permitir/denegar nuevos registros de usuarios en tu proyecto.
+enable_signup = true
+# Permitir/denegar inicios de sesión anónimos en tu proyecto.
+enable_anonymous_sign_ins = false
+# Permitir/denegar pruebas de vinculación manual de cuentas.
+enable_manual_linking = false
+# Contraseñas más cortas que este valor serán rechazadas como débiles. Mínimo 6, recomendado 8 o más.
+minimum_password_length = 6
+# Contraseñas que no cumplan los siguientes requisitos serán rechazadas como débiles.
+# Los valores soportados son: `letters_digits`, `lower_upper_letters_digits`, `lower_upper_letters_digits_symbols`
+password_requirements = ""
+
+[auth.rate_limit]
+# Número de correos que se pueden enviar por hora. Requiere habilitar auth.email.smtp.
+email_sent = 2
+# Número de mensajes SMS que se pueden enviar por hora. Requiere habilitar auth.sms.
+sms_sent = 30
+# Número de inicios de sesión anónimos que se pueden hacer por hora por dirección IP. Requiere enable_anonymous_sign_ins = true.
+anonymous_users = 30
+# Número de sesiones que se pueden refrescar en un intervalo de 5 minutos por dirección IP.
+token_refresh = 150
+# Número de solicitudes de registro e inicio de sesión que se pueden hacer en un intervalo de 5 minutos por dirección IP (excluye usuarios anónimos).
+sign_in_sign_ups = 30
+# Número de verificaciones de OTP / Magic link que se pueden hacer en un intervalo de 5 minutos por dirección IP.
+token_verifications = 30
+# Número de inicios de sesión Web3 que se pueden hacer en un intervalo de 5 minutos por dirección IP.
+web3 = 30
+
+# Configura uno de los proveedores de captcha soportados: `hcaptcha`, `turnstile`.
+# [auth.captcha]
+# enabled = true
+# provider = "hcaptcha"
+# secret = ""
+
+[auth.email]
+# Permitir/denegar nuevos registros de usuario vía correo en tu proyecto.
+enable_signup = true
+# Si se habilita, se requerirá que un usuario confirme cualquier cambio de correo tanto en la
+# dirección antigua como en la nueva. Si se deshabilita, solo se requiere confirmar el nuevo correo.
+double_confirm_changes = true
+# Si se habilita, los usuarios necesitan confirmar su correo antes de iniciar sesión.
+enable_confirmations = false
+# Si se habilita, los usuarios necesitarán reautenticarse o haber iniciado sesión recientemente para cambiar su contraseña.
+secure_password_change = false
+# Controla la cantidad mínima de tiempo que debe pasar antes de enviar otra confirmación de registro o correo de restablecimiento de contraseña.
+max_frequency = "1s"
+# Número de caracteres usados en el OTP de correo.
+otp_length = 6
+# Número de segundos antes de que el OTP de correo expire (por defecto 1 hora).
+otp_expiry = 3600
+
+# Usa un servidor SMTP listo para producción
+# [auth.email.smtp]
+# enabled = true
+# host = "smtp.sendgrid.net"
+# port = 587
+# user = "apikey"
+# pass = "env(SENDGRID_API_KEY)"
+# admin_email = "admin@email.com"
+# sender_name = "Admin"
+
+# Descomenta para personalizar la plantilla de correo
+# [auth.email.template.invite]
+# subject = "You have been invited"
+# content_path = "./supabase/templates/invite.html"
+
+# Descomenta para personalizar la plantilla de correo de notificación
+# [auth.email.notification.password_changed]
+# enabled = true
+# subject = "Your password has been changed"
+# content_path = "./templates/password_changed_notification.html"
+
+[auth.sms]
+# Permitir/denegar nuevos registros de usuario vía SMS en tu proyecto.
+enable_signup = false
+# Si se habilita, los usuarios necesitan confirmar su número de teléfono antes de iniciar sesión.
+enable_confirmations = false
+# Plantilla para enviar OTP a los usuarios
+template = "Your code is {{ .Code }}"
+# Controla la cantidad mínima de tiempo que debe pasar antes de enviar otro sms otp.
+max_frequency = "5s"
+
+# Usa un mapa predefinido de número de teléfono a OTP para pruebas.
+# [auth.sms.test_otp]
+# 4152127777 = "123456"
+
+# Configura tiempos de espera (timeouts) de sesión iniciada.
+# [auth.sessions]
+# Forzar cierre de sesión después de la duración especificada.
+# timebox = "24h"
+# Forzar cierre de sesión si el usuario ha estado inactivo más de la duración especificada.
+# inactivity_timeout = "8h"
+
+# Este hook se ejecuta antes de que se cree un nuevo usuario y permite a los desarrolladores rechazar la petición basado en el objeto de usuario entrante.
+# [auth.hook.before_user_created]
+# enabled = true
+# uri = "pg-functions://postgres/auth/before-user-created-hook"
+
+# Este hook se ejecuta antes de que se emita un token y te permite agregar claims adicionales basados en el método de autenticación usado.
+# [auth.hook.custom_access_token]
+# enabled = true
+# uri = "pg-functions://<database>/<schema>/<hook_name>"
+
+# Configura uno de los proveedores SMS soportados: `twilio`, `twilio_verify`, `messagebird`, `textlocal`, `vonage`.
+[auth.sms.twilio]
+enabled = false
+account_sid = ""
+message_service_sid = ""
+# NO confirmes tu token de auth de Twilio en git. Usa sustitución de variables de entorno en su lugar:
+auth_token = "env(SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN)"
+
+# La autenticación multifactor está disponible en el plan Supabase Pro.
+[auth.mfa]
+# Controla cuántos factores MFA pueden estar inscritos a la vez por usuario.
+max_enrolled_factors = 10
+
+# Controlar MFA vía App Autenticadora (TOTP)
+[auth.mfa.totp]
+enroll_enabled = false
+verify_enabled = false
+
+# Configurar MFA vía Mensajería Telefónica
+[auth.mfa.phone]
+enroll_enabled = false
+verify_enabled = false
+otp_length = 6
+template = "Your code is {{ .Code }}"
+max_frequency = "5s"
+
+# Configurar MFA vía WebAuthn
+# [auth.mfa.web_authn]
+# enroll_enabled = true
+# verify_enabled = true
+
+# Usa un proveedor OAuth externo. La lista completa de proveedores son: `apple`, `azure`, `bitbucket`,
+# `discord`, `facebook`, `github`, `gitlab`, `google`, `keycloak`, `linkedin_oidc`, `notion`, `twitch`,
+# `twitter`, `slack`, `spotify`, `workos`, `zoom`.
+[auth.external.apple]
+enabled = false
+client_id = ""
+
+# NO confirmes el secreto de tu proveedor OAuth en git. Usa sustitución de variables de entorno en su lugar:
+secret = "env(SUPABASE_AUTH_EXTERNAL_APPLE_SECRET)"
+
+# Sobrescribe la redirectUrl de auth por defecto.
+redirect_uri = ""
+
+# Sobrescribe la URL del proveedor de auth por defecto. Usado para soportar gitlab auto-hospedado,
+
+# Azure single-tenant, u otros proveedores OIDC de terceros.
+url = ""
+
+# Si se habilita, se omitirá la verificación nonce. Requerido para inicio de sesión local con Google auth.
+skip_nonce_check = false
+
+# Si se habilita, permitirá al usuario autenticarse exitosamente cuando el proveedor no retorne una dirección de correo.
+email_optional = false
+
+
+# Permitir a los poseedores de billeteras Solana iniciar sesión en tu proyecto vía el estándar Sign in with Solana (SIWS, EIP-4361).
+
+# Puedes configurar el límite de tasa "web3" en la sección [auth.rate_limit] y configurar [auth.captcha] si lo auto-hospedas.
+[auth.web3.solana]
+enabled = false
+
+# Usa Firebase Auth como un proveedor de terceros junto con Supabase Auth.
+[auth.third_party.firebase]
+enabled = false
+# project_id = "my-firebase-project"
+
+# Usa Auth0 como un proveedor de terceros junto con Supabase Auth.
+[auth.third_party.auth0]
+enabled = false
+# tenant = "my-auth0-tenant"
+# tenant_region = "us"
+
+# Usa AWS Cognito (Amplify) como un proveedor de terceros junto con Supabase Auth.
+[auth.third_party.aws_cognito]
+enabled = false
+# user_pool_id = "my-user-pool-id"
+# user_pool_region = "us-east-1"
+
+# Usa Clerk como un proveedor de terceros junto con Supabase Auth.
+[auth.third_party.clerk]
+enabled = false
+# Obtener de https://clerk.com/setup/supabase
+# domain = "example.clerk.accounts.dev"
+
+# Configuración del servidor OAuth
+[auth.oauth_server]
+# Habilitar funcionalidad del servidor OAuth
+enabled = false
+# Ruta para la UI del flujo de consentimiento OAuth
+authorization_url_path = "/oauth/consent"
+# Permitir registro dinámico de clientes
+allow_dynamic_registration = false
+
+[edge_runtime]
+enabled = true
+# Políticas de petición soportadas: `oneshot`, `per_worker`.
+# `per_worker` (por defecto) — habilita recarga en caliente (hot reload) durante desarrollo local.
+# `oneshot` — modo de respaldo si la recarga en caliente causa problemas (ej. en repos grandes o con symlinks).
+policy = "per_worker"
+# Puerto para adjuntar el inspector de Chrome para depurar edge functions.
+inspector_port = 8083
+# La versión mayor de Deno a usar.
+deno_version = 2
+
+# [edge_runtime.secrets]
+# secret_key = "env(SECRET_VALUE)"
+
+[analytics]
+enabled = true
+port = 54327
+# Configura uno de los backends soportados: `postgres`, `bigquery`.
+backend = "postgres"
+
+# Las características experimentales pueden ser deprecadas en cualquier momento
+[experimental]
+# Configura el motor de almacenamiento de Postgres para usar OrioleDB (S3)
+orioledb_version = ""
+# Configura la URL del bucket S3, ej. <bucket_name>.s3-<region>.amazonaws.com
+s3_host = "env(S3_HOST)"
+# Configura la región del bucket S3, ej. us-east-1
+s3_region = "env(S3_REGION)"
+# Configura AWS_ACCESS_KEY_ID para el bucket S3
+s3_access_key = "env(S3_ACCESS_KEY)"
+# Configura AWS_SECRET_ACCESS_KEY para el bucket S3
+s3_secret_key = "env(S3_SECRET_KEY)"

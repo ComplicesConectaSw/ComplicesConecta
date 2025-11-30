@@ -147,7 +147,7 @@ export const ProfileTabs: React.FC<ProfileTabsProps> = ({
                 </div>
                 <div>
                   <p className="text-sm text-white/70">Género</p>
-                  <p className="font-medium capitalize">{((profile as SingleProfile) as any).gender || 'No especificado'}</p>
+                  <p className="font-medium capitalize">{(profile as SingleProfile).gender || 'No especificado'}</p>
                 </div>
                 <div>
                   <p className="text-sm text-white/70">Ubicación</p>
