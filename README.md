@@ -151,7 +151,38 @@ Este repositorio es un "laboratorio vivo" donde experimento con tecnologías com
 
 ## 📚 Índice de Documentación
 
+### 🗂️ Mapa rápido de Documentación
+
+- **Root**
+  - [README principal](./README.md)
+  - [README IA](./README_IA.md)
+  - [README DevOps](./README_DEVOPS.md)
+  - [Notas de Lanzamiento](./RELEASE_NOTES_v3.4.1.md)
+  - [Changelog](./CHANGELOG.md)
+  - [Estructura del Proyecto](./project-structure-tree.md)
+  - [Presentación Pública](./COMPLICESCONECTA_PRESENTACION_PUBLICA.md)
+  - [Guía de Contribución](./CONTRIBUTING.md)
+  - [Plataforma Swing (Resumen Estratégico)](./%23%20🎯%20ComplicesConecta%20-%20Plataforma%20Swing.md)
+
+- **`docs/` (índice general y guías clave)**
+  - [Índice general de documentación](./docs/README.md)
+  - [Guía NFTs](./docs/GUIA_NFTS.md)
+  - [Guía Tokens](./docs/GUIA_TOKENS.md)
+  - [Staking Competitivo v3.7.0](./docs/STAKING_COMPETITIVO_v3.7.0.md)
+  - [Manual Usuario v3.7.1](./docs/MANUAL_USUARIO_v3.7.1.md)
+  - [Auditoría Técnica 29/11/2025](./docs/AUDITORIA29112025.md)
+  - [Actualización Páginas Inversores v3.6.3](./docs/ACTUALIZACION_PAGINAS_INVERSORES_v3.6.3.md)
+
+- **Subdirectorios `docs/`**
+  - [Legal (índice)](./docs/legal/README.md)
+  - [Legal Policy (índice)](./docs/legal/Legal-Policy/README.md)
+  - [Inversores](./docs/Inversores/README.md)
+  - [Moderadores](./docs/Moderadores/README.md)
+  - [Clubs](./docs/Clubs/README.md)
+  - [Strategy](./docs/strategy/README.md)
+
 ### **📋 Documentación Técnica**
+
 - **[🔧 Guía de Instalación](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa paso a paso de instalación y configuración
 - **[🚀 Inicio Rápido Túnel](./QUICK_START_TUNNEL.md)** - Configuración rápida de túnel para desarrollo
 - **[🏗️ Estructura del Proyecto](./project-structure-tree.md)** - Árbol detallado del monorepo
@@ -164,6 +195,7 @@ Este repositorio es un "laboratorio vivo" donde experimento con tecnologías com
 - **[📄 Presentación Pública](./COMPLICESCONECTA_PRESENTACION_PUBLICA.md)** - Presentación pública del proyecto
 
 ### **📖 Índice completo `docs/`**
+
 #### Archivos en la raíz de `docs/`
 - [ACTUALIZACION_PAGINAS_INVERSORES_v3.6.3.md](./docs/ACTUALIZACION_PAGINAS_INVERSORES_v3.6.3.md)
 - [COMPONENTS.md](./docs/COMPONENTS.md)
