@@ -52,6 +52,10 @@ import { FileUpload } from '@/shared/ui/file-upload';
 import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
 import { SafeImage } from '@/shared/ui/SafeImage';
 import { cn } from '@/shared/lib/cn';
+import nftImage1 from '@/assets/Ntf/imagen1.jpg';
+import nftImage2 from '@/assets/Ntf/imagen2.png';
+import nftImage3 from '@/assets/Ntf/imagen3.png';
+import nftImage4 from '@/assets/Ntf/imagen4.png';
 
 const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
@@ -109,34 +113,14 @@ const ProfileSingle: React.FC = () => {
   const [_walletInfo, setWalletInfo] = useState<any>(null);
   const [tokenBalances, setTokenBalances] = useState({ cmpx: '0', gtk: '0', matic: '0' });
   const [testnetInfo, setTestnetInfo] = useState<any>(null);
-  const [userNFTs, setUserNFTs] = useState<any[]>([
-    {
-      id: 1,
-      token_id: '001',
-      name: 'Profile NFT Genesis',
-      image: '/placeholder.svg',
-      rarity: 'Legendary',
-      attributes: [{ trait_type: 'Tipo', value: 'Genesis' }]
-    },
-    {
-      id: 2,
-      token_id: '042',
-      name: 'Verified Badge NFT',
-      image: '/placeholder.svg',
-      rarity: 'Rare',
-      attributes: [{ trait_type: 'Tipo', value: 'Verificado' }]
-    },
-    {
-      id: 3,
-      token_id: '127',
-      name: 'Early Adopter',
-      image: '/placeholder.svg',
-      rarity: 'Común',
-      attributes: [{ trait_type: 'Tipo', value: 'Adopción' }]
-    }
-  ]);
+  const [userNFTs, setUserNFTs] = useState<any[]>([]);
+  const demoNFTImages = [nftImage1, nftImage2, nftImage3, nftImage4];
   const [isClaimingTokens, setIsClaimingTokens] = useState(false);
   const [isDemoMode] = useState(WalletService.isDemoMode());
+
+  // Post demo
+  const [demoPostLiked, setDemoPostLiked] = useState(false);
+  const [demoPostLikes, setDemoPostLikes] = useState(0);
   
   // Determinar si es el perfil propio
   const isOwnProfile = checkAuth() && user?.id === profile?.id;
@@ -185,6 +169,8 @@ const ProfileSingle: React.FC = () => {
     ? profilePrivateImages
     : privateImages;
 
+  const isGalleryUnlocked = !isParentalLocked && demoPrivateUnlocked;
+
   // Flags internos para bloquear secciones de UI opcionales sin romper lint
   const SHOW_ONLINE_BADGE = false;
   const SHOW_BIO_SECTION = false;
@@ -210,6 +196,7 @@ const ProfileSingle: React.FC = () => {
   };
 
   const handleImageClick = (index: number) => {
+    if (!isGalleryUnlocked) return;
     openImageModal(index);
   };
 
@@ -253,6 +240,11 @@ const ProfileSingle: React.FC = () => {
   const handleCommentPost = (postId: string) => {
     logger.info('Comentar post solicitado', { postId });
     // Implementar lgica de comentario
+  };
+
+  const handleToggleDemoPostLike = () => {
+    setDemoPostLiked((prev) => !prev);
+    setDemoPostLikes((prev) => (demoPostLiked ? prev - 1 : prev + 1));
   };
 
   // Funciones para cargar datos adicionales
@@ -440,35 +432,38 @@ Información del perfil:
     }
   };
 
-  const handleMintNFT = async () => {
-    logger.info('Mintear NFT solicitado');
-    
-    // Demo: Simular minteo de NFT
+  const [isMintingDemoNFT, setIsMintingDemoNFT] = useState(false);
+  const [showMintModal, setShowMintModal] = useState(false);
+
+  const handleMintNFT = () => {
+    logger.info('Mintear NFT solicitado (demo)');
+    setShowMintModal(true);
+  };
+
+  const confirmMintDemoNFT = async () => {
+    setShowMintModal(false);
+    setIsMintingDemoNFT(true);
+
+    const nextIndex = userNFTs.length % demoNFTImages.length;
+    const imageSrc = demoNFTImages[nextIndex];
+
     const nftData = {
+      id: Date.now(),
+      token_id: String(Math.floor(Math.random() * 1000)).padStart(3, '0'),
       name: `ComplicesConecta Profile #${Math.floor(Math.random() * 1000)}`,
-      description: 'NFT conmemorativo de tu perfil en ComplicesConecta',
-      image: 'https://images.unsplash.com/photo-1634193295627-1cdddf751ebf?w=400',
+      image: imageSrc,
+      rarity: 'Legendary',
       attributes: [
         { trait_type: 'Tipo', value: 'Perfil Single' },
-        { trait_type: 'Verificado', value: 'No disponible' },
         { trait_type: 'Fecha', value: new Date().toLocaleDateString() }
       ],
-      tokenId: Math.floor(Math.random() * 10000)
     };
-    
-    // Mostrar progreso con toast
-    // TODO: Reemplazar con componente Toast glassmorphism
-    console.log(' Minteando NFT... Esto puede tardar unos segundos');
-    
-    // Simular delay de blockchain
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Agregar a la lista de NFTs del usuario
-    setUserNFTs(prev => [...prev, nftData]);
-    
-    console.log(`✅ NFT MINTEADO: Token ID #${nftData.tokenId}, Tipo: ${nftData.attributes[0].value}`);
-    
-    logger.info('NFT minteado (demo):', nftData);
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    setUserNFTs((prev) => [...prev, nftData]);
+    setIsMintingDemoNFT(false);
+    logger.info('NFT minteado (demo) con asset local:', nftData);
   };
   
   // Migracin localStorage ? usePersistedState

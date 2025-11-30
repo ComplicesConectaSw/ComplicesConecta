@@ -35,6 +35,7 @@ import {
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/features/auth/useAuth';
+import { usePersistedState } from '@/hooks/usePersistedState';
 import { logger } from '@/lib/logger';
 
 interface HeaderNavProps {
@@ -45,6 +46,25 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated, signOut } = useAuth();
+
+  const [demoAuth] = usePersistedState<string>('demo_authenticated', 'false');
+  const [demoUser] = usePersistedState<any>('demo_user', null);
+  const isDemoSession = String(demoAuth) === 'true' && !!demoUser;
+  const parsedDemoUser =
+    isDemoSession && typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
+
+  const handleLogout = async () => {
+    if (isDemoSession) {
+      localStorage.removeItem('demo_authenticated');
+      localStorage.removeItem('demo_user');
+      window.location.href = '/';
+      return;
+    }
+
+    await signOut();
+    window.location.href = '/auth';
+  };
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -301,7 +321,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
               </div>
 
               {/* Botón de Login/Perfil - Muestra estado de autenticación */}
-              {isAuthenticated() ? (
+              {isAuthenticated() || isDemoSession ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
@@ -309,14 +329,14 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ className = '' }) => {
                     >
                       <User className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-2 flex-shrink-0" />
                       <span className="hidden sm:inline text-sm sm:text-base truncate max-w-[120px]">
-                        {user?.email?.split('@')[0] || 'Perfil'}
+                        {parsedDemoUser?.name || parsedDemoUser?.username || user?.email || 'Usuario'}
                       </span>
                       <span className="sm:hidden text-xs">Perfil</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="bg-purple-900/95 backdrop-blur-xl border-purple-500/30 text-white w-56">
                     <DropdownMenuLabel className="text-white font-semibold">
-                      {user?.email || 'Usuario'}
+                      {parsedDemoUser?.name || parsedDemoUser?.username || user?.email || 'Usuario'}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-purple-500/30" />
                     <DropdownMenuItem 

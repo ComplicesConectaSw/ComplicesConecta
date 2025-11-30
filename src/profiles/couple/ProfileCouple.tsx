@@ -53,6 +53,7 @@ const ProfileCouple: React.FC = () => {
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [demoPrivateUnlocked, setDemoPrivateUnlocked] = useState(false);
   const [isParentalLocked, setIsParentalLocked] = usePersistedState('parentalLock', false);
+  const isGalleryUnlocked = !isParentalLocked && demoPrivateUnlocked;
   
   // Estados para modal de imágenes
   const [showImageModal, setShowImageModal] = useState(false);

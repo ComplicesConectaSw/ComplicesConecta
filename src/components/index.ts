@@ -4,7 +4,7 @@
  */
 
 // === COMPONENTES DE NAVEGACIÓN ===
-export { default as HeaderNav } from './HeaderNav';
+export { default as HeaderNav } from './HeaderNav.tsx';
 export { default as Navigation } from './Navigation';
 
 // === COMPONENTES DECORATIVOS ===
