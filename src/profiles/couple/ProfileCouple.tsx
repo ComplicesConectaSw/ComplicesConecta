@@ -38,6 +38,10 @@ import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
 import { walletService, WalletService } from '@/services/WalletService';
 import { nftService } from '@/services/NFTService';
 import { SafeImage } from '@/shared/ui/SafeImage';
+import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/types/supabase-generated';
+
+type CoupleProfileRow = Database['public']['Tables']['couple_profiles']['Row'];
 
 const ProfileCouple: React.FC = () => {
   const navigate = useNavigate();
@@ -249,57 +253,89 @@ const ProfileCouple: React.FC = () => {
         // Verificar si hay sesión demo activa PRIMERO
         if (demoAuth === 'true' && demoUser) {
           logger.info('?? Cargando perfil demo pareja...');
-          const demoCoupleProfile: CoupleProfileWithPartners = {
-            id: 'demo-couple-456',
-            couple_name: 'Sofía & Leo',
-            username: '@sofiayleo_sw',
-            location: 'CDMX, México',
-            couple_bio: 'Una pareja liberal en busca de nuevas aventuras. Nos encanta la buena comida, los viajes y conocer gente interesante.',
-            is_verified: true,
-            is_premium: false,
-            relationship_type: 'woman-woman',
-            couple_images: [],
-            partner1_id: 'demo-partner-1',
-            partner1_first_name: 'Sofia',
-            partner1_last_name: 'Martínez',
-            partner1_age: 26,
-            partner1_gender: 'female' as const,
-            // partner1_avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
-            partner1_bio: 'Amo el arte y los atardeceres.',
-            partner2_id: 'demo-partner-2',
-            partner2_first_name: 'Luciana',
-            partner2_last_name: 'Vega',
-            partner2_age: 32,
-            partner2_gender: 'female',
-            // partner2_avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
-            partner2_interested_in: 'both',
-            partner2_bio: 'Fan de la tecnología y el buen café.',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          };
+          const mockProfiles = generateMockCoupleProfiles();
+          const demoCoupleProfile = mockProfiles[0];
           setProfile(demoCoupleProfile);
           setLoading(false);
           loadCoupleBlockchainData();
           return;
         }
-        
-        // Verificar autenticación usando useAuth
-        if (!isAuthenticated) {
+
+        // Usuarios reales: intentar cargar desde couple_profiles
+        if (!isAuthenticated || !user?.id) {
           logger.info('? No autenticado, redirigiendo a auth');
           navigate('/auth', { replace: true });
           return;
         }
-        
-        // Simular carga de perfil de pareja real
-        setTimeout(() => {
+
+        if (!supabase) {
+          logger.error('Supabase no está disponible, usando mocks de pareja');
           const mockCoupleProfiles = generateMockCoupleProfiles();
-          const selectedProfile = mockCoupleProfiles[0];
-          
-          setProfile(selectedProfile);
+          setProfile(mockCoupleProfiles[0]);
           setLoading(false);
-          // Cargar datos blockchain
+          return;
+        }
+
+        logger.info('🔗 Cargando perfil de pareja real desde couple_profiles...', { userId: user.id });
+
+        const { data: coupleRow, error } = await supabase
+          .from('couple_profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('is_demo', false)
+          .maybeSingle<CoupleProfileRow>();
+
+        if (error) {
+          logger.error('❌ Error cargando couple_profiles, usando mocks', { error: error.message });
+          const mockCoupleProfiles = generateMockCoupleProfiles();
+          setProfile(mockCoupleProfiles[0]);
+          setLoading(false);
           loadCoupleBlockchainData();
-        }, 1500);
+          return;
+        }
+
+        if (!coupleRow) {
+          logger.info('ℹ️ No se encontró perfil de pareja real, usando mocks');
+          const mockCoupleProfiles = generateMockCoupleProfiles();
+          setProfile(mockCoupleProfiles[0]);
+          setLoading(false);
+          loadCoupleBlockchainData();
+          return;
+        }
+
+        // Mapear CoupleProfileRow (DB) a CoupleProfileWithPartners (UI) usando solo columnas existentes
+        const realCoupleProfile: CoupleProfileWithPartners = {
+          id: coupleRow.id,
+          couple_name: coupleRow.display_name || 'Pareja Anónima',
+          username: undefined,
+          couple_bio: null,
+          relationship_type: 'man-woman',
+          partner1_id: coupleRow.partner_1_id || coupleRow.user_id,
+          partner2_id: coupleRow.partner_2_id || `${coupleRow.user_id}-partner-2`,
+          couple_images: null,
+          is_verified: coupleRow.verification_level ? coupleRow.verification_level > 0 : null,
+          is_premium: null,
+          created_at: coupleRow.created_at || new Date().toISOString(),
+          updated_at: coupleRow.updated_at || new Date().toISOString(),
+          partner1_first_name: 'Partner 1',
+          partner1_last_name: '',
+          partner1_age: 0,
+          partner1_bio: null,
+          partner1_gender: 'desconocido',
+          partner1_interested_in: undefined,
+          partner2_first_name: 'Partner 2',
+          partner2_last_name: '',
+          partner2_age: 0,
+          partner2_bio: null,
+          partner2_gender: 'desconocido',
+          partner2_interested_in: undefined,
+          location: coupleRow.location || undefined,
+          isOnline: coupleRow.last_active ? true : false,
+        };
+
+        setProfile(realCoupleProfile);
+        setLoading(false);
+        loadCoupleBlockchainData();
         
       } catch (error) {
         logger.error('Error loading profile:', { error: String(error) });
@@ -311,7 +347,7 @@ const ProfileCouple: React.FC = () => {
     };
     
     loadProfile();
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, demoAuth, demoUser, user]);
 
   if (loading || !profile) {
     return (
