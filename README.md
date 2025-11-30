@@ -1,6 +1,6 @@
 
-              Cómplices Conecta (Beta v3.8.16) 🚀
-⚠️ NOTA DE DESARROLLO: Proyecto en Beta activa con despliegues semanales. Revisa `master` para la versión auditada más reciente.
+              Cómplices Conecta (Beta v3.7.2) 🚀
+⚠️ NOTA DE DESARROLLO: Este proyecto se encuentra actualmente en fase BETA activa. El código está en proceso de refactorización y limpieza. Se recomienda revisar la rama main para la versión más estable.
 
 
 📋 Descripción
@@ -13,62 +13,26 @@ Data Science: Neo4j (Graph DB) para conexiones sociales y recomendaciones.
 
 AI: Integración para moderación y resúmenes de chat.
 Testing: Playwright (E2E) y Jest.
-
-## 📋 **ÍNDICE DE CONTENIDOS**
-
-### 🚀 **Funcionalidades Principales v3.8.x**
-- [🎛️ Dashboard Administrativo Enterprise](#-estado-de-auditoría-v364)
-- [📊 Búsqueda Global + Neo4j Predictivo](#-ai-native-platform---production-ready-enterprise)
-- [🔔 Notificaciones + ConsentGuard IA](#-ai-native-platform---production-ready-enterprise)
-- [📈 Tokens CMPX/GTK + NFTs](#-ai-native-platform---production-ready-enterprise)
-- [🔐 Seguridad y Consentimiento Ley Olimpia](#-ai-native-platform---production-ready-enterprise)
-- [📱 Experiencia Responsive + Control Parental Glass](#-ai-native-platform---production-ready-enterprise)
-
-### 🛠️ **Desarrollo y Arquitectura**
-- [📊 Métricas del Proyecto](#-estadísticas-del-proyecto)
-- [🏗️ Estructura del Monorepo](#️-estructura-del-proyecto-resumen)
-- [🔧 Instalación y Configuración](#-inicio-rápido)
-- [🚀 Despliegue](#-build--deployment)
-- [🧪 Testing](#-testing)
-
-### 📚 **Documentación**
-- [📖 Guías de Usuario / Roles](#-navegación-rápida)
-- [🔒 Seguridad y Privacidad](#-ai-native-platform---production-ready-enterprise)
-- [⚖️ Aspectos Legales](#-ai-native-platform---production-ready-enterprise)
-- [🤝 Contribución](./CONTRIBUTING.md)
-
-### 🔗 **Enlaces Importantes**
-- [📱 Descargar APK Android](https://github.com/ComplicesConectaSw/ComplicesConecta/releases)
-- [🌐 Aplicación Web](https://complicesconecta.netlify.app)
-- [📋 Notas de Lanzamiento](RELEASE_NOTES_v3.4.1.md)
-- [📊 Estado del Proyecto](PROJECT_STATUS_UNIFIED.md)
-
----
-
 ## 🚧 Estado del Proyecto
 Actualmente estoy trabajando en:
-[ ] Paridad completa ProfileSingle/ProfileCouple (nuevos componentes v3.8.x).
-[ ] Optimización visual Tokens Page + Matches Page.
-[ ] Limpieza de código legacy previo a consolidar documentación final.
-[x] Control Parental + Modal Glass aplicado en ambos perfiles.
-[x] Búsqueda global real (`search_unified`) con índices `pg_trgm`.
+[ ] Refactorización de la estructura de carpetas en /src.
+[x] Optimización de las consultas a Neo4j.
+[x] Limpieza de código muerto y comentarios legacy.
+[x] Implementación de Tests E2E críticos (Completado).
 
-### 📅 Bitácora 26 Nov – 29 Nov 2025
-- **FloatingNav renovada**: Glassmorphism oscuro, jerarquía pública (Inicio, Explorar, NFTs, Tokens + menú "Más") y CTA único de registro.
-- **Páginas informativas** (`ChatInfo.tsx` / `StoriesInfo.tsx`): tema dark + glass, CTA directo a `/auth` y storytelling IA/privacidad.
-- **Búsqueda global real**: Migración `20251126_create_global_search.sql` (pg_trgm + RPC `search_unified`) integrada a `GlobalSearchService`/`VanishSearchInput`.
-- **Control Parental full**: Modal glass + niveles Soft/Medium/Strict con auto-lock 5 min y PIN sincronizado en ProfileSingle/ProfileCouple.
-- **UI Tokens v3.8.16**: HeaderNav minimalista, grid NFTs 2x4, modal glass con blur dinámico, animaciones globales en botones.
+### 📅 Bitácora 26 Nov 2025
+- **FloatingNav renovada**: Glassmorphism oscuro, jerarquía pública (Inicio, Explorar, NFTs, Tokens + menú "Más") y dropdown responsivo (w-[90%], max-w-sm), eliminando el botón duplicado de login y añadiendo `pb-24` global para evitar solapar el footer.
+- **Páginas informativas**: `ChatInfo.tsx` y `StoriesInfo.tsx` adoptan el tema dark/glass, contenidos reorganizados y CTA directo a `/auth`, alineadas con el funnel público/documental.
+- **Búsqueda global real**: Migración `20251126_create_global_search.sql` (pg_trgm + RPC `search_unified`) integrada a `GlobalSearchService`/`VanishSearchInput`; ejecutable vía `supabase db push / db reset` (CLI) o el script `scripts/aplicar-migraciones-remoto.ps1` cuando solo se dispone del Dashboard SQL.
+- **Build + Sync**: `deploy-without-sentry.ps1` confirmó build Vite limpio y `npx cap sync android` exitoso para entregar la versión con la nueva navegación/documentación.
 💡 Nota para Reclutadores / Reviewers
 
 
-Este repositorio es un "laboratorio vivo" donde experimento con tecnologías complejas. La arquitectura demuestra la capacidad de integrar Grafos + SQL + Blockchain + IA en un producto funcional listo para demos con inversores.
+Este repositorio es un "laboratorio vivo" donde experimento con tecnologías complejas. Si bien la organización del código puede no ser perfecta en todos los módulos, la arquitectura demuestra la capacidad de integrar sistemas dispares (Grafos + SQL + Blockchain) en un producto funcional.
 
-📆 Próxima limpieza de código muerto/comentarios legacy + documentación raíz:
-        
-                 📅 08 de diciembre del 2025
-
-
+📆 Festimada para completar limpieza de código muerto y comentarios legacy. así como actualización de la documentación en la raíz 
+         
+                  📅 28 de diciembre del 2025
 
 
 
@@ -76,7 +40,9 @@ Este repositorio es un "laboratorio vivo" donde experimento con tecnologías com
 
 
 
-# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.7.2
+
+
+# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.7.0
 
 <div align="center">
 
@@ -95,7 +61,7 @@ Este repositorio es un "laboratorio vivo" donde experimento con tecnologías com
   <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.6.6-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v3.7.2 - Sistema Legal Enterprise + Protocolo de Disolución Ready`
+**SHA256:** `Verificado - Build v3.7.0 - Sistema Legal Enterprise + Protocolo de Disolución Ready`
 
 *🔒 Aplicación segura y verificada para Android - Disponible en [GitHub Releases](https://github.com/ComplicesConectaSw/ComplicesConecta/releases/latest)*
 
@@ -147,42 +113,11 @@ Este repositorio es un "laboratorio vivo" donde experimento con tecnologías com
 - **Líneas de código**: ~180,000
 - **Estado**: **Enterprise Ready** 🚀
 
----
+---AUDITORIA29112025.md
 
 ## 📚 Índice de Documentación
-
-### 🗂️ Mapa rápido de Documentación
-
-- **Root**
-  - [README principal](./README.md)
-  - [README IA](./README_IA.md)
-  - [README DevOps](./README_DEVOPS.md)
-  - [Notas de Lanzamiento](./RELEASE_NOTES_v3.4.1.md)
-  - [Changelog](./CHANGELOG.md)
-  - [Estructura del Proyecto](./project-structure-tree.md)
-  - [Presentación Pública](./COMPLICESCONECTA_PRESENTACION_PUBLICA.md)
-  - [Guía de Contribución](./CONTRIBUTING.md)
-  - [Plataforma Swing (Resumen Estratégico)](./%23%20🎯%20ComplicesConecta%20-%20Plataforma%20Swing.md)
-
-- **`docs/` (índice general y guías clave)**
-  - [Índice general de documentación](./docs/README.md)
-  - [Guía NFTs](./docs/GUIA_NFTS.md)
-  - [Guía Tokens](./docs/GUIA_TOKENS.md)
-  - [Staking Competitivo v3.7.0](./docs/STAKING_COMPETITIVO_v3.7.0.md)
-  - [Manual Usuario v3.7.1](./docs/MANUAL_USUARIO_v3.7.1.md)
-  - [Auditoría Técnica 29/11/2025](./docs/AUDITORIA29112025.md)
-  - [Actualización Páginas Inversores v3.6.3](./docs/ACTUALIZACION_PAGINAS_INVERSORES_v3.6.3.md)
-
-- **Subdirectorios `docs/`**
-  - [Legal (índice)](./docs/legal/README.md)
-  - [Legal Policy (índice)](./docs/legal/Legal-Policy/README.md)
-  - [Inversores](./docs/Inversores/README.md)
-  - [Moderadores](./docs/Moderadores/README.md)
-  - [Clubs](./docs/Clubs/README.md)
-  - [Strategy](./docs/strategy/README.md)
-
+ **[📝 AUDITORIA29112025/INVERSORES](./docs/AUDITORIA29112025.md)** - Auditoria completa de la version 3.7.0/PARA INVERSORES
 ### **📋 Documentación Técnica**
-
 - **[🔧 Guía de Instalación](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa paso a paso de instalación y configuración
 - **[🚀 Inicio Rápido Túnel](./QUICK_START_TUNNEL.md)** - Configuración rápida de túnel para desarrollo
 - **[🏗️ Estructura del Proyecto](./project-structure-tree.md)** - Árbol detallado del monorepo
@@ -195,7 +130,6 @@ Este repositorio es un "laboratorio vivo" donde experimento con tecnologías com
 - **[📄 Presentación Pública](./COMPLICESCONECTA_PRESENTACION_PUBLICA.md)** - Presentación pública del proyecto
 
 ### **📖 Índice completo `docs/`**
-
 #### Archivos en la raíz de `docs/`
 - [ACTUALIZACION_PAGINAS_INVERSORES_v3.6.3.md](./docs/ACTUALIZACION_PAGINAS_INVERSORES_v3.6.3.md)
 - [COMPONENTS.md](./docs/COMPONENTS.md)
