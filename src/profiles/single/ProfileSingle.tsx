@@ -185,6 +185,10 @@ const ProfileSingle: React.FC = () => {
     ? profilePrivateImages
     : privateImages;
 
+  // Flags internos para bloquear secciones de UI opcionales sin romper lint
+  const SHOW_ONLINE_BADGE = false;
+  const SHOW_BIO_SECTION = false;
+
   // Funciones para el modal del carrusel
   const handleImageLike = (imageIndex: number) => {
     const imageId = imageIndex.toString();
@@ -718,7 +722,7 @@ Información del perfil:
                         className="w-full h-full"
                       />
                   </div>
-                  {false && currentProfile.is_online && (
+                  {SHOW_ONLINE_BADGE && currentProfile.is_online && (
                     <div className="absolute -top-2 -right-2 bg-blue-500 rounded-full p-1">
                       <CheckCircle className="w-6 h-6 text-white" />
                     </div>
@@ -742,7 +746,7 @@ Información del perfil:
                   </div>
                   
                   {/* Biografa */}
-                  {false && currentProfile.name && (
+                  {SHOW_BIO_SECTION && currentProfile.name && (
                     <p className="text-white/90 mb-4 leading-relaxed">
                       {currentProfile.name}
                     </p>
