@@ -19,6 +19,7 @@ import { useAuth } from '@/features/auth/useAuth';
 import Navigation from '@/components/Navigation';
 import HeaderNav from '@/components/HeaderNav';
 import { ParticlesBackground } from '@/components/ui/ParticlesBackground';
+import { RandomBackground } from '@/components/ui/RandomBackground';
 
 // Pages Imports
 import Index from "@/pages/Index";
@@ -119,13 +120,19 @@ const App = () => {
     if (typeof window === 'undefined') return false;
     return !sessionStorage.getItem('cc_splash_shown');
   });
+  const [logoReady, setLogoReady] = useState(false);
 
   useEffect(() => {
     if (!showSplash) return;
+    const logo = new Image();
+    logo.src = '/backgrounds/logo-animated.webp';
+    logo.onload = () => setLogoReady(true);
+
     const timer = setTimeout(() => {
       sessionStorage.setItem('cc_splash_shown', '1');
       setShowSplash(false);
     }, 2500);
+
     return () => clearTimeout(timer);
   }, [showSplash]);
 
@@ -139,11 +146,18 @@ const App = () => {
     return (
       <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
         <div className="w-full max-w-2xl px-4">
-          <img 
-            src="/backgrounds/logo-animated.webp" 
-            alt="Bienvenido" 
-            className="w-full h-auto object-contain"
-          />
+          {logoReady ? (
+            <img 
+              src="/backgrounds/logo-animated.webp" 
+              alt="Bienvenido" 
+              className="w-full h-auto object-contain"
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-4 text-white">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400" />
+              <p className="text-sm tracking-[0.4em] uppercase">Cargando...</p>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -164,7 +178,8 @@ const App = () => {
                       <ParticlesBackground>
                         
                         {/* IMPORTANTE: bg-transparent para ver el video de fondo */}
-                        <div className="min-h-screen bg-transparent">
+                        <div className="min-h-screen bg-transparent relative">
+                          <RandomBackground className="pointer-events-none" />
                           
                           <Router>
                             {!hasSession && <HeaderNav />}
