@@ -1,8 +1,6 @@
-// src/components/ui/ParticlesBackground.tsx
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
-
 import { useTheme } from '../../hooks/useTheme';
 import { cn } from '@/shared/lib/cn';
 
@@ -14,35 +12,40 @@ interface ParticlesBackgroundProps {
 export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ children, className }) => {
   const { prefs, loading } = useTheme();
 
-  // Para asegurar visibilidad mientras afinamos la UI, mantenemos partículas activas
   const showParticles = (prefs.enableParticles ?? true) && (prefs.particlesIntensity ?? 40) > 0;
-
+  
   const speedValue =
     prefs.animationSpeed === 'slow' ? 0.2 :
     prefs.animationSpeed === 'fast' ? 2 :
     0.9;
 
-  const particlesInit = async (engine: unknown) => {
-    await loadFull(engine as never);
-  };
+  const particlesInit = useCallback(async (engine: any) => {
+    await loadFull(engine);
+  }, []);
 
   const particlesOptions = useMemo(
     () => ({
+      fullScreen: { enable: false },
       particles: {
         number: { value: showParticles ? (prefs.particlesIntensity || 40) : 0 },
-        color: { value: ['#00FFFF', '#FF00FF'] },
+        color: { value: ['#A855F7', '#EC4899', '#3B82F6'] },
         shape: { type: 'circle' },
-        opacity: { value: 0.5 },
-        size: { value: { min: 1, max: 3 } },
+        opacity: { value: 0.5, random: true },
+        size: { value: { min: 1, max: 3 }, random: true },
         move: { enable: showParticles, speed: speedValue, random: true },
       },
-      interactivity: { events: { onHover: { enable: true, mode: 'repulse' } } },
-      retina_detect: true,
+      interactivity: { 
+        events: { 
+          onHover: { enable: true, mode: 'grab' },
+          onClick: { enable: true, mode: 'push' }
+        }
+      },
+      background: { color: { value: "transparent" } },
     }),
     [prefs.particlesIntensity, prefs.enableParticles, speedValue, showParticles]
   );
 
-  if (loading) return <div>Cargando tema...</div>;
+  if (loading) return null;
 
   const glowClass =
     prefs.enableBackgroundAnimations
@@ -54,13 +57,13 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
       : '';
 
   return (
-    <div className={cn('relative min-h-screen', className)}>
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        {/* Fondo base: estático o animado según preferencias */}
+    <div className={cn('min-h-screen w-full', className)}>
+      {/* 1. FONDO FIJO (Cubre toda la pantalla siempre) */}
+      <div className="fixed inset-0 z-[-1]">
         {prefs.enableBackgroundAnimations ? (
           <video
-            className="absolute inset-0 w-full h-full object-cover"
-            src="/backgrounds/batch_process.mp4"
+            className="w-full h-full object-cover"
+            src="/backgrounds/animate-bg.webp"
             autoPlay
             loop
             muted
@@ -68,31 +71,34 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
           />
         ) : (
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="w-full h-full bg-cover bg-center transition-all duration-700"
             style={{ backgroundImage: `url(${prefs.background})` }}
           />
         )}
-
+        
         {/* Glow overlay */}
         <div
           className={cn(
-            'absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20',
+            'absolute inset-0 bg-gradient-to-br from-purple-900/40 via-black/20 to-pink-900/40 pointer-events-none',
             glowClass
           )}
         />
         
-        {/* CONDICIONAL AGREGADO: Solo renderiza si el usuario quiere partículas */}
+        {/* Partículas (Encima del video, debajo del contenido) */}
         {showParticles && (
           <Particles
-            id="particles"
+            id="tsparticles"
+            className="absolute inset-0 pointer-events-none"
             init={particlesInit}
-            options={particlesOptions}
-            className="absolute inset-0"
+            options={particlesOptions as any}
           />
         )}
       </div>
 
-      <div className="relative z-10">{children}</div>
+      {/* 2. CONTENIDO (Se desliza sobre el fondo fijo) */}
+      <div className="relative z-10 w-full min-h-screen">
+        {children}
+      </div>
     </div>
   );
 };

@@ -105,6 +105,7 @@ const ProfileCouple: React.FC = () => {
   const [isMinting, setIsMinting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [showMintDialog, setShowMintDialog] = useState(false);
+  const [mintPreview, setMintPreview] = useState<string>(DEMO_COUPLE_ASSETS[0]);
   const [demoAuth] = usePersistedState('demo_authenticated', 'false');
   const [demoUser] = usePersistedState<any>('demo_user', null);
   const isOwnProfile = true; 
@@ -203,8 +204,26 @@ const ProfileCouple: React.FC = () => {
   const handleLockGallery = () => { setIsParentalLocked(true); localStorage.setItem('parentalControlLocked', 'true'); showToast("Bloqueado", "info"); };
   const handleImageClick = (index: number) => { if (isParentalLocked) { setShowPinModal(true); return; } setSelectedImageIndex(index); setShowImageModal(true); };
   const handleClaimTokens = () => { if (isClaimingTokens) return; setIsClaimingTokens(true); setTimeout(() => { setTokenBalances(prev => ({ ...prev, cmpx: (parseFloat(prev.cmpx) + 2000).toString() })); setIsClaimingTokens(false); showToast("¡2000 CMPX reclamados!", "success"); }, 1500); };
-  const handleMintClick = () => setShowMintDialog(true);
-  const confirmMinting = () => { setShowMintDialog(false); setIsMinting(true); setTimeout(() => { const r = DEMO_COUPLE_ASSETS[0]; setCoupleNFTs(prev => [{ id: Date.now(), name: `Couple NFT #${coupleNFTs.length + 1}`, image: r }, ...prev]); setIsMinting(false); showToast("NFT creado", "success"); }, 2000); };
+  const handleMintClick = () => {
+    const preview = DEMO_COUPLE_ASSETS[Math.floor(Math.random() * DEMO_COUPLE_ASSETS.length)];
+    setMintPreview(preview);
+    setShowMintDialog(true);
+  };
+  const confirmMinting = () => {
+    setShowMintDialog(false);
+    setIsMinting(true);
+    setTimeout(() => {
+      const newNFT = {
+        id: Date.now(),
+        name: `Couple NFT #${coupleNFTs.length + 1}`,
+        image: mintPreview,
+        description: 'Identidad Dual Verificada'
+      };
+      setCoupleNFTs(prev => [newNFT, ...prev]);
+      setIsMinting(false);
+      showToast("NFT creado", "success");
+    }, 2000);
+  };
   const handleImageLike = (idx: number) => showToast("Te gusta", "success");
   const handleAddComment = () => showToast("Comentado", "success");
   const handleDeletePost = (id: string) => { if(window.confirm("¿Borrar?")) setRecentActivity(prev => prev.filter(p => p.id !== id)); };
@@ -214,9 +233,26 @@ const ProfileCouple: React.FC = () => {
 
   const isDemoActive = (String(demoAuth) === 'true') && demoUser;
 
+  // Background de pareja según tipo de relación
+  const relationshipType = (profile as any)?.relationship_type as string | undefined;
+  const coupleBackground = !relationshipType
+    ? ['/backgrounds/Background(3).webp', '/backgrounds/Background(4).webp'][
+        Math.floor(Math.random() * 2)
+      ]
+    : relationshipType === 'man-woman'
+    ? '/backgrounds/Background(3).webp'
+    : '/backgrounds/Background(4).webp';
+
   const content = (
     <div className="min-h-screen bg-transparent profile-page relative overflow-hidden transition-colors duration-300">
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 opacity-90 hidden dark:block"></div>
+      {/* Background específico para perfil de pareja según relationship_type */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div
+          className="w-full h-full bg-cover bg-center opacity-80"
+          style={{ backgroundImage: `url('${coupleBackground}')` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-purple-900/20 to-black/80" />
+      </div>
       
       {!isAuthenticated() && !isDemoActive && <Navigation />}
       
@@ -248,6 +284,82 @@ const ProfileCouple: React.FC = () => {
 
       <div className="relative z-10 flex-1 pb-20 px-2 sm:px-4 overflow-y-auto custom-scrollbar">
           <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 py-4">
+
+            {/* WALLET & COLECCIONABLES - espejo de single */}
+            {isOwnProfile && (
+              <Card className="bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/50 dark:to-blue-900/50 border-purple-200 dark:border-purple-500/30 shadow-md">
+                <CardHeader>
+                  <CardTitle className="text-purple-900 dark:text-white flex items-center gap-2">
+                    <Wallet className="w-5 h-5" /> Wallet & Coleccionables
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div className="bg-white/60 dark:bg-black/40 p-3 rounded-lg border border-purple-100 dark:border-white/5">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">CMPX</div>
+                      <div className="font-bold text-yellow-600 dark:text-yellow-400 text-lg">{tokenBalances.cmpx}</div>
+                    </div>
+                    <div className="bg-white/60 dark:bg-black/40 p-3 rounded-lg border border-purple-100 dark:border-white/5">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">GTK</div>
+                      <div className="font-bold text-blue-600 dark:text-blue-400 text-lg">{tokenBalances.gtk}</div>
+                    </div>
+                    <div className="bg-white/60 dark:bg-black/40 p-3 rounded-lg border border-purple-100 dark:border-white/5">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">NFTs</div>
+                      <div className="font-bold text-purple-600 dark:text-purple-400 text-lg">{coupleNFTs.length}</div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <Button
+                      onClick={handleClaimTokens}
+                      disabled={isClaimingTokens}
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-6"
+                    >
+                      {isClaimingTokens ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <div className="flex flex-col items-center">
+                          <span className="flex items-center">
+                            <Gift className="w-4 h-4 mr-2" /> Reclamar
+                          </span>
+                          <span className="text-[10px] opacity-90">2000 CMPX Gratis</span>
+                        </div>
+                      )}
+                    </Button>
+                    <Button
+                      onClick={handleMintClick}
+                      disabled={isMinting}
+                      className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-6"
+                    >
+                      {isMinting ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <div className="flex flex-col items-center">
+                          <span className="flex items-center">
+                            <Camera className="w-4 h-4 mr-2" /> Mintear NFT
+                          </span>
+                          <span className="text-[10px] opacity-90">Crear Coleccionable</span>
+                        </div>
+                      )}
+                    </Button>
+                  </div>
+
+                  {coupleNFTs.length > 0 && (
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {coupleNFTs.map((nft) => (
+                        <div key={nft.id} className="bg-white/70 dark:bg-black/40 rounded-xl p-3 border border-white/40 dark:border-white/10 shadow-sm">
+                          <div className="aspect-square rounded-lg overflow-hidden mb-2">
+                            <img src={nft.image} alt={nft.name} className="w-full h-full object-cover" />
+                          </div>
+                          <p className="text-xs font-semibold text-gray-800 dark:text-white truncate">{nft.name}</p>
+                          <p className="text-[11px] text-gray-500 dark:text-white/60">{nft.description || 'Coleccionable'}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
 
             {/* TARJETA PRINCIPAL PAREJA */}
             <Card className="bg-white dark:bg-white/10 backdrop-blur-md border-gray-200 dark:border-white/20 shadow-lg">
@@ -289,7 +401,7 @@ const ProfileCouple: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* TABS */}
+            {/* TABS COMPLETOS (sin eliminar la lógica actual) */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-4">
               <TabsList className="grid w-full grid-cols-4 bg-white dark:bg-white/10 backdrop-blur-md p-1 rounded-xl border border-gray-200 dark:border-white/10">
                 <TabsTrigger value="overview">Resumen</TabsTrigger>
@@ -297,32 +409,211 @@ const ProfileCouple: React.FC = () => {
                 <TabsTrigger value="achievements">Logros</TabsTrigger>
                 <TabsTrigger value="analytics">Analytics</TabsTrigger>
               </TabsList>
-              <TabsContent value="overview" className="mt-6 space-y-6">
-                <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 backdrop-blur-md">
-                    <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle className="text-gray-900 dark:text-white text-lg flex items-center gap-2"><Lock className="w-4 h-4"/> Fotos Privadas</CardTitle>
-                        <Button size="sm" className={isParentalLocked ? "bg-green-600 hover:bg-green-700 text-white" : "bg-red-600 hover:bg-red-700 text-white"} onClick={isParentalLocked ? () => setShowPinModal(true) : handleLockGallery}>
-                            {isParentalLocked ? <><Unlock className="w-3 h-3 mr-1"/> Desbloquear</> : <><Lock className="w-3 h-3 mr-1"/> Bloquear</>}
+
+              {/* MODAL MINTEO NFT */}
+              <AnimatePresence>
+                {showMintDialog && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md px-4"
+                  >
+                    <motion.div
+                      initial={{ scale: 0.9, y: 20 }}
+                      animate={{ scale: 1, y: 0 }}
+                      className="bg-white dark:bg-gray-900/90 rounded-3xl border border-gray-200 dark:border-purple-500/30 shadow-2xl max-w-md w-full p-6 text-center space-y-6"
+                    >
+                      <div className="w-48 h-48 mx-auto rounded-2xl overflow-hidden border-4 border-purple-200 dark:border-purple-500/40 shadow-lg">
+                        <img src={mintPreview} alt="NFT Preview" className="w-full h-full object-cover" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Mintear NFT de Pareja</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                          Crearemos un coleccionable dual en Polygon que certifica su conexión.
+                        </p>
+                      </div>
+                      <div className="flex gap-3">
+                        <Button
+                          variant="outline"
+                          className="flex-1 border-gray-300 dark:border-white/20 text-gray-700 dark:text-white"
+                          onClick={() => setShowMintDialog(false)}
+                        >
+                          Cancelar
                         </Button>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="grid grid-cols-2 gap-3">
-                            {galleryImages.map((img, idx) => (
-                                <div key={idx} className="relative aspect-video rounded-lg overflow-hidden cursor-pointer shadow-sm" onClick={() => handleImageClick(idx)}>
-                                    <SafeImage src={img.url || ''} className={cn("w-full h-full object-cover transition-all duration-500", isParentalLocked ? "blur-xl scale-110" : "blur-0 scale-100")} />
-                                    {isParentalLocked && (
-                                        <div className="absolute inset-0 flex items-center justify-center bg-white/40 dark:bg-black/30 z-10 backdrop-blur-[2px]">
-                                            <div className="bg-white/80 dark:bg-black/50 p-2 rounded-full border border-gray-200 dark:border-white/20"><Lock className="w-5 h-5 text-gray-800 dark:text-white"/></div>
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
+                        <Button
+                          className="flex-1 bg-purple-600 hover:bg-purple-500 text-white"
+                          onClick={confirmMinting}
+                        >
+                          Confirmar
+                        </Button>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* OVERLAY CARGA UPLOAD */}
+              <AnimatePresence>
+                {isUploading && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm"
+                  >
+                    <Loader2 className="w-12 h-12 text-purple-400 animate-spin mb-4" />
+                    <p className="text-white font-medium tracking-wide">Subiendo recuerdos...</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* TAB RESUMEN */}
+              <TabsContent value="overview" className="mt-6 space-y-6">
+                {/* GALERÍA PRIVADA */}
+                <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 backdrop-blur-md">
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle className="text-gray-900 dark:text-white text-lg flex items-center gap-2">
+                      <Lock className="w-4 h-4"/> Fotos Privadas
+                    </CardTitle>
+                    <Button
+                      size="sm"
+                      className={isParentalLocked ? "bg-green-600 hover:bg-green-700 text-white" : "bg-red-600 hover:bg-red-700 text-white"}
+                      onClick={isParentalLocked ? () => setShowPinModal(true) : handleLockGallery}
+                    >
+                      {isParentalLocked ? <><Unlock className="w-3 h-3 mr-1"/> Desbloquear</> : <><Lock className="w-3 h-3 mr-1"/> Bloquear</>}
+                    </Button>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-3">
+                      {galleryImages.map((img, idx) => (
+                        <div
+                          key={idx}
+                          className="relative aspect-video rounded-lg overflow-hidden cursor-pointer shadow-sm"
+                          onClick={() => handleImageClick(idx)}
+                        >
+                          <SafeImage
+                            src={img.url || ''}
+                            className={cn(
+                              "w-full h-full object-cover transition-all duration-500",
+                              isParentalLocked ? "blur-xl scale-110" : "blur-0 scale-100"
+                            )}
+                          />
+                          {isParentalLocked && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-white/40 dark:bg-black/30 z-10 backdrop-blur-[2px]">
+                              <div className="bg-white/80 dark:bg-black/50 p-2 rounded-full border border-gray-200 dark:border-white/20">
+                                <Lock className="w-5 h-5 text-gray-800 dark:text-white"/>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                    </CardContent>
+                      ))}
+                    </div>
+                  </CardContent>
                 </Card>
-                <ProfileNavTabs isOwnProfile={isOwnProfile} onUploadImage={handleUploadImage} onDeletePost={handleDeletePost} onCommentPost={handleCommentPost} />
+
+                {/* INTERESES PAREJA (del respaldo) */}
+                <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20">
+                  <CardHeader>
+                    <CardTitle className="text-gray-900 dark:text-white">Intereses Compartidos</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex flex-wrap gap-2">
+                    {['Intercambio Parejas', 'Viajes', 'Cenas', 'Fiestas Temáticas', 'Swinger Lifestyle'].map((tag, i) => (
+                      <Badge
+                        key={i}
+                        className="bg-gradient-to-r from-pink-500 to-purple-500 text-white border-0 px-3 py-1 text-xs hover:opacity-90"
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </CardContent>
+                </Card>
+
+                {/* NAV TABS (posts, uploads, etc.) */}
+                <ProfileNavTabs
+                  isOwnProfile={isOwnProfile}
+                  onUploadImage={handleUploadImage}
+                  onDeletePost={handleDeletePost}
+                  onCommentPost={handleCommentPost}
+                />
               </TabsContent>
-              {/* Resto de Tabs Content (Activity, Achievements, etc) */}
+
+              {/* TAB ACTIVIDAD COMPLETA */}
+              <TabsContent value="activity" className="mt-4 space-y-4">
+                {recentActivity.map((a) => (
+                  <Card
+                    key={a.id}
+                    className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 text-gray-900 dark:text-white overflow-hidden shadow-sm"
+                  >
+                    <CardContent className="p-0">
+                      <div className="flex items-start gap-4 p-4">
+                        <div className="w-10 h-10 rounded-full bg-pink-100 dark:bg-pink-500/20 flex items-center justify-center">
+                          {a.type === 'post' ? (
+                            <Camera className="w-5 h-5 text-pink-600 dark:text-pink-300" />
+                          ) : (
+                            <MessageCircle className="w-5 h-5 text-blue-600 dark:text-blue-300" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-sm">{a.description}</p>
+                          <p className="text-xs text-gray-500 dark:text-white/50 mt-1">{a.time}</p>
+                        </div>
+                      </div>
+                      {a.image && (
+                        <div className="w-full h-64 bg-gray-100 dark:bg-black/50 border-t border-gray-200 dark:border-white/10">
+                          <img src={a.image} alt="Post" className="w-full h-full object-cover" />
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </TabsContent>
+
+              {/* TAB LOGROS */}
+              <TabsContent value="achievements" className="mt-4">
+                <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 text-gray-900 dark:text-white">
+                  <CardContent className="p-4 grid grid-cols-2 gap-3">
+                    {achievements.map((a, i) => (
+                      <div
+                        key={i}
+                        className={`p-3 rounded-lg border flex items-start gap-3 ${
+                          a.unlocked
+                            ? 'bg-pink-50 dark:bg-pink-900/40 border-pink-200 dark:border-pink-500/50'
+                            : 'bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 opacity-60'
+                        }`}
+                      >
+                        <div
+                          className={`p-2 rounded-full ${
+                            a.unlocked
+                              ? 'bg-pink-500 text-white'
+                              : 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                          }`}
+                        >
+                          {a.icon ? <a.icon className="w-4 h-4" /> : <Award className="w-4 h-4" />}
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm">{a.title}</div>
+                          <div className="text-xs text-gray-500 dark:text-white/60 leading-tight">{a.description}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* TAB ANALYTICS SIMPLE */}
+              <TabsContent value="analytics" className="mt-4">
+                <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 text-gray-900 dark:text-white">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BarChart3 className="w-5 h-5" /> Rendimiento Pareja
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4 text-sm text-gray-600 dark:text-white/70">
+                    <p>Gráficos de rendimiento simulados para la demo. Aquí se mostrarán métricas reales en producción.</p>
+                  </CardContent>
+                </Card>
+              </TabsContent>
             </Tabs>
           </div>
       </div>

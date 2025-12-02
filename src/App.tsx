@@ -1,13 +1,12 @@
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-// CRÍTICO: Importar QueryClient de forma segura - verificar que React esté disponible
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CrossBrowserOptimizer } from '@/components/ui/CrossBrowserOptimizer';
 import { AccessibilityEnhancer } from '@/components/ui/AccessibilityEnhancer';
 import { MobileOptimizer } from '@/components/ui/MobileOptimizer';
 import { ThemeProvider } from '@/components/ui/ThemeProvider';
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { AnimationProvider } from "@/components/animations/AnimationProvider";
 import { PageTransitionWrapper } from "@/components/animations/PageTransitions";
 import { NotificationProvider } from "@/components/animations/NotificationSystem";
@@ -21,30 +20,7 @@ import Navigation from '@/components/Navigation';
 import HeaderNav from '@/components/HeaderNav';
 import { ParticlesBackground } from '@/components/ui/ParticlesBackground';
 
-// ============================================================================
-// ESTRATEGIA DE CARGA DE PÁGINAS
-// ============================================================================
-// 
-// PÁGINAS CRÍTICAS (Carga Inmediata):
-// - Index: Página principal, debe cargar instantáneamente
-// - Auth: Autenticación, crítica para el flujo de usuario
-// - NotFound: Página de error, debe estar siempre disponible
-// - Events: Página principal de eventos
-// - Discover: Página principal de descubrimiento
-//
-// PÁGINAS CORE (Lazy Loading):
-// - Profiles, ProfileDetail: Funcionalidades principales
-// - Chat, ChatInfo: Sistema de chat
-// - Matches: Sistema de matches
-//
-// PÁGINAS ADMIN (Lazy Loading):
-// - Admin*, Moderator*: Panel administrativo
-//
-// PÁGINAS SECUNDARIAS (Lazy Loading):
-// - About, Terms, Privacy, etc.: Páginas informativas
-// ============================================================================
-
-// Critical pages - loaded immediately
+// Pages Imports
 import Index from "@/pages/Index";
 import Auth from "@/app/(auth)/Auth";
 import NotFound from "@/pages/NotFound";
@@ -52,7 +28,7 @@ import Events from "@/pages/Events";
 import Discover from "@/app/(discover)/Discover";
 import Demo from "@/pages/Demo";
 
-// Lazy loaded pages for performance optimization - Core features
+// Lazy Imports
 const Profiles = lazy(() => import("@/profiles/shared/Profiles"));
 const ProfileDetail = lazy(() => import("@/profiles/shared/ProfileDetail"));
 const _Chat = lazy(() => import("@/pages/Chat"));
@@ -62,8 +38,6 @@ const _Requests = lazy(() => import("@/pages/Requests"));
 const Settings = lazy(() => import("@/pages/Settings"));
 const Premium = lazy(() => import("@/pages/Premium"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
-
-// Secondary pages - loaded on demand
 const FAQ = lazy(() => import("@/pages/FAQ"));
 const Terms = lazy(() => import("@/pages/Terms"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
@@ -72,26 +46,16 @@ const ProjectInfo = lazy(() => import("@/pages/ProjectInfo"));
 const Security = lazy(() => import("@/pages/Security"));
 const Guidelines = lazy(() => import("@/pages/Guidelines"));
 const Legal = lazy(() => import("@/pages/Legal"));
-
-// Token system - separate chunk
 const Tokens = lazy(() => import("@/pages/Tokens"));
 const TokensInfo = lazy(() => import("@/pages/TokensInfo"));
 const TokensPrivacy = lazy(() => import("@/pages/TokensPrivacy"));
 const TokensTerms = lazy(() => import("@/pages/TokensTerms"));
 const TokensLegal = lazy(() => import("@/pages/TokensLegal"));
-
-// Admin pages - separate chunk
 const Admin = lazy(() => import("@/app/(admin)/Admin"));
 const AdminProduction = lazy(() => import("@/app/(admin)/AdminProduction"));
 const AdminPartners = lazy(() => import("@/app/(admin)/AdminPartners"));
-
-// Clubs system
 const Clubs = lazy(() => import("@/app/(clubs)/Clubs"));
-
-// Shop CMPX tokens
 const Shop = lazy(() => import("@/pages/Shop"));
-
-// Stories info pages
 const StoriesInfo = lazy(() => import("@/pages/StoriesInfo"));
 const ProfileSingle = lazy(() => import("@/profiles/single/ProfileSingle"));
 const Stories = lazy(() => import("@/pages/Stories"));
@@ -121,44 +85,69 @@ const News = lazy(() => import("@/pages/News"));
 const Investors = lazy(() => import("@/pages/Investors"));
 const NFTs = lazy(() => import("@/pages/NFTs"));
 
-// Loading component for Suspense - Optimizado con fondo cargando.gif
+// --- LOADER CORREGIDO (Centrado y proporciones correctas) ---
 const PageLoader = () => (
-  <div
-    className="min-h-screen flex items-center justify-center bg-black bg-cover bg-center"
-    style={{ backgroundImage: "url('/backgrounds/cargando.gif')" }}
-  >
-    <div className="text-center bg-black/60 px-6 py-4 rounded-2xl backdrop-blur-md max-w-xs sm:max-w-sm md:max-w-md mx-4">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4" />
-      <p className="text-white text-sm sm:text-base md:text-lg break-words leading-snug">Cargando...</p>
+  <div className="fixed inset-0 z-[200] bg-black">
+    <img
+      src="/backgrounds/cargando.webp"
+      alt="Cargando..."
+      className="absolute inset-0 w-full h-full object-cover"
+    />
+    <div className="relative z-10 h-full w-full flex flex-col items-center justify-center bg-black/60">
+      <div className="flex flex-col items-center gap-3">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 shadow-[0_0_25px_#a855f7]" />
+        <p className="text-white text-sm font-bold tracking-[0.4em] uppercase">Cargando...</p>
+      </div>
     </div>
   </div>
 );
 
-// CRÍTICO: Crear QueryClient fuera del componente para evitar recreación en cada render
-// Configuración optimizada para producción
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 3,
       refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // 5 minutos
-      gcTime: 10 * 60 * 1000, // 10 minutos (antes cacheTime)
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
     },
-    mutations: {
-      retry: 1,
-    },
+    mutations: { retry: 1 },
   },
 });
 
 const App = () => {
-  // Hook para obtener el estado del perfil del usuario
-  const { profile, isAuthenticated, user } = useAuth();
+  const [showSplash, setShowSplash] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return !sessionStorage.getItem('cc_splash_shown');
+  });
 
-  // Determinar estado de sesión y navegación
+  useEffect(() => {
+    if (!showSplash) return;
+    const timer = setTimeout(() => {
+      sessionStorage.setItem('cc_splash_shown', '1');
+      setShowSplash(false);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [showSplash]);
+
+  const { profile, isAuthenticated, user } = useAuth();
   const isAuthFn = typeof isAuthenticated === 'function' ? isAuthenticated() : Boolean(isAuthenticated);
   const hasSession = Boolean(user) || isAuthFn;
-  // Navigation inferior solo cuando hay perfil activo y sesión
   const showProfileNavigation = hasSession && Boolean(profile);
+
+  // --- SPLASH CORREGIDO (Proporciones correctas) ---
+  if (showSplash) {
+    return (
+      <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
+        <div className="w-full max-w-2xl px-4">
+          <img 
+            src="/backgrounds/logo-animated.webp" 
+            alt="Bienvenido" 
+            className="w-full h-auto object-contain"
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -170,21 +159,23 @@ const App = () => {
                 <AnimationProvider>
                   <NotificationProvider>
                     <AppFactory>
-                      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                          <ParticlesBackground>
-                            <Router>
-                              {/* Navbar condicional según estado de sesión */}
-                              {!hasSession && <HeaderNav />}
+                      
+                      {/* WRAPPER PRINCIPAL: ParticlesBackground contiene todo */}
+                      <ParticlesBackground>
+                        
+                        {/* IMPORTANTE: bg-transparent para ver el video de fondo */}
+                        <div className="min-h-screen bg-transparent">
+                          
+                          <Router>
+                            {!hasSession && <HeaderNav />}
+                            
+                            {/* Contenido centrado */}
+                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 relative z-10">
                               <PageTransitionWrapper>
                                 <Suspense fallback={<PageLoader />}>
                                   <Routes>
                                     <Route path="/" element={<Index />} />
-                                    <Route path="/auth" element={
-                                      <ProtectedRoute requireAuth={false}>
-                                        <Auth />
-                                      </ProtectedRoute>
-                                    } />
+                                    <Route path="/auth" element={<ProtectedRoute requireAuth={false}><Auth /></ProtectedRoute>} />
                                     <Route path="/demo" element={<Demo />} />
                                     <Route path="/faq" element={<FAQ />} />
                                     <Route path="/feed" element={<Feed />} />
@@ -208,11 +199,7 @@ const App = () => {
                                     <Route path="/tokens" element={<Tokens />} />
                                     <Route path="/settings" element={<Settings />} />
                                     <Route path="/premium" element={<Premium />} />
-                                    <Route path="/dashboard" element={
-                                      <ProtectedRoute>
-                                        <Dashboard />
-                                      </ProtectedRoute>
-                                    } />
+                                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                                     <Route path="/support" element={<Support />} />
                                     <Route path="/terms" element={<Terms />} />
                                     <Route path="/privacy" element={<Privacy />} />
@@ -234,33 +221,13 @@ const App = () => {
                                     <Route path="/info" element={<Info />} />
                                     <Route path="/about" element={<About />} />
                                     <Route path="/careers" element={<Careers />} />
-                                    <Route path="/admin/career-applications" element={
-                                      <AdminRoute>
-                                        <AdminCareerApplications />
-                                      </AdminRoute>
-                                    } />
-                                    <Route path="/admin/moderators" element={
-                                      <AdminRoute>
-                                        <AdminModerators />
-                                      </AdminRoute>
-                                    } />
-                                    <Route path="/admin/analytics" element={
-                                      <AdminRoute>
-                                        <AdminAnalytics />
-                                      </AdminRoute>
-                                    } />
-                                    <Route path="/admin/partners" element={
-                                      <AdminRoute>
-                                        <AdminPartners />
-                                      </AdminRoute>
-                                    } />
+                                    <Route path="/admin/career-applications" element={<AdminRoute><AdminCareerApplications /></AdminRoute>} />
+                                    <Route path="/admin/moderators" element={<AdminRoute><AdminModerators /></AdminRoute>} />
+                                    <Route path="/admin/analytics" element={<AdminRoute><AdminAnalytics /></AdminRoute>} />
+                                    <Route path="/admin/partners" element={<AdminRoute><AdminPartners /></AdminRoute>} />
                                     <Route path="/clubs" element={<Clubs />} />
                                     <Route path="/clubs/:slug" element={<Clubs />} />
-                                    <Route path="/moderators/dashboard" element={
-                                      <ModeratorRoute>
-                                        <ModeratorDashboard />
-                                      </ModeratorRoute>
-                                    } />
+                                    <Route path="/moderators/dashboard" element={<ModeratorRoute><ModeratorDashboard /></ModeratorRoute>} />
                                     <Route path="/moderators" element={<Moderators />} />
                                     <Route path="/moderator-request" element={<ModeratorRequest />} />
                                     <Route path="/blog" element={<Blog />} />
@@ -271,25 +238,22 @@ const App = () => {
                                     <Route path="/news" element={<News />} />
                                     <Route path="/investors" element={<Investors />} />
                                     <Route path="/nfts" element={<NFTs />} />
-                                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                                     <Route path="*" element={<NotFound />} />
                                   </Routes>
                                 </Suspense>
                               </PageTransitionWrapper>
-                              {/* Navegación condicional: 
-                                 - Visitante (sin sesión): HeaderNav ya renderizado arriba
-                                 - Usuario con sesión/perfil: Navigation inferior */}
-                              {hasSession && showProfileNavigation && (
-                                <div className="fixed bottom-0 left-0 right-0 z-50">
-                                  <Navigation />
-                                </div>
-                              )}
-                            </Router>
-                            <Toaster />
-                            <AnimationSettingsButton />
-                          </ParticlesBackground>
+                            </div>
+                            
+                            {hasSession && showProfileNavigation && (
+                              <div className="fixed bottom-0 left-0 right-0 z-50">
+                                <Navigation />
+                              </div>
+                            )}
+                          </Router>
                         </div>
-                      </div>
+                        <Toaster />
+                        <AnimationSettingsButton />
+                      </ParticlesBackground>
                     </AppFactory>
                   </NotificationProvider>
                 </AnimationProvider>
