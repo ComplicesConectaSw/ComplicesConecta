@@ -20,8 +20,8 @@ import { useAuth } from '@/features/auth/useAuth';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
 import ModeratorApplicationForm from "@/components/forms/ModeratorApplicationForm";
-
 import { getRandomProfileImage } from '@/lib/imageService';
+import { RandomBackground } from "@/components/ui/RandomBackground";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -339,8 +339,9 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-pink-900 via-purple-900 to-blue-900">
-      {/* Background uniforme continuo rosa-púrpura-azul - aplicado directamente al contenedor principal */}
+    <div className="min-h-screen relative overflow-hidden bg-transparent">
+      <RandomBackground />
+
       {/* Corazones decorativos flotantes */}
       <DecorativeHearts count={8} />
       {/* Content */}

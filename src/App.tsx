@@ -283,6 +283,7 @@ const App = () => {
                               )}
                             </Router>
                             <Toaster />
+                            <AnimationSettingsButton />
                           </ParticlesBackground>
                         </div>
                       </div>

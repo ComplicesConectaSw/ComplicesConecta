@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '../../hooks/useTheme';
 import { cn } from '@/shared/lib/cn';
 
 interface ParticlesBackgroundProps {
@@ -13,6 +13,9 @@ interface ParticlesBackgroundProps {
 export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ children, className }) => {
   const { prefs, loading } = useTheme();
 
+  // LÓGICA FALTANTE: Si intensidad es 0, no mostramos partículas
+  const showParticles = prefs.particlesIntensity > 0;
+
   const particlesInit = async (main: unknown) => {
     await loadFull(main as any);
   };
@@ -21,7 +24,7 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
     () => ({
       particles: {
         number: { value: prefs.particlesIntensity },
-        color: { value: ['#00FFFF', '#FF00FF'] }, // Neón cyan-magenta
+        color: { value: ['#00FFFF', '#FF00FF'] },
         shape: { type: 'circle' },
         opacity: { value: 0.5 },
         size: { value: { min: 1, max: 3 } },
@@ -43,22 +46,33 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
       : 'animate-glow-medium';
 
   return (
-    <div className={cn('relative min-h-screen overflow-hidden', className)}>
-      {/* Fondo */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${prefs.background})` }}
-      />
-      {/* Glow overlay */}
-      <div
-        className={cn(
-          'absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20',
-          glowClass
+    <div className={cn('relative min-h-screen', className)}>
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        {/* Fondo estático base */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${prefs.background})` }}
+        />
+        
+        {/* Glow overlay */}
+        <div
+          className={cn(
+            'absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20',
+            glowClass
+          )}
+        />
+        
+        {/* CONDICIONAL AGREGADO: Solo renderiza si el usuario quiere partículas */}
+        {showParticles && (
+          <Particles
+            id="particles"
+            init={particlesInit}
+            options={particlesOptions}
+            className="absolute inset-0"
+          />
         )}
-      />
-      {/* Partículas */}
-      <Particles id="particles" init={particlesInit} options={particlesOptions} className="absolute inset-0" />
-      {/* Contenido */}
+      </div>
+
       <div className="relative z-10">{children}</div>
     </div>
   );
