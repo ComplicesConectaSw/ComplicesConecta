@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { AnimationContext } from '@/components/animations/AnimationProvider';
+import { useTheme } from '@/hooks/useTheme';
 import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { Settings, Zap, Eye, Sparkles, Palette } from 'lucide-react';
@@ -14,6 +15,7 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
   // CRÍTICO: Los hooks deben llamarse siempre, no condicionalmente
   // Usar useContext directamente y manejar el caso undefined después
   const context = React.useContext(AnimationContext);
+  const { prefs, setPrefs } = useTheme();
   
   // Si no hay provider, mostrar mensaje o retornar null
   if (!context) {
@@ -103,7 +105,10 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
                     key={speed}
                     variant={config.animationSpeed === speed ? 'love' : 'default'}
                     size="sm"
-                    onClick={() => updateConfig({ animationSpeed: speed })}
+                    onClick={() => {
+                      updateConfig({ animationSpeed: speed });
+                      setPrefs({ ...prefs, animationSpeed: speed });
+                    }}
                     className="capitalize"
                   >
                     {speed === 'slow' ? 'Lenta' : speed === 'normal' ? 'Normal' : 'Rápida'}
@@ -123,7 +128,15 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
               </div>
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => updateConfig({ enableParticles: !config.enableParticles })}
+                onClick={() => {
+                  const next = !config.enableParticles;
+                  updateConfig({ enableParticles: next });
+                  setPrefs({
+                    ...prefs,
+                    enableParticles: next,
+                    particlesIntensity: next ? prefs.particlesIntensity || 40 : 0,
+                  });
+                }}
                 className={`relative w-12 h-6 rounded-full transition-colors ${
                   config.enableParticles ? 'bg-purple-600' : 'bg-gray-600'
                 }`}
@@ -146,7 +159,11 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
               </div>
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => updateConfig({ enableBackgroundAnimations: !config.enableBackgroundAnimations })}
+                onClick={() => {
+                  const next = !config.enableBackgroundAnimations;
+                  updateConfig({ enableBackgroundAnimations: next });
+                  setPrefs({ ...prefs, enableBackgroundAnimations: next });
+                }}
                 className={`relative w-12 h-6 rounded-full transition-colors ${
                   config.enableBackgroundAnimations ? 'bg-purple-600' : 'bg-gray-600'
                 }`}
@@ -193,7 +210,14 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
                   reducedMotion: false,
                   animationSpeed: 'normal',
                   enableParticles: true,
-                  enableBackgroundAnimations: true
+                  enableBackgroundAnimations: true,
+                });
+                setPrefs({
+                  ...prefs,
+                  animationSpeed: 'normal',
+                  enableParticles: true,
+                  enableBackgroundAnimations: true,
+                  particlesIntensity: prefs.particlesIntensity || 50,
                 });
               }}
               className="flex-1"

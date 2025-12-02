@@ -10,6 +10,10 @@ interface ThemePrefs {
   particlesIntensity: number;  // 0-100
   glowLevel: 'low' | 'medium' | 'high';
   isCustom: boolean;
+  enableParticles: boolean;
+  enableBackgroundAnimations: boolean;
+  animationSpeed: 'slow' | 'normal' | 'fast';
+  enableGlassUI: boolean;
 }
 
 const defaultPrefs: ThemePrefs = {
@@ -17,6 +21,10 @@ const defaultPrefs: ThemePrefs = {
   particlesIntensity: 50,
   glowLevel: 'medium',
   isCustom: false,
+  enableParticles: true,
+  enableBackgroundAnimations: true,
+  animationSpeed: 'normal',
+  enableGlassUI: true,
 };
 
 export const useTheme = () => {
@@ -49,13 +57,27 @@ export const useTheme = () => {
 
         if (error) throw error;
         if (data) {
-          const theme = data as { bg_url?: string; particles_intensity?: number; glow_level?: 'low' | 'medium' | 'high' };
+          const theme = data as {
+            bg_url?: string;
+            particles_intensity?: number;
+            glow_level?: 'low' | 'medium' | 'high';
+            enable_particles?: boolean;
+            enable_background_animations?: boolean;
+            animation_speed?: 'slow' | 'normal' | 'fast';
+            enable_glass_ui?: boolean;
+          };
           setPrefs({
             background: theme.bg_url || defaultPrefs.background,
             particlesIntensity: theme.particles_intensity ?? defaultPrefs.particlesIntensity,
             glowLevel: theme.glow_level || defaultPrefs.glowLevel,
             isCustom: true,
+            enableParticles: theme.enable_particles ?? defaultPrefs.enableParticles,
+            enableBackgroundAnimations:
+              theme.enable_background_animations ?? defaultPrefs.enableBackgroundAnimations,
+            animationSpeed: theme.animation_speed || defaultPrefs.animationSpeed,
+            enableGlassUI: theme.enable_glass_ui ?? prefs.enableGlassUI ?? defaultPrefs.enableGlassUI,
           });
+
           logger.info('Tema cargado de DB', { userId: user.id });
         }
       } catch (error) {
@@ -75,12 +97,25 @@ export const useTheme = () => {
           'postgres_changes',
           { event: '*', schema: 'public', table: 'user_themes', filter: `user_id=eq.${user.id}` } as any,
           (payload: any) => {
-            const theme = payload.new as { bg_url?: string; particles_intensity?: number; glow_level?: 'low' | 'medium' | 'high' };
+            const theme = payload.new as {
+              bg_url?: string;
+              particles_intensity?: number;
+              glow_level?: 'low' | 'medium' | 'high';
+              enable_particles?: boolean;
+              enable_background_animations?: boolean;
+              animation_speed?: 'slow' | 'normal' | 'fast';
+              enable_glass_ui?: boolean;
+            };
             setPrefs({
               background: theme.bg_url || defaultPrefs.background,
               particlesIntensity: theme.particles_intensity ?? defaultPrefs.particlesIntensity,
               glowLevel: theme.glow_level || defaultPrefs.glowLevel,
               isCustom: true,
+              enableParticles: theme.enable_particles ?? defaultPrefs.enableParticles,
+              enableBackgroundAnimations:
+                theme.enable_background_animations ?? defaultPrefs.enableBackgroundAnimations,
+              animationSpeed: theme.animation_speed || defaultPrefs.animationSpeed,
+              enableGlassUI: theme.enable_glass_ui ?? prefs.enableGlassUI ?? defaultPrefs.enableGlassUI,
             });
           }
         )

@@ -2,6 +2,7 @@
 import React, { useMemo } from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
+
 import { useTheme } from '../../hooks/useTheme';
 import { cn } from '@/shared/lib/cn';
 
@@ -13,47 +14,65 @@ interface ParticlesBackgroundProps {
 export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ children, className }) => {
   const { prefs, loading } = useTheme();
 
-  // LÓGICA FALTANTE: Si intensidad es 0, no mostramos partículas
-  const showParticles = prefs.particlesIntensity > 0;
+  // Para asegurar visibilidad mientras afinamos la UI, mantenemos partículas activas
+  const showParticles = (prefs.enableParticles ?? true) && (prefs.particlesIntensity ?? 40) > 0;
 
-  const particlesInit = async (main: unknown) => {
-    await loadFull(main as any);
+  const speedValue =
+    prefs.animationSpeed === 'slow' ? 0.2 :
+    prefs.animationSpeed === 'fast' ? 2 :
+    0.9;
+
+  const particlesInit = async (engine: unknown) => {
+    await loadFull(engine as never);
   };
 
   const particlesOptions = useMemo(
     () => ({
       particles: {
-        number: { value: prefs.particlesIntensity },
+        number: { value: showParticles ? (prefs.particlesIntensity || 40) : 0 },
         color: { value: ['#00FFFF', '#FF00FF'] },
         shape: { type: 'circle' },
         opacity: { value: 0.5 },
         size: { value: { min: 1, max: 3 } },
-        move: { enable: true, speed: 1, random: true },
+        move: { enable: showParticles, speed: speedValue, random: true },
       },
       interactivity: { events: { onHover: { enable: true, mode: 'repulse' } } },
       retina_detect: true,
     }),
-    [prefs.particlesIntensity]
+    [prefs.particlesIntensity, prefs.enableParticles, speedValue, showParticles]
   );
 
   if (loading) return <div>Cargando tema...</div>;
 
   const glowClass =
-    prefs.glowLevel === 'high'
-      ? 'animate-glow-high'
-      : prefs.glowLevel === 'low'
-      ? 'animate-glow-low'
-      : 'animate-glow-medium';
+    prefs.enableBackgroundAnimations
+      ? prefs.glowLevel === 'high'
+        ? 'animate-glow-high'
+        : prefs.glowLevel === 'low'
+        ? 'animate-glow-low'
+        : 'animate-glow-medium'
+      : '';
 
   return (
     <div className={cn('relative min-h-screen', className)}>
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        {/* Fondo estático base */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${prefs.background})` }}
-        />
-        
+        {/* Fondo base: estático o animado según preferencias */}
+        {prefs.enableBackgroundAnimations ? (
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/backgrounds/batch_process.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        ) : (
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${prefs.background})` }}
+          />
+        )}
+
         {/* Glow overlay */}
         <div
           className={cn(

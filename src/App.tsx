@@ -121,12 +121,15 @@ const News = lazy(() => import("@/pages/News"));
 const Investors = lazy(() => import("@/pages/Investors"));
 const NFTs = lazy(() => import("@/pages/NFTs"));
 
-// Loading component for Suspense - Optimizado
+// Loading component for Suspense - Optimizado con fondo cargando.gif
 const PageLoader = () => (
-  <div className="min-h-screen bg-hero-gradient flex items-center justify-center">
-    <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-      <p className="text-white text-lg">Cargando...</p>
+  <div
+    className="min-h-screen flex items-center justify-center bg-black bg-cover bg-center"
+    style={{ backgroundImage: "url('/backgrounds/cargando.gif')" }}
+  >
+    <div className="text-center bg-black/60 px-6 py-4 rounded-2xl backdrop-blur-md max-w-xs sm:max-w-sm md:max-w-md mx-4">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4" />
+      <p className="text-white text-sm sm:text-base md:text-lg break-words leading-snug">Cargando...</p>
     </div>
   </div>
 );
