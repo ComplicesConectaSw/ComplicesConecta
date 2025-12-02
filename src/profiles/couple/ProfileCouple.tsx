@@ -57,6 +57,14 @@ type PrivateImageItem = {
   userLiked?: boolean;
 };
 
+type ConfirmDialogState = {
+  open: boolean;
+  title: string;
+  description: string;
+  confirmLabel?: string;
+  onConfirm?: () => void;
+};
+
 // --- TOAST COMPONENT ---
 const Toast = ({ message, type, onClose }: { message: string, type: 'success' | 'error' | 'info', onClose: () => void }) => (
   <motion.div 
@@ -106,6 +114,11 @@ const ProfileCouple: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [showMintDialog, setShowMintDialog] = useState(false);
   const [mintPreview, setMintPreview] = useState<string>(DEMO_COUPLE_ASSETS[0]);
+  const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState>({
+    open: false,
+    title: '',
+    description: '',
+  });
   const [demoAuth] = usePersistedState('demo_authenticated', 'false');
   const [demoUser] = usePersistedState<any>('demo_user', null);
   const isOwnProfile = true; 
@@ -226,7 +239,21 @@ const ProfileCouple: React.FC = () => {
   };
   const handleImageLike = (idx: number) => showToast("Te gusta", "success");
   const handleAddComment = () => showToast("Comentado", "success");
-  const handleDeletePost = (id: string) => { if(window.confirm("¿Borrar?")) setRecentActivity(prev => prev.filter(p => p.id !== id)); };
+  const openConfirmDialog = (config: Omit<ConfirmDialogState, 'open'>) => {
+    setConfirmDialog({ open: true, ...config });
+  };
+
+  const closeConfirmDialog = () => setConfirmDialog((prev) => ({ ...prev, open: false, onConfirm: undefined }));
+
+  const handleDeletePost = (id: string) => {
+    setConfirmDialog({
+      open: true,
+      title: '¿Eliminar publicación?',
+      description: 'Esta acción no se puede deshacer.',
+      confirmLabel: 'Eliminar',
+      onConfirm: () => setRecentActivity(prev => prev.filter(p => p.id !== id)),
+    });
+  };
   const handleCommentPost = () => showToast("Comentar...", "info");
 
   if (isLoading || !profile) return <div className="min-h-screen flex items-center justify-center bg-gray-900"><Loader2 className="w-10 h-10 text-purple-500 animate-spin"/></div>;
@@ -257,15 +284,15 @@ const ProfileCouple: React.FC = () => {
       {!isAuthenticated() && !isDemoActive && <Navigation />}
       
       {(isAuthenticated() || isDemoActive) && showTopBanner && (
-        <div className="relative z-50 bg-white/5 border-b border-white/10 px-4 py-2 flex items-center justify-between backdrop-blur-md shadow-sm">
-            <div className="flex items-center gap-2 text-xs font-medium text-gray-800 dark:text-white/90">
+        <div className="relative z-50 bg-white/10 text-white border-b border-white/15 px-4 py-2 flex items-center justify-between backdrop-blur-lg shadow-sm">
+            <div className="flex items-center gap-2 text-xs font-medium">
                 <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span>
-                <span>Pareja Verificada</span>
-                <span className="mx-2 text-gray-300 dark:text-white/20">|</span>
-                <Heart className="w-3 h-3 text-pink-500"/>
-                <span className="text-pink-600 dark:text-pink-200">Aniversario: 15 Nov</span>
+                <span className="text-white/80">Pareja Verificada</span>
+                <span className="mx-2 text-white/30">|</span>
+                <Heart className="w-3 h-3 text-pink-300"/>
+                <span className="text-pink-200">Aniversario: 15 Nov</span>
             </div>
-            <X className="w-4 h-4 text-gray-400 dark:text-white/50 cursor-pointer hover:text-red-500" onClick={() => setShowTopBanner(false)}/>
+            <X className="w-4 h-4 text-white/60 cursor-pointer hover:text-red-400" onClick={() => setShowTopBanner(false)}/>
         </div>
       )}
       
@@ -287,25 +314,25 @@ const ProfileCouple: React.FC = () => {
 
             {/* WALLET & COLECCIONABLES - espejo de single */}
             {isOwnProfile && (
-              <Card className="bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/50 dark:to-blue-900/50 border-purple-200 dark:border-purple-500/30 shadow-md">
+              <Card className="bg-white/5 text-white border-white/20 backdrop-blur-2xl shadow-[0_25px_60px_rgba(24,0,62,.45)]">
                 <CardHeader>
-                  <CardTitle className="text-purple-900 dark:text-white flex items-center gap-2">
+                  <CardTitle className="text-white flex items-center gap-2">
                     <Wallet className="w-5 h-5" /> Wallet & Coleccionables
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="grid grid-cols-3 gap-2 text-center">
-                    <div className="bg-white/60 dark:bg-black/40 p-3 rounded-lg border border-purple-100 dark:border-white/5">
-                      <div className="text-xs text-gray-500 dark:text-gray-400">CMPX</div>
-                      <div className="font-bold text-yellow-600 dark:text-yellow-400 text-lg">{tokenBalances.cmpx}</div>
+                    <div className="bg-white/10 p-3 rounded-lg border border-white/15">
+                      <div className="text-xs text-white/70">CMPX</div>
+                      <div className="font-bold text-yellow-300 text-lg">{tokenBalances.cmpx}</div>
                     </div>
-                    <div className="bg-white/60 dark:bg-black/40 p-3 rounded-lg border border-purple-100 dark:border-white/5">
-                      <div className="text-xs text-gray-500 dark:text-gray-400">GTK</div>
-                      <div className="font-bold text-blue-600 dark:text-blue-400 text-lg">{tokenBalances.gtk}</div>
+                    <div className="bg-white/10 p-3 rounded-lg border border-white/15">
+                      <div className="text-xs text-white/70">GTK</div>
+                      <div className="font-bold text-blue-300 text-lg">{tokenBalances.gtk}</div>
                     </div>
-                    <div className="bg-white/60 dark:bg-black/40 p-3 rounded-lg border border-purple-100 dark:border-white/5">
-                      <div className="text-xs text-gray-500 dark:text-gray-400">NFTs</div>
-                      <div className="font-bold text-purple-600 dark:text-purple-400 text-lg">{coupleNFTs.length}</div>
+                    <div className="bg-white/10 p-3 rounded-lg border border-white/15">
+                      <div className="text-xs text-white/70">NFTs</div>
+                      <div className="font-bold text-purple-300 text-lg">{coupleNFTs.length}</div>
                     </div>
                   </div>
 
@@ -313,7 +340,7 @@ const ProfileCouple: React.FC = () => {
                     <Button
                       onClick={handleClaimTokens}
                       disabled={isClaimingTokens}
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-6"
+                      className="flex-1 bg-green-500/30 hover:bg-green-500/50 text-white border border-green-300/40 py-6"
                     >
                       {isClaimingTokens ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
@@ -329,7 +356,7 @@ const ProfileCouple: React.FC = () => {
                     <Button
                       onClick={handleMintClick}
                       disabled={isMinting}
-                      className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-6"
+                      className="flex-1 bg-purple-500/30 hover:bg-purple-500/50 text-white border border-purple-300/40 py-6"
                     >
                       {isMinting ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
@@ -347,12 +374,12 @@ const ProfileCouple: React.FC = () => {
                   {coupleNFTs.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       {coupleNFTs.map((nft) => (
-                        <div key={nft.id} className="bg-white/70 dark:bg-black/40 rounded-xl p-3 border border-white/40 dark:border-white/10 shadow-sm">
+                        <div key={nft.id} className="bg-white/10 rounded-xl p-3 border border-white/20 shadow-sm">
                           <div className="aspect-square rounded-lg overflow-hidden mb-2">
                             <img src={nft.image} alt={nft.name} className="w-full h-full object-cover" />
                           </div>
-                          <p className="text-xs font-semibold text-gray-800 dark:text-white truncate">{nft.name}</p>
-                          <p className="text-[11px] text-gray-500 dark:text-white/60">{nft.description || 'Coleccionable'}</p>
+                          <p className="text-xs font-semibold text-white truncate">{nft.name}</p>
+                          <p className="text-[11px] text-white/60">{nft.description || 'Coleccionable'}</p>
                         </div>
                       ))}
                     </div>
@@ -362,7 +389,7 @@ const ProfileCouple: React.FC = () => {
             )}
 
             {/* TARJETA PRINCIPAL PAREJA */}
-            <Card className="bg-white dark:bg-white/10 backdrop-blur-md border-gray-200 dark:border-white/20 shadow-lg">
+            <Card className="bg-white/5 text-white border-white/15 backdrop-blur-2xl shadow-[0_25px_80px_rgba(0,0,0,.5)]">
               <CardContent className="p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
                   <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
@@ -380,20 +407,42 @@ const ProfileCouple: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex flex-col items-center sm:items-start justify-start flex-1 w-full">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-white text-center sm:text-left">{profile.partner1_first_name} & {profile.partner2_first_name}</h2>
+                    <h2 className="text-xl font-bold text-white text-center sm:text-left">{profile.partner1_first_name} & {profile.partner2_first_name}</h2>
                     <div className="flex flex-wrap gap-2 mt-2 justify-center sm:justify-start">
-                      <Badge className="bg-purple-100 text-purple-700 dark:bg-white/10 dark:text-white"><MapPin className="w-3 h-3 mr-1"/> CDMX</Badge>
-                      <Badge variant="outline" className="text-gray-600 dark:text-white border-gray-300 dark:border-white/40">{profile.partner1_age} y {profile.partner2_age} años</Badge>
+                      <Badge className="bg-transparent border border-white/40 text-white"><MapPin className="w-3 h-3 mr-1"/> CDMX</Badge>
+                      <Badge className="bg-transparent border border-white/30 text-white/90">{profile.partner1_age} y {profile.partner2_age} años</Badge>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-white/90 mt-3 text-center sm:text-left italic">"Una pareja aventurera buscando nuevas experiencias y conexiones auténticas."</p>
+                    <p className="text-sm text-white/80 mt-3 text-center sm:text-left italic">"Una pareja aventurera buscando nuevas experiencias y conexiones auténticas."</p>
                     <div className="flex flex-wrap gap-2 sm:gap-3 justify-center sm:justify-start mt-4 w-full">
-                      <Button onClick={() => navigate('/edit-profile-couple')} variant="secondary" size="sm" className="bg-gray-100 dark:bg-white/20 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-white/30 border-none"><Edit className="w-4 h-4 mr-2"/> Editar</Button>
-                      <Button onClick={() => setShowReportDialog(true)} variant="destructive" size="sm" className="bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-200 border-red-200 dark:border-red-500/30 hover:bg-red-200"><Flag className="w-4 h-4 mr-2"/> Reportar</Button>
-                      <TikTokShareButton url={window.location.href} text={`Mira el perfil de ${profile.couple_name}`} hashtags={['Parejas']} className="bg-black/10 dark:bg-black/40 text-gray-900 dark:text-white border-gray-200 dark:border-white/30" size="sm" />
+                      <Button onClick={() => navigate('/edit-profile-couple')} variant="secondary" size="sm" className="bg-white/15 text-white border-white/20 hover:bg-white/25"><Edit className="w-4 h-4 mr-2"/> Editar</Button>
+                      <Button onClick={() => setShowReportDialog(true)} variant="destructive" size="sm" className="bg-red-500/30 text-white border border-red-300/30 hover:bg-red-500/50"><Flag className="w-4 h-4 mr-2"/> Reportar</Button>
+                      <TikTokShareButton url={window.location.href} text={`Mira el perfil de ${profile.couple_name}`} hashtags={['Parejas']} className="bg-white/10 text-white border-white/20" size="sm" />
                       {isOwnProfile && (
-                         <Button onClick={() => { if (window.confirm(isDemoActive ? '¿Salir Demo?' : '¿Cerrar Sesión?')) { localStorage.removeItem('demo_authenticated'); localStorage.removeItem('demo_user'); window.location.href = '/'; }}} className="bg-gray-200 dark:bg-gray-600/50 hover:bg-gray-300 dark:hover:bg-gray-700/80 text-gray-800 dark:text-white flex items-center gap-2 text-sm px-3 py-2 border border-gray-300 dark:border-white/10">
-                           {isDemoActive ? <><Gamepad2 className="w-4 h-4 mr-2" /> Salir Demo</> : <><LogOut className="w-4 h-4 mr-2" /> Salir</>}
-                         </Button>
+                        <Button
+                          onClick={() =>
+                            openConfirmDialog({
+                              title: isDemoActive ? '¿Salir del modo Demo?' : '¿Cerrar sesión?',
+                              description: 'Perderás la sesión actual, pero podrás regresar cuando quieras.',
+                              confirmLabel: isDemoActive ? 'Salir Demo' : 'Cerrar sesión',
+                              onConfirm: () => {
+                                localStorage.removeItem('demo_authenticated');
+                                localStorage.removeItem('demo_user');
+                                window.location.href = '/';
+                              },
+                            })
+                          }
+                          className="bg-white/10 text-white border border-white/20 hover:bg-white/20 flex items-center gap-2 text-sm px-3 py-2"
+                        >
+                          {isDemoActive ? (
+                            <>
+                              <Gamepad2 className="w-4 h-4 mr-2" /> Salir Demo
+                            </>
+                          ) : (
+                            <>
+                              <LogOut className="w-4 h-4 mr-2" /> Salir
+                            </>
+                          )}
+                        </Button>
                       )}
                     </div>
                   </div>
@@ -403,7 +452,7 @@ const ProfileCouple: React.FC = () => {
 
             {/* TABS COMPLETOS (sin eliminar la lógica actual) */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-4">
-              <TabsList className="grid w-full grid-cols-4 bg-white dark:bg-white/10 backdrop-blur-md p-1 rounded-xl border border-gray-200 dark:border-white/10">
+              <TabsList className="grid w-full grid-cols-4 bg-white/10 text-white backdrop-blur-lg p-1 rounded-2xl border border-white/15">
                 <TabsTrigger value="overview">Resumen</TabsTrigger>
                 <TabsTrigger value="activity">Actividad</TabsTrigger>
                 <TabsTrigger value="achievements">Logros</TabsTrigger>
@@ -471,9 +520,9 @@ const ProfileCouple: React.FC = () => {
               {/* TAB RESUMEN */}
               <TabsContent value="overview" className="mt-6 space-y-6">
                 {/* GALERÍA PRIVADA */}
-                <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 backdrop-blur-md">
+                <Card className="bg-white/5 border-white/15 backdrop-blur-xl text-white">
                   <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle className="text-gray-900 dark:text-white text-lg flex items-center gap-2">
+                    <CardTitle className="text-white text-lg flex items-center gap-2">
                       <Lock className="w-4 h-4"/> Fotos Privadas
                     </CardTitle>
                     <Button
@@ -513,9 +562,9 @@ const ProfileCouple: React.FC = () => {
                 </Card>
 
                 {/* INTERESES PAREJA (del respaldo) */}
-                <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20">
+                <Card className="bg-white/5 border-white/15 text-white">
                   <CardHeader>
-                    <CardTitle className="text-gray-900 dark:text-white">Intereses Compartidos</CardTitle>
+                    <CardTitle className="text-white">Intereses Compartidos</CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-2">
                     {['Intercambio Parejas', 'Viajes', 'Cenas', 'Fiestas Temáticas', 'Swinger Lifestyle'].map((tag, i) => (
@@ -543,7 +592,7 @@ const ProfileCouple: React.FC = () => {
                 {recentActivity.map((a) => (
                   <Card
                     key={a.id}
-                    className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 text-gray-900 dark:text-white overflow-hidden shadow-sm"
+                    className="bg-white/5 border-white/15 text-white overflow-hidden shadow-sm"
                   >
                     <CardContent className="p-0">
                       <div className="flex items-start gap-4 p-4">
@@ -571,7 +620,7 @@ const ProfileCouple: React.FC = () => {
 
               {/* TAB LOGROS */}
               <TabsContent value="achievements" className="mt-4">
-                <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 text-gray-900 dark:text-white">
+                <Card className="bg-white/5 border-white/15 text-white">
                   <CardContent className="p-4 grid grid-cols-2 gap-3">
                     {achievements.map((a, i) => (
                       <div
@@ -603,7 +652,7 @@ const ProfileCouple: React.FC = () => {
 
               {/* TAB ANALYTICS SIMPLE */}
               <TabsContent value="analytics" className="mt-4">
-                <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 text-gray-900 dark:text-white">
+                <Card className="bg-white/5 border-white/15 text-white">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <BarChart3 className="w-5 h-5" /> Rendimiento Pareja

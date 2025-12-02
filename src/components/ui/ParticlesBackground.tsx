@@ -58,9 +58,8 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
 
   return (
     <div className={cn('min-h-screen w-full', className)}>
-      {/* 1. FONDO FIJO (Cubre toda la pantalla siempre) */}
       <div className="fixed inset-0 z-[-1]">
-        {prefs.enableBackgroundAnimations ? (
+        {prefs.enableBackgroundAnimations && prefs.enableParticles ? (
           <video
             className="w-full h-full object-cover"
             src="/backgrounds/animate-bg.webp"
@@ -69,22 +68,11 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
             muted
             playsInline
           />
-        ) : (
-          <div
-            className="w-full h-full bg-cover bg-center transition-all duration-700"
-            style={{ backgroundImage: `url(${prefs.background})` }}
-          />
-        )}
-        
-        {/* Glow overlay */}
+        ) : null}
         <div
-          className={cn(
-            'absolute inset-0 bg-gradient-to-br from-purple-900/40 via-black/20 to-pink-900/40 pointer-events-none',
-            glowClass
-          )}
+          className="w-full h-full bg-cover bg-center transition-all duration-700"
+          style={{ backgroundImage: `url(${prefs.background})` }}
         />
-        
-        {/* Partículas (Encima del video, debajo del contenido) */}
         {showParticles && (
           <Particles
             id="tsparticles"
@@ -94,8 +82,6 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
           />
         )}
       </div>
-
-      {/* 2. CONTENIDO (Se desliza sobre el fondo fijo) */}
       <div className="relative z-10 w-full min-h-screen">
         {children}
       </div>

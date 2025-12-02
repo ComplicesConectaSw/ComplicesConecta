@@ -138,8 +138,24 @@ const App = () => {
 
   const { profile, isAuthenticated, user } = useAuth();
   const isAuthFn = typeof isAuthenticated === 'function' ? isAuthenticated() : Boolean(isAuthenticated);
-  const hasSession = Boolean(user) || isAuthFn;
-  const showProfileNavigation = hasSession && Boolean(profile);
+  const [demoSessionActive, setDemoSessionActive] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('demo_authenticated') === 'true';
+  });
+
+  useEffect(() => {
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === 'demo_authenticated') {
+        setDemoSessionActive(event.newValue === 'true');
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
+  const hasSession = Boolean(user) || isAuthFn || demoSessionActive;
+  const showProfileNavigation = hasSession;
 
   // --- SPLASH CORREGIDO (Proporciones correctas) ---
   if (showSplash) {
@@ -179,9 +195,8 @@ const App = () => {
                         
                         {/* IMPORTANTE: bg-transparent para ver el video de fondo */}
                         <div className="min-h-screen bg-transparent relative">
-                          <RandomBackground className="pointer-events-none" />
-                          
                           <Router>
+                            <RandomBackground className="pointer-events-none" />
                             {!hasSession && <HeaderNav />}
                             
                             {/* Contenido centrado */}

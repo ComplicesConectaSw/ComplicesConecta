@@ -27,7 +27,6 @@ import { HoverEffect } from '@/components/ui/card-hover-effect';
 import { EventsCarousel } from '@/shared/ui/events-carousel';
 import { ComplianceSignupForm } from '@/shared/ui/compliance-signup-form';
 import { FileUpload } from '@/shared/ui/file-upload';
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalTrigger } from '@/components/modals/animated-modal';
 import { ParticlesBackground } from '@/components/ui/ParticlesBackground'; // Importar Wrapper
 import { cn } from '@/shared/lib/cn';
 
@@ -71,6 +70,14 @@ type PrivateImageItem = {
   userLiked?: boolean;
 };
 
+type ConfirmDialogState = {
+  open: boolean;
+  title: string;
+  description: string;
+  confirmLabel?: string;
+  onConfirm?: () => void;
+};
+
 // --- TOAST ---
 const Toast = ({ message, type, onClose }: { message: string, type: 'success' | 'error' | 'info', onClose: () => void }) => (
   <motion.div 
@@ -104,12 +111,18 @@ const ProfileSingle: React.FC = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('overview');
+  const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState>({ open: false, title: '', description: '' });
   const [showTopBanner, setShowTopBanner] = useState(true);
 
   const [isParentalLocked, setIsParentalLocked] = useState(() => {
     const saved = localStorage.getItem('parentalControlLocked');
     return saved !== null ? JSON.parse(saved) : true; 
   });
+
+  const [privateImageAccess, setPrivateImageAccess] = usePersistedState<'none' | 'pending' | 'approved' | 'denied'>(
+    'single_private_access',
+    'none',
+  );
 
   const [profileStats, setProfileStats] = useState({
     totalViews: 0, totalLikes: 0, totalMatches: 0, profileCompleteness: 0,
@@ -238,8 +251,28 @@ const ProfileSingle: React.FC = () => {
         setIsUploading(false); showToast("Imagen publicada", "success");
     }, 1500);
   };
-  const handleDeletePost = (postId: string) => { if (window.confirm('¿Eliminar?')) { setRecentActivity(prev => prev.filter(p => p.id !== postId)); showToast("Post eliminado", "success"); }};
-  const handleCommentPost = (postId: string) => { const c = prompt("Escribe..."); if(c) showToast("Enviado", "success"); };
+  const openConfirmDialog = (config: Omit<ConfirmDialogState, 'open'>) => {
+    setConfirmDialog({ open: true, ...config });
+  };
+
+  const closeConfirmDialog = () => {
+    setConfirmDialog((prev) => ({ ...prev, open: false, onConfirm: undefined }));
+  };
+
+  const handleDeletePost = (postId: string) => {
+    openConfirmDialog({
+      title: '¿Eliminar publicación?',
+      description: 'Esta acción no se puede deshacer.',
+      confirmLabel: 'Eliminar',
+      onConfirm: () => {
+        setRecentActivity(prev => prev.filter(p => p.id !== postId));
+        showToast('Post eliminado', 'success');
+      },
+    });
+  };
+  const handleCommentPost = (postId: string) => {
+    const c = prompt("Escribe...");
+    if(c) showToast("Enviado", "success"); };
   const handlePinSubmit = () => {
     if (pinInput === "1234") { setIsParentalLocked(false); localStorage.setItem('parentalControlLocked', 'false'); setShowPinModal(false); setPinInput(""); showToast("Desbloqueado", "success"); } 
     else { showToast("PIN incorrecto (1234)", "error"); setPinInput(""); }
@@ -319,7 +352,7 @@ const ProfileSingle: React.FC = () => {
       <div className="relative z-10 pb-20 px-2 sm:px-4 overflow-y-auto custom-scrollbar">
         <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 py-4">
           {/* TARJETA PRINCIPAL */}
-          <Card className="bg-white dark:bg-white/10 backdrop-blur-md border-gray-200 dark:border-white/20 shadow-lg dark:shadow-none">
+          <Card className="bg-white/5 text-white border-white/20 backdrop-blur-2xl shadow-[0_25px_60px_rgba(24,0,62,.45)]">
             <CardContent className="p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
                 <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-purple-100 dark:border-purple-500/30 shadow-2xl">
@@ -334,12 +367,12 @@ const ProfileSingle: React.FC = () => {
                 </div>
                 <div className="flex-1 text-center sm:text-left space-y-2">
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                    <Badge className="bg-purple-100 text-purple-700 dark:bg-white/10 dark:text-white border-0 hover:bg-purple-200">
+                    <Badge className="bg-white/15 text-white border border-white/20">
                       <MapPin className="w-3 h-3 mr-1" /> CDMX
                     </Badge>
                     <Badge
                       variant="outline"
-                      className="text-gray-700 border-gray-300 dark:text-white dark:border-white/40 dark:bg-white/5"
+                      className="text-white border-white/30 bg-white/10"
                     >
                       {displayAge} años
                     </Badge>
@@ -368,7 +401,7 @@ const ProfileSingle: React.FC = () => {
                     </Button>
                     <Button
                       onClick={() => navigator.clipboard.writeText(window.location.href)}
-                      className="bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-200 border-blue-200 dark:border-blue-400/30 flex items-center gap-2 text-sm px-3 py-2 border"
+                      className="bg-white/20 text-white border-white/30 hover:bg-white/30 flex items-center gap-2 text-sm px-3 py-2"
                     >
                       <Share2 className="w-4 h-4" /> <span className="hidden sm:inline">Compartir</span>
                     </Button>
@@ -376,7 +409,7 @@ const ProfileSingle: React.FC = () => {
                       url={window.location.href}
                       text={`Perfil de ${currentProfile.name}`}
                       hashtags={['ComplicesConecta']}
-                      className="bg-black/10 dark:bg-black/40 text-gray-900 dark:text-white border-gray-200 dark:border-white/30"
+                      className="bg-gradient-to-r from-purple-600 to-blue-600 text-white border border-white/30 shadow-[0_10px_25px_rgba(80,0,150,.45)]"
                       size="sm"
                     />
                     <Button
@@ -390,13 +423,18 @@ const ProfileSingle: React.FC = () => {
 
                     {isOwnProfile && (
                       <Button
-                        onClick={() => {
-                          if (window.confirm(isDemoActive ? '¿Salir del modo Demo?' : '¿Cerrar sesión?')) {
-                            localStorage.removeItem('demo_authenticated');
-                            localStorage.removeItem('demo_user');
-                            window.location.href = '/';
-                          }
-                        }}
+                        onClick={() =>
+                          openConfirmDialog({
+                            title: '¿Salir del modo Demo?',
+                            description: 'Perderás la sesión demo actual, pero puedes regresar cuando quieras.',
+                            confirmLabel: 'Salir',
+                            onConfirm: () => {
+                              localStorage.removeItem('demo_authenticated');
+                              localStorage.removeItem('demo_user');
+                              window.location.href = '/';
+                            },
+                          })
+                        }
                         className="bg-gray-200 dark:bg-gray-600/50 hover:bg-gray-300 dark:hover:bg-gray-700/80 text-gray-800 dark:text-white flex items-center gap-2 text-sm px-3 py-2 border border-gray-300 dark:border-white/10"
                       >
                         {isDemoActive ? (
@@ -424,7 +462,7 @@ const ProfileSingle: React.FC = () => {
               { icon: Users, label: 'Matches', value: profileStats.totalMatches, color: 'text-purple-400' },
               { icon: TrendingUp, label: 'Completo', value: `${profileStats.profileCompleteness}%`, color: 'text-green-400' }
             ].map((stat, idx) => (
-              <Card key={stat.label} className="bg-white/10 dark:bg-black/40 border-white/20 backdrop-blur-md shadow-md">
+              <Card key={stat.label} className="bg-white/10 border-white/20 backdrop-blur-xl shadow-[0_20px_40px_rgba(18,0,54,.35)] text-white">
                 <CardContent className="p-4 text-center">
                   <stat.icon className={`w-7 h-7 mx-auto mb-2 ${stat.color}`} />
                   <div className="text-2xl font-bold text-white">{stat.value}</div>
@@ -436,9 +474,9 @@ const ProfileSingle: React.FC = () => {
 
           {/* WALLET & COLECCIONABLES */}
           {isOwnProfile && (
-            <Card className="bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/50 dark:to-blue-900/50 border-purple-200 dark:border-purple-500/30 shadow-md">
+            <Card className="bg-white/5 border-white/20 text-white backdrop-blur-2xl shadow-[0_25px_50px_rgba(15,0,45,.45)]">
               <CardHeader>
-                <CardTitle className="text-purple-900 dark:text-white flex items-center gap-2">
+                <CardTitle className="text-white flex items-center gap-2">
                   <Wallet className="w-5 h-5" /> Wallet & Coleccionables
                 </CardTitle>
               </CardHeader>
@@ -714,10 +752,7 @@ const ProfileSingle: React.FC = () => {
                         variant="ghost"
                         size="sm"
                         className="text-gray-500 dark:text-white/50 hover:bg-gray-100 dark:hover:bg-white/10"
-                        onClick={() => {
-                          const c = prompt('Escribe tu comentario:');
-                          if (c) showToast('Comentario enviado', 'success');
-                        }}
+                        onClick={() => handleCommentPost(a.id)}
                       >
                         <MessageCircle className="w-4 h-4 mr-1" />
                       </Button>
@@ -801,10 +836,50 @@ const ProfileSingle: React.FC = () => {
           isOpen={showPrivateImageRequest}
           onClose={() => setShowPrivateImageRequest(false)}
           profileId={profile?.id || ''}
-          profileName={displayName}
+          profileName={profile?.name || ''}
           profileType="single"
-          onRequestSent={() => setShowPrivateImageRequest(false)}
+          onRequestSent={() => {
+            setPrivateImageAccess('pending');
+            setShowPrivateImageRequest(false);
+          }}
         />
+      )}
+
+      {confirmDialog.open && (
+        <AnimatePresence>
+          <motion.div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-md p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="w-full max-w-md rounded-3xl bg-[#100220]/95 border border-white/10 text-white shadow-[0_25px_80px_rgba(16,2,32,.65)] p-6 space-y-4"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+            >
+              <div>
+                <h3 className="text-2xl font-bold mb-1">{confirmDialog.title}</h3>
+                <p className="text-white/70 text-sm">{confirmDialog.description}</p>
+              </div>
+              <div className="flex gap-3 pt-2">
+                <Button variant="outline" className="flex-1 border-white/30 text-white" onClick={closeConfirmDialog}>
+                  Cancelar
+                </Button>
+                <Button
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600"
+                  onClick={() => {
+                    confirmDialog.onConfirm?.();
+                    closeConfirmDialog();
+                  }}
+                >
+                  {confirmDialog.confirmLabel || 'Confirmar'}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
       )}
 
       {/* PIN MODAL */}

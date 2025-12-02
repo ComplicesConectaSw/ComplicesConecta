@@ -146,15 +146,16 @@ export const Footer = () => {
             {/* Newsletter */}
             <div className="mt-6">
               <h5 className="font-medium mb-2 text-background">Newsletter</h5>
-              <div className="flex space-x-2">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <input 
                   type="email" 
                   placeholder="Tu email"
-                  className="flex-1 px-3 py-2 bg-background/10 border border-background/20 rounded-md text-background placeholder-background/60 focus:outline-none focus:border-primary"
+                  className="flex-1 px-3 py-2 bg-background/10 border border-background/20 rounded-md text-background placeholder-background/60 focus:outline-none focus:border-primary min-w-0"
                 />
                 <Button 
                   {...({variant: "love"} as any)} 
                   size="sm"
+                  className="w-full sm:w-auto"
                   onClick={() => {
                     const email = (document.querySelector('input[type="email"]') as HTMLInputElement)?.value;
                     if (email) {
@@ -167,6 +168,7 @@ export const Footer = () => {
                   Suscribirse
                 </Button>
               </div>
+              <p className="text-xs text-background/70 mt-2">Recibe alertas exclusivas sobre eventos, tokens CMPX y lanzamientos NFT.</p>
             </div>
           </div>
         </div>
