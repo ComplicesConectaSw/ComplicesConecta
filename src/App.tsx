@@ -19,7 +19,7 @@ import { AppFactory } from '@/demo/AppFactory';
 import { useAuth } from '@/features/auth/useAuth';
 import Navigation from '@/components/Navigation';
 import HeaderNav from '@/components/HeaderNav';
-
+import { ParticlesBackground } from '@/components/ui/ParticlesBackground';
 
 // ============================================================================
 // ESTRATEGIA DE CARGA DE PÁGINAS
@@ -167,140 +167,134 @@ const App = () => {
                 <AnimationProvider>
                   <NotificationProvider>
                     <AppFactory>
-                    <div className="min-h-[100dvh] w-full bg-black text-white pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
-                      <div className="min-h-full bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 dark:from-gray-950 dark:via-purple-950 dark:to-black transition-colors duration-500 relative overflow-hidden pb-24">
-                        {/* AnimatedBackground disabled to prevent ghost elements */}
-                        {/* <AnimatedBackground /> */}
-                        {/* FloatingParticles disabled to prevent ghost elements */}
-                        {/* <FloatingParticles count={15} /> */}
-                        <AnimationSettingsButton />
-                        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-                          {/* Navbar condicional según estado de sesión */}
-                       
-                          {!hasSession && <HeaderNav />}
-
-                          <PageTransitionWrapper>
-                            <Suspense fallback={<PageLoader />}>
-                              <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/auth" element={
-                    <ProtectedRoute requireAuth={false}>
-                      <Auth />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/demo" element={<Demo />} />
-                  <Route path="/faq" element={<FAQ />} />
-                  <Route path="/feed" element={<Feed />} />
-                  <Route path="/profiles" element={<Profiles />} />
-                  <Route path="/profile/:id" element={<ProfileDetail />} />
-                  <Route path="/profile" element={<ProfileSingle />} />
-                  <Route path="/profile-single" element={<ProfileSingle />} />
-                  <Route path="/profile-couple" element={<ProfileCouple />} />
-                  <Route path="/edit-profile-single" element={<EditProfileSingle />} />
-                  <Route path="/edit-profile-couple" element={<EditProfileCouple />} />
-                  <Route path="/events" element={<Events />} />
-                  <Route path="/chat" element={<_Chat />} />
-                  <Route path="/chat-info" element={<_ChatInfo />} />
-                  <Route path="/matches" element={<_Matches />} />
-                  <Route path="/requests" element={<_Requests />} />
-                  <Route path="/discover" element={<Discover />} />
-                  <Route path="/stories" element={<Stories />} />
-                  <Route path="/stories/info" element={<StoriesInfo />} />
-                  <Route path="/stories/features" element={<StoriesInfo />} />
-                  <Route path="/stories/benefits" element={<StoriesInfo />} />
-                  <Route path="/tokens" element={<Tokens />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/premium" element={<Premium />} />
-                  <Route path="/dashboard" element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/support" element={<Support />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/tokens-info" element={<TokensInfo />} />
-                  <Route path="/tokens-privacy" element={<TokensPrivacy />} />
-                  <Route path="/tokens-terms" element={<TokensTerms />} />
-                  <Route path="/tokens-legal" element={<TokensLegal />} />
-                  <Route path="/shop" element={<Shop />} />
-                  <Route path="/project-info" element={<ProjectInfo />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="/admin-production" element={<AdminProduction />} />
-                  <Route path="/security" element={<Security />} />
-                  <Route path="/guidelines" element={<Guidelines />} />
-                  <Route path="/legal" element={<Legal />} />
-                  <Route path="/video-chat" element={<VideoChat />} />
-                  <Route path="/vip-events" element={<VIPEvents />} />
-                  <Route path="/virtual-gifts" element={<VirtualGifts />} />
-                  <Route path="/marketplace" element={<Marketplace />} />
-                  <Route path="/info" element={<Info />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/careers" element={<Careers />} />
-                  <Route path="/admin/career-applications" element={
-                    <AdminRoute>
-                      <AdminCareerApplications />
-                    </AdminRoute>
-                  } />
-                  <Route path="/admin/moderators" element={
-                    <AdminRoute>
-                      <AdminModerators />
-                    </AdminRoute>
-                  } />
-                  <Route path="/admin/analytics" element={
-                    <AdminRoute>
-                      <AdminAnalytics />
-                    </AdminRoute>
-                  } />
-                  <Route path="/admin/partners" element={
-                    <AdminRoute>
-                      <AdminPartners />
-                    </AdminRoute>
-                  } />
-                  <Route path="/clubs" element={<Clubs />} />
-                  <Route path="/clubs/:slug" element={<Clubs />} />
-                  <Route path="/moderators/dashboard" element={
-                    <ModeratorRoute>
-                      <ModeratorDashboard />
-                    </ModeratorRoute>
-                  } />
-                  <Route path="/moderators" element={<Moderators />} />
-                  <Route path="/moderator-request" element={<ModeratorRequest />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
-                  <Route path="/donations" element={<Donations />} />
-                  <Route path="/invest" element={<Invest />} />
-                  <Route path="/template-demo" element={<TemplateDemo />} />
-                  <Route path="/news" element={<News />} />
-                  <Route path="/investors" element={<Investors />} />
-                  <Route path="/nfts" element={<NFTs />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                            </Routes>
-                          </Suspense>
-                        </PageTransitionWrapper>
-
-                        {/* Navegación condicional: 
-                           - Visitante (sin sesión): HeaderNav ya renderizado arriba
-                           - Usuario con sesión/perfil: Navigation inferior */}
-                        {hasSession && showProfileNavigation && (
-                          <div className="fixed bottom-0 left-0 right-0 z-50">
-                            <Navigation />
-                          </div>
-                        )}
-                      </Router>
-                      <Toaster />
-                    </div>
-                  </div>
-                </AppFactory>
-                </NotificationProvider>
-              </AnimationProvider>
-            </MobileOptimizer>
-          </AccessibilityEnhancer>
-        </CrossBrowserOptimizer>
-      </ThemeProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+                      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                          <ParticlesBackground>
+                            <Router>
+                              {/* Navbar condicional según estado de sesión */}
+                              {!hasSession && <HeaderNav />}
+                              <PageTransitionWrapper>
+                                <Suspense fallback={<PageLoader />}>
+                                  <Routes>
+                                    <Route path="/" element={<Index />} />
+                                    <Route path="/auth" element={
+                                      <ProtectedRoute requireAuth={false}>
+                                        <Auth />
+                                      </ProtectedRoute>
+                                    } />
+                                    <Route path="/demo" element={<Demo />} />
+                                    <Route path="/faq" element={<FAQ />} />
+                                    <Route path="/feed" element={<Feed />} />
+                                    <Route path="/profiles" element={<Profiles />} />
+                                    <Route path="/profile/:id" element={<ProfileDetail />} />
+                                    <Route path="/profile" element={<ProfileSingle />} />
+                                    <Route path="/profile-single" element={<ProfileSingle />} />
+                                    <Route path="/profile-couple" element={<ProfileCouple />} />
+                                    <Route path="/edit-profile-single" element={<EditProfileSingle />} />
+                                    <Route path="/edit-profile-couple" element={<EditProfileCouple />} />
+                                    <Route path="/events" element={<Events />} />
+                                    <Route path="/chat" element={<_Chat />} />
+                                    <Route path="/chat-info" element={<_ChatInfo />} />
+                                    <Route path="/matches" element={<_Matches />} />
+                                    <Route path="/requests" element={<_Requests />} />
+                                    <Route path="/discover" element={<Discover />} />
+                                    <Route path="/stories" element={<Stories />} />
+                                    <Route path="/stories/info" element={<StoriesInfo />} />
+                                    <Route path="/stories/features" element={<StoriesInfo />} />
+                                    <Route path="/stories/benefits" element={<StoriesInfo />} />
+                                    <Route path="/tokens" element={<Tokens />} />
+                                    <Route path="/settings" element={<Settings />} />
+                                    <Route path="/premium" element={<Premium />} />
+                                    <Route path="/dashboard" element={
+                                      <ProtectedRoute>
+                                        <Dashboard />
+                                      </ProtectedRoute>
+                                    } />
+                                    <Route path="/support" element={<Support />} />
+                                    <Route path="/terms" element={<Terms />} />
+                                    <Route path="/privacy" element={<Privacy />} />
+                                    <Route path="/tokens-info" element={<TokensInfo />} />
+                                    <Route path="/tokens-privacy" element={<TokensPrivacy />} />
+                                    <Route path="/tokens-terms" element={<TokensTerms />} />
+                                    <Route path="/tokens-legal" element={<TokensLegal />} />
+                                    <Route path="/shop" element={<Shop />} />
+                                    <Route path="/project-info" element={<ProjectInfo />} />
+                                    <Route path="/admin" element={<Admin />} />
+                                    <Route path="/admin-production" element={<AdminProduction />} />
+                                    <Route path="/security" element={<Security />} />
+                                    <Route path="/guidelines" element={<Guidelines />} />
+                                    <Route path="/legal" element={<Legal />} />
+                                    <Route path="/video-chat" element={<VideoChat />} />
+                                    <Route path="/vip-events" element={<VIPEvents />} />
+                                    <Route path="/virtual-gifts" element={<VirtualGifts />} />
+                                    <Route path="/marketplace" element={<Marketplace />} />
+                                    <Route path="/info" element={<Info />} />
+                                    <Route path="/about" element={<About />} />
+                                    <Route path="/careers" element={<Careers />} />
+                                    <Route path="/admin/career-applications" element={
+                                      <AdminRoute>
+                                        <AdminCareerApplications />
+                                      </AdminRoute>
+                                    } />
+                                    <Route path="/admin/moderators" element={
+                                      <AdminRoute>
+                                        <AdminModerators />
+                                      </AdminRoute>
+                                    } />
+                                    <Route path="/admin/analytics" element={
+                                      <AdminRoute>
+                                        <AdminAnalytics />
+                                      </AdminRoute>
+                                    } />
+                                    <Route path="/admin/partners" element={
+                                      <AdminRoute>
+                                        <AdminPartners />
+                                      </AdminRoute>
+                                    } />
+                                    <Route path="/clubs" element={<Clubs />} />
+                                    <Route path="/clubs/:slug" element={<Clubs />} />
+                                    <Route path="/moderators/dashboard" element={
+                                      <ModeratorRoute>
+                                        <ModeratorDashboard />
+                                      </ModeratorRoute>
+                                    } />
+                                    <Route path="/moderators" element={<Moderators />} />
+                                    <Route path="/moderator-request" element={<ModeratorRequest />} />
+                                    <Route path="/blog" element={<Blog />} />
+                                    <Route path="/chat-authenticated" element={<ChatAuthenticated />} />
+                                    <Route path="/donations" element={<Donations />} />
+                                    <Route path="/invest" element={<Invest />} />
+                                    <Route path="/template-demo" element={<TemplateDemo />} />
+                                    <Route path="/news" element={<News />} />
+                                    <Route path="/investors" element={<Investors />} />
+                                    <Route path="/nfts" element={<NFTs />} />
+                                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                                    <Route path="*" element={<NotFound />} />
+                                  </Routes>
+                                </Suspense>
+                              </PageTransitionWrapper>
+                              {/* Navegación condicional: 
+                                 - Visitante (sin sesión): HeaderNav ya renderizado arriba
+                                 - Usuario con sesión/perfil: Navigation inferior */}
+                              {hasSession && showProfileNavigation && (
+                                <div className="fixed bottom-0 left-0 right-0 z-50">
+                                  <Navigation />
+                                </div>
+                              )}
+                            </Router>
+                            <Toaster />
+                          </ParticlesBackground>
+                        </div>
+                      </div>
+                    </AppFactory>
+                  </NotificationProvider>
+                </AnimationProvider>
+              </MobileOptimizer>
+            </AccessibilityEnhancer>
+          </CrossBrowserOptimizer>
+        </ThemeProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 };
 

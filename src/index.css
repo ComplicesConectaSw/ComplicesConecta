@@ -17,6 +17,22 @@
   animation-delay: 0.1s;
 }
 
+/* Glow pulsante para fondos */
+.animate-glow-low {
+  animation: glow 8s ease-in-out infinite;
+}
+.animate-glow-medium {
+  animation: glow 5s ease-in-out infinite;
+}
+.animate-glow-high {
+  animation: glow 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
 .animate-delay-200 {
   animation-delay: 0.2s;
 }
