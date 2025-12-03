@@ -1,6 +1,8 @@
 import '@/lib/wallet-silencer'
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
+import { Capacitor, registerPlugin } from '@capacitor/core';
+import { IsRoot } from '@capgo/capacitor-is-root';
 import type { WindowWithReact } from '@/types/react.types'
 import { suppressWalletErrors } from '@/utils/suppress-wallet-errors'
 import { startErrorCapture } from '@/utils/captureConsoleErrors';
@@ -11,7 +13,38 @@ startErrorCapture();
 // CRÍTICO: Silenciar errores de wallet ANTES de cualquier otra cosa.
 suppressWalletErrors();
 
+type CapacitorAppPlugin = {
+  exitApp: () => Promise<void>;
+};
+
+type DialogPlugin = {
+  alert: (options: { title?: string; message: string; buttonTitle?: string }) => Promise<void>;
+};
+
+const CapacitorApp = registerPlugin<CapacitorAppPlugin>('App');
+const Dialog = registerPlugin<DialogPlugin>('Dialog');
+
 const { StrictMode } = React
+
+const guardRootDevices = async () => {
+  if (!Capacitor.isNativePlatform()) return;
+  try {
+    const result = await IsRoot.isRooted();
+    const isRooted = (result as any)?.root ?? (result as any)?.rooted ?? (result as any)?.isRooted ?? false;
+    if (isRooted) {
+      await Dialog.alert({
+        title: 'Seguridad',
+        message: 'El dispositivo está rooteado. Cerraremos la app por protección.',
+        buttonTitle: 'Cerrar'
+      });
+      await CapacitorApp.exitApp();
+    }
+  } catch (error) {
+    console.warn('[RootGuard] check failed', error);
+  }
+};
+
+guardRootDevices();
 
 // CRÍTICO: Verificar que React esté completamente disponible
 if (!React || !React.createElement || !React.useEffect || !React.useState) {

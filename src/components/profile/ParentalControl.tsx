@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, Unlock, Baby, Clock, Shield } from 'lucide-react';
 import { Button } from '@/shared/ui/Button';
@@ -13,51 +13,81 @@ interface ParentalControlProps {
   onUnlock?: () => void;
 }
 
+type RestrictionLevel = 'soft' | 'normal' | 'strict';
+
+const LEVEL_DURATIONS: Record<RestrictionLevel, number> = {
+  strict: 60,
+  normal: 180,
+  soft: 360,
+};
+
+const DEFAULT_PIN = '1234';
+
+const useLazyLockTimer = (onExpire: () => void) => {
+  const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const clear = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setSecondsLeft(null);
+  }, []);
+
+  const start = useCallback(
+    (duration: number) => {
+      clear();
+      setSecondsLeft(duration);
+      intervalRef.current = setInterval(() => {
+        setSecondsLeft((prev) => {
+          if (prev === null) return prev;
+          if (prev <= 1) {
+            clear();
+            onExpire();
+            return null;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    },
+    [clear, onExpire]
+  );
+
+  useEffect(() => () => clear(), [clear]);
+
+  return { secondsLeft, start, clear };
+};
+
 export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalControlProps) => {
   const [showPinInput, setShowPinInput] = useState(false);
   const [pin, setPin] = useState('');
-  const [savedPin, setSavedPin] = useState(localStorage.getItem('parentalPin') || '1234');
-  const [_autoLockTimer, _setAutoLockTimer] = useState<NodeJS.Timeout | null>(null);
-  const [timeRemaining, setTimeRemaining] = useState(0);
-  const [restrictionLevel, setRestrictionLevel] = useState<'soft' | 'medium' | 'strict'>(
-    (localStorage.getItem('restrictionLevel') as any) || 'medium'
-  );
-
-  // Auto-lock después de 5 minutos de inactividad
-  const AUTO_LOCK_TIME = 5 * 60 * 1000; // 5 minutos
+  const [restrictionLevel, setRestrictionLevel] = useState<RestrictionLevel>('strict');
+  const { secondsLeft, start, clear } = useLazyLockTimer(() => {
+    onToggle(true);
+  });
 
   useEffect(() => {
-    if (!isLocked && restrictionLevel !== 'soft') {
-      // Iniciar timer de auto-lock
-      const timer = setTimeout(() => {
-        onToggle(true);
-        setTimeRemaining(0);
-      }, AUTO_LOCK_TIME);
-      
-      _setAutoLockTimer(timer);
-      setTimeRemaining(AUTO_LOCK_TIME);
-
-      // Countdown timer
-      const countdown = setInterval(() => {
-        setTimeRemaining(prev => {
-          if (prev <= 1000) {
-            clearInterval(countdown);
-            return 0;
-          }
-          return prev - 1000;
-        });
-      }, 1000);
-
-      return () => {
-        clearTimeout(timer);
-        clearInterval(countdown);
-      };
+    if (isLocked) {
+      clear();
+      setShowPinInput(false);
+      setPin('');
     }
-  }, [isLocked, restrictionLevel, onToggle]);
+  }, [isLocked, clear]);
+
+  const countdownLabel = useMemo(() => {
+    if (secondsLeft === null) return null;
+    const minutes = Math.floor(secondsLeft / 60)
+      .toString()
+      .padStart(2, '0');
+    const seconds = (secondsLeft % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  }, [secondsLeft]);
 
   const handlePinSubmit = () => {
-    if (pin === savedPin) {
+    if (pin === DEFAULT_PIN) {
       onToggle(false);
+      start(LEVEL_DURATIONS[restrictionLevel]);
       setShowPinInput(false);
       setPin('');
       if (onUnlock) onUnlock();
@@ -67,26 +97,17 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
     }
   };
 
-  const handlePinChange = (newPin: string) => {
-    setSavedPin(newPin);
-    localStorage.setItem('parentalPin', newPin);
-  };
-
-  const handleRestrictionChange = (level: 'soft' | 'medium' | 'strict') => {
+  const handleRestrictionChange = (level: RestrictionLevel) => {
     setRestrictionLevel(level);
-    localStorage.setItem('restrictionLevel', level);
-  };
-
-  const formatTime = (ms: number) => {
-    const minutes = Math.floor(ms / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    if (secondsLeft !== null) {
+      start(LEVEL_DURATIONS[level]);
+    }
   };
 
   const getRestrictionColor = (level: string) => {
     switch (level) {
       case 'soft': return 'bg-gradient-to-r from-green-500 to-emerald-500';
-      case 'medium': return 'bg-gradient-to-r from-yellow-500 to-orange-500';
+      case 'normal': return 'bg-gradient-to-r from-yellow-500 to-orange-500';
       case 'strict': return 'bg-gradient-to-r from-red-500 to-pink-500';
       default: return 'bg-gradient-to-r from-gray-500 to-slate-500';
     }
@@ -94,9 +115,9 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
 
   const getRestrictionDescription = (level: string) => {
     switch (level) {
-      case 'soft': return '⚡ Suave - Contenido sensible oculto, sin auto-bloqueo';
-      case 'medium': return '🛡️ Moderado - Auto-bloqueo en 5 min de inactividad';
-      case 'strict': return '🔒 Estricto - Máxima protección + Auto-bloqueo 5 min';
+      case 'soft': return '⚡ Suave · 360s de acceso supervisado';
+      case 'normal': return '🛡️ Normal · 180s de acceso';
+      case 'strict': return '🔒 Estricto · 60s antes del relock';
       default: return '⚙️ Configuración personalizada';
     }
   };
@@ -226,23 +247,23 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
       </div>
 
       {/* Temporizador de auto-bloqueo */}
-      {timeRemaining > 0 && restrictionLevel !== 'soft' && (
+      {countdownLabel && (
         <div className="flex items-center gap-2 text-sm text-amber-300 bg-amber-500/10 p-3 rounded-xl border border-amber-500/30">
           <Clock className="h-4 w-4" />
-          <span>Auto-bloqueo en: {formatTime(timeRemaining)}</span>
+          <span>Auto-bloqueo en: {countdownLabel}</span>
         </div>
       )}
 
       {/* Barra de Nivel (Selector) */}
       <div className="grid grid-cols-3 gap-2 p-1 rounded-xl bg-black/60 border border-white/10">
-        {(['soft', 'medium', 'strict'] as const).map((level) => {
+        {(['soft', 'normal', 'strict'] as const).map((level) => {
           const label = level.charAt(0).toUpperCase() + level.slice(1);
           const tooltipText =
             level === 'soft'
-              ? 'Ligero: Solo aplica sobre la galería privada, sin bloqueo al iniciar sesión.'
+              ? 'Ligero: 360 segundos antes del siguiente bloqueo.'
               : level === 'strict'
-                ? 'Estricto: El perfil puede iniciar bloqueado desde login y requiere PIN siempre.'
-                : 'Moderado: Auto-bloqueo en 5 minutos, recomendado para la mayoría de usuarios.';
+                ? 'Estricto: 60 segundos de ventana segura.'
+                : 'Normal: 180 segundos balanceado.';
 
           return (
             <TooltipProvider key={level}>
@@ -286,20 +307,17 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
         <Button
           variant="outline"
           className="border-red-500/40 text-red-400 hover:bg-red-500/10 hover:border-red-400/60"
-          onClick={() => onToggle(true)}
+          onClick={() => {
+            onToggle(true);
+            clear();
+          }}
         >
           <Lock className="w-4 h-4 mr-2" /> Bloquear Ahora
         </Button>
         <Button
           variant="outline"
           className="border-white/20 text-zinc-200 hover:bg-white/5"
-          onClick={() => {
-            const newPin = prompt('Nuevo PIN (4 dígitos):', savedPin);
-            if (newPin && newPin.length === 4 && /^\d+$/.test(newPin)) {
-              handlePinChange(newPin);
-              alert('PIN actualizado');
-            }
-          }}
+          onClick={() => alert('PIN fijo 1234 (configurable en iteraciones futuras)')}
         >
           Cambiar PIN
         </Button>
@@ -317,9 +335,9 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
         </div>
         
         <div className="space-y-1">
-          <p className="font-bold text-amber-300">🟡 MODERADO (Recomendado):</p>
+          <p className="font-bold text-amber-300">🟡 NORMAL (Recomendado):</p>
           <ul className="ml-4 space-y-0.5 text-zinc-300">
-            <li>• Auto-bloqueo tras 5 min de inactividad</li>
+            <li>• Auto-bloqueo tras 180 segundos</li>
             <li>• Temporizador visible en pantalla</li>
             <li>• Balance entre seguridad y comodidad</li>
           </ul>
@@ -337,7 +355,7 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
         
         <p className="mt-2 pt-2 border-t border-white/10">
           <strong>📌 PIN actual:</strong>{' '}
-          <span className="font-mono bg-white/10 px-2 py-0.5 rounded border border-white/20">{savedPin}</span>
+          <span className="font-mono bg-white/10 px-2 py-0.5 rounded border border-white/20">{DEFAULT_PIN}</span>
           <br />
           <span className="text-zinc-500 text-[11px]">Click en "Cambiar PIN" para modificar</span>
         </p>
