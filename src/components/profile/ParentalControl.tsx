@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/shared/lib/cn';
+import { ThemeConfig } from '../../theme/ThemeConfig';
 
 interface ParentalControlProps {
   isLocked: boolean;
@@ -104,12 +105,15 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
     }
   };
 
-  const getRestrictionColor = (level: string) => {
+  const restrictionGradient = (level: RestrictionLevel) => {
     switch (level) {
-      case 'soft': return 'bg-gradient-to-r from-green-500 to-emerald-500';
-      case 'normal': return 'bg-gradient-to-r from-yellow-500 to-orange-500';
-      case 'strict': return 'bg-gradient-to-r from-red-500 to-pink-500';
-      default: return 'bg-gradient-to-r from-gray-500 to-slate-500';
+      case 'soft':
+        return cn('bg-gradient-to-r', ThemeConfig.statusGradients.soft);
+      case 'normal':
+        return cn('bg-gradient-to-r', ThemeConfig.statusGradients.normal);
+      case 'strict':
+      default:
+        return cn('bg-gradient-to-r', ThemeConfig.statusGradients.strict);
     }
   };
 
@@ -129,11 +133,11 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xl flex items-center justify-center p-4"
+          className={cn('fixed inset-0 z-50 flex items-center justify-center p-4', ThemeConfig.blurClasses.lockedOverlay)}
         >
           <Card className="w-full max-w-md bg-gradient-to-br from-purple-900/95 via-purple-800/95 to-blue-900/95 backdrop-blur-xl border border-white/20 shadow-2xl shadow-purple-900/50">
             <CardHeader className="text-center">
-              <div className="mx-auto mb-4 p-4 bg-gradient-to-br from-red-500/20 to-orange-500/20 backdrop-blur-sm rounded-full w-fit border border-red-400/30">
+              <div className="mx-auto mb-4 p-4 rounded-full w-fit border border-red-400/30" style={{ background: 'linear-gradient(120deg, rgba(239,68,68,0.2), rgba(249,115,22,0.2))' }}>
                 <Baby className="h-8 w-8 text-red-400" />
               </div>
               <CardTitle className="text-xl font-bold text-white drop-shadow-lg">
@@ -146,7 +150,7 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
             
             <CardContent className="space-y-6">
               <div className="text-center">
-                <Badge className={`${getRestrictionColor(restrictionLevel)} text-white font-semibold px-4 py-2 text-sm backdrop-blur-sm border border-white/20`}>
+                <Badge className={cn(restrictionGradient(restrictionLevel), 'text-white font-semibold px-4 py-2 text-sm backdrop-blur-sm border border-white/20')}>
                   Nivel: {restrictionLevel.charAt(0).toUpperCase() + restrictionLevel.slice(1)}
                 </Badge>
                 <div className="mt-2 text-xs text-white/70">
@@ -166,7 +170,10 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
                 {!showPinInput ? (
                   <Button
                     onClick={() => setShowPinInput(true)}
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-xl backdrop-blur-sm border border-white/20 shadow-lg shadow-blue-500/25 transition-all duration-300 hover:scale-105"
+                    className={cn(
+                      'w-full text-white font-semibold py-3 rounded-xl backdrop-blur-sm border border-white/20 shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r',
+                      ThemeConfig.palette.glassGradient
+                    )}
                   >
                     <Unlock className="h-5 w-5 mr-2" />
                     🔓 Desbloquear Contenido
@@ -202,11 +209,12 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
                       <Button
                         onClick={handlePinSubmit}
                         disabled={pin.length !== 4}
-                        className={`flex-1 rounded-xl py-3 font-semibold transition-all duration-300 ${
-                          pin.length === 4 
-                            ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg shadow-green-500/25 hover:scale-105' 
+                        className={cn(
+                          'flex-1 rounded-xl py-3 font-semibold transition-all duration-300',
+                          pin.length === 4
+                            ? ['bg-gradient-to-r', ThemeConfig.statusGradients.soft, 'text-white shadow-lg hover:scale-105']
                             : 'bg-white/10 text-white/50 cursor-not-allowed backdrop-blur-sm border border-white/20'
-                        }`}
+                        )}
                       >
                         ✅ Confirmar
                       </Button>
@@ -228,7 +236,7 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
 
   // Panel de configuración cuando está desbloqueado
   return (
-    <div className="w-full space-y-6 p-6 rounded-3xl bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+    <div className={cn('w-full space-y-6 p-6 rounded-3xl shadow-2xl', ThemeConfig.blurClasses.glassPanel)}>
       {/* Encabezado */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
