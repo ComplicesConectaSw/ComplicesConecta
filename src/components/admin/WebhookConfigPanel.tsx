@@ -10,12 +10,12 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  PlusIcon,
-  TrashIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-  CogIcon
-} from '@heroicons/react/24/outline';
+  Plus,
+  Trash2,
+  CheckCircle,
+  XCircle,
+  Cog
+} from 'lucide-react';
 
 import webhookService, {
   type WebhookConfig,
@@ -166,7 +166,7 @@ export const WebhookConfigPanel: React.FC = () => {
             onClick={() => setShowForm(true)}
             className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
-            <PlusIcon className="w-5 h-5" />
+            <Plus className="w-5 h-5" />
             <span>Agregar Webhook</span>
           </button>
         )}
@@ -372,37 +372,31 @@ export const WebhookConfigPanel: React.FC = () => {
               <div className="flex items-center space-x-2 ml-4">
                 <button
                   onClick={() => handleToggle(webhook.id, !webhook.enabled)}
-                  className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                  title={webhook.enabled ? 'Desactivar' : 'Activar'}
+                  className={`px-3 py-1 rounded-full text-xs font-semibold ${webhook.enabled ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
                 >
-                  {webhook.enabled ? (
-                    <CheckCircleIcon className="w-5 h-5" />
-                  ) : (
-                    <XCircleIcon className="w-5 h-5" />
-                  )}
+                  {webhook.enabled ? 'Activo' : 'Inactivo'}
                 </button>
-                <button
-                  onClick={() => handleEdit(webhook)}
-                  className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                  title="Editar"
-                >
-                  <CogIcon className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => handleTest(webhook.id)}
-                  disabled={testingId === webhook.id}
-                  className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
-                  title="Probar webhook"
-                >
-                  {testingId === webhook.id ? '⏳' : '🧪 Test'}
-                </button>
-                <button
-                  onClick={() => handleDelete(webhook.id)}
-                  className="p-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors"
-                  title="Eliminar"
-                >
-                  <TrashIcon className="w-5 h-5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleEdit(webhook)}
+                    className="px-3 py-1 text-sm text-blue-600 hover:text-blue-800"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleTest(webhook.id)}
+                    className="px-3 py-1 text-sm text-purple-600 hover:text-purple-800"
+                    disabled={testingId === webhook.id}
+                  >
+                    {testingId === webhook.id ? 'Probando...' : 'Probar'}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(webhook.id)}
+                    className="p-2 text-red-600 hover:text-red-800"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
