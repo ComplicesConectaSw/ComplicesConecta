@@ -24,7 +24,8 @@ variables:
 .node_job: &node_job
   image: node:18-alpine
   before_script:
-    - npm ci --cache .npm --prefer-offline
+    - corepack enable pnpm
+    - pnpm install --frozen-lockfile --prefer-offline
     - export PATH="$PATH:$(pwd)/node_modules/.bin"
   <<: *node_cache
 
@@ -33,8 +34,8 @@ lint:
   <<: *node_job
   stage: quality
   script:
-    - npm run lint
-    - npm run type-check
+    - pnpm run lint
+    - pnpm run type-check
   artifacts:
     reports:
       junit: reports/lint-results.xml
@@ -51,7 +52,7 @@ build:
   <<: *node_job
   stage: build
   script:
-    - npm run build
+    - pnpm run build
   artifacts:
     paths:
       - dist/
@@ -63,7 +64,7 @@ unit_tests:
   <<: *node_job
   stage: test
   script:
-    - npm run test -- --coverage --reporter=junit --outputFile=reports/unit-tests.xml
+    - pnpm run test -- --coverage --reporter=junit --outputFile=reports/unit-tests.xml
   coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
   artifacts:
     reports:
@@ -82,7 +83,7 @@ e2e_tests:
   stage: test
   script:
     - npx playwright install --with-deps
-    - npm run test:e2e
+    - pnpm run test:e2e
   artifacts:
     when: always
     paths:
@@ -97,8 +98,8 @@ security_audit:
   <<: *node_job
   stage: security
   script:
-    - npm audit --audit-level=moderate
-    - npm run audit:repo
+    - pnpm audit --audit-level=moderate
+    - pnpm run audit:repo
   artifacts:
     reports:
       junit: reports/security-audit.xml
@@ -116,13 +117,15 @@ deploy_staging:
     - apk add --no-cache curl
   script:
     - echo "Deploying to staging environment..."
-    - curl -X POST "$STAGING_WEBHOOK_URL" -H "Authorization: Bearer $STAGING_TOKEN"
+    - "curl -X POST \"$STAGING_WEBHOOK_URL\" -H 'Authorization: Bearer $STAGING_TOKEN'"
   environment:
     name: staging
     url: https://staging.complicesconecta.app
-  needs: ["build", "unit_tests"]
+  needs:
+    - build
+    - unit_tests
   rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: '$CI_COMMIT_BRANCH == "develop"'
 
 # Stage 5: Deploy a producción (main branch)
 deploy_production:
@@ -132,13 +135,17 @@ deploy_production:
     - apk add --no-cache curl
   script:
     - echo "Deploying to production environment..."
-    - curl -X POST "$PRODUCTION_WEBHOOK_URL" -H "Authorization: Bearer $PRODUCTION_TOKEN"
+    - "curl -X POST \"$PRODUCTION_WEBHOOK_URL\" -H 'Authorization: Bearer $PRODUCTION_TOKEN'"
   environment:
     name: production
     url: https://complicesconecta.app
-  needs: ["build", "unit_tests", "e2e_tests", "security_audit"]
+  needs:
+    - build
+    - unit_tests
+    - e2e_tests
+    - security_audit
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: '$CI_COMMIT_BRANCH == "main"'
   when: manual
 
 # Job para generar reporte final

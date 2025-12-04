@@ -22,22 +22,23 @@ jobs:
           name: Install Dependencies
           command: |
             cd ~/project
-            npm ci
+            corepack enable pnpm
+            pnpm install --frozen-lockfile
       - run:
           name: Type Check
           command: |
             cd ~/project
-            npm run type-check
+            pnpm run type-check
       - run:
           name: Lint
           command: |
             cd ~/project
-            npm run lint
+            pnpm run lint
       - run:
           name: Build
           command: |
             cd ~/project
-            npm run build
+            pnpm run build
 
 workflows:
   version: 2
