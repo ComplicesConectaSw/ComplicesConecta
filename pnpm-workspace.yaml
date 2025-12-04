@@ -1,3 +1,17 @@
 onlyBuiltDependencies:
+  - '@newrelic/fn-inspect'
+  - '@newrelic/native-metrics'
+  - '@sentry/cli'
   - '@tsparticles/engine'
+  - bufferutil
+  - canvas
+  - core-js
+  - esbuild
+  - onnxruntime-node
+  - protobufjs
   - react-tsparticles
+  - sharp
+  - tsparticles-engine
+  - unrs-resolver
+  - utf-8-validate
+  - yarn
