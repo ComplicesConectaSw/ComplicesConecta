@@ -254,19 +254,24 @@ Fecha: ${new Date().toLocaleString()}
         
         {/* Floating Hearts */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(8)].map((_, i) => (
-            <Heart 
-              key={i}
-              className={`absolute text-primary/10 animate-float-slow`}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 2}s`,
-                fontSize: `${Math.random() * 20 + 10}px`
-              }}
-              fill="currentColor"
-            />
-          ))}
+          {[...Array(8)].map((_, i) => {
+            const left = (i * 21) % 100;
+            const top = (i * 33) % 100;
+            const size = 10 + (i * 3) % 20;
+            return (
+              <Heart 
+                key={i}
+                className={`absolute text-primary/10 animate-float-slow`}
+                style={{
+                  left: `${left}%`,
+                  top: `${top}%`,
+                  animationDelay: `${i * 2}s`,
+                  fontSize: `${size}px`
+                }}
+                fill="currentColor"
+              />
+            );
+          })}
         </div>
       </div>
       

@@ -19,9 +19,8 @@ const Events = () => {
   const [ageVerified, setAgeVerified] = usePersistedState<boolean>('ageVerified', false);
 
   useEffect(() => {
-    // Check if user has confirmed age verification
-    if (_searchQuery.trim()) {
-      setShowAgeModal(true);
+    if (!ageVerified) {
+      logger.info('Edad no verificada para contenido Events');
     }
   }, [ageVerified]);
 
@@ -251,19 +250,24 @@ const Events = () => {
         
         {/* Floating Hearts */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(6)].map((_, i) => (
-            <Heart 
-              key={i}
-              className={`absolute text-primary/10 animate-float-slow`}
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 2}s`,
-                fontSize: `${Math.random() * 20 + 10}px`
-              }}
-              fill="currentColor"
-            />
-          ))}
+          {[...Array(6)].map((_, i) => {
+            const left = (i * 19) % 100;
+            const top = (i * 27) % 100;
+            const size = 10 + (i * 4) % 20;
+            return (
+              <Heart 
+                key={i}
+                className={`absolute text-primary/10 animate-float-slow`}
+                style={{
+                  left: `${left}%`,
+                  top: `${top}%`,
+                  animationDelay: `${i * 2}s`,
+                  fontSize: `${size}px`
+                }}
+                fill="currentColor"
+              />
+            );
+          })}
         </div>
       </div>
       

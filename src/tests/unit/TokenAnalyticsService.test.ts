@@ -103,13 +103,13 @@ describe('TokenAnalyticsService', () => {
             expect(result.metrics.userMetrics).toBeDefined();
           }
         }
-      } catch (error) {
+      } catch (_error) {
         const elapsed = Date.now() - startTime;
         if (elapsed >= maxTime) {
           console.warn('⚠️ [TokenAnalytics Test] Timeout alcanzado, saliendo del test');
           return; // Salida de emergencia
         }
-        throw error;
+        throw _error;
       }
     }, 5000) // Timeout de 5 segundos para el test completo
   })

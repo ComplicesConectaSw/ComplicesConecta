@@ -104,7 +104,7 @@ const MainProfileCardComponent = ({
       title: "Perfil omitido",
       description: `Has pasado el perfil de ${variant === 'couple' ? profile.couple_name || name : name}`,
     });
-  }, [onOpenModal, variant, profile.couple_name, name]);
+  }, [onOpenModal, variant, profile.couple_name, name, toast]);
 
   return (
     <div 

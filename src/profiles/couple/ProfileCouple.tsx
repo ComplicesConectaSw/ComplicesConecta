@@ -287,10 +287,9 @@ const ProfileCouple: React.FC = () => {
 
   // Background de pareja según tipo de relación
   const relationshipType = (profile as any)?.relationship_type as string | undefined;
+  const coupleBackgroundIndex = String(profile.id ?? '').length % 2;
   const coupleBackground = !relationshipType
-    ? ['/backgrounds/Background(3).webp', '/backgrounds/Background(4).webp'][
-        Math.floor(Math.random() * 2)
-      ]
+    ? ['/backgrounds/Background(3).webp', '/backgrounds/Background(4).webp'][coupleBackgroundIndex]
     : relationshipType === 'man-woman'
     ? '/backgrounds/Background(3).webp'
     : '/backgrounds/Background(4).webp';

@@ -70,7 +70,7 @@ describe.skip('PushNotificationService', () => {
       close: vi.fn(),
       addEventListener: vi.fn(),
       removeEventListener: vi.fn()
-    })) as any
+    })) as unknown as typeof Notification
     
     Object.defineProperty(global.Notification, 'requestPermission', {
       value: vi.fn().mockResolvedValue('granted'),

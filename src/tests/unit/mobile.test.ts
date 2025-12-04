@@ -99,7 +99,7 @@ describe('Mobile Utilities', () => {
 
       expect(isTouchDevice()).toBe(true);
 
-      delete (window as any).ontouchstart;
+      delete (window as Window & { ontouchstart?: unknown }).ontouchstart;
     });
   });
 

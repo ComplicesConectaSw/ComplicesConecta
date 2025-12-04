@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ReportService, CreateReportParams } from '@/services/ReportService';
 import type { User } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase as rawSupabase } from '@/integrations/supabase/client';
+
+const supabase = rawSupabase as NonNullable<typeof rawSupabase>;
 
 // Mock Supabase client
 vi.mock('@/integrations/supabase/client', () => ({
@@ -109,7 +111,7 @@ describe('ReportService', () => {
       vi.mocked(supabase.auth.getUser).mockResolvedValue({
         data: { user: null },
         error: null
-      } as any);
+      } as unknown as Awaited<ReturnType<typeof supabase.auth.getUser>>);
 
       const params: CreateReportParams = {
         reportedUserId: 'reported-user-123',

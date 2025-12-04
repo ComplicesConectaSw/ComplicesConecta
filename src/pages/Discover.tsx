@@ -759,7 +759,7 @@ const Discover = () => {
                       profile={{
                         ...coupleProfile,
                         location: coupleProfile.location || 'Ciudad de Mxico',
-                        isOnline: coupleProfile.isOnline || Math.random() > 0.6
+                        isOnline: coupleProfile.isOnline ?? (Number.parseInt(String(coupleProfile.id).slice(-2), 10) % 3 === 0)
                       }}
                       onLike={() => {
                         toast({

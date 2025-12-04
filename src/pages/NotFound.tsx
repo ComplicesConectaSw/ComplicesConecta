@@ -8,7 +8,26 @@ import { logger } from '@/lib/logger';
 const NotFound = () => {
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
-  const [sparklePositions, setSparklePositions] = useState<Array<{x: number, y: number, delay: number}>>([]);
+  const [sparklePositions] = useState<Array<{x: number; y: number; delay: number}>>(
+    () => Array.from({ length: 12 }, (_, i) => ({
+      x: (i * 17) % 100,
+      y: (i * 29) % 100,
+      delay: (i * 0.35) % 3
+    }))
+  );
+  const [heartPositions] = useState<Array<{left: number; top: number; delay: number; fontSize: number}>>(
+    () => Array.from({ length: 8 }, (_, i) => ({
+      left: (i * 23) % 100,
+      top: (i * 31) % 100,
+      delay: i * 2,
+      fontSize: 20 + ((i * 3) % 25)
+    }))
+  );
+  const [zapOffsets] = useState<Array<{top: number}>>(
+    () => Array.from({ length: 4 }, (_, i) => ({
+      top: 10 + ((i * 15) % 80)
+    }))
+  );
 
   useEffect(() => {
     logger.error(
@@ -18,14 +37,6 @@ const NotFound = () => {
     
     // Trigger entrance animation
     setTimeout(() => setIsVisible(true), 100);
-    
-    // Generate random sparkle positions
-    const sparkles = Array.from({ length: 12 }, (_, _i) => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      delay: Math.random() * 3
-    }));
-    setSparklePositions(sparkles);
   }, [location.pathname]);
 
   return (
@@ -38,15 +49,15 @@ const NotFound = () => {
         
         {/* Floating Hearts */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(8)].map((_, i) => (
+          {heartPositions.map((heart, i) => (
             <Heart 
               key={`heart-${i}`}
               className={`absolute text-pink-400/10 animate-float-slow`}
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 2}s`,
-                fontSize: `${Math.random() * 25 + 20}px`
+                left: `${heart.left}%`,
+                top: `${heart.top}%`,
+                animationDelay: `${heart.delay}s`,
+                fontSize: `${heart.fontSize}px`
               }}
               fill="currentColor"
             />
@@ -71,13 +82,13 @@ const NotFound = () => {
         
         {/* Lightning Effects */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(4)].map((_, i) => (
+          {zapOffsets.map((zap, i) => (
             <Zap
               key={`zap-${i}`}
               className="absolute text-purple-400/15 animate-pulse-glow"
               style={{
                 left: `${20 + i * 25}%`,
-                top: `${10 + Math.random() * 80}%`,
+                top: `${zap.top}%`,
                 animationDelay: `${i * 1.5}s`,
                 fontSize: '24px'
               }}
