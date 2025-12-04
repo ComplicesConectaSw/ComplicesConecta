@@ -2,8 +2,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 // @ts-expect-error - Deno runtime imports from URLs
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
-// @ts-expect-error - Deno runtime imports from URLs
-import Stripe from "https://esm.sh/stripe@14.21.0";
 
 declare const Deno: {
   env: {
@@ -30,8 +28,6 @@ serve(async (req) => {
 
     // Calcular período semanal (lunes a domingo)
     const now = new Date();
-    const dayOfWeek = now.getDay(); // 0 = domingo, 1 = lunes
-    const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
     
     const periodEnd = new Date(now);
     periodEnd.setHours(0, 0, 0, 0);
@@ -61,8 +57,8 @@ serve(async (req) => {
 
     // Combinar moderadores y admins
     const allModerators = [
-      ...(moderators || []).map(m => ({ user_id: m.user_id, level: m.level, is_admin: false })),
-      ...(admins || []).map(a => ({ user_id: a.id, level: 'superadmin', is_admin: true }))
+      ...(moderators || []).map((m: any) => ({ user_id: m.user_id, level: m.level, is_admin: false })),
+      ...(admins || []).map((a: any) => ({ user_id: a.id, level: 'superadmin', is_admin: true }))
     ];
 
     const payments: Array<{ moderator_id: string; payment_id: string; amount: number; minutes: number }> = [];
@@ -108,9 +104,12 @@ serve(async (req) => {
           continue;
         }
 
-        const totalMinutes = sessions?.reduce((sum, s) => sum + (s.total_minutes || 0), 0) || 0;
-        const reportsReviewed = sessions?.reduce((sum, s) => sum + (s.reports_reviewed || 0), 0) || 0;
-        const actionsTaken = sessions?.reduce((sum, s) => sum + (s.actions_taken || 0), 0) || 0;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const totalMinutes = sessions?.reduce((sum: number, s: any) => sum + (s.total_minutes || 0), 0) || 0;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const reportsReviewed = sessions?.reduce((sum: number, s: any) => sum + (s.reports_reviewed || 0), 0) || 0;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const actionsTaken = sessions?.reduce((sum: number, s: any) => sum + (s.actions_taken || 0), 0) || 0;
 
         // Calcular revenue total del período
         const { data: investments, error: invError } = await supabaseClient
@@ -125,7 +124,8 @@ serve(async (req) => {
           continue;
         }
 
-        const totalRevenue = investments?.reduce((sum, inv) => sum + parseFloat(inv.amount_mxn || '0'), 0) || 0;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const totalRevenue = investments?.reduce((sum: number, inv: any) => sum + parseFloat(inv.amount_mxn || '0'), 0) || 0;
 
         // Calcular pago
         let paymentAmount = totalRevenue * (revenuePercentage / 100.0);
@@ -194,11 +194,12 @@ serve(async (req) => {
         status: 200,
       }
     );
-  } catch (error: any) {
-    console.error('Error procesando pagos:', error);
+  } catch (error) {
+    const err = error as Error;
+    console.error('Error procesando pagos:', err);
     return new Response(
       JSON.stringify({
-        error: error.message,
+        error: err.message,
         success: false,
       }),
       {
@@ -208,4 +209,3 @@ serve(async (req) => {
     );
   }
 });
-

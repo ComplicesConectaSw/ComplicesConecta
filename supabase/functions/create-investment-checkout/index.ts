@@ -50,15 +50,16 @@ serve(async (req) => {
     if (!user?.email) throw new Error("User not authenticated or email not available");
     logStep("User authenticated", { userId: user.id, email: user.email });
 
-    // Get request body
-    const { investment_id, tier_key, amount_mxn, user_email } = await req.json();
+    // Get request body - user_email eliminado porque no se usa
+    const { investment_id, tier_key, amount_mxn } = await req.json();
     logStep("Request data received", { investment_id, tier_key, amount_mxn });
 
     if (!investment_id || !tier_key || !amount_mxn) {
       throw new Error("Missing required fields: investment_id, tier_key, amount_mxn");
     }
 
-    const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" } as any);
     
     // Check if customer exists
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
@@ -157,12 +158,13 @@ serve(async (req) => {
         status: 200,
       }
     );
-  } catch (error: any) {
-    logStep("Error", { error: error.message, stack: error.stack });
+  } catch (error) {
+    const err = error as Error;
+    logStep("Error", { error: err.message, stack: err.stack });
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        details: error.stack,
+        error: err.message,
+        details: err.stack,
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -171,4 +173,3 @@ serve(async (req) => {
     );
   }
 });
-

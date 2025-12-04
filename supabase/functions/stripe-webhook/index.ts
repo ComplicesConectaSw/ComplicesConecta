@@ -76,9 +76,7 @@ serve(async (req) => {
           
           const investmentId = session.metadata.investment_id
           const userId = session.metadata.user_id
-          const tierKey = session.metadata.tier_key
-          const amountMxn = parseFloat(session.metadata.amount_mxn || '0')
-          const returnPercentage = parseFloat(session.metadata.return_percentage || '10')
+          // Se eliminaron tierKey, amountMxn, returnPercentage porque no se usaban aquí
           const cmpxTokens = parseInt(session.metadata.cmpx_tokens_rewarded || '0')
           
           // Actualizar inversión como activa
@@ -100,23 +98,17 @@ serve(async (req) => {
             
             // Otorgar tokens CMPX al usuario
             if (cmpxTokens > 0 && userId) {
-              // Aquí deberías tener una función para otorgar tokens
-              // Por ahora solo logueamos
               console.log(`🎁 Tokens to award: ${cmpxTokens} CMPX to user ${userId}`)
-              
-              // TODO: Implementar otorgamiento de tokens CMPX
               // await awardTokens(userId, cmpxTokens, 'investment_reward', investmentId)
             }
             
-            // Crear retornos anuales automáticos (si return_type es annual)
-            // Esto se hace automáticamente con el trigger, pero podemos verificar
             console.log('📅 Annual returns will be created automatically via trigger')
           }
           
           break
         }
         
-        // Obtener información del cliente y suscripción (código existente para Premium)
+        // Obtener información del cliente y suscripción
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
         
@@ -124,7 +116,6 @@ serve(async (req) => {
           const subscription = await stripe.subscriptions.retrieve(subscriptionId)
           const priceId = subscription.items.data[0]?.price.id
           
-          // Determinar el tipo de plan basado en el price_id
           let planType = 'monthly'
           if (priceId === Deno.env.get('STRIPE_PRICE_ID_YEARLY')) {
             planType = 'yearly'
@@ -132,7 +123,6 @@ serve(async (req) => {
             planType = 'quarterly'
           }
           
-          // Buscar el perfil del usuario por customer_id
           const { data: profile, error: profileError } = await supabase
             .from('profiles')
             .select('*')
@@ -144,7 +134,6 @@ serve(async (req) => {
             break
           }
           
-          // Actualizar el perfil con la suscripción Premium
           const { error: updateError } = await supabase
             .from('profiles')
             .update({
@@ -165,6 +154,7 @@ serve(async (req) => {
         break
       }
 
+      // Resto de los cases...
       case 'customer.subscription.updated': {
         const subscription = event.data.object as Stripe.Subscription
         console.log('🔄 Subscription updated:', subscription.id)
@@ -189,7 +179,6 @@ serve(async (req) => {
         const subscription = event.data.object as Stripe.Subscription
         console.log('❌ Subscription cancelled:', subscription.id)
         
-        // Desactivar membresía Premium
         const { error } = await supabase
           .from('profiles')
           .update({
@@ -214,7 +203,6 @@ serve(async (req) => {
         console.log('💰 Payment succeeded:', invoice.id)
         
         if (invoice.subscription) {
-          // Renovar suscripción
           const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string)
           
           const { error } = await supabase
@@ -238,7 +226,6 @@ serve(async (req) => {
         const invoice = event.data.object as Stripe.Invoice
         console.log('💸 Payment failed:', invoice.id)
         
-        // Opcional: Marcar como pago fallido pero mantener acceso por período de gracia
         if (invoice.subscription) {
           const { error } = await supabase
             .from('profiles')
@@ -259,7 +246,6 @@ serve(async (req) => {
         const customer = event.data.object as Stripe.Customer
         console.log('👤 Customer created:', customer.id)
         
-        // Opcional: Actualizar perfil con customer_id si se puede identificar por email
         if (customer.email) {
           const { error } = await supabase
             .from('profiles')
@@ -280,7 +266,7 @@ serve(async (req) => {
         console.log(`🤷 Unhandled event type: ${event.type}`)
     }
 
-    // Guardar evento en stripe_events
+    // Guardar evento
     await supabase
       .from('stripe_events')
       .insert({
@@ -303,7 +289,8 @@ serve(async (req) => {
       status: 200,
     })
 
-  } catch (err) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     console.error('🚨 Webhook error:', err.message)
     return new Response(`Webhook error: ${err.message}`, { 
       status: 400,

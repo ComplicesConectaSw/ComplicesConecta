@@ -3,6 +3,8 @@
 
 // Supabase Edge Function for sending emails
 // @ts-ignore: Deno is available in Supabase Edge Functions
+// Supabase Edge Function for sending emails
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const Deno: any;
 
 const corsHeaders = {
@@ -77,26 +79,6 @@ function getSubjectByTemplate(template: string): string {
   return subjects[template as keyof typeof subjects] || 'ComplicesConecta'
 }
 
-// Helper function to replace template variables
-function replaceTemplateVariables(template: string, data: any = {}): string {
-  let result = template;
-  
-  // Replace common variables
-  if (data.confirmationUrl) result = result.replace(/\{\{\.ConfirmationURL\}\}/g, data.confirmationUrl);
-  if (data.email) result = result.replace(/\{\{\.Email\}\}/g, data.email);
-  if (data.token) result = result.replace(/\{\{\.Token\}\}/g, data.token);
-  if (data.resetUrl) result = result.replace(/\{\{\.ResetURL\}\}/g, data.resetUrl);
-  if (data.matchName) result = result.replace(/\{\{matchName\}\}/g, data.matchName);
-  if (data.matchAge) result = result.replace(/\{\{matchAge\}\}/g, data.matchAge.toString());
-  if (data.matchLocation) result = result.replace(/\{\{matchLocation\}\}/g, data.matchLocation);
-  if (data.chatUrl) result = result.replace(/\{\{chatUrl\}\}/g, data.chatUrl);
-  if (data.matchScore) result = result.replace(/\{\{matchScore\}\}/g, data.matchScore.toString());
-  if (data.distance) result = result.replace(/\{\{distance\}\}/g, data.distance.toString());
-  if (data.lastSeen) result = result.replace(/\{\{lastSeen\}\}/g, data.lastSeen);
-  
-  return result;
-}
-
 function getFallbackTemplate(template: string): string {
   const fallbackTemplates: Record<string, string> = {
     welcome: `<html><body><h1>Bienvenido a ComplicesConecta</h1><p>Tu aventura comienza ahora.</p><a href="{{confirmationUrl}}">Confirmar Cuenta</a></body></html>`,
@@ -108,6 +90,7 @@ function getFallbackTemplate(template: string): string {
   return fallbackTemplates[template] || fallbackTemplates.welcome;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function generateEmailHTML(template: string, data: any = {}, to: string): Promise<string> {
   try {
     console.info(`📨 Procesando email con template: ${template} para ${to}`);
@@ -118,7 +101,7 @@ async function generateEmailHTML(template: string, data: any = {}, to: string): 
     try {
       htmlContent = await Deno.readTextFile(templatePath);
       console.info(`✅ Template externo cargado: ${template}.html`);
-    } catch (error) {
+    } catch {
       console.warn(`⚠️ Template file not found: ${templatePath}, using fallback`);
       htmlContent = getFallbackTemplate(template);
     }

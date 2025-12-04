@@ -74,7 +74,8 @@ serve(async (req) => {
     if (purchaseError) throw purchaseError;
 
     // Crear checkout de Stripe
-    const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" } as any);
     
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
     let customerId;
@@ -141,11 +142,12 @@ serve(async (req) => {
         status: 200,
       }
     );
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     console.error('Error creating CMPX checkout:', error);
     return new Response(
       JSON.stringify({
-        error: error.message,
+        error: errorMessage,
         success: false,
       }),
       {
@@ -155,4 +157,3 @@ serve(async (req) => {
     );
   }
 });
-
