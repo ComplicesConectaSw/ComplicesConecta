@@ -6,7 +6,7 @@
 import React, { ComponentType } from 'react';
 import { createLazyComponent, LazyComponentLoader, PageLoader } from './LazyComponentLoader';
 import { logger } from '@/lib/logger';
-
+import { useMemo } from 'react';
 // Tipos para configuración de splitting
 interface SplitConfig {
   preload?: boolean;
@@ -203,6 +203,7 @@ export class CodeSplittingManager {
       await this.preloadRoute(route);
     }
   }
+  
   
   private async preloadMediumPriorityRoutes() {
     const mediumPriorityRoutes = ROUTE_CONFIGS.filter(
