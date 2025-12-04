@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase as rawSupabase } from '@/integrations/supabase/client';
+
+const supabase = rawSupabase as NonNullable<typeof rawSupabase>;
 
 // Mock Supabase
 vi.mock('@/integrations/supabase/client', () => ({
@@ -43,13 +45,15 @@ describe('Realtime Chat Tests', () => {
       const maxTime = 3000; // Máximo 3 segundos
       
       try {
-        const mockInsert = vi.fn(() => Promise.resolve({ data: null, error: null }));
-        (supabase.from as any).mockReturnValue({
+        const mockInsert = vi.fn(async (_values: unknown) => ({ data: null, error: null }));
+        (supabase.from as unknown as { mockReturnValue: (v: unknown) => void }).mockReturnValue({
           insert: mockInsert
         });
 
-        const result = await Promise.race([
-          supabase.from('chat_messages').insert({
+        const result = await Promise.race<
+          { data: null; error: null } | { data: null; error: { message: string } }
+        >([
+          mockInsert({
             content: 'test message',
             sender_id: 'test-user'
           }),
@@ -84,7 +88,7 @@ describe('Realtime Chat Tests', () => {
         unsubscribe: vi.fn()
       };
       
-      (supabase.channel as any).mockReturnValue(mockChannel);
+      (supabase.channel as unknown as { mockReturnValue: (v: unknown) => void }).mockReturnValue(mockChannel);
 
       const channel = supabase.channel('chat-room');
       channel.on('postgres_changes', {
@@ -112,7 +116,7 @@ describe('Realtime Chat Tests', () => {
         unsubscribe: vi.fn()
       };
       
-      (supabase.channel as any).mockReturnValue(mockChannel);
+      (supabase.channel as unknown as { mockReturnValue: (v: unknown) => void }).mockReturnValue(mockChannel);
 
       const channel = supabase.channel('typing-test');
       channel.send({
@@ -131,18 +135,16 @@ describe('Realtime Chat Tests', () => {
 
   describe('Error Handling', () => {
     it('should handle message send errors', async () => {
-      const mockInsert = vi.fn(() => 
-        Promise.resolve({ 
-          data: null, 
-          error: { message: 'Failed to send message' } 
-        })
-      );
+      const mockInsert = vi.fn(async (_values: unknown) => ({
+        data: null,
+        error: { message: 'Failed to send message' }
+      }));
       
-      (supabase.from as any).mockReturnValue({
+      (supabase.from as unknown as { mockReturnValue: (v: unknown) => void }).mockReturnValue({
         insert: mockInsert
       });
 
-      const result = await supabase.from('chat_messages').insert({
+      const result = await mockInsert({
         content: 'test message',
         sender_id: 'test-user'
       });
@@ -152,7 +154,7 @@ describe('Realtime Chat Tests', () => {
     });
 
     it('should handle connection errors', () => {
-      (supabase.channel as any).mockImplementation(() => {
+      (supabase.channel as unknown as { mockImplementation: (fn: () => unknown) => void }).mockImplementation(() => {
         throw new Error('Connection failed');
       });
 

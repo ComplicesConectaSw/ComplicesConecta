@@ -6,10 +6,10 @@
 import { logger } from '@/lib/logger';
 
 export interface WalletGlobals {
-  ethereum?: any;
-  solana?: any;
-  tronWeb?: any;
-  bybitWallet?: any;
+  ethereum?: unknown;
+  solana?: unknown;
+  tronWeb?: unknown;
+  bybitWallet?: unknown;
 }
 
 /**
@@ -92,15 +92,22 @@ export const detectAvailableWallets = async (): Promise<WalletGlobals> => {
     // Fallback a detección simple si falla la importación
     try {
       // Detección condicional segura para SSR
-      const hasEthereum = typeof window !== 'undefined' && typeof (window as Window & { [key: string]: any }).ethereum !== 'undefined';
-      const hasSolana = typeof window !== 'undefined' && typeof (window as Window & { [key: string]: any }).solana !== 'undefined';
-      const hasTron = typeof window !== 'undefined' && typeof (window as Window & { [key: string]: any }).tronWeb !== 'undefined';
-      const hasBybit = typeof window !== 'undefined' && typeof (window as Window & { [key: string]: any }).bybitWallet !== 'undefined';
+      type WalletWindow = Window & {
+        ethereum?: unknown;
+        solana?: unknown;
+        tronWeb?: unknown;
+        bybitWallet?: unknown;
+      };
+      const walletWindow = window as WalletWindow;
+      const hasEthereum = typeof walletWindow.ethereum !== 'undefined';
+      const hasSolana = typeof walletWindow.solana !== 'undefined';
+      const hasTron = typeof walletWindow.tronWeb !== 'undefined';
+      const hasBybit = typeof walletWindow.bybitWallet !== 'undefined';
       
-      if (hasEthereum) detected.ethereum = (window as Window & { [key: string]: any }).ethereum;
-      if (hasSolana) detected.solana = (window as Window & { [key: string]: any }).solana;
-      if (hasTron) detected.tronWeb = (window as Window & { [key: string]: any }).tronWeb;
-      if (hasBybit) detected.bybitWallet = (window as Window & { [key: string]: any }).bybitWallet;
+      if (hasEthereum) detected.ethereum = walletWindow.ethereum;
+      if (hasSolana) detected.solana = walletWindow.solana;
+      if (hasTron) detected.tronWeb = walletWindow.tronWeb;
+      if (hasBybit) detected.bybitWallet = walletWindow.bybitWallet;
       
     } catch (fallbackError) {
       logger.warn('Fallback detection failed', { error: fallbackError });

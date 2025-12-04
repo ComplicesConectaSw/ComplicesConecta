@@ -8,54 +8,57 @@
 
 import { logger } from '@/lib/logger';
 
-// Tipos para los SDKs
+// Tipos para los SDKs (usamos unknown porque las libs son opcionales y pesadas)
 export interface Web3SDK {
-  Web3: any;
-  providers: any;
+  Web3: unknown;
+  providers: Record<string, unknown>;
 }
 
 export interface EthersSDK {
-  ethers: any;
-  providers: any;
-  utils: any;
+  ethers: unknown;
+  providers: Record<string, unknown>;
+  utils: Record<string, unknown>;
 }
 
 export interface SolanaSDK {
-  Connection: any;
-  PublicKey: any;
-  Transaction: any;
-  SystemProgram: any;
+  Connection: unknown;
+  PublicKey: unknown;
+  Transaction: unknown;
+  SystemProgram: unknown;
 }
 
 export interface TronSDK {
-  TronWeb: any;
-  utils: any;
+  TronWeb: unknown;
+  utils: Record<string, unknown>;
 }
 
+type SDKCacheValue = Web3SDK | EthersSDK | SolanaSDK | TronSDK | null;
+
 // Cache para evitar múltiples cargas
-const sdkCache = new Map<string, any>();
+const sdkCache = new Map<string, SDKCacheValue>();
 
 /**
  * Carga dinámica de Web3.js
  */
 export const loadWeb3SDK = async (): Promise<Web3SDK | null> => {
   if (sdkCache.has('web3')) {
-    return sdkCache.get('web3');
+    return sdkCache.get('web3') as Web3SDK | null;
   }
 
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
     // Módulo opcional: web3 está instalado pero puede no estar disponible en runtime
-    // @ts-ignore - Módulo opcional, TypeScript puede quejarse si no está resuelto
     const web3Module = await import('web3').catch(() => null);
     if (!web3Module) {
       logger.warn('Web3 SDK no está instalado');
       return null;
     }
     
-    const sdk = {
-      Web3: web3Module.default || web3Module.Web3,
-      providers: web3Module.providers || {}
+    const sdk: Web3SDK = {
+      Web3: (web3Module as unknown as { default?: unknown; Web3?: unknown }).default ??
+        (web3Module as unknown as { Web3?: unknown }).Web3 ??
+        null,
+      providers: (web3Module as unknown as { providers?: Record<string, unknown> }).providers ?? {}
     };
     
     sdkCache.set('web3', sdk);
@@ -72,13 +75,12 @@ export const loadWeb3SDK = async (): Promise<Web3SDK | null> => {
  */
 export const loadEthersSDK = async (): Promise<EthersSDK | null> => {
   if (sdkCache.has('ethers')) {
-    return sdkCache.get('ethers');
+    return sdkCache.get('ethers') as EthersSDK | null;
   }
 
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
     // Módulo opcional: ethers está instalado pero puede no estar disponible en runtime
-    // @ts-ignore - Módulo opcional, TypeScript puede quejarse si no está resuelto
     const ethersModule = await import('ethers').catch(() => null);
     if (!ethersModule) {
       logger.warn('Ethers SDK no está instalado');
@@ -86,10 +88,15 @@ export const loadEthersSDK = async (): Promise<EthersSDK | null> => {
     }
     
     // Ethers v6 tiene una estructura diferente - es un namespace, no un objeto con propiedades
-    const sdk = {
-      ethers: ethersModule.ethers || ethersModule,
-      providers: (ethersModule as any).providers || {},
-      utils: (ethersModule as any).utils || {}
+    const typedModule = ethersModule as unknown as {
+      ethers?: unknown;
+      providers?: Record<string, unknown>;
+      utils?: Record<string, unknown>;
+    };
+    const sdk: EthersSDK = {
+      ethers: typedModule.ethers ?? ethersModule,
+      providers: typedModule.providers ?? {},
+      utils: typedModule.utils ?? {}
     };
     
     sdkCache.set('ethers', sdk);
@@ -106,24 +113,23 @@ export const loadEthersSDK = async (): Promise<EthersSDK | null> => {
  */
 export const loadSolanaSDK = async (): Promise<SolanaSDK | null> => {
   if (sdkCache.has('solana')) {
-    return sdkCache.get('solana');
+    return sdkCache.get('solana') as SolanaSDK | null;
   }
 
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
     // Módulo opcional: @solana/web3.js está instalado pero puede no estar disponible en runtime
-    // @ts-ignore - Módulo opcional, TypeScript puede quejarse si no está resuelto
     const solanaModule = await import('@solana/web3.js').catch(() => null);
     if (!solanaModule) {
       logger.warn('Solana SDK no está instalado');
       return null;
     }
     
-    const sdk = {
-      Connection: solanaModule.Connection,
-      PublicKey: solanaModule.PublicKey,
-      Transaction: solanaModule.Transaction,
-      SystemProgram: solanaModule.SystemProgram
+    const sdk: SolanaSDK = {
+      Connection: (solanaModule as unknown as { Connection: unknown }).Connection,
+      PublicKey: (solanaModule as unknown as { PublicKey: unknown }).PublicKey,
+      Transaction: (solanaModule as unknown as { Transaction: unknown }).Transaction,
+      SystemProgram: (solanaModule as unknown as { SystemProgram: unknown }).SystemProgram
     };
     
     sdkCache.set('solana', sdk);
@@ -140,22 +146,26 @@ export const loadSolanaSDK = async (): Promise<SolanaSDK | null> => {
  */
 export const loadTronSDK = async (): Promise<TronSDK | null> => {
   if (sdkCache.has('tron')) {
-    return sdkCache.get('tron');
+    return sdkCache.get('tron') as TronSDK | null;
   }
 
   try {
     // Importación dinámica directa (sin eval para evitar problemas con CSP)
     // Módulo opcional: tronweb está instalado pero puede no estar disponible en runtime
-    // @ts-ignore - Módulo opcional, TypeScript puede quejarse si no está resuelto
     const tronModule = await import('tronweb').catch(() => null);
     if (!tronModule) {
       logger.warn('TronWeb SDK no está instalado');
       return null;
     }
     
-    const sdk = {
-      TronWeb: tronModule.default || tronModule.TronWeb,
-      utils: tronModule.utils || {}
+    const typedModule = tronModule as unknown as {
+      default?: unknown;
+      TronWeb?: unknown;
+      utils?: Record<string, unknown>;
+    };
+    const sdk: TronSDK = {
+      TronWeb: typedModule.default ?? typedModule.TronWeb ?? null,
+      utils: typedModule.utils ?? {}
     };
     
     sdkCache.set('tron', sdk);
@@ -168,44 +178,37 @@ export const loadTronSDK = async (): Promise<TronSDK | null> => {
 };
 
 /**
- * Carga dinámica de Hugging Face Transformers (IA)
- */
-export const loadHuggingFaceSDK = async () => {
-  if (sdkCache.has('huggingface')) {
-    return sdkCache.get('huggingface');
-  }
-
-  try {
-    // const hfModule = await import('@huggingface/transformers'); // Dependencia eliminada
-    logger.warn('Hugging Face SDK no está disponible - dependencia eliminada');
-    return null;
-  } catch (error) {
-    logger.warn('Error cargando Hugging Face SDK', { error });
-    return null;
-  }
-};
-
-/**
  * Precarga SDKs en background (opcional)
  */
 export const preloadCriticalSDKs = async () => {
   // Solo precargar si hay indicios de que se van a usar
   if (typeof window !== 'undefined') {
-    const windowAny = window as any;
+    type WalletWindow = Window & {
+      ethereum?: unknown;
+      solana?: unknown;
+      tronWeb?: unknown;
+    };
+    const walletWindow = window as WalletWindow;
     
     // Precargar Web3 si hay wallet Ethereum
-    if (windowAny.ethereum) {
-      setTimeout(() => loadWeb3SDK(), 2000);
+    if (walletWindow.ethereum) {
+      setTimeout(() => {
+        void loadWeb3SDK();
+      }, 2000);
     }
     
     // Precargar Solana si hay wallet Solana
-    if (windowAny.solana) {
-      setTimeout(() => loadSolanaSDK(), 2500);
+    if (walletWindow.solana) {
+      setTimeout(() => {
+        void loadSolanaSDK();
+      }, 2500);
     }
     
     // Precargar Tron si hay wallet Tron
-    if (windowAny.tronWeb) {
-      setTimeout(() => loadTronSDK(), 3000);
+    if (walletWindow.tronWeb) {
+      setTimeout(() => {
+        void loadTronSDK();
+      }, 3000);
     }
   }
 };

@@ -83,7 +83,7 @@ describe('Mobile Utilities', () => {
       });
 
       // Mock ontouchstart
-      delete (window as any).ontouchstart;
+      delete (window as Window & { ontouchstart?: unknown }).ontouchstart;
 
       expect(isTouchDevice()).toBe(false);
     });
@@ -95,7 +95,7 @@ describe('Mobile Utilities', () => {
         configurable: true
       });
 
-      (window as any).ontouchstart = null;
+      (window as Window & { ontouchstart?: unknown }).ontouchstart = null;
 
       expect(isTouchDevice()).toBe(true);
 
@@ -185,7 +185,7 @@ describe('Mobile Utilities', () => {
           touchAction: '',
           setProperty: vi.fn()
         }
-      } as any;
+      } as unknown as HTMLElement;
     });
 
     it('should add touch support to element on touch device', () => {

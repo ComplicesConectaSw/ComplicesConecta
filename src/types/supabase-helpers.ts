@@ -6,7 +6,7 @@
  * Helper para casting seguro de resultados de Supabase
  * Evita errores de tipos cuando las tablas no están en el schema generado
  */
-export function safeSupabaseCast<T>(data: any): T {
+export function safeSupabaseCast<T>(data: unknown): T {
   return data as T;
 }
 
@@ -16,22 +16,25 @@ export function safeSupabaseCast<T>(data: any): T {
 export function hasProperty<T extends object, K extends string>(
   obj: T,
   prop: K
-): obj is T & Record<K, any> {
+): obj is T & Record<K, unknown> {
   return prop in obj;
 }
 
 /**
  * Helper para obtener una propiedad de forma segura
  */
-export function safeGetProperty<T>(obj: any, prop: string, defaultValue: T): T {
-  return obj && typeof obj === 'object' && prop in obj ? obj[prop] : defaultValue;
+export function safeGetProperty<T>(obj: unknown, prop: string, defaultValue: T): T {
+  if (obj && typeof obj === 'object' && prop in (obj as Record<string, unknown>)) {
+    return (obj as Record<string, unknown>)[prop] as T;
+  }
+  return defaultValue;
 }
 
 /**
  * Helper para casting de tablas blockchain específicas
  */
 export const BlockchainCasts = {
-  coupleNFTRequest: (data: any) => safeSupabaseCast<{
+  coupleNFTRequest: (data: unknown) => safeSupabaseCast<{
     id: string;
     token_id: number;
     partner1_address: string;
@@ -45,7 +48,7 @@ export const BlockchainCasts = {
     expires_at: string;
   }>(data),
 
-  userNFT: (data: any) => safeSupabaseCast<{
+  userNFT: (data: unknown) => safeSupabaseCast<{
     id: string;
     token_id: number;
     owner_address: string;
@@ -56,7 +59,7 @@ export const BlockchainCasts = {
     created_at: string;
   }>(data),
 
-  dailyTokenClaim: (data: any) => safeSupabaseCast<{
+  dailyTokenClaim: (data: unknown) => safeSupabaseCast<{
     id: string;
     user_id: string;
     wallet_address: string;
@@ -68,7 +71,7 @@ export const BlockchainCasts = {
     created_at: string;
   }>(data),
 
-  testnetTokenClaim: (data: any) => safeSupabaseCast<{
+  testnetTokenClaim: (data: unknown) => safeSupabaseCast<{
     id: string;
     user_id: string;
     wallet_address: string;
@@ -84,15 +87,18 @@ export const BlockchainCasts = {
 /**
  * Helper para manejar errores de Supabase de forma consistente
  */
-export function handleSupabaseError(error: any, context: string): never {
-  const errorMessage = error?.message || 'Error desconocido de Supabase';
+export function handleSupabaseError(error: unknown, context: string): never {
+  const errorMessage =
+    typeof error === 'object' && error !== null && 'message' in error
+      ? String((error as { message?: unknown }).message ?? 'Error desconocido de Supabase')
+      : 'Error desconocido de Supabase';
   throw new Error(`${context}: ${errorMessage}`);
 }
 
 /**
  * Helper para verificar si supabase client está disponible
  */
-export function ensureSupabaseClient(client: any, context: string): void {
+export function ensureSupabaseClient(client: unknown, context: string): void {
   if (!client) {
     throw new Error(`${context}: Supabase client no disponible`);
   }

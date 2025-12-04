@@ -4,12 +4,16 @@
 declare global {
   interface Window {
     // Propiedades comunes de window que se usan en el proyecto
-    ethereum?: any;
-    solana?: any;
-    webkitSpeechRecognition?: any;
-    SpeechRecognition?: any;
+    ethereum?: unknown;
+    solana?: unknown;
+    webkitSpeechRecognition?: unknown;
+    SpeechRecognition?: unknown;
     hasWalletProtection?: boolean;
-    [key: string]: any;
+    errorReportService?: {
+      showReport: () => unknown;
+    };
+    __ERROR_LOGS__?: unknown[];
+    [key: string]: unknown;
   }
 }
 
@@ -28,7 +32,7 @@ export type ErrorHandler = (error: Error | unknown) => void;
 // Tipos para Supabase
 export type SupabaseResponse<T = unknown> = {
   data: T | null;
-  error: any | null;
+  error: unknown | null;
   count?: number;
   status?: number;
   statusText?: string;

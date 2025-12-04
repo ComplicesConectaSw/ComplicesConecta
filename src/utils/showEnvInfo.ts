@@ -115,11 +115,15 @@ if (typeof window !== 'undefined') {
         }
         return value || 'Variable no encontrada';
       };
-      (window as unknown as Record<string, unknown>).showErrorReport = () => {
+      (window as Window & { showErrorReport?: () => unknown }).showErrorReport = () => {
+        const debugWindow = window as Window & {
+          errorReportService?: { showReport: () => unknown };
+          __ERROR_LOGS__?: unknown[];
+        };
         console.log('📊 Error Report Service Status:');
-        console.log('- Service available:', !!(window as any).errorReportService);
-        console.log('- Recent errors:', (window as any).__ERROR_LOGS__ || []);
-        return (window as any).errorReportService?.showReport() || 'No error report service available';
+        console.log('- Service available:', !!debugWindow.errorReportService);
+        console.log('- Recent errors:', debugWindow.__ERROR_LOGS__ || []);
+        return debugWindow.errorReportService?.showReport() || 'No error report service available';
       };
     }
   };
@@ -153,5 +157,22 @@ if (typeof window !== 'undefined') {
       }
     }, 100);
   }
+  
+  if ('fonts' in document) {
+    void (document as Document & { fonts: { ready: Promise<void>; values: () => Iterable<{ family?: string }> } }).fonts.ready
+      .then(() => {
+        const loadedFonts = Array.from(
+          (document as Document & { fonts: { values: () => Iterable<{ family?: string }> } }).fonts.values()
+        );
+        console.log(`   ✅ Fuentes cargadas: ${loadedFonts.length}`);
+        if (loadedFonts.length > 0) {
+          const fontFamilies = loadedFonts.map((font) => (font && typeof font === 'object' && 'family' in font ? (font as { family?: string }).family ?? '' : ''));
+          const uniqueFamilies = [...new Set(fontFamilies)];
+          console.log('      - ' + uniqueFamilies.join('\n      - '));
+        }
+      })
+      .catch(() => {
+        console.warn('   ⚠️ No se pudo verificar el estado de las fuentes.');
+      });
+  }
 }
-

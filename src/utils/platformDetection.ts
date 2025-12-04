@@ -71,8 +71,8 @@ export function isStandalone(): boolean {
   
   try {
     return (
-      (window as any).matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone === true
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (window.navigator as Navigator & { standalone?: boolean }).standalone === true
     );
   } catch {
     return false;
@@ -111,8 +111,8 @@ export const isRunningFromAPK = (): boolean => {
   if (typeof window === 'undefined') return false;
   
   // Detectar si estamos en un entorno Capacitor/Cordova (típico de APKs híbridas)
-  const isCapacitor = (window as any).Capacitor !== undefined;
-  const isCordova = (window as any).cordova !== undefined;
+  const isCapacitor = (window as Window & { Capacitor?: unknown }).Capacitor !== undefined;
+  const isCordova = (window as Window & { cordova?: unknown }).cordova !== undefined;
   
   // Detectar si la URL es de un archivo local (file://) o localhost con puerto específico de app
   const isLocalFile = window.location.protocol === 'file:';
@@ -154,7 +154,9 @@ export const getPlatformInfo = () => {
   else if (userAgent.indexOf("Safari") > -1) browser = "Safari";
 
   // Detectar si está instalado como PWA o App (Usando la lógica existente o inline)
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone === true;
+  const isStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    ((navigator as Navigator & { standalone?: boolean }).standalone === true);
 
   if (isRunningFromAPK()) {
     platform = 'Android (APK)';

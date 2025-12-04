@@ -26,7 +26,7 @@ interface ResourceError {
 interface PerformanceIssue {
   type: 'slow-load' | 'large-chunk' | 'missing-resource' | 'cors-error';
   message: string;
-  details: any;
+  details: unknown;
   timestamp: string;
 }
 
@@ -49,7 +49,7 @@ class ConsoleErrorCapture {
 
   startCapture(): void {
     // Capturar console.error
-    console.error = (...args: any[]) => {
+    console.error = (...args: unknown[]) => {
       const message = args.map(arg => {
         if (typeof arg === 'object') {
           try {
@@ -61,18 +61,22 @@ class ConsoleErrorCapture {
         return String(arg);
       }).join(' ');
 
+      const stackSource = args.find(arg => typeof arg === 'object' && arg !== null && 'stack' in (arg as { stack?: unknown }));
       this.errors.push({
         type: 'error',
         message,
         timestamp: new Date().toISOString(),
-        stack: args.find(arg => arg?.stack)?.stack
+        stack:
+          stackSource && typeof (stackSource as { stack?: unknown }).stack === 'string'
+            ? (stackSource as { stack: string }).stack
+            : undefined
       });
 
       this.originalError.apply(console, args);
     };
 
     // Capturar console.warn
-    console.warn = (...args: any[]) => {
+    console.warn = (...args: unknown[]) => {
       const message = args.map(arg => String(arg)).join(' ');
 
       this.errors.push({
@@ -199,8 +203,8 @@ class ConsoleErrorCapture {
 
     // Capturar errores de red usando fetch
     const originalFetch = window.fetch;
-    (window as any).__originalFetch = originalFetch;
-    window.fetch = async (...args) => {
+    (window as Window & { __originalFetch?: typeof fetch }).__originalFetch = originalFetch;
+    window.fetch = async (...args: Parameters<typeof fetch>): Promise<Response> => {
       try {
         const response = await originalFetch(...args);
         if (!response.ok && args[0]) {
@@ -283,8 +287,9 @@ class ConsoleErrorCapture {
     }
 
     // Restaurar fetch original
-    if ((window as any).__originalFetch) {
-      window.fetch = (window as any).__originalFetch;
+    const winWithFetch = window as Window & { __originalFetch?: typeof fetch };
+    if (winWithFetch.__originalFetch) {
+      window.fetch = winWithFetch.__originalFetch;
     }
 
     console.log('🛑 Captura de errores de consola detenida');
@@ -305,8 +310,8 @@ class ConsoleErrorCapture {
 
   exportErrors(): string {
     // Obtener chunks y stylesheets cargados
-    const chunks: any[] = [];
-    const stylesheets: any[] = [];
+    const chunks: Array<Record<string, unknown>> = [];
+    const stylesheets: Array<Record<string, unknown>> = [];
     
     if ('PerformanceObserver' in window) {
       try {
@@ -379,8 +384,8 @@ class ConsoleErrorCapture {
     logs: ConsoleError[];
     resourceErrors: ResourceError[];
     performanceIssues: PerformanceIssue[];
-    chunks: any[];
-    stylesheets: any[];
+    chunks: Array<Record<string, unknown>>;
+    stylesheets: Array<Record<string, unknown>>;
     total: number;
     url: string;
     isTunnel: boolean;
@@ -405,8 +410,8 @@ class ConsoleErrorCapture {
     const logs = this.getErrorsByType('log');
 
     // Análisis de chunks cargados
-    const chunks: any[] = [];
-    const stylesheets: any[] = [];
+    const chunks: Array<Record<string, unknown>> = [];
+    const stylesheets: Array<Record<string, unknown>> = [];
     
     if ('PerformanceObserver' in window) {
       try {
@@ -474,7 +479,10 @@ class ConsoleErrorCapture {
       console.table(chunks);
       
       // Detectar chunks grandes
-      const largeChunks = chunks.filter(c => parseFloat(c.size) > 500);
+      const largeChunks = chunks.filter(c => {
+        const sizeValue = typeof c.size === 'string' ? c.size : String(c.size ?? '0');
+        return parseFloat(sizeValue) > 500;
+      });
       if (largeChunks.length > 0) {
         console.warn(`\n⚠️ Chunks grandes detectados (${largeChunks.length}):`);
         largeChunks.forEach(chunk => {
@@ -541,7 +549,7 @@ class ConsoleErrorCapture {
 
     // Análisis de estilos
     console.log(`\n🎨 Análisis de Estilos:`);
-    const computedStyles = window.getComputedStyle(document.body);
+    const computedStyles = window.getComputedStyle(document.body as Element);
     const fontFamily = computedStyles.fontFamily;
     const backgroundColor = computedStyles.backgroundColor;
     const color = computedStyles.color;
@@ -568,8 +576,8 @@ class ConsoleErrorCapture {
 
     // Verificar fuentes cargadas
     if ('fonts' in document) {
-      (document as any).fonts.ready.then(() => {
-        const loadedFonts = (document as any).fonts.values();
+      void (document as Document & { fonts: { ready: Promise<void>; values: () => Iterable<unknown> } }).fonts.ready.then(() => {
+        const loadedFonts = (document as Document & { fonts: { values: () => Iterable<unknown> } }).fonts.values();
         console.log(`   Fuentes cargadas: ${Array.from(loadedFonts).length}`);
       }).catch(() => {
         console.warn('   ⚠️ No se pudo verificar fuentes');
@@ -631,8 +639,8 @@ export function showErrorReport(): {
   logs: ConsoleError[];
   resourceErrors: ResourceError[];
   performanceIssues: PerformanceIssue[];
-  chunks: any[];
-  stylesheets: any[];
+  chunks: Array<Record<string, unknown>>;
+  stylesheets: Array<Record<string, unknown>>;
   total: number;
   url: string;
   isTunnel: boolean;
@@ -697,11 +705,11 @@ export function showEnvInfo(): void {
 
   // Verificar fuentes cargadas
   if ('fonts' in document) {
-    (document as any).fonts.ready.then(() => {
-      const loadedFonts = Array.from((document as any).fonts.values());
-      console.log(`   ✅ Fuentes cargadas: ${loadedFonts.length}`);
+    void (document as Document & { fonts: { ready: Promise<void>; values: () => Iterable<{ family?: string }> } }).fonts.ready.then(() => {
+      const loadedFonts = Array.from((document as Document & { fonts: { values: () => Iterable<{ family?: string }> } }).fonts.values());
+      console.log(`   Fuentes cargadas: ${loadedFonts.length}`);
       if(loadedFonts.length > 0) {
-        const fontFamilies = loadedFonts.map((font: any) => font.family);
+        const fontFamilies = loadedFonts.map((font) => (font && typeof font === 'object' && 'family' in font ? (font as { family?: string }).family ?? '' : ''));
         const uniqueFamilies = [...new Set(fontFamilies)];
         console.log('      - ' + uniqueFamilies.join('\n      - '));
       }
@@ -732,7 +740,7 @@ if (typeof window !== 'undefined') {
     for (const [name, func] of Object.entries(functionsToExpose)) {
       try {
         // Asignación directa es más robusta contra configuraciones de propiedad existentes
-        (window as any)[name] = func;
+        (window as Window & { [key: string]: unknown })[name] = func;
       } catch {
         // Silenciar errores (pueden ser de extensiones de wallet que congelan el objeto window)
         console.warn(`No se pudo exponer la función '${name}' en window.`);
@@ -764,7 +772,8 @@ if (typeof window !== 'undefined') {
       
       // Verificar y re-exponer después de iniciar captura
       setTimeout(() => {
-        if (!(window as any).showErrorReport || !(window as any).showEnvInfo) {
+        const winDebug = window as Window & { showErrorReport?: unknown; showEnvInfo?: unknown };
+        if (!winDebug.showErrorReport || !winDebug.showEnvInfo) {
           console.warn('⚠️ Funciones de debug no disponibles, reintentando exposición...');
           exposeFunctions();
         } else {

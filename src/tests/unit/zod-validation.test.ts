@@ -93,7 +93,7 @@ describe('Zod Schema Validation', () => {
 
     it('should reject invalid theme', () => {
       const invalidThemeProps = {
-        currentTheme: 'invalid-theme' as any,
+        currentTheme: 'invalid-theme' as unknown as string,
         onThemeChange: (theme: string) => console.log(theme),
         disabled: false,
         showPreview: true
@@ -194,7 +194,7 @@ describe('Zod Schema Validation', () => {
         userId: '123e4567-e89b-12d3-a456-426614174000',
         amount: 100,
         duration: 30,
-        tokenType: 'invalid' as any
+        tokenType: 'invalid' as unknown as string
       };
 
       const result = StakingSchema.safeParse(invalidStaking);
@@ -269,17 +269,17 @@ describe('Zod Schema Validation', () => {
 
   describe('Edge Cases', () => {
     it('should handle undefined values correctly', () => {
-      const result = ProfileCardSchema.safeParse(undefined as any);
+      const result = ProfileCardSchema.safeParse(undefined as unknown);
       expect(result.success).toBe(false);
     });
 
     it('should handle null values correctly', () => {
-      const result = EmailSchema.safeParse(null as any);
+      const result = EmailSchema.safeParse(null as unknown);
       expect(result.success).toBe(false);
     });
 
     it('should handle empty objects correctly', () => {
-      const result = StakingSchema.safeParse({} as any);
+      const result = StakingSchema.safeParse({} as unknown);
       expect(result.success).toBe(false);
     });
   });

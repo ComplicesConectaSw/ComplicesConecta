@@ -174,38 +174,45 @@ export type SafeSupabaseClient = {
   ): {
     select: (columns?: string) => Promise<{
       data: DatabaseFixed['public']['Tables'][T]['Row'][] | null;
-      error: any;
+      error: unknown;
     }>;
     insert: (
       values: DatabaseFixed['public']['Tables'][T]['Insert'] | DatabaseFixed['public']['Tables'][T]['Insert'][]
     ) => Promise<{
       data: DatabaseFixed['public']['Tables'][T]['Row'][] | null;
-      error: any;
+      error: unknown;
     }>;
     update: (
       values: DatabaseFixed['public']['Tables'][T]['Update']
     ) => Promise<{
       data: DatabaseFixed['public']['Tables'][T]['Row'][] | null;
-      error: any;
+      error: unknown;
     }>;
   };
 };
 
 // Utilidades para validación de tipos
-export const validateAnalyticsEvent = (event: any): event is AnalyticsEventInsert => {
+export const validateAnalyticsEvent = (event: unknown): event is AnalyticsEventInsert => {
   return (
     typeof event === 'object' &&
-    typeof event.event_name === 'string' &&
-    (event.event_type === undefined || 
-     ['user_behavior', 'system', 'error', 'performance'].includes(event.event_type))
+    event !== null &&
+    typeof (event as { event_name?: unknown }).event_name === 'string' &&
+    ((event as { event_type?: unknown }).event_type === undefined ||
+      (typeof (event as { event_type?: unknown }).event_type === 'string' &&
+        ['user_behavior', 'system', 'error', 'performance'].includes(
+          (event as { event_type: string }).event_type
+        )))
   );
 };
 
-export const validateStoryInteraction = (interaction: any): interaction is { story_id: string; user_id: string } => {
+export const validateStoryInteraction = (
+  interaction: unknown
+): interaction is { story_id: string; user_id: string } => {
   return (
     typeof interaction === 'object' &&
-    typeof interaction.story_id === 'string' &&
-    typeof interaction.user_id === 'string'
+    interaction !== null &&
+    typeof (interaction as { story_id?: unknown }).story_id === 'string' &&
+    typeof (interaction as { user_id?: unknown }).user_id === 'string'
   );
 };
 

@@ -7,9 +7,9 @@ import { logger } from '@/lib/logger';
 
 export class TestDebugger {
   private static instance: TestDebugger;
-  private testResults: Map<string, any> = new Map();
-  private mockCalls: Map<string, any[]> = new Map();
-  private errors: Array<{ test: string; error: any; context: any }> = [];
+  private testResults: Map<string, { success: boolean; result: unknown; timestamp: Date }> = new Map();
+  private mockCalls: Map<string, Array<{ args: unknown[]; returnValue: unknown; timestamp: Date }>> = new Map();
+  private errors: Array<{ test: string; error: unknown; context: unknown }> = [];
 
   static getInstance(): TestDebugger {
     if (!TestDebugger.instance) {
@@ -19,11 +19,11 @@ export class TestDebugger {
   }
 
   // 🔍 Logging con contexto detallado
-  logTestStart(testName: string, context?: any) {
+  logTestStart(testName: string, context?: unknown) {
     logger.debug(`🧪 [TEST START] ${testName}`, { context });
   }
 
-  logTestEnd(testName: string, success: boolean, result?: any) {
+  logTestEnd(testName: string, success: boolean, result?: unknown) {
     const status = success ? '✅' : '❌';
     if (success) {
       logger.debug(`${status} [TEST END] ${testName}`, { result });
@@ -34,7 +34,7 @@ export class TestDebugger {
   }
 
   // 🎯 Mock tracking
-  trackMockCall(mockName: string, args: any[], returnValue?: any) {
+  trackMockCall(mockName: string, args: unknown[], returnValue?: unknown) {
     const call = { args, returnValue, timestamp: new Date() };
     if (!this.mockCalls.has(mockName)) {
       this.mockCalls.set(mockName, []);
@@ -44,7 +44,7 @@ export class TestDebugger {
   }
 
   // ❌ Error tracking con stack trace
-  logError(testName: string, error: any, context?: any) {
+  logError(testName: string, error: unknown, context?: unknown) {
     logger.error(`💥 [ERROR] ${testName}`, { 
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
@@ -54,17 +54,17 @@ export class TestDebugger {
   }
 
   // 🔬 Component state debugging
-  logComponentState(componentName: string, state: any, props?: any) {
+  logComponentState(componentName: string, state: unknown, props?: unknown) {
     logger.debug(`🎨 [COMPONENT] ${componentName}`, { state, props });
   }
 
   // 🌐 Supabase mock debugging
-  logSupabaseMock(operation: string, table: string, data?: any, result?: any) {
+  logSupabaseMock(operation: string, table: string, data?: unknown, result?: unknown) {
     logger.debug(`🗄️ [SUPABASE MOCK] ${operation} on ${table}`, { data, result });
   }
 
   // 🎣 Hook debugging
-  logHookCall(hookName: string, params?: any, result?: any) {
+  logHookCall(hookName: string, params?: unknown, result?: unknown) {
     logger.debug(`🎣 [HOOK] ${hookName}`, { params, result });
   }
 
@@ -113,7 +113,10 @@ export class TestDebugger {
   }
 
   // 🎯 Debugging específico para ProfileReportsPanel
-  debugProfileReportsPanel(component: any, expectedTexts: string[]) {
+  debugProfileReportsPanel(
+    component: { container?: { innerHTML?: string | null }; getByText: (text: string) => unknown },
+    expectedTexts: string[]
+  ) {
     logger.debug(`🎯 [PROFILE REPORTS DEBUG]`, { 
       expectedTexts,
       html: component?.container?.innerHTML 
@@ -136,12 +139,15 @@ export class TestDebugger {
 export const testDebugger = TestDebugger.getInstance();
 
 // 🎭 Enhanced mock helpers
-export const createDebugMock = async (name: string, implementation?: any) => {
+export const createDebugMock = async <TArgs extends unknown[], TReturn>(
+  name: string,
+  implementation?: (...args: TArgs) => TReturn
+) => {
   const { vi } = await import('vitest');
-  const mock = vi.fn(implementation);
+  const mock = vi.fn(implementation as (...args: TArgs) => TReturn);
   
-  mock.mockImplementation((...args: any[]) => {
-    const result = implementation ? implementation(...args) : undefined;
+  mock.mockImplementation((...args: TArgs) => {
+    const result = implementation ? implementation(...args) : (undefined as unknown as TReturn);
     testDebugger.trackMockCall(name, args, result);
     return result;
   });

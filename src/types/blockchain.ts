@@ -119,23 +119,34 @@ export type BlockchainTransactionInsert = Omit<BlockchainTransaction, 'id' | 'cr
 
 // Cliente Supabase extendido con tipos blockchain
 export interface BlockchainSupabaseClient {
-  from(table: 'user_wallets'): any;
-  from(table: 'testnet_token_claims'): any;
-  from(table: 'daily_token_claims'): any;
-  from(table: 'user_nfts'): any;
-  from(table: 'couple_nft_requests'): any;
-  from(table: 'nft_staking'): any;
-  from(table: 'token_staking'): any;
-  from(table: 'blockchain_transactions'): any;
-  from(table: string): any;
+  from(table: 'user_wallets'):
+    { select: (columns?: string) => Promise<{ data: UserWallet[] | null; error: unknown }> };
+  from(table: 'testnet_token_claims'):
+    { select: (columns?: string) => Promise<{ data: TestnetTokenClaim[] | null; error: unknown }> };
+  from(table: 'daily_token_claims'):
+    { select: (columns?: string) => Promise<{ data: DailyTokenClaim[] | null; error: unknown }> };
+  from(table: 'user_nfts'):
+    { select: (columns?: string) => Promise<{ data: UserNFT[] | null; error: unknown }> };
+  from(table: 'couple_nft_requests'):
+    { select: (columns?: string) => Promise<{ data: CoupleNFTRequest[] | null; error: unknown }> };
+  from(table: 'nft_staking'):
+    { select: (columns?: string) => Promise<{ data: NFTStaking[] | null; error: unknown }> };
+  from(table: 'token_staking'):
+    { select: (columns?: string) => Promise<{ data: TokenStaking[] | null; error: unknown }> };
+  from(table: 'blockchain_transactions'):
+    { select: (columns?: string) => Promise<{ data: BlockchainTransaction[] | null; error: unknown }> };
+  from(table: string): { select: (columns?: string) => Promise<{ data: unknown[] | null; error: unknown }> };
 }
 
 // Helper para casting seguro de tipos blockchain
-export function safeBlockchainCast<T>(data: any): T {
+export function safeBlockchainCast<T>(data: unknown): T {
   return data as T;
 }
 
 // Helper para acceso seguro a propiedades
-export function safeGet<T>(obj: any, key: string, defaultValue?: T): T | undefined {
-  return obj && obj[key] !== undefined ? obj[key] : defaultValue;
+export function safeGet<T>(obj: unknown, key: string, defaultValue?: T): T | undefined {
+  if (obj && typeof obj === 'object' && key in (obj as Record<string, unknown>)) {
+    return (obj as Record<string, unknown>)[key] as T;
+  }
+  return defaultValue;
 }

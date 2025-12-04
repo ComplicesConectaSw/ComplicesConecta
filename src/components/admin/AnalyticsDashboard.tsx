@@ -9,6 +9,7 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
+
 import {
   BarChart3,
   TriangleAlert,
@@ -19,8 +20,9 @@ import {
   ShieldCheck
 } from 'lucide-react';
 
-import performanceMonitoring from '../../services/PerformanceMonitoringService';
-import errorAlertService from '../../services/ErrorAlertService';
+import performanceMonitoring, { PerformanceMetric, PerformanceReport } from '../../services/PerformanceMonitoringService';
+import errorAlertService, { ErrorAlert } from '../../services/ErrorAlertService';
+
 import { logger } from '../../lib/logger';
 import { AlertConfigPanel } from './AlertConfigPanel';
 import { ExportButton } from './ExportButton';
@@ -34,6 +36,27 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 // INTERFACES
 // =====================================================
 
+type AnalyticsTab = 'overview' | 'errors' | 'moderation' | 'historical' | 'config';
+
+interface MetricCardProps {
+  title: string;
+  value: string | number;
+  subtext?: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  color?: 'blue' | 'green' | 'red' | 'orange' | 'purple';
+}
+
+interface ExportPayload {
+  metrics: PerformanceMetric[];
+  alerts: ErrorAlert[];
+  report: PerformanceReport;
+  metadata: {
+    exportDate: string;
+    appVersion: string;
+    totalRecords: number;
+  };
+}
+
 interface DashboardMetrics {
   performance: {
     avgLoadTime: number;
@@ -46,8 +69,9 @@ interface DashboardMetrics {
     total: number;
     critical: number;
     resolved: number;
-    recent: any[];
+    recent: ErrorAlert[];
   };
+
   engagement: {
     activeUsers: number;
     peakConcurrency: number;
@@ -62,7 +86,8 @@ export const AnalyticsDashboard: React.FC = () => {
     engagement: { activeUsers: 0, peakConcurrency: 0, lastActive: new Date() }
   });
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'errors' | 'moderation' | 'historical' | 'config'>('overview');
+  const [activeTab, setActiveTab] = useState<AnalyticsTab>('overview');
+
   const [refreshInterval, setRefreshInterval] = useState(30000);
   const [autoRefresh, setAutoRefresh] = useState(true);
 
@@ -75,12 +100,14 @@ export const AnalyticsDashboard: React.FC = () => {
   // =====================================================
 
   const loadMetrics = () => {
+
     try {
       // Load performance metrics
       const perfMetrics = performanceMonitoring.getMetrics();
 
       // Load error metrics
       const activeAlerts = errorAlertService.getAlerts({ resolved: false });
+
       const criticalAlerts = activeAlerts.filter(a => a.severity === 'critical' || a.severity === 'high');
 
       // Mock engagement metrics (replace with real service)
@@ -90,14 +117,21 @@ export const AnalyticsDashboard: React.FC = () => {
         lastActive: new Date()
       };
 
+      type PerformanceWithMemory = Performance & {
+        memory?: {
+          usedJSHeapSize: number;
+        };
+      };
+      const perfWithMemory = performance as PerformanceWithMemory;
+
       setMetrics({
         performance: {
           avgLoadTime: 0,
           avgInteractionTime: 0,
           totalRequests: 15420, // Mock
           failedRequests: 23, // Mock
-          memoryUsage: (performance as any).memory?.usedJSHeapSize
-            ? Math.round((performance as any).memory.usedJSHeapSize / 1024 / 1024)
+          memoryUsage: perfWithMemory.memory?.usedJSHeapSize
+            ? Math.round(perfWithMemory.memory.usedJSHeapSize / 1024 / 1024)
             : 0,
         },
         errors: {
@@ -127,7 +161,7 @@ export const AnalyticsDashboard: React.FC = () => {
   // HELPER COMPONENTS
   // =====================================================
 
-  const MetricCard = ({ title, value, subtext, icon: Icon, color = "blue" }: any) => (
+  const MetricCard = ({ title, value, subtext, icon: Icon, color = "blue" }: MetricCardProps) => (
     <div className={`bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-l-4 border-${color}-500`}>
       <div className="flex justify-between items-start">
         <div>
@@ -155,15 +189,15 @@ export const AnalyticsDashboard: React.FC = () => {
             Estado del sistema en tiempo real
           </p>
         </div>
-        
+
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 bg-white dark:bg-gray-800 p-2 rounded-lg border dark:border-gray-700">
             <span className="text-sm text-gray-600 dark:text-gray-300">Auto-refresh:</span>
             <button
               onClick={() => setAutoRefresh(!autoRefresh)}
               className={`px-3 py-1 text-xs rounded-full transition-colors ${
-                autoRefresh 
-                  ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
+                autoRefresh
+                  ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                   : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
               }`}
             >
@@ -195,23 +229,23 @@ export const AnalyticsDashboard: React.FC = () => {
                   performanceMonitoring.getMetrics().length +
                   errorAlertService.getAlerts({}).length,
               },
-            }}
+            } as ExportPayload}
           />
         </div>
       </div>
 
       {/* Navigation Tabs */}
       <div className="flex space-x-1 bg-white dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700 overflow-x-auto">
-        {[
+        {([
           { id: 'overview', label: 'Vista General', icon: BarChart3 },
           { id: 'errors', label: 'Alertas y Errores', icon: TriangleAlert },
           { id: 'moderation', label: 'Moderación', icon: ShieldCheck },
           { id: 'historical', label: 'Histórico', icon: Clock3 },
           { id: 'config', label: 'Configuración', icon: Server },
-        ].map((tab) => (
+        ] as Array<{ id: AnalyticsTab; label: string; icon: React.ComponentType<React.SVGProps<SVGSVGElement>> }>).map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => setActiveTab(tab.id)}
             className={`
               flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all
               ${activeTab === tab.id
