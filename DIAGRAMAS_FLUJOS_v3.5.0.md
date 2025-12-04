@@ -8,6 +8,12 @@
 
 ## 🔄 FLUJO COMPLETO DE USUARIO (Actualizado v3.6.4)
 
+### ✅ Actualizaciones clave v3.7.2
+- **Consolidación de UI:** todos los componentes visuales viven ahora en `src/components/ui/*` con variantes unificadas (love/passion/premium) para controles críticos como el Control Parental. Esto asegura consistencia entre los flujos diagramados y la experiencia real.
+- **Arquitectura Vite pura:** se eliminaron los layout folders `src/app/(*)/` heredados de Next.js. Todas las rutas presentes en estos flujos ahora residen en `src/pages/**`, simplificando la trazabilidad entre diagramas ↔ código.
+- **Pipelines visuales sincronizados:** los fondos dinámicos (particles/mp4/static) y el nuevo `useBgMode` se aplican tanto en perfiles demo (nodos F/G/H) como en perfiles reales (nodos L/M/N), garantizando que los flujos de usuario reflejen la experiencia Android/iOS.
+- **Iconografía Lucide:** los paneles de moderación/alertas (secciones 🛡️ y 🛡️) usan `lucide-react`, lo que evita regresiones en los flujos de baneo y pagos automáticos.
+
 ```mermaid
 flowchart TD
     A[Landing +18] --> B{Opción Usuario}

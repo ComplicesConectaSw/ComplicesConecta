@@ -11,6 +11,7 @@ onlyBuiltDependencies:
   - protobufjs
   - react-tsparticles
   - sharp
+  - supabase
   - tsparticles-engine
   - unrs-resolver
   - utf-8-validate

@@ -15,10 +15,16 @@ AI: Integración para moderación y resúmenes de chat.
 Testing: Playwright (E2E) y Jest.
 ## 🚧 Estado del Proyecto
 Actualmente estoy trabajando en:
-[ ] Refactorización de la estructura de carpetas en /src.
+[x] Refactorización de la estructura de carpetas en /src (consolidación `src/components/ui/`, eliminación de `src/app/(*)`).
 [x] Optimización de las consultas a Neo4j.
 [x] Limpieza de código muerto y comentarios legacy.
 [x] Implementación de Tests E2E críticos (Completado).
+
+### 🆕 Bitácora express 04 Dic 2025 (v3.7.2)
+- **UI Consolidada:** `src/shared/ui/*` se migró por completo a `src/components/ui/*`. Esto asegura variantes unificadas (love/passion/premium) y elimina imports `@/shared/ui/*` que generaban errores en builds móviles.
+- **Arquitectura Vite pura:** Todos los módulos que vivían en `src/app/(admin|clubs|discover|auth)` se movieron a `src/pages/**`. `App.tsx` y `utils/lazyComponents` utilizan ahora las nuevas rutas, simplificando el enrutado de los flujos documentados.
+- **PostCSS/Tailwind actualizado:** `postcss.config.js` utiliza `@tailwindcss/postcss` + `autoprefixer`, requisito de Tailwind 4.1.17. El build de Vite vuelve a correr en Vercel/Capacitor.
+- **Iconografía lucide-react:** Paneles `AlertConfigPanel`, `AnalyticsDashboard`, `ModerationMetrics` y `WebhookConfigPanel` migraron de Heroicons a Lucide para evitar dependencias removidas y mantener consistencia visual/interactividad descrita en los diagramas.
 
 ### 📅 Bitácora 26 Nov 2025
 - **FloatingNav renovada**: Glassmorphism oscuro, jerarquía pública (Inicio, Explorar, NFTs, Tokens + menú "Más") y dropdown responsivo (w-[90%], max-w-sm), eliminando el botón duplicado de login y añadiendo `pb-24` global para evitar solapar el footer.
@@ -120,12 +126,12 @@ Este repositorio es un "laboratorio vivo" donde experimento con tecnologías com
 ### **📋 Documentación Técnica**
 - **[🔧 Guía de Instalación](./INSTALACION_SETUP_v3.5.0.md)** - Guía completa paso a paso de instalación y configuración
 - **[🚀 Inicio Rápido Túnel](./QUICK_START_TUNNEL.md)** - Configuración rápida de túnel para desarrollo
-- **[🏗️ Estructura del Proyecto](./project-structure-tree.md)** - Árbol detallado del monorepo
+- **[🏗️ Estructura del Proyecto](./project-structure-tree.md)** - Árbol detallado del monorepo (Actualizado v3.7.2: rutas en `src/pages/**` y `src/components/ui/*`)
 - **[📝 Notas de Lanzamiento](./RELEASE_NOTES_v3.4.1.md)** - Historial completo de versiones y cambios
 - **[📋 Changelog](./CHANGELOG.md)** - Registro detallado de cambios por versión
 - **[⚙️ DevOps Guide](./README_DEVOPS.md)** - Guía de operaciones y deployment
 - **[🤖 IA Integration Guide](./README_IA.md)** - Estrategia de desarrollo con IA
-- **[🔄 Diagramas de Flujos](./DIAGRAMAS_FLUJOS_v3.5.0.md)** - Diagramas técnicos y flujos de trabajo
+- **[🔄 Diagramas de Flujos](./DIAGRAMAS_FLUJOS_v3.5.0.md)** - Diagramas técnicos y flujos de trabajo (Actualizado v3.7.2 con pipelines UI/bg modes)
 - **[🤝 Guía de Contribución](./CONTRIBUTING.md)** - Cómo contribuir al proyecto
 - **[📄 Presentación Pública](./COMPLICESCONECTA_PRESENTACION_PUBLICA.md)** - Presentación pública del proyecto
 

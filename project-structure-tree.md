@@ -1,7 +1,7 @@
 # 📁 PROJECT STRUCTURE TREE - ComplicesConecta v3.8.16
 
-**Última Actualización:** 29 de Noviembre, 2025  
-**Versión:** 3.8.16  
+**Última Actualización:** 4 de Diciembre, 2025  
+**Versión:** 3.8.18  
 **Estado:** ✅ **PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - 100% TYPE-SAFE - SUPABASE/NEO4J ALINEADOS - BUILD OPTIMIZADO**  
 **Puntuación:** 97/100 ✅ (Estructura: 100/100, Lógica: 100/100, Consistencia: 97/100)  
 **Build:** ✅ 24.4s (optimizado) | **Linting:** ✅ 0 errores | **TypeScript:** ✅ 0 errores (100% TYPE-SAFE) | **Vercel:** ✅ Configurado | **Docker:** ✅ Integrado | **Neo4j:** ✅ Operativo
@@ -23,7 +23,13 @@
 - Tokens/NFT Dashboard con grid 2x4, animaciones globales y HeaderNav minimalista.
 - Migraciones `20251106xxxx` blindadas para entornos locales (RLS matches, consent, virtual events, NFTs).
 
-### Funcionalidades Avanzadas v3.5.0 Implementadas:
+### Funcionalidades destacadas v3.7.2:
+- **Consolidación UI completa:** todos los componentes compartidos (Button/Input/Modal, etc.) se encuentran en `src/components/ui/*`. `src/shared/ui` dejó de existir para evitar rutas duplicadas.
+- **Arquitectura Vite pura:** se eliminaron los layout folders `src/app/(admin|clubs|discover|auth)` heredados de Next.js. Las páginas viven en `src/pages/**` y se cargan vía `React.lazy`/`utils/lazyComponents`.
+- **Tailwind/PostCSS actualizado:** `postcss.config.js` usa `@tailwindcss/postcss` + `autoprefixer`, requisito para Tailwind 4.1.17 en Vite.
+- **Iconografía Lucide:** `AlertConfigPanel`, `AnalyticsDashboard`, `ModerationMetrics` y `WebhookConfigPanel` dependen de `lucide-react`, eliminando heroicons.
+
+### Funcionalidades Avanzadas previas (v3.5.0 – v3.7.0):
 - **AI-Native Layer (Fase 1)**: ML Compatibility Scoring + Chat Summaries (100%)
 - **PyTorch/TensorFlow.js**: Modelos pre-entrenados (400K parámetros)
 - **Chat Summaries ML**: GPT-4, BART (HuggingFace), Fallback (3 opciones)
@@ -81,9 +87,10 @@ conecta-social-comunidad-main/
 │   ├── main.tsx                  # Punto de entrada Vite/React
 │   ├── index.css                 # Estilos globales principales
 │   ├── vite-env.d.ts             # Tipos de entorno Vite
-│   ├── app/                      # Nuevo router basado en app/ (layouts/páginas)
 │   ├── assets/                   # Recursos estáticos (imágenes, SVG, etc.)
 │   ├── components/               # Componentes reutilizables (UI + features)
+│   │   ├── ui/                  # Biblioteca centralizada (shadcn + variantes love/passion/premium)
+│   │   └── ...
 │   ├── config/                   # Configuraciones (Sentry, Datadog, etc.)
 │   ├── context/                  # React Context providers compartidos
 │   ├── demo/                     # Flujos y pantallas de demo
@@ -93,10 +100,10 @@ conecta-social-comunidad-main/
 │   ├── hooks/                    # Custom React hooks compartidos
 │   ├── integrations/             # Integraciones externas (Supabase, APIs, etc.)
 │   ├── lib/                      # Librerías y utilidades de infraestructura
-│   ├── pages/                    # Páginas clásicas (routing legacy)
+│   ├── pages/                    # Routing oficial (Auth, Discover, Clubs, Admin, etc.)
 │   ├── profiles/                 # Perfiles (single, couple, shared)
 │   ├── services/                 # Servicios de negocio (AI, matching, NFT, etc.)
-│   ├── shared/                   # UI compartida (componentes, lib, hooks)
+│   ├── shared/                   # Librerías comunes (lib, hooks); *UI 100% migrada a components/ui*
 │   ├── styles/                   # Sistema de estilos consolidado (CSS)
 │   ├── tests/                    # Tests unitarios/e2e específicos de frontend
 │   ├── types/                    # Tipos globales y contratos TS
@@ -168,8 +175,8 @@ src/profiles/                      # Perfiles organizados (single / couple / sha
 │   └── verificar-alineacion-tablas.ps1        # Verificar alineación tablas (DEPRECADO - usar database-manager.ps1)
 │   └── utils/                                 # Utilidades de repositorio (NUEVO v3.6.6)
 │       └── github_menu.ps1                    # Menú interactivo para comandos Git/GitHub
-├── tailwind.config.ts            # Configuración Tailwind CSS v3.4.18 (300 líneas)
-├── postcss.config.js             # Configuración PostCSS con @tailwindcss/postcss
+├── tailwind.config.ts            # Configuración Tailwind CSS v4.1.17 (gradientes purple/blue)
+├── postcss.config.js             # Configuración PostCSS con @tailwindcss/postcss + autoprefixer
 ├── docker-compose.yml            # Docker Compose con Neo4j (ACTUALIZADO v3.5.0)
 ├── android/                      # Proyecto Android nativo
 ├── kubernetes/                   # Configs Datadog/K8s (NUEVO v3.4.1)
