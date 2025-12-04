@@ -206,7 +206,7 @@ describe('Supabase Integration Tests', () => {
       // Mock de suscripción exitosa
       const mockSubscription = {
         subscribe: () => ({
-          on: (event: string, callback: (payload: unknown) => void) => {
+          on: (event: string, callback: Function) => {
             // Simular evento de inserción
             if (event === 'INSERT') {
               setTimeout(() => {

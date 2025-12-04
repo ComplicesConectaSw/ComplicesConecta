@@ -23,6 +23,8 @@ import { useToast } from "@/hooks/useToast";
 import { logger } from '@/lib/logger';
 import { usePersistedState } from '@/hooks/usePersistedState';
 
+type DemoUser = { id: string; accountType?: string } | null;
+
 const Requests = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ const Requests = () => {
   
   // Migracin localStorage ? usePersistedState
   const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [demoUser, _setDemoUser] = usePersistedState<DemoUser>('demo_user', null);
 
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
@@ -112,14 +114,16 @@ const Requests = () => {
     }
     
     const { received, sent } = await invitationService.getInvitations(currentUserId);
-    setReceivedInvitations(received);
-    setSentInvitations(sent);
+    setTimeout(() => {
+      setReceivedInvitations(received);
+      setSentInvitations(sent);
+    }, 0);
   }, [currentUserId, demoAuth]);
 
   useEffect(() => {
     if (currentUserId) {
       setTimeout(() => {
-        loadInvitations();
+        void loadInvitations();
       }, 0);
     }
   }, [currentUserId, loadInvitations, navigate, demoAuth, demoUser]);
@@ -167,15 +171,13 @@ const Requests = () => {
     // Usuario real autenticado
     const userId = user?.id;
     if (userId) {
-      setTimeout(() => {
-        setCurrentUserId(userId);
-        logger.info('? Usuario real autenticado en Requests con ID:', { userId });
-      }, 0);
+      setTimeout(() => setCurrentUserId(userId), 0);
+      logger.info('🧑 Usuario real autenticado en Requests con ID:', { userId });
     } else {
-      logger.info('? No se pudo obtener userId, redirigiendo a /auth');
+      logger.info('🧑 No se pudo obtener userId, redirigiendo a /auth');
       navigate('/auth');
     }
-  }, [demoAuth, demoUser, user]);
+  }, [demoAuth, demoUser, user, isAuthenticated, navigate, toast]);
 
   const handleInvitationAction = async (invitationId: string, action: 'accept' | 'decline') => {
     try {

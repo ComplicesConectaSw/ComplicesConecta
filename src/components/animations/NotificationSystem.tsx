@@ -1,18 +1,8 @@
 import React, { createContext } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Heart, MessageCircle, Trophy, AlertCircle, CheckCircle, X, Mail, Bell, UserPlus } from 'lucide-react';
-import { useCallback } from 'react';
-// ... dentro del componente
-
-// 1. PRIMERO define la función
-const loadConfigs = useCallback(() => {
-    // ... tu lógica
-}, []);
-
-// 2. DESPUÉS úsala en el efecto
-useEffect(() => {
-    loadConfigs();
-}, [loadConfigs]);
+import { useNotifications } from '@/hooks/useNotifications';
+ 
 // Notification types - Extended for v3.1
 export type NotificationType = 'match' | 'like' | 'message' | 'achievement' | 'success' | 'error' | 'warning' | 'info' | 'email' | 'request' | 'confirmation' | 'alert';
 
@@ -26,7 +16,7 @@ interface Notification {
     label: string;
     onClick: () => void;
   };
-  data?: any;
+  data?: unknown;
 }
 
 // Notification context
@@ -39,26 +29,29 @@ interface NotificationContextType {
 
 // CRÍTICO: Asegurar createContext disponible antes de usar
 const safeCreateContext = <T,>(defaultValue: T | undefined): React.Context<T | undefined> => {
-  const debugLog = (event: string, data?: any) => {
-    if (typeof window !== 'undefined' && (window as any).__LOADING_DEBUG__) {
-      (window as any).__LOADING_DEBUG__.log(event, data);
+  const debugLog = (event: string, data?: unknown) => {
+    if (typeof window !== 'undefined' && window.__LOADING_DEBUG__) {
+      window.__LOADING_DEBUG__.log(event, data);
     }
   };
   
-  if (typeof window !== 'undefined' && (window as any).React?.createContext) {
+  if (typeof window !== 'undefined' && window.React?.createContext) {
     debugLog('SAFE_CREATE_CONTEXT_GLOBAL', { provider: 'NotificationSystem', hasGlobal: true });
-    return (window as any).React.createContext(defaultValue);
+    return window.React.createContext(defaultValue);
   }
   
   debugLog('SAFE_CREATE_CONTEXT_FALLBACK', { provider: 'NotificationSystem', hasGlobal: false, hasLocal: !!createContext });
   return createContext<T | undefined>(defaultValue);
 };
 
-const NotificationContext = safeCreateContext<NotificationContextType>(undefined);
+export const NotificationContext = safeCreateContext<NotificationContextType>(undefined);
 
 // Notification provider
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
+  const removeNotification = React.useCallback((id: string) => {
+    setNotifications(prev => prev.filter(n => n.id !== id));
+  }, []);
 
   const addNotification = React.useCallback((notification: Omit<Notification, 'id'>) => {
     const id = Date.now().toString();
@@ -66,17 +59,12 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
     
     setNotifications(prev => [...prev, newNotification]);
 
-    // Auto remove after duration
     if (notification.duration !== 0) {
       setTimeout(() => {
         removeNotification(id);
       }, notification.duration || 5000);
     }
-  }, []);
-
-  const removeNotification = React.useCallback((id: string) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
-  }, []);
+  }, [removeNotification]);
 
   const clearAll = React.useCallback(() => {
     setNotifications([]);
@@ -95,14 +83,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   );
 };
 
-// Hook to use notifications
-export const useNotifications = () => {
-  const context = React.useContext(NotificationContext);
-  if (!context) {
-    throw new Error('useNotifications must be used within NotificationProvider');
-  }
-  return context;
-};
+ 
 
 // Individual notification component
 const NotificationItem: React.FC<{ notification: Notification }> = ({ notification }) => {
@@ -296,7 +277,8 @@ export const MatchNotification: React.FC<{ user: { id: string; name: string } }>
 };
 
 // Achievement notification with confetti
-export const AchievementNotification: React.FC<{ achievement: any }> = ({ achievement }) => {
+interface AchievementData { title?: string; description: string }
+export const AchievementNotification: React.FC<{ achievement: AchievementData }> = ({ achievement }) => {
   const { addNotification } = useNotifications();
   
   React.useEffect(() => {
@@ -338,32 +320,28 @@ export const AchievementNotification: React.FC<{ achievement: any }> = ({ achiev
 
 // Floating hearts for likes
 export const FloatingHearts: React.FC<{ count?: number }> = ({ count = 5 }) => {
-  const hearts = Array.from({ length: count }, (_, i) => (
+  const detRand = React.useCallback((index: number, range: number) => {
+    const t = (index * 9301 + 49297) % 233280;
+    return (t / 233280) * range;
+  }, []);
+
+  const configs = React.useMemo(
+    () => Array.from({ length: count }, (_, i) => ({
+      initialX: detRand(i, 100) - 50,
+      animateX: detRand(i + 17, 200) - 100,
+      delay: i * 0.2,
+    })),
+    [count, detRand]
+  );
+
+  const hearts = configs.map((cfg, i) => (
     <motion.div
       key={i}
-      initial={{ 
-        opacity: 0, 
-        scale: 0, 
-        x: Math.random() * 100 - 50,
-        y: 0 
-      }}
-      animate={{ 
-        opacity: [0, 1, 0], 
-        scale: [0, 1, 0.8], 
-        y: -200,
-        x: Math.random() * 200 - 100
-      }}
-      transition={{ 
-        duration: 3, 
-        delay: i * 0.2,
-        ease: "easeOut"
-      }}
+      initial={{ opacity: 0, scale: 0, x: cfg.initialX, y: 0 }}
+      animate={{ opacity: [0, 1, 0], scale: [0, 1, 0.8], y: -200, x: cfg.animateX }}
+      transition={{ duration: 3, delay: cfg.delay, ease: "easeOut" }}
       className="absolute text-2xl pointer-events-none"
-      style={{ 
-        left: '50%', 
-        bottom: '50%',
-        transform: 'translateX(-50%)'
-      }}
+      style={{ left: '50%', bottom: '50%', transform: 'translateX(-50%)' }}
     >
       ❤️
     </motion.div>
@@ -377,137 +355,10 @@ export const FloatingHearts: React.FC<{ count?: number }> = ({ count = 5 }) => {
 };
 
 // Hook for easy notification usage
-export const useNotificationHelpers = () => {
-  const { addNotification } = useNotifications();
-  
-  return {
-    showMatch: (user: { id: string; name: string }) => {
-      addNotification({
-        type: 'match',
-        title: '¡Es un Match! 💕',
-        message: `¡Tú y ${user.name} se han gustado mutuamente!`,
-        duration: 8000,
-        action: {
-          label: 'Enviar mensaje',
-          onClick: () => window.location.href = `/chat?user=${user.id || ''}`
-        }
-      });
-    },
-    
-    showLike: (user: { id: string; name: string }) => {
-      addNotification({
-        type: 'like',
-        title: '¡Nuevo Like! 💖',
-        message: `A ${user.name} le gustas`,
-        duration: 4000
-      });
-    },
-    
-    showMessage: (sender: { id: string; name: string }, _message: string) => {
-      addNotification({
-        type: 'message',
-        title: 'Nuevo mensaje 💬',
-        message: `${sender.name} te ha enviado un mensaje`,
-        duration: 6000,
-        action: {
-          label: 'Ver mensaje',
-          onClick: () => window.location.href = `/chat?user=${sender.id}`
-        }
-      });
-    },
-    
-    showAchievement: (achievement: any) => {
-      addNotification({
-        type: 'achievement',
-        title: '¡Logro Desbloqueado! 🏆',
-        message: achievement.description,
-        duration: 6000
-      });
-    },
-    
-    showSuccess: (message: string) => {
-      addNotification({
-        type: 'success',
-        title: '¡Éxito!',
-        message,
-        duration: 3000
-      });
-    },
-    
-    showError: (message: string) => {
-      addNotification({
-        type: 'error',
-        title: 'Error',
-        message,
-        duration: 5000
-      });
-    },
-    
-    showWarning: (message: string) => {
-      addNotification({
-        type: 'warning',
-        title: 'Atención',
-        message,
-        duration: 4000
-      });
-    },
-    
-    showInfo: (message: string) => {
-      addNotification({
-        type: 'info',
-        title: 'Información',
-        message,
-        duration: 4000
-      });
-    },
-
-    // New v3.1 notification helpers
-    showEmailNotification: (title: string, message: string, actionUrl?: string) => {
-      addNotification({
-        type: 'email',
-        title,
-        message,
-        duration: 6000,
-        action: actionUrl ? {
-          label: 'Ver detalles',
-          onClick: () => window.location.href = actionUrl
-        } : undefined
-      });
-    },
-
-    showNewRequest: (senderName: string, requestId: string) => {
-      addNotification({
-        type: 'request',
-        title: 'Nueva Solicitud',
-        message: `${senderName} te ha enviado una solicitud de conexión`,
-        duration: 8000,
-        action: {
-          label: 'Ver solicitud',
-          onClick: () => window.location.href = `/requests?id=${requestId}`
-        }
-      });
-    },
-
-    showConfirmation: (title: string, message: string) => {
-      addNotification({
-        type: 'confirmation',
-        title,
-        message,
-        duration: 5000
-      });
-    },
-
-    showAlert: (title: string, message: string, actionUrl?: string) => {
-      addNotification({
-        type: 'alert',
-        title,
-        message,
-        duration: 0, // Persistent until dismissed
-        action: actionUrl ? {
-          label: 'Resolver',
-          onClick: () => window.location.href = actionUrl
-        } : undefined
-      });
-    }
-  };
-};
+ 
+declare global {
+  interface Window {
+    __LOADING_DEBUG__?: { log: (event: string, data?: unknown) => void };
+    React?: { createContext: typeof createContext };
+  }
+}

@@ -8,7 +8,6 @@ import { ArrowLeft, Save, Camera, X, Users, MapPin, AlertCircle, Sun, Moon, Eye,
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import ImageUpload from "@/components/profile/ImageUpload";
-import { generateMockCouple } from "@/lib/data";
 import { SAFE_INTERESTS } from "@/lib/lifestyle-interests";
 import { ExplicitInterestsEditor } from '@/components/settings/ExplicitInterestsEditor';
 import { useGeolocation } from "@/hooks/useGeolocation";
@@ -16,9 +15,31 @@ import { logger } from '@/lib/logger';
 import { useDemoThemeConfig, getNavbarStyles, useProfileTheme } from '@/features/profile/useProfileTheme';
 import { motion } from 'framer-motion';
 
+interface PartnerProfile {
+  name?: string;
+  nickname?: string;
+  age?: number;
+  profession?: string;
+  bio?: string;
+  avatar?: string;
+  interests?: string[];
+  publicImages?: string[];
+  privateImages?: string[];
+}
+
+interface CoupleProfileData {
+  name?: string;
+  coupleName?: string;
+  location?: string;
+  bio?: string;
+  interests?: string[];
+  partner1?: PartnerProfile;
+  partner2?: PartnerProfile;
+}
+
 const EditProfileCouple = () => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<CoupleProfileData | null>(null);
   const [formData, setFormData] = useState({
     coupleName: "",
     location: "",
@@ -80,12 +101,47 @@ const EditProfileCouple = () => {
         if (user.accountType === 'couple') {
           profileData = user;
         } else {
-          // Para otros tipos, generar perfil mock
-          profileData = generateMockCouple();
+          const baseName = typeof user.id === 'string' ? user.id : 'demo-couple';
+          const pick = (arr: string[], seed: number) => arr[seed % arr.length];
+          const interestsSeed = baseName.length;
+          const p1Name = 'Carlos';
+          const p2Name = 'María';
+          profileData = {
+            coupleName: `${p1Name} & ${p2Name}`,
+            location: 'Ciudad de México',
+            bio: 'Perfil demo de pareja',
+            interests: [
+              pick(SAFE_INTERESTS, interestsSeed),
+              pick(SAFE_INTERESTS, interestsSeed + 1),
+              pick(SAFE_INTERESTS, interestsSeed + 2)
+            ],
+            partner1: {
+              name: p1Name,
+              nickname: 'carlos_demo',
+              age: 30,
+              profession: 'Ingeniero',
+              bio: 'Amante del fitness y la cocina',
+              avatar: '',
+              interests: [pick(SAFE_INTERESTS, interestsSeed + 3)],
+              publicImages: [],
+              privateImages: []
+            },
+            partner2: {
+              name: p2Name,
+              nickname: 'maria_demo',
+              age: 28,
+              profession: 'Diseñadora',
+              bio: 'Apasionada del arte y los viajes',
+              avatar: '',
+              interests: [pick(SAFE_INTERESTS, interestsSeed + 4)],
+              publicImages: [],
+              privateImages: []
+            }
+          };
         }
         
         setProfile(profileData);
-        setFormData({
+        setTimeout(() => setFormData({
           coupleName: profileData.name || profileData.coupleName || "",
           location: profileData.location || "",
           bio: profileData.bio || "",
@@ -115,13 +171,20 @@ const EditProfileCouple = () => {
             publicImages: profileData.partner2?.publicImages || [],
             privateImages: profileData.partner2?.privateImages || []
           }
-        });
+        }), 0);
       } catch (error) {
         logger.error('Error cargando perfil de pareja:', { error: String(error) });
         // Fallback con perfil demo
-        const fallbackProfile = generateMockCouple();
+        const fallbackProfile: CoupleProfileData = {
+          coupleName: 'Pareja Demo',
+          location: 'Ciudad de México',
+          bio: 'Perfil demo de pareja',
+          interests: SAFE_INTERESTS.slice(0, 3),
+          partner1: { name: 'Carlos Demo', age: 30, profession: 'Ingeniero', bio: '', avatar: '', interests: [], publicImages: [], privateImages: [] },
+          partner2: { name: 'María Demo', age: 28, profession: 'Diseñadora', bio: '', avatar: '', interests: [], publicImages: [], privateImages: [] }
+        };
         setProfile(fallbackProfile);
-        setFormData({
+        setTimeout(() => setFormData({
           coupleName: fallbackProfile.coupleName || "",
           location: fallbackProfile.location || "",
           bio: fallbackProfile.bio || "",
@@ -151,7 +214,7 @@ const EditProfileCouple = () => {
             publicImages: [],
             privateImages: []
           }
-        });
+        }), 0);
       }
     };
     

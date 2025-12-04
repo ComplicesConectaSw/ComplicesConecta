@@ -17,17 +17,30 @@ import { usePersistedState } from '@/hooks/usePersistedState';
 const Premium = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isDemoUser, setIsDemoUser] = useState(false);
   const [_userType, _setUserType] = useState('');
   const [showComingSoonModal, setShowComingSoonModal] = useState(false);
   const [comingSoonTitle, setComingSoonTitle] = useState('');
 
+  type DemoUser = { id: string; accountType?: string } | null;
   const [demoAuth, _setDemoAuth] = usePersistedState('demo_authenticated', 'false');
-  const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
+  const [demoUser, _setDemoUser] = usePersistedState<DemoUser>('demo_user', null);
 
   useEffect(() => {
-    if (demoAuth !== 'true' || !demoUser) {
-      logger.info('ℹ️ Acceso a Premium sin autenticación requerida');
+    // Verificar autenticacin (demo o real)
+    // Si hay sesin demo, usar esa
+    if (demoAuth === 'true' && demoUser) {
+      const user = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
+      setTimeout(() => {
+        setIsDemoUser(true);
+        _setUserType(user?.accountType || '');
+      }, 0);
+      return;
     }
+    
+    // Si no hay demo, verificar autenticación real
+    // Por ahora permitir acceso sin autenticación para usuarios reales
+    logger.info('ℹ️ Acceso a Premium sin autenticación requerida');
   }, [navigate, demoAuth, demoUser]);
 
   const handleComingSoon = (title: string) => {
@@ -187,7 +200,7 @@ const Premium = () => {
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
                     onClick={() => {
-                      if (demoAuth === 'true' && demoUser) {
+                      if (isDemoUser) {
                         toast({
                           title: "Premium Activado! (Modo Demo)",
                           description: "En modo demo tienes acceso completo a todas las funciones premium.",
@@ -196,7 +209,7 @@ const Premium = () => {
                       }
                     }}
                   >
-                    {demoAuth === 'true' && demoUser ? "Activado en Demo" : "Seleccionar"}
+                    {isDemoUser ? "Activado en Demo" : "Seleccionar"}
                   </Button>
                 </CardContent>
               </Card>
@@ -240,7 +253,7 @@ const Premium = () => {
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
                     onClick={() => {
-                      if (demoAuth === 'true' && demoUser) {
+                      if (isDemoUser) {
                         toast({
                           title: "Premium VIP Activado! (Modo Demo)",
                           description: "En modo demo tienes acceso completo a todas las funciones VIP.",
@@ -249,7 +262,7 @@ const Premium = () => {
                       }
                     }}
                   >
-                    {demoAuth === 'true' && demoUser ? "VIP Activado en Demo" : "Seleccionar"}
+                    {isDemoUser ? "VIP Activado en Demo" : "Seleccionar"}
                   </Button>
                 </CardContent>
               </Card>
@@ -276,7 +289,7 @@ const Premium = () => {
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
                     onClick={() => {
-                      if (demoAuth === 'true' && demoUser) {
+                      if (isDemoUser) {
                         toast({
                           title: "Founding Member Activado! (Modo Demo)",
                           description: "En modo demo tienes acceso completo a todas las funciones de miembro fundador.",
@@ -285,7 +298,7 @@ const Premium = () => {
                       }
                     }}
                   >
-                    {demoAuth === 'true' && demoUser ? "Founding Member Demo" : "Seleccionar"}
+                    {isDemoUser ? "Founding Member Demo" : "Seleccionar"}
                   </Button>
                 </CardContent>
               </Card>

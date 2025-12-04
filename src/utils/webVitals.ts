@@ -6,16 +6,16 @@ import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 // Importación dinámica para evitar errores de build
 const getWebVitals = async () => {
   try {
-    // @ts-ignore - Módulo opcional, TypeScript puede quejarse si no está resuelto
+    // @ts-expect-error Módulo opcional, puede no resolverse en ciertos builds
     const webVitals = await import('web-vitals');
     
     // Definir la interfaz para web-vitals
     interface WebVitalsModule {
-      getCLS?: (callback: (metric: any) => void) => void;
-      getFID?: (callback: (metric: any) => void) => void;
-      getFCP?: (callback: (metric: any) => void) => void;
-      getLCP?: (callback: (metric: any) => void) => void;
-      getTTFB?: (callback: (metric: any) => void) => void;
+      getCLS?: (callback: (metric: Metric) => void) => void;
+      getFID?: (callback: (metric: Metric) => void) => void;
+      getFCP?: (callback: (metric: Metric) => void) => void;
+      getLCP?: (callback: (metric: Metric) => void) => void;
+      getTTFB?: (callback: (metric: Metric) => void) => void;
     }
     
     const vitalsModule = webVitals as WebVitalsModule;

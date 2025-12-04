@@ -1,185 +1,148 @@
-/**
- * =====================================================
- * USE NOTIFICATIONS HOOK
- * =====================================================
- * Hook para gestionar notificaciones en tiempo real
- * Features: Auto-update, contador, filtros
- * Fecha: 19 Nov 2025
- * Versión: v3.6.5
- * =====================================================
- */
+import React from 'react';
+import { NotificationContext } from '@/components/animations/NotificationSystem';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { notificationService, type Notification, type NotificationType } from '@/services/NotificationService';
-import { logger } from '@/lib/logger';
+export const useNotifications = () => {
+  const context = React.useContext(NotificationContext);
+  if (!context) {
+    throw new Error('useNotifications must be used within NotificationProvider');
+  }
+  return context;
+};
 
-interface UseNotificationsOptions {
-  userId?: string;
-  autoLoad?: boolean;
-  filter?: {
-    read?: boolean;
-    type?: NotificationType;
-  };
-}
-
-interface UseNotificationsReturn {
-  notifications: Notification[];
-  unreadCount: number;
-  isLoading: boolean;
-  error: Error | null;
-  markAsRead: (notificationId: string) => Promise<void>;
-  markAllAsRead: () => Promise<void>;
-  refresh: () => Promise<void>;
-  clearOld: (daysOld?: number) => Promise<void>;
-}
-
-export function useNotifications(options: UseNotificationsOptions = {}): UseNotificationsReturn {
-  const { userId, autoLoad = true, filter } = options;
-
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-
-  /**
-   * Cargar notificaciones
-   */
-  const loadNotifications = useCallback(async () => {
-    if (!userId) return;
-
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      // Cargar desde el servicio
-      const loaded = await notificationService.loadUnreadNotifications(userId);
-      setNotifications(loaded);
-
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error('Error loading notifications');
-      logger.error('[useNotifications] Error:', { error });
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [userId]);
-
-  /**
-   * Actualizar lista desde el servicio
-   */
-  const updateFromService = useCallback(() => {
-    const filtered = notificationService.getNotifications(filter);
-    setNotifications(filtered);
-  }, [filter]);
-
-  /**
-   * Marcar como leída
-   */
-  const markAsRead = useCallback(async (notificationId: string) => {
-    try {
-      await notificationService.markAsRead(notificationId);
-      updateFromService();
-    } catch (err) {
-      logger.error('[useNotifications] Error marking as read:', { error: err });
-    }
-  }, [updateFromService]);
-
-  /**
-   * Marcar todas como leídas
-   */
-  const markAllAsRead = useCallback(async () => {
-    if (!userId) return;
-
-    try {
-      await notificationService.markAllAsRead(userId);
-      updateFromService();
-    } catch (err) {
-      logger.error('[useNotifications] Error marking all as read:', { error: err });
-    }
-  }, [userId, updateFromService]);
-
-  /**
-   * Limpiar notificaciones antiguas
-   */
-  const clearOld = useCallback(async (daysOld: number = 30) => {
-    try {
-      await notificationService.clearOld(daysOld);
-      updateFromService();
-    } catch (err) {
-      logger.error('[useNotifications] Error clearing old:', { error: err });
-    }
-  }, [updateFromService]);
-
-  /**
-   * Inicializar servicio y escuchar cambios
-   */
-  useEffect(() => {
-    if (!userId) return;
-
-    // Inicializar servicio
-    notificationService.initialize(userId);
-
-    // Auto-cargar si está habilitado
-    if (autoLoad) {
-      loadNotifications();
-    }
-
-    // Suscribirse a nuevas notificaciones
-    const unsubscribeNew = notificationService.addListener('new', () => {
-      updateFromService();
-    });
-
-    // Suscribirse a notificaciones leídas
-    const unsubscribeRead = notificationService.addListener('read', () => {
-      updateFromService();
-    });
-
-    // Suscribirse a todas leídas
-    const unsubscribeAllRead = notificationService.addListener('all-read', () => {
-      updateFromService();
-    });
-
-    // Cleanup
-    return () => {
-      unsubscribeNew();
-      unsubscribeRead();
-      unsubscribeAllRead();
-    };
-  }, [userId, autoLoad, loadNotifications, updateFromService]);
-
-  /**
-   * Calcular contador de no leídas
-   */
-  const unreadCount = useMemo(() => {
-    return notifications.filter(n => !n.read).length;
-  }, [notifications]);
-
+export const useNotificationHelpers = () => {
+  const { addNotification } = useNotifications();
+  
   return {
-    notifications,
-    unreadCount,
-    isLoading,
-    error,
-    markAsRead,
-    markAllAsRead,
-    refresh: loadNotifications,
-    clearOld
+    showMatch: (user: { id: string; name: string }) => {
+      addNotification({
+        type: 'match',
+        title: '¡Es un Match! 💕',
+        message: `¡Tú y ${user.name} se han gustado mutuamente!`,
+        duration: 8000,
+        action: {
+          label: 'Enviar mensaje',
+          onClick: () => (window.location.href = `/chat?user=${user.id || ''}`),
+        },
+      });
+    },
+    
+    showLike: (user: { id: string; name: string }) => {
+      addNotification({
+        type: 'like',
+        title: '¡Nuevo Like! 💖',
+        message: `A ${user.name} le gustas`,
+        duration: 4000,
+      });
+    },
+    
+    showMessage: (sender: { id: string; name: string }, _message: string) => {
+      addNotification({
+        type: 'message',
+        title: 'Nuevo mensaje 💬',
+        message: `${sender.name} te ha enviado un mensaje`,
+        duration: 6000,
+        action: {
+          label: 'Ver mensaje',
+          onClick: () => (window.location.href = `/chat?user=${sender.id}`),
+        },
+      });
+    },
+    
+    showAchievement: (achievement: { description: string }) => {
+      addNotification({
+        type: 'achievement',
+        title: '¡Logro Desbloqueado! 🏆',
+        message: achievement.description,
+        duration: 6000,
+      });
+    },
+    
+    showSuccess: (message: string) => {
+      addNotification({
+        type: 'success',
+        title: '¡Éxito!',
+        message,
+        duration: 3000,
+      });
+    },
+    
+    showError: (message: string) => {
+      addNotification({
+        type: 'error',
+        title: 'Error',
+        message,
+        duration: 5000,
+      });
+    },
+    
+    showWarning: (message: string) => {
+      addNotification({
+        type: 'warning',
+        title: 'Atención',
+        message,
+        duration: 4000,
+      });
+    },
+    
+    showInfo: (message: string) => {
+      addNotification({
+        type: 'info',
+        title: 'Información',
+        message,
+        duration: 4000,
+      });
+    },
+    
+    showEmailNotification: (title: string, message: string, actionUrl?: string) => {
+      addNotification({
+        type: 'email',
+        title,
+        message,
+        duration: 6000,
+        action: actionUrl
+          ? {
+              label: 'Ver detalles',
+              onClick: () => (window.location.href = actionUrl),
+            }
+          : undefined,
+      });
+    },
+    
+    showNewRequest: (senderName: string, requestId: string) => {
+      addNotification({
+        type: 'request',
+        title: 'Nueva Solicitud',
+        message: `${senderName} te ha enviado una solicitud de conexión`,
+        duration: 8000,
+        action: {
+          label: 'Ver solicitud',
+          onClick: () => (window.location.href = `/requests?id=${requestId}`),
+        },
+      });
+    },
+    
+    showConfirmation: (title: string, message: string) => {
+      addNotification({
+        type: 'confirmation',
+        title,
+        message,
+        duration: 5000,
+      });
+    },
+    
+    showAlert: (title: string, message: string, actionUrl?: string) => {
+      addNotification({
+        type: 'alert',
+        title,
+        message,
+        duration: 0,
+        action: actionUrl
+          ? {
+              label: 'Resolver',
+              onClick: () => (window.location.href = actionUrl),
+            }
+          : undefined,
+      });
+    },
   };
-}
-
-/**
- * Hook simplificado solo para el contador
- */
-export function useUnreadCount(userId?: string): number {
-  const { unreadCount } = useNotifications({ userId, autoLoad: true });
-  return unreadCount;
-}
-
-/**
- * Hook para notificaciones por tipo
- */
-export function useNotificationsByType(userId?: string, type?: NotificationType) {
-  return useNotifications({
-    userId,
-    autoLoad: true,
-    filter: { type }
-  });
-}
+};

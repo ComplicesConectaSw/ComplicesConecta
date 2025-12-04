@@ -48,7 +48,7 @@ export const AnimatedProfileCard = React.memo<ProfileCardProps>(function Animate
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
   const [isLiked, setIsLiked] = React.useState(false);
   const [showViews, setShowViews] = React.useState(false);
-  const [viewCount] = React.useState(((id * 37) % 500) + 50);
+  const [viewCount] = React.useState(Math.floor(Math.random() * 500) + 50); // Views aleatorias 50-550
 
   const allImages = [image, ...images];
 

@@ -249,49 +249,35 @@ export const AnimatedBackground: React.FC = () => {
 
 // Floating particles component
 export const FloatingParticles: React.FC<{ count?: number }> = ({ count = 20 }) => {
+  const detRand = (index: number, range: number) => {
+    const t = (index * 9301 + 49297) % 233280;
+    return (t / 233280) * range;
+  };
+
+  const configs = useMemo(
+    () => Array.from({ length: count }).map((_, i) => ({
+      left: `${detRand(i, 100)}%`,
+      top: `${detRand(i + 31, 100)}%`,
+      duration: 10 + detRand(i + 7, 10),
+      delay: detRand(i + 13, 10),
+    })),
+    [count]
+  );
+
   return (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-      {Array.from({ length: count }).map((_, i) => (
+      {configs.map((cfg, i) => (
         <motion.div
           key={i}
           className="absolute w-2 h-2 bg-primary/20 rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [-20, -100, -20],
-            opacity: [0, 1, 0],
-            scale: [0, 1, 0],
-          }}
-          transition={{
-            duration: Math.random() * 10 + 10,
-            repeat: Infinity,
-            delay: Math.random() * 10,
-            ease: "easeInOut"
-          }}
+          style={{ left: cfg.left, top: cfg.top }}
+          animate={{ y: [-20, -100, -20], opacity: [0, 1, 0], scale: [0, 1, 0] }}
+          transition={{ duration: cfg.duration, repeat: Infinity, delay: cfg.delay, ease: "easeInOut" }}
         />
       ))}
     </div>
   );
 };
-// ...
-const particles = useMemo(() => {
-  return Array.from({ length: 20 }).map((_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    // ... calcula todo lo aleatorio aquí
-  }));
-}, []);
-
-return (
-  <>
-    {particles.map(p => (
-       // Renderiza usando los valores pre-calculados 'p.x', 'p.y'
-    ))}
-  </>
-)
 // Loading animation component
 export const LoadingAnimation: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({ size = 'md' }) => {
   const sizeClasses = {
