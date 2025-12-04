@@ -1,3 +1,6 @@
+packages:
+  - '.'
+
 onlyBuiltDependencies:
   - '@newrelic/fn-inspect'
   - '@newrelic/native-metrics'
