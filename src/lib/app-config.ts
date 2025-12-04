@@ -73,8 +73,8 @@ const DEFAULT_DEMO_PASSWORDS: Record<string, string> = {
   'single@outlook.es': '123456',
   'pareja@outlook.es': '123456',
   'admin': '123456',
-  'djwacko28@gmail.com': 'Magy_Wacko_nala28', // Admin DEMO
-  'demo@complicesconecta.com': 'demo123' // Demo genérico
+  'djwacko28@gmail.com': 'demo123', // Admin DEMO
+  'demo@complicesconecta.com': 'Magy_Wacko_nala28' // Demo genérico
 };
 
 // Función auxiliar para obtener contraseña desde env o fallback
