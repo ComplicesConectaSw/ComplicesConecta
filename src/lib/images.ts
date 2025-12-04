@@ -201,7 +201,7 @@ export async function getUserImages(
     // Mapear datos para asegurar compatibilidad con la interfaz
     return (data || []).map((item: any) => ({
       ...item,
-      type: 'gallery' as 'gallery' // Default type since DB doesn't have type column yet
+      type: 'gallery' as const // Default type since DB doesn't have type column yet
     })) as ImageUpload[];
   } catch (error) {
     logger.error('Unexpected error in getUserImages', {
@@ -314,7 +314,7 @@ export async function getPublicImages(limit: number = 20): Promise<ImageUpload[]
 
     return (data || []).map((item: any) => ({
       ...item,
-      type: 'gallery' as 'gallery' // Default type since DB doesn't have type column yet
+      type: 'gallery' as const // Default type since DB doesn't have type column yet
     })) as ImageUpload[];
   } catch (error) {
     logger.error('Unexpected error in getPublicImages', {

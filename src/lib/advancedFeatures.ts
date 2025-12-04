@@ -159,7 +159,7 @@ export class AdvancedFeaturesService {
     }
 
     // Location compatibility - usar valores por defecto ya que latitude/longitude no existen en la tabla
-    let locationScore = 0.5; // Score por defecto
+    const locationScore = 0.5; // Score por defecto
     // TODO: Implementar cuando latitude/longitude estén disponibles en la tabla profiles
     // if (user1.latitude && user1.longitude && user2.latitude && user2.longitude) {
     //   locationScore = this.calculateLocationCompatibility(

@@ -154,7 +154,7 @@ EVIDENCIA LEGAL:
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const agreementHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-      const { data: newAgreement, error } = await supabase!!
+      const { data: newAgreement, error } = await supabase!
         .from('couple_agreements')
         .insert({
           couple_id: coupleId,

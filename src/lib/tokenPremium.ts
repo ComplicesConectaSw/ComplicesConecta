@@ -83,7 +83,7 @@ export const PREMIUM_FEATURES: PremiumFeature[] = [
 ];
 
 // Mock storage para accesos premium (en producción usar Supabase)
-let userPremiumAccess: Map<string, UserPremiumAccess[]> = new Map();
+const userPremiumAccess: Map<string, UserPremiumAccess[]> = new Map();
 
 /**
  * Verifica si usuario tiene acceso a función premium

@@ -8,22 +8,29 @@ import { Link } from "react-router-dom";
 import { logger } from '@/lib/logger';
 
 export const BetaBanner = () => {
-  const [isVisible, _setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // CORRECCIÓN: Inicialización perezosa para evitar setState en useEffect
+  const [isAndroid] = useState(() => {
+    if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+      return navigator.userAgent.toLowerCase().includes('android');
+    }
+    return false;
+  });
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isAndroid, setIsAndroid] = useState(false);
-
   useEffect(() => {
-    // Detectar si es Android
-    const userAgent = navigator.userAgent.toLowerCase();
-    setIsAndroid(userAgent.includes('android'));
+    if (typeof window === 'undefined') {
+      return;
+    }
 
-    // Manejar scroll para ocultar banner
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       setIsScrolled(scrollTop > 100);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -155,7 +162,6 @@ export const BetaModal = () => {
                     variant="love" 
                     className="w-full"
                     onClick={() => {
-                      // TODO: Handle donation/support action
                       logger.info("Support action");
                       setIsOpen(false);
                     }}

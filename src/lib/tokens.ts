@@ -33,8 +33,8 @@ export const TOKEN_CONFIG = {
 } as const;
 
 // Mock storage - En producción usar Supabase
-let userBalances: Map<string, UserTokenBalance> = new Map();
-let rewardHistory: ReferralReward[] = [];
+const userBalances: Map<string, UserTokenBalance> = new Map();
+const rewardHistory: ReferralReward[] = [];
 
 /**
  * Genera código de referido único para usuario

@@ -1,5 +1,18 @@
 import { Heart } from "lucide-react";
+import { useMemo } from 'react';
 
+// Dentro de tu componente:
+const hearts = useMemo(() => {
+  return Array.from({ length: 15 }).map((_, i) => ({
+    id: i,
+    size: Math.random() * 20 + 16,
+    delay: i * 1.2,
+    duration: Math.random() * 6 + 12,
+    opacity: Math.random() * 0.5 + 0.5,
+    // ... resto de propiedades
+  }));
+  
+}, []); // Array vacío = se calcula solo al montar
 interface DecorativeHeartsProps {
   count?: number;
   className?: string;

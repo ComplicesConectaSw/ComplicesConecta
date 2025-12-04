@@ -232,7 +232,7 @@ export const trackEvent = (
 const updateUserMetrics = (event: AnalyticsEvent): void => {
   if (!currentUserId) return;
   
-  let userMetrics = userMetricsStorage.get(currentUserId) || {
+  const userMetrics = userMetricsStorage.get(currentUserId) || {
     userId: currentUserId,
     totalSessions: 1,
     totalTimeSpent: 0,
