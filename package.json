@@ -3,8 +3,9 @@
   "private": true,
   "version": "3.5.1",
   "type": "module",
+  "packageManager": "pnpm@9.12.0",
   "scripts": {
-    "vercel-build": "npm run build",
+    "vercel-build": "pnpm run build",
     "dev": "vite",
     "dev:tunnel": "concurrently \"npm run dev\" \"npm run tunnel:ngrok\"",
     "tunnel:ngrok": "ngrok http 8080",
