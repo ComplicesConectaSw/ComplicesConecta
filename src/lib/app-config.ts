@@ -21,6 +21,36 @@ export interface AppConfig {
 // Cache para evitar múltiples llamadas y logs repetitivos
 let cachedConfig: AppConfig | null = null;
 
+type EnvVarOptions = {
+  required?: boolean;
+  fallback?: string;
+};
+
+const isDemoModeEnv = () => (import.meta.env?.VITE_APP_MODE || import.meta.env?.MODE || 'production') === 'demo';
+
+export const getEnvVar = (key: string, options: EnvVarOptions = {}): string => {
+  const env = import.meta.env as Record<string, string | undefined>;
+  const rawValue = env?.[key]?.trim();
+
+  if (rawValue) {
+    return rawValue;
+  }
+
+  if (options.fallback !== undefined) {
+    logger.warn(`[env] ${key} no definido, usando fallback seguro.`);
+    return options.fallback;
+  }
+
+  const message = `[env] Variable ${key} no definida`;
+  if (options.required && !isDemoModeEnv()) {
+    logger.error(message);
+    throw new Error(message);
+  }
+
+  logger.warn(message);
+  return '';
+};
+
 // Obtener configuración desde variables de entorno
 export const getAppConfig = (): AppConfig => {
   if (cachedConfig) {
@@ -57,6 +87,43 @@ export const getAppConfig = (): AppConfig => {
   
   return cachedConfig;
 };
+
+const normalizeEmail = (email: string) =>
+  email
+    .toLowerCase()
+    .trim()
+    .replace('@otlook.es', '@outlook.es')
+    .replace('@outllok.es', '@outlook.es')
+    .replace('@outlok.es', '@outlook.es')
+    .replace('@outook.es', '@outlook.es');
+
+const DEFAULT_DEMO_EMAILS = [
+  'single@outlook.es',
+  'pareja@outlook.es',
+  'admin',
+  'djwacko28@gmail.com',
+  'demo@complicesconecta.com',
+].map(normalizeEmail);
+
+const rawDemoCredentialList = getEnvVar('VITE_DEMO_CREDENTIALS', {
+  fallback: DEFAULT_DEMO_EMAILS.join(','),
+});
+
+const DEMO_PASSWORD_ENV_MAP: Record<string, string> = {
+  admin: 'VITE_DEMO_PASSWORD_ADMIN',
+  'single@outlook.es': 'VITE_DEMO_PASSWORD_SINGLE_OUTLOOK_ES',
+  'pareja@outlook.es': 'VITE_DEMO_PASSWORD_PAREJA_OUTLOOK_ES',
+  'djwacko28@gmail.com': 'VITE_DEMO_PASSWORD_DJWACKO28_GMAIL_COM',
+  'demo@complicesconecta.com': 'VITE_DEMO_PASSWORD_DEMO_COMPLICESCONECTA_COM',
+};
+
+const buildDemoPasswordEnvKey = (email: string) =>
+  `VITE_DEMO_PASSWORD_${email
+    .replace(/@/g, '_')
+    .replace(/\./g, '_')
+    .replace(/-/g, '_')
+    .replace(/\+/g, '_')
+    .toUpperCase()}`;
 
 // Credenciales demo permitidas (INCLUIR djwacko28@gmail.com)
 export const DEMO_CREDENTIALS = [
