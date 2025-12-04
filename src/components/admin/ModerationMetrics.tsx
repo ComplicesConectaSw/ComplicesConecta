@@ -11,7 +11,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   ShieldCheck,
-  Clock,
+  Clock3,
   TriangleAlert,
   CheckCircle,
   Users,
@@ -226,7 +226,7 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
           color="green"
         />
         <MetricCard
-          icon={Clock}
+          icon={Clock3}
           title="Tiempo Promedio"
           value={`${metrics.reports.avgResolutionTime.toFixed(1)}h`}
           subtitle="Tiempo de resolución"
