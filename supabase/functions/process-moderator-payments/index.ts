@@ -57,7 +57,9 @@ serve(async (req) => {
 
     // Combinar moderadores y admins
     const allModerators = [
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ...(moderators || []).map((m: any) => ({ user_id: m.user_id, level: m.level, is_admin: false })),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ...(admins || []).map((a: any) => ({ user_id: a.id, level: 'superadmin', is_admin: true }))
     ];
 

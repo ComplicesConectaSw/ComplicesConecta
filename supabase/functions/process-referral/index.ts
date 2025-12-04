@@ -1,19 +1,5 @@
-// Supabase Edge Function para procesar referidos
-// Este archivo está diseñado para ejecutarse en Deno runtime
-// Los errores de TypeScript son normales en IDE local - funciona en Supabase
-
-// @ts-nocheck
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-
-// Declaración global para Deno (solo para IDE local)
-declare global {
-  const Deno: {
-    env: {
-      get(key: string): string | undefined;
-    };
-  };
-}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -23,16 +9,6 @@ const corsHeaders = {
 interface ReferralRequest {
   referralCode: string;
   newUserId: string;
-}
-
-interface TokenBalance {
-  user_id: string;
-  cmpx_balance: number;
-  monthly_earned: number;
-  last_reset_date: string;
-  referral_code: string;
-  referred_by?: string;
-  total_referrals: number;
 }
 
 const TOKEN_CONFIG = {

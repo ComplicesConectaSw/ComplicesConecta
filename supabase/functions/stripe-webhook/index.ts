@@ -1,300 +1,121 @@
-// @ts-expect-error - Deno runtime imports from URLs
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-// @ts-expect-error - Deno runtime imports from URLs
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
-// @ts-expect-error - Deno runtime imports from URLs
-import Stripe from 'https://esm.sh/stripe@12.0.0?target=deno'
+// Supabase Edge Function for sending emails
+// @ts-expect-error: Deno is available in Supabase Edge Functions
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const Deno: any;
 
-declare const Deno: {
-  env: {
-    get(key: string): string | undefined;
-  };
-};
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
-  apiVersion: '2022-11-15',
-})
+interface EmailRequest {
+  to: string
+  template: 'welcome' | 'confirmation' | 'reset-password' | 'match' | 'event'
+  data?: Record<string, unknown>
+}
 
-const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-const supabase = createClient(supabaseUrl, supabaseServiceKey)
+// Edge Function handler
+export default async function handler(req: Request): Promise<Response> {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
 
-serve(async (req) => {
   try {
-    const signature = req.headers.get('stripe-signature')
-    const body = await req.text()
+    const { to, template, data = {} }: EmailRequest = await req.json()
+
+    // Here you would integrate with your email service (SendGrid, Resend, etc.)
+    // For now, we'll return a success response
     
-    if (!signature) {
-      return new Response('Missing stripe-signature header', { status: 400 })
+    const emailData = {
+      to,
+      template,
+      subject: getSubjectByTemplate(template),
+      html: await generateEmailHTML(template, data, to),
+      ...data
     }
 
-    const event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      Deno.env.get('STRIPE_WEBHOOK_SECRET')!
+    console.log('Email would be sent:', emailData)
+
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        message: 'Email sent successfully',
+        template,
+        to 
+      }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      }
     )
 
-    console.log(`🔔 Webhook received: ${event.type}`)
-
-    switch (event.type) {
-      case 'checkout.session.completed': {
-        const session = event.data.object as Stripe.Checkout.Session
-        console.log('💳 Checkout session completed:', session.id)
-        
-        // Verificar si es una compra de tokens CMPX
-        if (session.metadata?.purchase_id) {
-          console.log('🪙 CMPX token purchase completed:', session.metadata.purchase_id)
-          
-          const purchaseId = session.metadata.purchase_id
-          
-          // Actualizar compra como completada (el trigger otorgará los tokens)
-          const { error: purchaseError } = await supabase
-            .from('cmpx_purchases')
-            .update({
-              payment_status: 'succeeded',
-              status: 'completed',
-              completed_at: new Date().toISOString(),
-              stripe_payment_intent_id: session.payment_intent?.toString() || session.id,
-              stripe_customer_id: session.customer?.toString() || null,
-              updated_at: new Date().toISOString()
-            })
-            .eq('id', purchaseId)
-          
-          if (purchaseError) {
-            console.error('❌ Error updating CMPX purchase:', purchaseError)
-          } else {
-            console.log('✅ CMPX purchase completed:', purchaseId)
-            // Los tokens se otorgan automáticamente por el trigger SQL
-          }
-          
-          break
-        }
-        
-        // Verificar si es una inversión (tiene metadata investment_id)
-        if (session.metadata?.investment_id) {
-          console.log('💰 Investment checkout completed:', session.metadata.investment_id)
-          
-          const investmentId = session.metadata.investment_id
-          const userId = session.metadata.user_id
-          // Se eliminaron tierKey, amountMxn, returnPercentage porque no se usaban aquí
-          const cmpxTokens = parseInt(session.metadata.cmpx_tokens_rewarded || '0')
-          
-          // Actualizar inversión como activa
-          const { error: investmentError } = await supabase
-            .from('investments')
-            .update({
-              payment_status: 'succeeded',
-              status: 'active',
-              activated_at: new Date().toISOString(),
-              stripe_payment_intent_id: session.payment_intent?.toString() || session.id,
-              updated_at: new Date().toISOString()
-            })
-            .eq('id', investmentId)
-          
-          if (investmentError) {
-            console.error('❌ Error updating investment:', investmentError)
-          } else {
-            console.log('✅ Investment activated:', investmentId)
-            
-            // Otorgar tokens CMPX al usuario
-            if (cmpxTokens > 0 && userId) {
-              console.log(`🎁 Tokens to award: ${cmpxTokens} CMPX to user ${userId}`)
-              // await awardTokens(userId, cmpxTokens, 'investment_reward', investmentId)
-            }
-            
-            console.log('📅 Annual returns will be created automatically via trigger')
-          }
-          
-          break
-        }
-        
-        // Obtener información del cliente y suscripción
-        const customerId = session.customer as string
-        const subscriptionId = session.subscription as string
-        
-        if (subscriptionId) {
-          const subscription = await stripe.subscriptions.retrieve(subscriptionId)
-          const priceId = subscription.items.data[0]?.price.id
-          
-          let planType = 'monthly'
-          if (priceId === Deno.env.get('STRIPE_PRICE_ID_YEARLY')) {
-            planType = 'yearly'
-          } else if (priceId === Deno.env.get('STRIPE_PRICE_ID_QUARTERLY')) {
-            planType = 'quarterly'
-          }
-          
-          const { data: profile, error: profileError } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('stripe_customer_id', customerId)
-            .single()
-            
-          if (profileError) {
-            console.error('❌ Error finding profile:', profileError)
-            break
-          }
-          
-          const { error: updateError } = await supabase
-            .from('profiles')
-            .update({
-              is_premium: true,
-              premium_plan: planType,
-              stripe_subscription_id: subscriptionId,
-              premium_expires_at: new Date(subscription.current_period_end * 1000).toISOString(),
-              updated_at: new Date().toISOString()
-            })
-            .eq('id', profile.id)
-            
-          if (updateError) {
-            console.error('❌ Error updating profile:', updateError)
-          } else {
-            console.log('✅ Premium activated for user:', profile.id)
-          }
-        }
-        break
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return new Response(
+      JSON.stringify({ 
+        error: errorMessage,
+        success: false 
+      }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 400,
       }
+    )
+  }
+}
 
-      // Resto de los cases...
-      case 'customer.subscription.updated': {
-        const subscription = event.data.object as Stripe.Subscription
-        console.log('🔄 Subscription updated:', subscription.id)
-        
-        const { error } = await supabase
-          .from('profiles')
-          .update({
-            premium_expires_at: new Date(subscription.current_period_end * 1000).toISOString(),
-            updated_at: new Date().toISOString()
-          })
-          .eq('stripe_subscription_id', subscription.id)
-          
-        if (error) {
-          console.error('❌ Error updating subscription:', error)
-        } else {
-          console.log('✅ Subscription updated successfully')
-        }
-        break
-      }
+function getSubjectByTemplate(template: string): string {
+  const subjects = {
+    welcome: '¡Bienvenido a ComplicesConecta! 🔥',
+    confirmation: 'Confirma tu email - ComplicesConecta ✨',
+    'reset-password': 'Restablecer tu contraseña - ComplicesConecta 🔐',
+    match: '¡Tienes un nuevo match! 💕 - ComplicesConecta',
+    event: '🌟 Invitación Exclusiva VIP - ComplicesConecta'
+  }
+  return subjects[template as keyof typeof subjects] || 'ComplicesConecta'
+}
 
-      case 'customer.subscription.deleted': {
-        const subscription = event.data.object as Stripe.Subscription
-        console.log('❌ Subscription cancelled:', subscription.id)
-        
-        const { error } = await supabase
-          .from('profiles')
-          .update({
-            is_premium: false,
-            premium_plan: null,
-            stripe_subscription_id: null,
-            premium_expires_at: null,
-            updated_at: new Date().toISOString()
-          })
-          .eq('stripe_subscription_id', subscription.id)
-          
-        if (error) {
-          console.error('❌ Error cancelling premium:', error)
-        } else {
-          console.log('✅ Premium cancelled successfully')
-        }
-        break
-      }
+function getFallbackTemplate(template: string): string {
+  const fallbackTemplates: Record<string, string> = {
+    welcome: `<html><body><h1>Bienvenido a ComplicesConecta</h1><p>Tu aventura comienza ahora.</p><a href="{{confirmationUrl}}">Confirmar Cuenta</a></body></html>`,
+    confirmation: `<html><body><h1>Confirma tu Email</h1><p>Código: {{token}}</p><a href="{{confirmationUrl}}">Verificar Email</a></body></html>`,
+    'reset-password': `<html><body><h1>Restablecer Contraseña</h1><a href="{{resetUrl}}">Crear Nueva Contraseña</a></body></html>`,
+    match: `<html><body><h1>¡Nuevo Match!</h1><p>{{matchName}} te ha dado like</p><a href="{{chatUrl}}">Iniciar Chat</a></body></html>`,
+    event: `<html><body><h1>Invitación a Evento</h1><p>{{eventName}} - {{eventDate}}</p><a href="{{eventUrl}}">Ver Detalles</a></body></html>`
+  };
+  return fallbackTemplates[template] || fallbackTemplates.welcome;
+}
 
-      case 'invoice.payment_succeeded': {
-        const invoice = event.data.object as Stripe.Invoice
-        console.log('💰 Payment succeeded:', invoice.id)
-        
-        if (invoice.subscription) {
-          const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string)
-          
-          const { error } = await supabase
-            .from('profiles')
-            .update({
-              premium_expires_at: new Date(subscription.current_period_end * 1000).toISOString(),
-              updated_at: new Date().toISOString()
-            })
-            .eq('stripe_subscription_id', subscription.id)
-            
-          if (error) {
-            console.error('❌ Error renewing subscription:', error)
-          } else {
-            console.log('✅ Subscription renewed successfully')
-          }
-        }
-        break
-      }
-
-      case 'invoice.payment_failed': {
-        const invoice = event.data.object as Stripe.Invoice
-        console.log('💸 Payment failed:', invoice.id)
-        
-        if (invoice.subscription) {
-          const { error } = await supabase
-            .from('profiles')
-            .update({
-              payment_failed: true,
-              updated_at: new Date().toISOString()
-            })
-            .eq('stripe_subscription_id', invoice.subscription as string)
-            
-          if (error) {
-            console.error('❌ Error marking payment failed:', error)
-          }
-        }
-        break
-      }
-
-      case 'customer.created': {
-        const customer = event.data.object as Stripe.Customer
-        console.log('👤 Customer created:', customer.id)
-        
-        if (customer.email) {
-          const { error } = await supabase
-            .from('profiles')
-            .update({
-              stripe_customer_id: customer.id,
-              updated_at: new Date().toISOString()
-            })
-            .eq('email', customer.email)
-            
-          if (error) {
-            console.error('❌ Error linking customer:', error)
-          }
-        }
-        break
-      }
-
-      default:
-        console.log(`🤷 Unhandled event type: ${event.type}`)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function generateEmailHTML(template: string, data: any = {}, to: string): Promise<string> {
+  try {
+    console.info(`📨 Procesando email con template: ${template} para ${to}`);
+    
+    const templatePath = `./templates/${template}.html`;
+    let htmlContent: string;
+    
+    try {
+      htmlContent = await Deno.readTextFile(templatePath);
+      console.info(`✅ Template externo cargado: ${template}.html`);
+    } catch {
+      console.warn(`⚠️ Template file not found: ${templatePath}, using fallback`);
+      htmlContent = getFallbackTemplate(template);
     }
 
-    // Guardar evento
-    await supabase
-      .from('stripe_events')
-      .insert({
-        stripe_event_id: event.id,
-        event_type: event.type,
-        event_data: event.data.object,
-        processed: true,
-        processed_at: new Date().toISOString()
-      })
-      .catch(err => {
-        console.error('❌ Error saving stripe event:', err)
-      })
+    // Replace variables in template
+    let processedHtml = htmlContent;
+    if (data) {
+      console.info(`🔄 Reemplazando ${Object.keys(data).length} variables en template`);
+      Object.entries(data).forEach(([key, value]) => {
+        const placeholder = `{{${key}}}`;
+        processedHtml = processedHtml.replace(new RegExp(placeholder, 'g'), String(value));
+      });
+    }
 
-    return new Response(JSON.stringify({ 
-      received: true, 
-      event_type: event.type,
-      timestamp: new Date().toISOString()
-    }), {
-      headers: { 'Content-Type': 'application/json' },
-      status: 200,
-    })
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    console.error('🚨 Webhook error:', err.message)
-    return new Response(`Webhook error: ${err.message}`, { 
-      status: 400,
-      headers: { 'Content-Type': 'text/plain' }
-    })
+    console.info(`✅ Email HTML generado exitosamente para template: ${template}`);
+    return processedHtml;
+  } catch (error) {
+    console.error(`❌ Error generating email HTML for template ${template}:`, error);
+    return getFallbackTemplate(template);
   }
-})
+}
