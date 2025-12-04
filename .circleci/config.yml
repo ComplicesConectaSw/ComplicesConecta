@@ -23,6 +23,7 @@ jobs:
           command: |
             cd ~/project
             corepack enable pnpm
+            corepack use pnpm@9.12.0
             pnpm install --frozen-lockfile
       - run:
           name: Type Check
