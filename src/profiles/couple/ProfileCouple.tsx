@@ -93,11 +93,12 @@ const ProfileCouple: React.FC = () => {
   const [showPrivateImageRequest, setShowPrivateImageRequest] = useState(false);
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
-  const [pinInput, setPinInput] = useState("");
+  const [pinInput, setPinInput] = useState('');
   const [isParentalLocked, setIsParentalLocked] = useState(() => {
     const saved = localStorage.getItem('parentalControlLocked');
     return saved !== null ? JSON.parse(saved) : true;
   });
+  const [privateImageAccess, setPrivateImageAccess] = usePersistedState<'none' | 'pending' | 'approved' | 'denied'>('couple_private_access', 'none');
   const [notification, setNotification] = useState<{show: boolean, message: string, type: 'success'|'error'|'info'}>({ show: false, message: '', type: 'info' });
   const [showTopBanner, setShowTopBanner] = useState(true);
   const [showImageModal, setShowImageModal] = useState(false);
@@ -213,9 +214,33 @@ const ProfileCouple: React.FC = () => {
         setIsUploading(false); showToast("Imagen publicada", "success");
     }, 1500);
   };
-  const handlePinSubmit = () => { if (pinInput === "1234") { setIsParentalLocked(false); localStorage.setItem('parentalControlLocked', 'false'); setShowPinModal(false); setPinInput(""); showToast("Desbloqueado", "success"); } else { showToast("Error PIN", "error"); setPinInput(""); } };
-  const handleLockGallery = () => { setIsParentalLocked(true); localStorage.setItem('parentalControlLocked', 'true'); showToast("Bloqueado", "info"); };
-  const handleImageClick = (index: number) => { if (isParentalLocked) { setShowPinModal(true); return; } setSelectedImageIndex(index); setShowImageModal(true); };
+  const handlePinSubmit = () => {
+    if (pinInput === '1234') {
+      setIsParentalLocked(false);
+      localStorage.setItem('parentalControlLocked', 'false');
+      setShowPinModal(false);
+      setPinInput('');
+      setPrivateImageAccess('approved');
+      showToast('Galería desbloqueada', 'success');
+    } else {
+      showToast('PIN incorrecto (1234)', 'error');
+      setPinInput('');
+    }
+  };
+  const handleLockGallery = () => {
+    setIsParentalLocked(true);
+    localStorage.setItem('parentalControlLocked', 'true');
+    setPrivateImageAccess('none');
+    showToast('Galería bloqueada', 'info');
+  };
+  const handleImageClick = (index: number) => {
+    if (isParentalLocked) {
+      setShowPinModal(true);
+      return;
+    }
+    setSelectedImageIndex(index);
+    setShowImageModal(true);
+  };
   const handleClaimTokens = () => { if (isClaimingTokens) return; setIsClaimingTokens(true); setTimeout(() => { setTokenBalances(prev => ({ ...prev, cmpx: (parseFloat(prev.cmpx) + 2000).toString() })); setIsClaimingTokens(false); showToast("¡2000 CMPX reclamados!", "success"); }, 1500); };
   const handleMintClick = () => {
     const preview = DEMO_COUPLE_ASSETS[Math.floor(Math.random() * DEMO_COUPLE_ASSETS.length)];
@@ -666,9 +691,49 @@ const ProfileCouple: React.FC = () => {
             </Tabs>
           </div>
       </div>
-      {showPrivateImageRequest && <PrivateImageRequest isOpen={showPrivateImageRequest} onClose={() => setShowPrivateImageRequest(false)} profileId={profile.id} profileName={profile.couple_name} profileType="couple" onRequestSent={() => setShowPrivateImageRequest(false)} />}
-      <ParentalControl isLocked={isParentalLocked} onToggle={() => {}} onUnlock={() => {}} />
-      <AnimatePresence>{showPinModal && (<motion.div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setShowPinModal(false)}><motion.div className="bg-white dark:bg-gray-900 p-6 rounded-3xl" onClick={e => e.stopPropagation()}><input type="password" value={pinInput} onChange={e => setPinInput(e.target.value)} /><Button onClick={handlePinSubmit}>Desbloquear</Button></motion.div></motion.div>)}</AnimatePresence>
+      {showPrivateImageRequest && (
+        <PrivateImageRequest
+          isOpen={showPrivateImageRequest}
+          onClose={() => setShowPrivateImageRequest(false)}
+          profileId={profile.id}
+          profileName={profile.couple_name}
+          profileType="couple"
+          onRequestSent={() => {
+            setPrivateImageAccess('pending');
+            setShowPrivateImageRequest(false);
+          }}
+        />
+      )}
+      <ParentalControl
+        isLocked={isParentalLocked}
+        onToggle={(locked) => {
+          setIsParentalLocked(locked);
+          localStorage.setItem('parentalControlLocked', String(locked));
+          setPrivateImageAccess(locked ? 'none' : 'approved');
+        }}
+        onUnlock={() => setPrivateImageAccess('approved')}
+      />
+      <AnimatePresence>
+        {showPinModal && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+            onClick={() => setShowPinModal(false)}
+          >
+            <motion.div className="bg-white dark:bg-gray-900 p-6 rounded-3xl" onClick={(e) => e.stopPropagation()}>
+              <input
+                type="password"
+                value={pinInput}
+                onChange={(e) => setPinInput(e.target.value)}
+                className="w-full mb-4 rounded-xl border border-gray-200 dark:border-white/10 bg-transparent px-4 py-3 text-lg"
+                placeholder="Ingresa PIN (1234)"
+              />
+              <Button onClick={handlePinSubmit} className="w-full">
+                Desbloquear
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <ImageModal isOpen={showImageModal} onClose={() => setShowImageModal(false)} images={galleryImages.map(img => img.url || '')} currentIndex={selectedImageIndex} onNavigate={setSelectedImageIndex} onLike={handleImageLike} onComment={handleAddComment} likes={imageLikes} userLikes={imageUserLikes} isPrivate={true} />
       <ReportDialog profileId={profile?.id || ''} profileName={profile.couple_name} isOpen={showReportDialog} onOpenChange={setShowReportDialog} onReport={(r) => console.log(r)} />
     </div>

@@ -19,7 +19,6 @@ import { useAuth } from '@/features/auth/useAuth';
 import Navigation from '@/components/Navigation';
 import HeaderNav from '@/components/HeaderNav';
 import { ParticlesBackground } from '@/components/ui/ParticlesBackground';
-import { RandomBackground } from '@/components/ui/RandomBackground';
 
 // Pages Imports
 import Index from "@/pages/Index";
@@ -196,7 +195,6 @@ const App = () => {
                         {/* IMPORTANTE: bg-transparent para ver el video de fondo */}
                         <div className="min-h-screen bg-transparent relative">
                           <Router>
-                            <RandomBackground className="pointer-events-none" />
                             {!hasSession && <HeaderNav />}
                             
                             {/* Contenido centrado */}

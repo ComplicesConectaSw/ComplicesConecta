@@ -21,7 +21,6 @@ import { usePersistedState } from '@/hooks/usePersistedState';
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
 import ModeratorApplicationForm from "@/components/forms/ModeratorApplicationForm";
 import { getRandomProfileImage } from '@/lib/imageService';
-import { RandomBackground } from "@/components/ui/RandomBackground";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -340,7 +339,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-transparent">
-      <RandomBackground />
 
       {/* Corazones decorativos flotantes */}
       <DecorativeHearts count={8} />

@@ -637,9 +637,9 @@ const ProfileSingle: React.FC = () => {
             {/* OVERVIEW */}
             <TabsContent value="overview" className="space-y-6 mt-6">
               {/* GALERÍA PRIVADA */}
-              <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 backdrop-blur-md">
+              <Card className="bg-white/5 border-white/15 backdrop-blur-xl text-white">
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-gray-900 dark:text-white text-lg flex items-center gap-2">
+                  <CardTitle className="text-white text-lg flex items-center gap-2">
                     <Lock className="w-4 h-4" /> Fotos Privadas
                   </CardTitle>
                   <Button
@@ -651,11 +651,11 @@ const ProfileSingle: React.FC = () => {
                   </Button>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 gap-3">
                     {galleryImages.map((img, idx) => (
                       <div
                         key={idx}
-                        className="relative aspect-square rounded-lg overflow-hidden cursor-pointer shadow-sm"
+                        className="relative aspect-video rounded-lg overflow-hidden cursor-pointer shadow-sm"
                         onClick={() => handleImageClick(idx)}
                       >
                         <SafeImage
