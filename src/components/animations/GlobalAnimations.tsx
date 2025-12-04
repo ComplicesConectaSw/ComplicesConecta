@@ -275,7 +275,23 @@ export const FloatingParticles: React.FC<{ count?: number }> = ({ count = 20 }) 
     </div>
   );
 };
+// ...
+const particles = useMemo(() => {
+  return Array.from({ length: 20 }).map((_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    // ... calcula todo lo aleatorio aquí
+  }));
+}, []);
 
+return (
+  <>
+    {particles.map(p => (
+       // Renderiza usando los valores pre-calculados 'p.x', 'p.y'
+    ))}
+  </>
+)
 // Loading animation component
 export const LoadingAnimation: React.FC<{ size?: 'sm' | 'md' | 'lg' }> = ({ size = 'md' }) => {
   const sizeClasses = {

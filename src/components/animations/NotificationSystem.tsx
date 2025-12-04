@@ -1,7 +1,18 @@
 import React, { createContext } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Heart, MessageCircle, Trophy, AlertCircle, CheckCircle, X, Mail, Bell, UserPlus } from 'lucide-react';
+import { useCallback } from 'react';
+// ... dentro del componente
 
+// 1. PRIMERO define la función
+const loadConfigs = useCallback(() => {
+    // ... tu lógica
+}, []);
+
+// 2. DESPUÉS úsala en el efecto
+useEffect(() => {
+    loadConfigs();
+}, [loadConfigs]);
 // Notification types - Extended for v3.1
 export type NotificationType = 'match' | 'like' | 'message' | 'achievement' | 'success' | 'error' | 'warning' | 'info' | 'email' | 'request' | 'confirmation' | 'alert';
 

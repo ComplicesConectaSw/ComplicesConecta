@@ -59,7 +59,9 @@ const Index = () => {
              userAgent.includes('version/') && userAgent.includes('chrome/') && userAgent.includes('mobile') && !userAgent.includes('browser');
     };
     
-    setIsRunningInApp(isInWebView());
+    setTimeout(() => {
+      setIsRunningInApp(isInWebView());
+    }, 0);
     
     // CRÍTICO: Timeout garantizado para evitar que se quede en loading indefinidamente
     // Usar un solo timeout con cleanup mechanism para evitar múltiples actualizaciones de estado
@@ -71,7 +73,6 @@ const Index = () => {
           loadingTimeoutExecutedRef.current = true;
           logger.info('⏱️ Timeout de seguridad: Forzando setIsLoading(false) y mostrar contenido');
           setIsLoading(false);
-          setLoadingTimeoutPassed(true);
           loadingTimeoutRef.current = null;
         }
       }, 3000); // 3 segundos - timeout único y suficiente
@@ -209,13 +210,17 @@ const Index = () => {
     // El timeout de seguridad se maneja en el useEffect principal (líneas 65-77)
     // Solo establecer loadingTimeoutPassed cuando isLoading cambia a false
     if (!isLoading && !loadingTimeoutPassed) {
-      setLoadingTimeoutPassed(true);
+      setTimeout(() => {
+        setLoadingTimeoutPassed(true);
+      }, 0);
     }
     
     // CRÍTICO: También establecer loadingTimeoutPassed cuando el timeout se ejecuta
     // Esto asegura que el contenido se muestre incluso si isLoading no cambia
     if (loadingTimeoutExecutedRef.current && !loadingTimeoutPassed) {
-      setLoadingTimeoutPassed(true);
+      setTimeout(() => {
+        setLoadingTimeoutPassed(true);
+      }, 0);
     }
   }, [isLoading, loadingTimeoutPassed]);
 

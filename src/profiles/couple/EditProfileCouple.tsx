@@ -203,17 +203,20 @@ const EditProfileCouple = () => {
   
   useEffect(() => {
     if (location) {
-      // Simular geocodificación inversa para obtener ciudad
       const mockCities = ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'León', 'Juárez', 'Torreón', 'Querétaro', 'Mérida'];
-      const randomCity = mockCities[Math.floor(Math.random() * mockCities.length)];
-      setFormData(prev => ({
-        ...prev,
-        location: randomCity
-      }));
-      setLocationStatus('success');
+      const city = mockCities[0];
+      setTimeout(() => {
+        setFormData(prev => ({
+          ...prev,
+          location: city
+        }));
+        setLocationStatus('success');
+      }, 0);
     }
     if (locationError) {
-      setLocationStatus('error');
+      setTimeout(() => {
+        setLocationStatus('error');
+      }, 0);
     }
   }, [location, locationError, setLocationStatus]);
   

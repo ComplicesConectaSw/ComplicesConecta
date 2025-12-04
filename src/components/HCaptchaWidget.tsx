@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 
@@ -48,32 +48,17 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
   className = ''
 }) => {
   const hcaptchaRef = useRef<HTMLDivElement>(null);
-  const [widgetId, setWidgetId] = useState<string | null>(null);
+  const widgetIdRef = useRef<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    // Cargar el script de hCaptcha si no está cargado
-    if (!window.hcaptcha) {
-      const script = document.createElement('script') as HTMLScriptElement;
-      script.src = 'https://js.hcaptcha.com/1/api.js';
-      script.async = true;
-      script.defer = true;
-      script.onload = () => setIsLoaded(true);
-      document.head.appendChild(script as Node);
-    } else {
-      setIsLoaded(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isLoaded && window.hcaptcha && hcaptchaRef.current && !widgetId) {
+  const initWidget = useCallback(() => {
+    if (window.hcaptcha && hcaptchaRef.current && !widgetIdRef.current) {
       const id = window.hcaptcha.render(hcaptchaRef.current, {
         sitekey: siteKey,
         theme,
         size,
         callback: async (token: string) => {
           logger.info('hCaptcha token recibido, verificando en backend...', { token: token.substring(0, 10) + '...' });
-          
           try {
             if (!supabase) {
               logger.error('Supabase no está disponible');
@@ -83,7 +68,6 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
               return;
             }
 
-            // Verify token using Supabase Edge Function
             const { data, error } = await supabase.functions.invoke('hcaptcha-verify', {
               body: { 
                 token,
@@ -130,19 +114,34 @@ export const HCaptchaWidget: React.FC<HCaptchaWidgetProps> = ({
           }
         }
       });
-      setWidgetId(id);
+      widgetIdRef.current = id;
+      setTimeout(() => setIsLoaded(true), 0);
     }
-  }, [isLoaded, siteKey, theme, size, onVerify, onError, onExpire, widgetId]);
+  }, [siteKey, theme, size, onVerify, onError, onExpire]);
+
+  useEffect(() => {
+    if (!window.hcaptcha) {
+      const script = document.createElement('script') as HTMLScriptElement;
+      script.src = 'https://js.hcaptcha.com/1/api.js';
+      script.async = true;
+      script.defer = true;
+      script.onload = initWidget;
+      document.head.appendChild(script as Node);
+    } else {
+      setTimeout(initWidget, 0);
+    }
+  }, [initWidget]);
+
 
   const reset = () => {
-    if (window.hcaptcha && widgetId) {
-      window.hcaptcha.reset(widgetId);
+    if (window.hcaptcha && widgetIdRef.current) {
+      window.hcaptcha.reset(widgetIdRef.current);
     }
   };
 
   const execute = () => {
-    if (window.hcaptcha && widgetId) {
-      window.hcaptcha.execute(widgetId);
+    if (window.hcaptcha && widgetIdRef.current) {
+      window.hcaptcha.execute(widgetIdRef.current);
     }
   };
 

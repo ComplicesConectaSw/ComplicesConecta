@@ -2,6 +2,11 @@ import { Heart } from "lucide-react";
 import { useMemo } from 'react';
 
 // Dentro de tu componente:
+// BIEN ✅
+const heartStyles = useMemo(() => ({
+  size: Math.random() * 20,
+  left: `${Math.random() * 100}%`
+}), []);
 const hearts = useMemo(() => {
   return Array.from({ length: 15 }).map((_, i) => ({
     id: i,

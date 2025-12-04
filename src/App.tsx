@@ -135,7 +135,7 @@ const App = () => {
     return () => clearTimeout(timer);
   }, [showSplash]);
 
-  const { profile, isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const isAuthFn = typeof isAuthenticated === 'function' ? isAuthenticated() : Boolean(isAuthenticated);
   const [demoSessionActive, setDemoSessionActive] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;

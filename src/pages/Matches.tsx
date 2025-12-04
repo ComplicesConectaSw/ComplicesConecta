@@ -113,8 +113,10 @@ const Matches = () => {
 
     // SIEMPRE usar datos demo para respetar la lgica de negocio
     // No cargar datos reales hasta que el sistema est completamente implementado
-    setMatches(demoMatches);
-    logger.info('?? Matches demo cargados (respetando lgica de negocio):', { count: demoMatches.length, isDemo });
+    setTimeout(() => {
+      setMatches(demoMatches);
+      logger.info('?? Matches demo cargados (respetando lgica de negocio):', { count: demoMatches.length, isDemo });
+    }, 0);
   }, []);
 
   const currentMatches = matches; // Siempre usar datos demo para respetar lgica de negocio

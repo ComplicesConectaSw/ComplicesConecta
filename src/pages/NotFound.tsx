@@ -21,11 +21,13 @@ const NotFound = () => {
     
     // Generate random sparkle positions
     const sparkles = Array.from({ length: 12 }, (_, _i) => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      delay: Math.random() * 3
+      x: (_i * 13) % 100,
+      y: (_i * 21) % 100,
+      delay: (_i % 3)
     }));
-    setSparklePositions(sparkles);
+    setTimeout(() => {
+      setSparklePositions(sparkles);
+    }, 0);
   }, [location.pathname]);
 
   return (
@@ -43,10 +45,10 @@ const NotFound = () => {
               key={`heart-${i}`}
               className={`absolute text-pink-400/10 animate-float-slow`}
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: `${(i * 17) % 100}%`,
+                top: `${(i * 29) % 100}%`,
                 animationDelay: `${i * 2}s`,
-                fontSize: `${Math.random() * 25 + 20}px`
+                fontSize: `${20 + ((i * 7) % 25)}px`
               }}
               fill="currentColor"
             />
@@ -77,7 +79,7 @@ const NotFound = () => {
               className="absolute text-purple-400/15 animate-pulse-glow"
               style={{
                 left: `${20 + i * 25}%`,
-                top: `${10 + Math.random() * 80}%`,
+                top: `${10 + ((i * 23) % 80)}%`,
                 animationDelay: `${i * 1.5}s`,
                 fontSize: '24px'
               }}

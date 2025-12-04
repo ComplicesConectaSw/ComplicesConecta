@@ -18,7 +18,7 @@ import {
   BarChart3,
   Flag
 } from 'lucide-react';
-
+import { useCallback } from 'react';
 import moderationMetricsService, { type ModerationMetrics } from '@/services/ModerationMetricsService';
 import { logger } from '@/lib/logger';
 
@@ -33,7 +33,17 @@ interface ModerationMetricsProps {
 // =====================================================
 // COMPONENT
 // =====================================================
+// ... dentro del componente
 
+// 1. PRIMERO define la función
+const loadConfigs = useCallback(() => {
+    // ... tu lógica
+}, []);
+
+// 2. DESPUÉS úsala en el efecto
+useEffect(() => {
+    loadConfigs();
+}, [loadConfigs]);
 export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
   refreshInterval = 30
 }) => {

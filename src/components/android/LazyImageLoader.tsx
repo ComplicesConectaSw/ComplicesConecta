@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '@/shared/lib/cn';
-
+import { useCallback } from 'react';
 interface LazyImageLoaderProps {
   src: string;
   alt: string;
@@ -13,6 +13,17 @@ interface LazyImageLoaderProps {
   onError?: () => void;
 }
 
+// ... dentro del componente
+
+// 1. PRIMERO define la función
+const loadConfigs = useCallback(() => {
+    // ... tu lógica
+}, []);
+
+// 2. DESPUÉS úsala en el efecto
+useEffect(() => {
+    loadConfigs();
+}, [loadConfigs]);
 export const LazyImageLoader: React.FC<LazyImageLoaderProps> = ({
   src,
   alt,

@@ -289,7 +289,7 @@ const ProfileCouple: React.FC = () => {
   const relationshipType = (profile as any)?.relationship_type as string | undefined;
   const coupleBackground = !relationshipType
     ? ['/backgrounds/Background(3).webp', '/backgrounds/Background(4).webp'][
-        Math.floor(Math.random() * 2)
+        String(profile.id).length % 2
       ]
     : relationshipType === 'man-woman'
     ? '/backgrounds/Background(3).webp'

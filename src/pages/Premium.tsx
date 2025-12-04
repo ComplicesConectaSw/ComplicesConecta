@@ -17,7 +17,6 @@ import { usePersistedState } from '@/hooks/usePersistedState';
 const Premium = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [isDemoUser, setIsDemoUser] = useState(false);
   const [_userType, _setUserType] = useState('');
   const [showComingSoonModal, setShowComingSoonModal] = useState(false);
   const [comingSoonTitle, setComingSoonTitle] = useState('');
@@ -26,18 +25,9 @@ const Premium = () => {
   const [demoUser, _setDemoUser] = usePersistedState<any>('demo_user', null);
 
   useEffect(() => {
-    // Verificar autenticacin (demo o real)
-    // Si hay sesin demo, usar esa
-    if (demoAuth === 'true' && demoUser) {
-      const user = typeof demoUser === 'string' ? JSON.parse(demoUser) : demoUser;
-      setIsDemoUser(true);
-      _setUserType(user.accountType);
-      return;
+    if (demoAuth !== 'true' || !demoUser) {
+      logger.info('ℹ️ Acceso a Premium sin autenticación requerida');
     }
-    
-    // Si no hay demo, verificar autenticación real
-    // Por ahora permitir acceso sin autenticación para usuarios reales
-    logger.info('ℹ️ Acceso a Premium sin autenticación requerida');
   }, [navigate, demoAuth, demoUser]);
 
   const handleComingSoon = (title: string) => {
@@ -197,7 +187,7 @@ const Premium = () => {
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
                     onClick={() => {
-                      if (isDemoUser) {
+                      if (demoAuth === 'true' && demoUser) {
                         toast({
                           title: "Premium Activado! (Modo Demo)",
                           description: "En modo demo tienes acceso completo a todas las funciones premium.",
@@ -206,7 +196,7 @@ const Premium = () => {
                       }
                     }}
                   >
-                    {isDemoUser ? "Activado en Demo" : "Seleccionar"}
+                    {demoAuth === 'true' && demoUser ? "Activado en Demo" : "Seleccionar"}
                   </Button>
                 </CardContent>
               </Card>
@@ -250,7 +240,7 @@ const Premium = () => {
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
                     onClick={() => {
-                      if (isDemoUser) {
+                      if (demoAuth === 'true' && demoUser) {
                         toast({
                           title: "Premium VIP Activado! (Modo Demo)",
                           description: "En modo demo tienes acceso completo a todas las funciones VIP.",
@@ -259,7 +249,7 @@ const Premium = () => {
                       }
                     }}
                   >
-                    {isDemoUser ? "VIP Activado en Demo" : "Seleccionar"}
+                    {demoAuth === 'true' && demoUser ? "VIP Activado en Demo" : "Seleccionar"}
                   </Button>
                 </CardContent>
               </Card>
@@ -286,7 +276,7 @@ const Premium = () => {
                   <Button 
                     className="w-full mt-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600"
                     onClick={() => {
-                      if (isDemoUser) {
+                      if (demoAuth === 'true' && demoUser) {
                         toast({
                           title: "Founding Member Activado! (Modo Demo)",
                           description: "En modo demo tienes acceso completo a todas las funciones de miembro fundador.",
@@ -295,7 +285,7 @@ const Premium = () => {
                       }
                     }}
                   >
-                    {isDemoUser ? "Founding Member Demo" : "Seleccionar"}
+                    {demoAuth === 'true' && demoUser ? "Founding Member Demo" : "Seleccionar"}
                   </Button>
                 </CardContent>
               </Card>

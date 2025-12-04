@@ -8,8 +8,7 @@ import { Link } from "react-router-dom";
 import { logger } from '@/lib/logger';
 
 export const BetaBanner = () => {
-  const [isVisible, setIsVisible] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isVisible] = useState(true);
   
   // CORRECCIÓN: Inicialización perezosa para evitar setState en useEffect
   const [isAndroid] = useState(() => {

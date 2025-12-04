@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useToast } from "@/hooks/useToast";
 import { Share2, Copy, Facebook, Instagram, MessageCircle, QrCode } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/useToast";
+import { useState } from "react";
 
 interface ShareProfileProps {
   isOpen: boolean;
@@ -15,13 +15,7 @@ interface ShareProfileProps {
 
 export const ShareProfile = ({ isOpen, onClose, profileId, profileName }: ShareProfileProps) => {
   const { toast } = useToast();
-  const [profileUrl, setProfileUrl] = useState('');
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setProfileUrl(`${window.location.origin}/profile/${profileId}`);
-    }
-  }, [profileId]);
+  const profileUrl = typeof window !== 'undefined' ? `${window.location.origin}/profile/${profileId}` : '';
 
   const handleCopyLink = async () => {
     try {

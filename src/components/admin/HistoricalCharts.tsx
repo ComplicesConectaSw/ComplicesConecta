@@ -23,8 +23,8 @@ import {
   Legend,
   ResponsiveContainer,
   ComposedChart
-} from 'recharts';
-
+  } from 'recharts';
+import { useCallback } from 'react';
 import historicalMetricsService, {
   type PerformanceTrendData,
   type ErrorTrendData,
@@ -45,7 +45,17 @@ interface HistoricalChartsProps {
 // =====================================================
 // COMPONENT
 // =====================================================
+// ... dentro del componente
 
+// 1. PRIMERO define la función
+const loadConfigs = useCallback(() => {
+    // ... tu lógica
+}, []);
+
+// 2. DESPUÉS úsala en el efecto
+useEffect(() => {
+    loadConfigs();
+}, [loadConfigs]);
 export const HistoricalCharts: React.FC<HistoricalChartsProps> = ({
   timeRange = 24,
   refreshInterval = 60
