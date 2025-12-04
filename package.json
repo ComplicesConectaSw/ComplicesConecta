@@ -124,6 +124,7 @@
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.7.0",
     "@worldcoin/idkit": "^1.5.0",
+    "ai": "^5.0.106",
     "capacitor": "^0.5.6",
     "capacitor-secure-storage-plugin": "^0.12.0",
     "class-variance-authority": "^0.7.1",

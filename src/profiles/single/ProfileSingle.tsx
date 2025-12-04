@@ -34,18 +34,19 @@ import { ThemeConfig } from '@/theme/ThemeConfig';
 // IMÁGENES LOCALES DEMO
 const SINGLE_PROFILE_AVATAR = ThemeConfig.backgrounds.hero; // placeholder avatar path handled elsewhere
 
+// GALERÍA PRIVADA SINGLE - Rutas corregidas y optimizadas
 const SINGLE_PRIVATE_IMAGES: PrivateImageItem[] = [
-  { id: 'pv1',  url: ThemeConfig.backgrounds.modal,  caption: 'Privado 1',  likes: 0, userLiked: false },
-  { id: 'pv2',  url: ThemeConfig.backgrounds.modal,  caption: 'Privado 2',  likes: 0, userLiked: false },
-  { id: 'pv3',  url: ThemeConfig.backgrounds.modal,  caption: 'Privado 3',  likes: 0, userLiked: false },
-  { id: 'pv4',  url: ThemeConfig.backgrounds.modal,  caption: 'Privado 4',  likes: 0, userLiked: false },
-  { id: 'pv5',  url: ThemeConfig.backgrounds.modal,  caption: 'Privado 5',  likes: 0, userLiked: false },
-  { id: 'pv6',  url: ThemeConfig.backgrounds.modal,  caption: 'Privado 6',  likes: 0, userLiked: false },
-  { id: 'pv7',  url: ThemeConfig.backgrounds.modal,  caption: 'Privado 7',  likes: 0, userLiked: false },
-  { id: 'pv8',  url: ThemeConfig.backgrounds.modal,  caption: 'Privado 8',  likes: 0, userLiked: false },
-  { id: 'pv9',  url: ThemeConfig.backgrounds.modal,  caption: 'Privado 9',  likes: 0, userLiked: false },
-  { id: 'pv10', url: ThemeConfig.backgrounds.modal, caption: 'Privado 10', likes: 0, userLiked: false },
-  { id: 'pv11', url: ThemeConfig.backgrounds.modal, caption: 'Privado 11', likes: 0, userLiked: false },
+  { id: 'pv1',  url: '/assets/people/single/privado/pv1.jpg',  caption: 'Privado 1',  likes: 0, userLiked: false },
+  { id: 'pv2',  url: '/assets/people/single/privado/pv2.jpg',  caption: 'Privado 2',  likes: 0, userLiked: false },
+  { id: 'pv3',  url: '/assets/people/single/privado/pv3.jpg',  caption: 'Privado 3',  likes: 0, userLiked: false },
+  { id: 'pv4',  url: '/assets/people/single/privado/pv4.jpg',  caption: 'Privado 4',  likes: 0, userLiked: false },
+  { id: 'pv5',  url: '/assets/people/single/privado/pv5.jpg',  caption: 'Privado 5',  likes: 0, userLiked: false },
+  { id: 'pv6',  url: '/assets/people/single/privado/pv6.jpg',  caption: 'Privado 6',  likes: 0, userLiked: false },
+  { id: 'pv7',  url: '/assets/people/single/privado/pv7.jpg',  caption: 'Privado 7',  likes: 0, userLiked: false },
+  { id: 'pv8',  url: '/assets/people/single/privado/pv8.jpg',  caption: 'Privado 8',  likes: 0, userLiked: false },
+  { id: 'pv9',  url: '/assets/people/single/privado/pv9.jpg',  caption: 'Privado 9',  likes: 0, userLiked: false },
+  { id: 'pv10', url: '/assets/people/single/privado/pv10.jpg', caption: 'Privado 10', likes: 0, userLiked: false },
+  { id: 'pv11', url: '/assets/people/single/privado/pv11.jpg', caption: 'Privado 11', likes: 0, userLiked: false },
 ];
 
 import nftImage1 from '@/assets/Ntf/imagen1.jpg';
@@ -659,10 +660,16 @@ const ProfileSingle: React.FC = () => {
                       >
                         <SafeImage
                           src={img.url || ''}
+                          alt={img.caption || 'Imagen privada'}
                           className={cn(
                             "w-full h-full object-cover transition-all duration-500",
                             isParentalLocked ? "blur-xl scale-110" : "blur-0 scale-100"
                           )}
+                          onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                            console.error('[ProfileSingle] Error loading private image:', img.url);
+                            e.currentTarget.src = '/assets/people/single/privado/pv1.jpg';
+                          }}
+                          loading="lazy"
                         />
                         {isParentalLocked && (
                           <div className="absolute inset-0 flex items-center justify-center bg-white/40 dark:bg-black/30 z-10 backdrop-blur-[2px]">
