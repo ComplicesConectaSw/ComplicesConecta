@@ -1,11 +1,3 @@
-/**
- * Edge Function: Sincronización Neo4j en Tiempo Real
- * 
- * Sincroniza datos de PostgreSQL a Neo4j cuando se crean matches/likes
- * 
- * @version 3.5.0
- */
-
 import { serve } from 'https://deno.land/std@0.190.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0';
 
@@ -21,6 +13,7 @@ interface SyncRequest {
   user_id?: string;
   match_id?: string;
   like_id?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 
@@ -47,10 +40,10 @@ serve(async (req) => {
     const syncData: SyncRequest = await req.json();
     const { type } = syncData;
 
-    // Configuración de Neo4j
-    const neo4jUri = Deno.env.get('VITE_NEO4J_URI') || 'bolt://localhost:7687';
-    const neo4jUser = Deno.env.get('VITE_NEO4J_USER') || 'neo4j';
-    const neo4jPassword = Deno.env.get('VITE_NEO4J_PASSWORD') || 'complices2025';
+    // Configuración de Neo4j (variables no usadas marcadas con _)
+    const _neo4jUri = Deno.env.get('VITE_NEO4J_URI') || 'bolt://localhost:7687';
+    const _neo4jUser = Deno.env.get('VITE_NEO4J_USER') || 'neo4j';
+    const _neo4jPassword = Deno.env.get('VITE_NEO4J_PASSWORD') || 'complices2025';
 
     // Importar driver de Neo4j (usando fetch para llamar a API interna)
     // NOTA: En producción, usar neo4j-driver directamente si es posible
@@ -66,10 +59,11 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    let result;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let result: any;
 
     switch (type) {
-      case 'match':
+      case 'match': {
         if (!syncData.user1_id || !syncData.user2_id) {
           throw new Error('user1_id y user2_id son requeridos para sync match');
         }
@@ -85,8 +79,6 @@ serve(async (req) => {
           throw new Error('Match no encontrado');
         }
 
-        // Sincronizar con Neo4j (usando API interna o directa)
-        // Por ahora, retornar éxito (en producción, llamar a Neo4jService)
         result = {
           success: true,
           type: 'match',
@@ -95,13 +87,13 @@ serve(async (req) => {
           synced: true
         };
         break;
+      }
 
-      case 'like':
+      case 'like': {
         if (!syncData.user1_id || !syncData.user2_id) {
           throw new Error('user1_id y user2_id son requeridos para sync like');
         }
 
-        // Sincronizar like con Neo4j
         result = {
           success: true,
           type: 'like',
@@ -110,8 +102,9 @@ serve(async (req) => {
           synced: true
         };
         break;
+      }
 
-      case 'user':
+      case 'user': {
         if (!syncData.user_id) {
           throw new Error('user_id es requerido para sync user');
         }
@@ -127,7 +120,6 @@ serve(async (req) => {
           throw new Error('Perfil no encontrado');
         }
 
-        // Sincronizar usuario con Neo4j
         result = {
           success: true,
           type: 'user',
@@ -135,6 +127,7 @@ serve(async (req) => {
           synced: true
         };
         break;
+      }
 
       default:
         throw new Error(`Tipo de sincronización no soportado: ${type}`);
@@ -162,4 +155,3 @@ serve(async (req) => {
     );
   }
 });
-

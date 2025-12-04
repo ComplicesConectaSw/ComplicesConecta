@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -10,20 +9,20 @@ const corsHeaders = {
 interface ClaimRequest {
   rewardType: 'world_id' | 'referral' | 'beta_feedback' | 'daily_login' | 'profile_completion';
   referralCode?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   worldIdProof?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
 
-// Validación de límites de recompensas
 const REWARD_LIMITS = {
   world_id: { amount: 50, maxClaims: 1, cooldown: 0 },
   referral: { amount: 30, maxClaims: 10, cooldown: 0 },
   beta_feedback: { amount: 20, maxClaims: 1, cooldown: 0 },
-  daily_login: { amount: 5, maxClaims: 1, cooldown: 24 * 60 * 60 * 1000 }, // 24 horas
+  daily_login: { amount: 5, maxClaims: 1, cooldown: 24 * 60 * 60 * 1000 },
   profile_completion: { amount: 25, maxClaims: 1, cooldown: 0 }
 } as const
 
-// Validación de entrada de datos
 function validateClaimRequest(request: ClaimRequest): { valid: boolean; error?: string } {
   if (!request.rewardType) {
     return { valid: false, error: 'Tipo de recompensa requerido' }
@@ -33,7 +32,6 @@ function validateClaimRequest(request: ClaimRequest): { valid: boolean; error?: 
     return { valid: false, error: 'Tipo de recompensa no válido' }
   }
 
-  // Validaciones específicas por tipo
   switch (request.rewardType) {
     case 'world_id':
       if (!request.worldIdProof || typeof request.worldIdProof !== 'object') {
@@ -57,15 +55,14 @@ function validateClaimRequest(request: ClaimRequest): { valid: boolean; error?: 
   return { valid: true }
 }
 
-// Verificar límites de reclamación
 async function checkClaimLimits(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabaseClient: any, 
   userId: string, 
   rewardType: string
 ): Promise<{ canClaim: boolean; error?: string }> {
   const limits = REWARD_LIMITS[rewardType as keyof typeof REWARD_LIMITS]
   
-  // Verificar reclamaciones previas
   const { data: previousClaims, error } = await supabaseClient
     .from('transactions')
     .select('id, created_at')
@@ -79,12 +76,10 @@ async function checkClaimLimits(
     return { canClaim: false, error: 'Error verificando historial de reclamaciones' }
   }
 
-  // Verificar máximo de reclamaciones
   if (previousClaims && previousClaims.length >= limits.maxClaims) {
     return { canClaim: false, error: `Máximo de reclamaciones alcanzado (${limits.maxClaims})` }
   }
 
-  // Verificar cooldown para recompensas con tiempo de espera
   if (limits.cooldown > 0 && previousClaims && previousClaims.length > 0) {
     const lastClaim = new Date(previousClaims[0].created_at)
     const now = new Date()
@@ -99,11 +94,12 @@ async function checkClaimLimits(
   return { canClaim: true }
 }
 
-// Verificar límites mensuales
 async function checkMonthlyLimits(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabaseClient: any, 
   userId: string, 
   amount: number
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<{ canClaim: boolean; error?: string; userTokens?: any }> {
   const { data: userTokens } = await supabaseClient
     .from('user_token_balances')
@@ -126,13 +122,11 @@ async function checkMonthlyLimits(
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    // Initialize Supabase client
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
@@ -143,7 +137,6 @@ serve(async (req) => {
       }
     )
 
-    // Get authenticated user
     const {
       data: { user },
       error: userError,
@@ -163,13 +156,11 @@ serve(async (req) => {
       )
     }
 
-    // Parse request body
     const requestBody: ClaimRequest = await req.json()
     const { rewardType, referralCode, worldIdProof, metadata } = requestBody
 
     console.log(`🎁 Procesando recompensa tipo: ${rewardType} para usuario: ${user.id}`)
 
-    // Validar entrada de datos
     const validation = validateClaimRequest(requestBody)
     if (!validation.valid) {
       return new Response(
@@ -184,7 +175,6 @@ serve(async (req) => {
       )
     }
 
-    // Verificar límites de reclamación
     const claimLimitsCheck = await checkClaimLimits(supabaseClient, user.id, rewardType)
     if (!claimLimitsCheck.canClaim) {
       return new Response(
@@ -194,15 +184,14 @@ serve(async (req) => {
         }),
         {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 429, // Too Many Requests
+          status: 429, 
         }
       )
     }
 
-    // Obtener cantidad de recompensa desde configuración
     const rewardAmount = REWARD_LIMITS[rewardType as keyof typeof REWARD_LIMITS].amount
 
-    // Verificar límites mensuales para recompensas que no sean referrals o world_id
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let userTokens: any = null
     if (!['referral', 'world_id'].includes(rewardType)) {
       const monthlyCheck = await checkMonthlyLimits(supabaseClient, user.id, rewardAmount)
@@ -221,12 +210,11 @@ serve(async (req) => {
       userTokens = monthlyCheck.userTokens
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let result: any = { success: false, message: 'Tipo de recompensa no válido' }
 
-    // Process different reward types
     switch (rewardType) {
-      case 'world_id':
-        // Validate World ID proof (simplified for beta)
+      case 'world_id': {
         if (!worldIdProof) {
           return new Response(
             JSON.stringify({ 
@@ -240,8 +228,7 @@ serve(async (req) => {
           )
         }
 
-        // Mark as verified and claim reward
-        const { data: updateData, error: updateError } = await supabaseClient
+        const { data: _updateData, error: updateError } = await supabaseClient
           .from('user_tokens')
           .update({ world_id_verified: true })
           .eq('user_id', user.id)
@@ -260,7 +247,6 @@ serve(async (req) => {
           )
         }
 
-        // Claim World ID reward
         const { data: worldIdResult, error: worldIdError } = await supabaseClient
           .rpc('claim_world_id_reward', { user_id_param: user.id })
 
@@ -272,8 +258,9 @@ serve(async (req) => {
           console.log('✅ World ID recompensa reclamada:', result)
         }
         break
+      }
 
-      case 'referral':
+      case 'referral': {
         if (!referralCode) {
           return new Response(
             JSON.stringify({ 
@@ -287,7 +274,6 @@ serve(async (req) => {
           )
         }
 
-        // Process referral reward
         const { data: referralResult, error: referralError } = await supabaseClient
           .rpc('process_referral_reward', {
             referral_code_param: referralCode,
@@ -302,15 +288,14 @@ serve(async (req) => {
           console.log('✅ Referido procesado:', result)
         }
         break
+      }
 
-      case 'beta_feedback':
-        // Beta feedback reward - usar datos ya validados
+      case 'beta_feedback': {
         if (!userTokens) {
           result = { success: false, message: 'Error interno: datos de usuario no disponibles' }
           break
         }
 
-        // Add feedback reward
         const { error: feedbackError } = await supabaseClient
           .from('user_tokens')
           .update({
@@ -324,7 +309,6 @@ serve(async (req) => {
           console.error('❌ Error agregando feedback reward:', feedbackError)
           result = { success: false, message: 'Error procesando recompensa de feedback' }
         } else {
-          // Record transaction
           const { error: transactionError } = await supabaseClient
             .from('transactions')
             .insert({
@@ -344,7 +328,6 @@ serve(async (req) => {
 
           if (transactionError) {
             console.error('❌ Error registrando transacción:', transactionError)
-            // Revertir cambio en user_tokens si falla la transacción
             await supabaseClient
               .from('user_tokens')
               .update({
@@ -367,15 +350,14 @@ serve(async (req) => {
           }
         }
         break
+      }
 
-      case 'daily_login':
-        // Daily login bonus - usar datos ya validados
+      case 'daily_login': {
         if (!userTokens) {
           result = { success: false, message: 'Error interno: datos de usuario no disponibles' }
           break
         }
 
-        // Add daily reward
         const { error: dailyError } = await supabaseClient
           .from('user_tokens')
           .update({
@@ -389,7 +371,6 @@ serve(async (req) => {
           console.error('❌ Error agregando daily reward:', dailyError)
           result = { success: false, message: 'Error procesando recompensa diaria' }
         } else {
-          // Record transaction
           const today = new Date().toISOString().split('T')[0]
           const { error: transactionError } = await supabaseClient
             .from('transactions')
@@ -411,7 +392,6 @@ serve(async (req) => {
 
           if (transactionError) {
             console.error('❌ Error registrando transacción diaria:', transactionError)
-            // Revertir cambio en user_tokens si falla la transacción
             await supabaseClient
               .from('user_tokens')
               .update({
@@ -434,15 +414,14 @@ serve(async (req) => {
           }
         }
         break
+      }
 
-      case 'profile_completion':
-        // Profile completion bonus - usar datos ya validados
+      case 'profile_completion': {
         if (!userTokens) {
           result = { success: false, message: 'Error interno: datos de usuario no disponibles' }
           break
         }
 
-        // Add profile completion reward
         const { error: profileError } = await supabaseClient
           .from('user_tokens')
           .update({
@@ -456,7 +435,6 @@ serve(async (req) => {
           console.error('❌ Error agregando profile reward:', profileError)
           result = { success: false, message: 'Error procesando recompensa de perfil' }
         } else {
-          // Record transaction
           const { error: transactionError } = await supabaseClient
             .from('transactions')
             .insert({
@@ -476,7 +454,6 @@ serve(async (req) => {
 
           if (transactionError) {
             console.error('❌ Error registrando transacción de perfil:', transactionError)
-            // Revertir cambio en user_tokens si falla la transacción
             await supabaseClient
               .from('user_tokens')
               .update({
@@ -499,12 +476,12 @@ serve(async (req) => {
           }
         }
         break
+      }
 
       default:
         result = { success: false, message: `Tipo de recompensa no soportado: ${rewardType}` }
     }
 
-    // Return result
     return new Response(
       JSON.stringify(result),
       {
@@ -513,7 +490,8 @@ serve(async (req) => {
       }
     )
 
-  } catch (error) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     console.error('❌ Error en claim-tokens:', error)
     return new Response(
       JSON.stringify({ 

@@ -4,7 +4,7 @@
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "types": ["node"],
+    "types": ["vite/client", "node", "react", "react-dom"],
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
 

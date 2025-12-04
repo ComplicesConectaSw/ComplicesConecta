@@ -44,7 +44,7 @@ serve(async (req) => {
     const hf = new HfInference(Deno.env.get("HUGGINGFACE_API_KEY"));
     
     let facesDetected = 0;
-    let tattoosDetected = 0;
+    const tattoosDetected = 0;
     
     try {
       // Usar modelo de detección de objetos (personas/caras)
@@ -55,6 +55,7 @@ serve(async (req) => {
 
       if (Array.isArray(detectionResult)) {
         facesDetected = detectionResult.filter(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (d: any) => d.label?.toLowerCase().includes('person') || 
                       d.label?.toLowerCase().includes('face')
         ).length;
@@ -79,14 +80,15 @@ serve(async (req) => {
     const blurredPath = `processed/${flyer_id}/blurred-${timestamp}.jpg`;
 
     // Por ahora, subir la misma imagen (en producción, procesar realmente)
-    const { data: watermarkUpload } = await supabaseClient.storage
+    // Se prefija con _ para evitar warnings de unused-vars
+    const { data: _watermarkUpload } = await supabaseClient.storage
       .from('club-flyers')
       .upload(watermarkedPath, imageBuffer, {
         cacheControl: '3600',
         upsert: true,
       });
 
-    const { data: blurUpload } = await supabaseClient.storage
+    const { data: _blurUpload } = await supabaseClient.storage
       .from('club-flyers')
       .upload(blurredPath, imageBuffer, {
         cacheControl: '3600',
@@ -131,6 +133,7 @@ serve(async (req) => {
         status: 200,
       }
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error('Error procesando imagen:', error);
     
@@ -160,4 +163,3 @@ serve(async (req) => {
     );
   }
 });
-
