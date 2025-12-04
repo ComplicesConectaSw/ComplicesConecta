@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
+import Particles from 'react-tsparticles';
+import { loadSlim } from 'tsparticles-slim';
 import { cn } from '@/shared/lib/cn';
 import { useBgMode } from '@/hooks/useBgMode';
+import { useTheme } from '@/hooks/useTheme';
+import { useAuth } from '@/features/auth/useAuth';
 
 interface ParticlesBackgroundProps {
   children?: React.ReactNode;
@@ -8,40 +12,120 @@ interface ParticlesBackgroundProps {
 }
 
 export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ children, className }) => {
-  const { mode, setMode, reducedMotion, toggleReducedMotion } = useBgMode();
+  const { prefs } = useTheme();
+  const { profile } = useAuth();
+  const { mode, reducedMotion } = useBgMode();
+
+  const particlesInit = useCallback(async (engine: Parameters<typeof loadSlim>[0]) => {
+    await loadSlim(engine);
+  }, []);
+
+  const particlesOptions = useMemo(
+    () => ({
+      fullScreen: { enable: false },
+      background: { color: { value: 'transparent' } },
+      fpsLimit: 60,
+      interactivity: {
+        events: {
+          onClick: { enable: true, mode: 'push' },
+          onHover: { enable: true, mode: 'grab' },
+        },
+        modes: {
+          push: { quantity: 4 },
+          grab: { distance: 140, links: { opacity: 0.4 } },
+        },
+      },
+      particles: {
+        color: { value: '#a855f7' },
+        links: {
+          color: '#d8b4fe',
+          distance: 150,
+          enable: true,
+          opacity: 0.25,
+          width: 1,
+        },
+        move: {
+          direction: 'none' as const,
+          enable: true,
+          outModes: { default: 'bounce' as const },
+          random: false,
+          speed: 1.4,
+          straight: false,
+        },
+        number: {
+          density: { enable: true, area: 800 },
+          value: profile?.is_premium ? 120 : 70,
+        },
+        opacity: { value: 0.45 },
+        shape: { type: 'circle' },
+        size: { value: { min: 1, max: 3 } },
+      },
+      detectRetina: true,
+    }),
+    [profile?.is_premium]
+  );
+
+  const finalMode = reducedMotion ? 'static' : mode;
+  const showVideo = finalMode === 'video';
+  const showParticles = finalMode === 'particles';
+  const videoSrc = profile?.profile_type === 'couple'
+    ? '/backgrounds/Animate-bg2.mp4'
+    : '/backgrounds/animate-bg.mp4';
 
   return (
-    <div className={cn('min-h-screen w-full', className)}>
-      {children}
+    <div className={cn('min-h-screen w-full relative', className)}>
+      {/* VIDEO DE FONDO ANIMADO */}
+      {showVideo && (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="fixed inset-0 w-full h-full object-cover -z-50"
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      )}
 
-      <div className="grid grid-cols-3 gap-3 mt-6">
-        <button
-          type="button"
-          onClick={() => setMode('static')}
-          className={`p-3 rounded-lg ${mode === 'static' ? 'bg-purple-600' : 'bg-gray-800'}`}
-        >
-          Fondo Fijo
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode('particles')}
-          className={`p-3 rounded-lg ${mode === 'particles' ? 'bg-purple-600' : 'bg-gray-800'}`}
-        >
-          Partículas
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode('video')}
-          className={`p-3 rounded-lg ${mode === 'video' ? 'bg-purple-600' : 'bg-gray-800'}`}
-        >
-          Animado MP4
-        </button>
+      {/* FONDO ESTÁTICO (solo si no hay video) */}
+      {!showVideo && (
+        <div
+          className="fixed inset-0 -z-50 bg-cover bg-center"
+          style={{ backgroundImage: `url(${prefs.background})` }}
+        />
+      )}
+
+      {/* PARTÍCULAS */}
+      {showParticles && (
+        <Particles
+          id="tsparticles"
+          init={particlesInit}
+          options={{
+            ...particlesOptions,
+            fullScreen: { enable: true, zIndex: -1 },
+            particles: {
+              ...particlesOptions.particles,
+              number: { value: profile?.is_premium ? 120 : 70 },
+            },
+          }}
+          className="fixed inset-0 pointer-events-none"
+        />
+      )}
+
+      {/* GLOW + LOGO VIP */}
+      <div className="fixed inset-0 -z-40 bg-gradient-to-br from-cyan-600/20 via-purple-600/20 to-pink-600/20 animate-pulse" />
+      {profile?.is_premium && showVideo && (
+        <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-10">
+          <video autoPlay loop muted playsInline className="w-64 opacity-30">
+            <source src="/backgrounds/logo-animated.mp4" type="video/mp4" />
+          </video>
+        </div>
+      )}
+
+      {/* CONTENIDO */}
+      <div className="relative z-20 min-h-screen">
+        {children}
       </div>
-
-      <label className="flex items-center gap-3 mt-4">
-        <input type="checkbox" checked={reducedMotion} onChange={toggleReducedMotion} />
-        <span>Movimiento Reducido</span>
-      </label>
     </div>
   );
 };

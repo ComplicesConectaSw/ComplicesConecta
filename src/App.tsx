@@ -188,13 +188,8 @@ const App = () => {
                 <AnimationProvider>
                   <NotificationProvider>
                     <AppFactory>
-                      
-                      {/* WRAPPER PRINCIPAL: ParticlesBackground contiene todo */}
-                      <ParticlesBackground>
-                        
-                        {/* IMPORTANTE: bg-transparent para ver el video de fondo */}
-                        <div className="min-h-screen bg-transparent relative">
-                          <Router>
+                      <ParticlesBackground className="bg-transparent">
+                        <Router>
                             {!hasSession && <HeaderNav />}
                             
                             {/* Contenido centrado */}
@@ -277,8 +272,7 @@ const App = () => {
                                 <Navigation />
                               </div>
                             )}
-                          </Router>
-                        </div>
+                        </Router>
                         <Toaster />
                         <AnimationSettingsButton />
                       </ParticlesBackground>

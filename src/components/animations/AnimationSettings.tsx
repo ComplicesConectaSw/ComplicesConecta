@@ -1,7 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { AnimationContext } from '@/components/animations/AnimationProvider';
 import { useTheme } from '@/hooks/useTheme';
+import { useBgMode } from '@/hooks/useBgMode';
 import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { UnifiedCard } from '@/components/ui/UnifiedCard';
 import { Settings, Zap, Eye, Sparkles, Palette } from 'lucide-react';
@@ -16,6 +17,7 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
   // Usar useContext directamente y manejar el caso undefined después
   const context = React.useContext(AnimationContext);
   const { prefs, setPrefs } = useTheme();
+  const { mode, setMode, reducedMotion, toggleReducedMotion } = useBgMode();
   
   // Si no hay provider, mostrar mensaje o retornar null
   if (!context) {
@@ -34,18 +36,13 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
 
   const overlayVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1 }
-  };
+    visible: { opacity: 1 },
+  } satisfies Variants;
 
   const panelVariants = {
     hidden: { opacity: 0, scale: 0.8, y: 50 },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
-      y: 0,
-      transition: { type: "spring", stiffness: 300, damping: 25 }
-    }
-  };
+    visible: { opacity: 1, scale: 1, y: 0 },
+  } satisfies Variants;
 
   if (!isOpen) return null;
 
@@ -60,6 +57,7 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
     >
       <motion.div
         variants={panelVariants}
+        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-md"
       >
@@ -81,16 +79,39 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
               </div>
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => updateConfig({ reducedMotion: !config.reducedMotion })}
+                onClick={() => {
+                  toggleReducedMotion();
+                  updateConfig({ reducedMotion: !reducedMotion });
+                }}
                 className={`relative w-12 h-6 rounded-full transition-colors ${
-                  config.reducedMotion ? 'bg-purple-600' : 'bg-gray-600'
+                  reducedMotion ? 'bg-purple-600' : 'bg-gray-600'
                 }`}
               >
                 <motion.div
-                  animate={{ x: config.reducedMotion ? 24 : 0 }}
+                  animate={{ x: reducedMotion ? 24 : 0 }}
                   className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md"
                 />
               </motion.button>
+            </div>
+
+            {/* Background Mode Selector */}
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <Sparkles className="w-5 h-5 text-purple-400" />
+                <p className="text-white font-medium">Modo de Fondo</p>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {(['static', 'particles', 'video'] as const).map((option) => (
+                  <UnifiedButton
+                    key={option}
+                    variant={mode === option ? 'love' : 'default'}
+                    size="sm"
+                    onClick={() => setMode(option)}
+                  >
+                    {option === 'static' ? 'Fijo' : option === 'particles' ? 'Partículas' : 'Video'}
+                  </UnifiedButton>
+                ))}
+              </div>
             </div>
 
             {/* Animation Speed */}
