@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { LogOut, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -78,3 +78,4 @@ export function LogoutButton({
 }
 
 export default LogoutButton;
+

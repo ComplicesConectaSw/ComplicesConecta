@@ -4,8 +4,8 @@
  */
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { useTokens } from '@/hooks/useTokens';
 import { Coins, TrendingUp, Lock, Gift, Users, Calendar, Sparkles } from 'lucide-react';
@@ -367,3 +367,4 @@ export function TokenDashboard() {
     </main>
   );
 };
+

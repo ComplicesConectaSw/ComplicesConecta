@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { Sparkles, Loader2 } from 'lucide-react';
 import { useChatSummary } from '@/features/chat/useChatSummary';
 import { SummaryModal } from './SummaryModal';
@@ -98,4 +98,5 @@ export function SummaryButton({ chatId, className }: SummaryButtonProps) {
     </>
   );
 }
+
 

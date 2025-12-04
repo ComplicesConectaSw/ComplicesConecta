@@ -1,7 +1,7 @@
 import React from 'react';
 import { Shield, AlertTriangle, Phone, Mail, ExternalLink, ArrowLeft } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useNavigate } from 'react-router-dom';
 
 const LeyOlimpia: React.FC = () => {
@@ -223,3 +223,4 @@ const LeyOlimpia: React.FC = () => {
 };
 
 export default LeyOlimpia;
+

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -636,3 +636,4 @@ export const SingleRegistrationForm: React.FC<SingleRegistrationFormProps> = ({
     </>
   );
 };
+

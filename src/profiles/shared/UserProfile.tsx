@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { Crown, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 // Definimos el tipo para el usuario para mejorar la seguridad de tipos
 interface UserProfileProps {
@@ -46,3 +46,4 @@ export const UserProfile = ({ user }: UserProfileProps) => (
     </Button>
   </div>
 );
+

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Send, Users, Lock, MessageCircle, Check, X, UserPlus } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
-import { Input } from "@/shared/ui/Input";
-import { Card, CardContent } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -435,3 +435,4 @@ const ChatAuthenticated = () => {
 };
 
 export default ChatAuthenticated;
+

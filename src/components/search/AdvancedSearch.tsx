@@ -12,10 +12,10 @@
 import React, { useState } from 'react';
 import { Search, Filter, X, MapPin, Calendar, Heart, Star, Sliders } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/shared/ui/Card';
+import { Card, CardContent } from '@/components/ui/Card';
 
 interface AdvancedSearchProps {
   onSearch: (filters: SearchFilters) => void;
@@ -423,3 +423,4 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
 };
 
 export default AdvancedSearch;
+

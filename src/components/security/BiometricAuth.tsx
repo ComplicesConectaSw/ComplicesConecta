@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Fingerprint, Eye, Shield, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
@@ -288,3 +288,4 @@ export const BiometricAuth: React.FC<BiometricAuthProps> = ({
 };
 
 export default BiometricAuth;
+

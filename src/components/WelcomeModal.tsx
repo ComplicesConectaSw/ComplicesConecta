@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { X, Heart, Sparkles, Gift, Star, Zap, HelpCircle, Globe, Shield } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
-import { Card, CardContent } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
 
 interface WelcomeModalProps {
@@ -288,3 +288,4 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
     </div>
   );
 };
+

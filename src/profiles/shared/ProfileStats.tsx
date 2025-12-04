@@ -1,5 +1,5 @@
 import { Heart, Eye, Users } from "lucide-react";
-import { Card, CardContent } from "@/shared/ui/Card";
+import { Card, CardContent } from "@/components/ui/Card";
 
 interface ProfileStatsProps {
   stats: {
@@ -36,3 +36,4 @@ const ProfileStats = ({ stats }: ProfileStatsProps) => {
 };
 
 export default ProfileStats;
+

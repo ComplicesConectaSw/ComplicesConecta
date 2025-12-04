@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

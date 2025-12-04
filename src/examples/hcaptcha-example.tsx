@@ -2,9 +2,9 @@
 // Fecha: 2025-01-06
 
 import React, { useState } from 'react';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { XCircle, CheckCircle, Shield } from 'lucide-react';
 import { logger } from '@/lib/logger';
 
@@ -139,3 +139,4 @@ export const HCaptchaExample: React.FC = () => {
     </div>
   );
 };
+

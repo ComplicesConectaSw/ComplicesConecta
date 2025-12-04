@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Search, MapPin, Calendar, Heart, Filter } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
-import { Input } from "@/shared/ui/Input";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";

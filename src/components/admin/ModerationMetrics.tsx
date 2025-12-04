@@ -10,15 +10,14 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  ShieldCheckIcon,
-  ClockIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-  // XCircleIcon - preparado para uso futuro
-  UserGroupIcon,
-  ChartBarIcon,
-  FlagIcon
-} from '@heroicons/react/24/outline';
+  ShieldCheck,
+  Clock,
+  TriangleAlert,
+  CheckCircle,
+  Users,
+  BarChart3,
+  Flag
+} from 'lucide-react';
 
 import moderationMetricsService, { type ModerationMetrics } from '@/services/ModerationMetricsService';
 import { logger } from '@/lib/logger';
@@ -187,7 +186,7 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-            <ShieldCheckIcon className="w-8 h-8 text-blue-600" />
+            <ShieldCheck className="w-8 h-8 text-blue-600" />
             Métricas de Moderación
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -206,28 +205,28 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <MetricCard
-          icon={FlagIcon}
+          icon={Flag}
           title="Total de Reportes"
           value={totalReports}
           subtitle="Todos los tiempos"
           color="blue"
         />
         <MetricCard
-          icon={ExclamationTriangleIcon}
+          icon={TriangleAlert}
           title="Reportes Abiertos"
           value={openReports}
           subtitle={`${metrics.reports.byStatus.pending} pendientes, ${metrics.reports.byStatus.under_review} en revisión`}
           color="yellow"
         />
         <MetricCard
-          icon={CheckCircleIcon}
+          icon={CheckCircle}
           title="Reportes Cerrados"
           value={closedReports}
           subtitle={`${metrics.reports.byStatus.resolved} resueltos, ${metrics.reports.byStatus.dismissed} descartados`}
           color="green"
         />
         <MetricCard
-          icon={ClockIcon}
+          icon={Clock}
           title="Tiempo Promedio"
           value={`${metrics.reports.avgResolutionTime.toFixed(1)}h`}
           subtitle="Tiempo de resolución"
@@ -238,7 +237,7 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
       {/* Activity Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <MetricCard
-          icon={ChartBarIcon}
+          icon={BarChart3}
           title="Últimas 24 Horas"
           value={metrics.reports.last24Hours}
           subtitle="Nuevos reportes"
@@ -246,14 +245,14 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
           trend="📈"
         />
         <MetricCard
-          icon={UserGroupIcon}
+          icon={Users}
           title="Moderadores Activos"
           value={metrics.moderators.activeCount}
           subtitle={`${metrics.moderators.totalActions} acciones totales`}
           color="purple"
         />
         <MetricCard
-          icon={ClockIcon}
+          icon={Clock3}
           title="Respuesta Promedio"
           value={`${metrics.moderators.avgResponseTime.toFixed(1)}h`}
           subtitle="Tiempo de primera acción"
@@ -266,7 +265,7 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
         {/* Reports by Status */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-            <ChartBarIcon className="w-5 h-5 text-blue-600" />
+            <BarChart3 className="w-5 h-5 text-blue-600" />
             Estado de Reportes
           </h3>
           <div className="space-y-4">
@@ -300,7 +299,7 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
         {/* Reports by Severity */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-            <ExclamationTriangleIcon className="w-5 h-5 text-red-600" />
+            <TriangleAlert className="w-5 h-5 text-red-600" />
             Severidad de Reportes
           </h3>
           <div className="space-y-4">
@@ -334,7 +333,7 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
         {/* Reports by Type */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-            <FlagIcon className="w-5 h-5 text-purple-600" />
+            <Flag className="w-5 h-5 text-purple-600" />
             Tipo de Reportes
           </h3>
           <div className="space-y-4">

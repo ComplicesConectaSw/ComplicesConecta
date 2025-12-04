@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Check, X, Loader2, RefreshCw } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 
 // Configuración de Supabase
@@ -261,3 +261,4 @@ export const NicknameValidator: React.FC<NicknameValidatorProps> = ({
     </div>
   );
 };
+

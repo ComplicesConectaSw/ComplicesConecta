@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { motion } from 'framer-motion';
-import { Input } from '@/shared/ui/Input';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/shared/lib/cn';
 import { Eye, EyeOff } from 'lucide-react';
@@ -116,3 +116,4 @@ export const UnifiedInput = forwardRef<HTMLInputElement, UnifiedInputProps>(({
 });
 
 UnifiedInput.displayName = "UnifiedInput";
+

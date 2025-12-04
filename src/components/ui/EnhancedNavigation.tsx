@@ -1,6 +1,6 @@
 import React from 'react';
 import { Heart, DollarSign, HelpCircle, Settings, User } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { cn } from '@/shared/lib/cn';
 
 interface EnhancedNavigationProps {
@@ -79,5 +79,6 @@ export const EnhancedNavigation: React.FC<EnhancedNavigationProps> = ({ classNam
     </nav>
   );
 };
+
 
 

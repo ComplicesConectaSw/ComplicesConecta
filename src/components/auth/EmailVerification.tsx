@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/useToast';
 import { Mail, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
@@ -277,3 +277,4 @@ export const EmailVerification: React.FC<EmailVerificationProps> = ({
     </div>
   );
 };
+

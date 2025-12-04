@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Coins, Gift, Users, TrendingUp, Copy, Check, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { getUserTokenBalance, processReferralReward, validateReferralCode, TOKEN_CONFIG } from '@/lib/tokens';
 import { useToast } from '@/hooks/useToast';
@@ -282,3 +282,4 @@ export function TokenBalance({ userId }: TokenBalanceProps) {
     </div>
   );
 }
+

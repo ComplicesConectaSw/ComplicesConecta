@@ -4,8 +4,8 @@
  */
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/shared/ui/Modal';
-import { Button } from '@/shared/ui/Button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/Modal';
+import { Button } from '@/components/ui/Button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ExternalLink, FileText, Shield } from 'lucide-react';
@@ -198,3 +198,4 @@ export const TermsModal: React.FC<TermsModalProps> = ({
     </Dialog>
   );
 };
+

@@ -5,8 +5,8 @@ interface _UserPreferences {
   interests: string[];
   // Define other preferences fields here if they exist
 }
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
-import { Button } from "@/shared/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";

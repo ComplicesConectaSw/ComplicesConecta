@@ -13,12 +13,12 @@ import { ActionButtonsModal } from "@/components/modals/ActionButtonsModal";
 import { DecorativeHearts } from "@/components/DecorativeHearts";
 // StoriesContainer removido - ya está en HeaderNav
 import { Heart, Users, Shield, Zap, Smartphone as Android, Info, Briefcase, DollarSign, UserCheck } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
+import { Button } from "@/components/ui/Button";
 import "@/styles/animations.css";
 import { logger } from '@/lib/logger';
 import { useAuth } from '@/features/auth/useAuth';
 import { usePersistedState } from '@/hooks/usePersistedState';
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import ModeratorApplicationForm from "@/components/forms/ModeratorApplicationForm";
 import { getRandomProfileImage } from '@/lib/imageService';
 
@@ -627,3 +627,4 @@ const Index = () => {
 };
 
 export default Index;
+

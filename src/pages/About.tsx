@@ -1,6 +1,6 @@
 import { Heart, Users, Shield, Zap, Star, Award, Target, Camera, Play, Eye } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
-import { Card, CardContent } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent } from "@/components/ui/Card";
 import { useNavigate } from "react-router-dom";
 import HeaderNav from "@/components/HeaderNav";
 
@@ -281,3 +281,4 @@ const About = () => {
 };
 
 export default About;
+

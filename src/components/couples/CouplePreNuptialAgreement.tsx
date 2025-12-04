@@ -27,7 +27,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/features/auth/useAuth';
 import { logger } from '@/lib/logger';
-import ConsentGuard from '@/shared/ui/ConsentGuard';
+import ConsentGuard from '@/components/ui/ConsentGuard';
 
 interface CouplePreNuptialAgreementProps {
   coupleId: string;
@@ -482,3 +482,4 @@ EVIDENCIA LEGAL:
 };
 
 export default CouplePreNuptialAgreement;
+

@@ -1,5 +1,5 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/shared/ui/Modal";
-import { Button } from "@/shared/ui/Button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/Modal";
+import { Button } from "@/components/ui/Button";
 import { Heart, Shield, Users, Zap, Crown } from "lucide-react";
 
 interface FeatureModalProps {
@@ -141,3 +141,4 @@ export const FeatureModal: React.FC<FeatureModalProps> = ({ isOpen, onClose, fea
     </Dialog>
   );
 };
+

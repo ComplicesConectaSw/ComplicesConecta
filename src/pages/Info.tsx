@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Info as InfoIcon, ArrowLeft, Shield, Users, Heart, Star, Globe, Lock, CheckCircle } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import HeaderNav from '@/components/HeaderNav';
 
 const Info = () => {
@@ -209,3 +209,4 @@ const Info = () => {
 };
 
 export default Info;
+

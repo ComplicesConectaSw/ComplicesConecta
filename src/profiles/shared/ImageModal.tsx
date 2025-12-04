@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Heart, MessageCircle } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 interface ImageModalProps {
   isOpen: boolean;
@@ -219,3 +219,4 @@ export const ImageModal = ({
     </AnimatePresence>
   );
 };
+

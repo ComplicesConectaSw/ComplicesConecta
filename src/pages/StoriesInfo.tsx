@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Camera, Clock, Eye, Heart, Users, Zap, Shield, Star } from 'lucide-react';
 import HeaderNav from '@/components/HeaderNav';
 
@@ -167,3 +167,4 @@ const StoriesInfo = () => {
 };
 
 export default StoriesInfo;
+

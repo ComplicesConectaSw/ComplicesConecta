@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, Star, Heart, Crown, Sparkles, ArrowLeft, Search, ShoppingCart } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/shared/ui/Input';
+import { Input } from '@/components/ui/Input';
 import HeaderNav from '@/components/HeaderNav';
 
 const Marketplace = () => {
@@ -370,3 +370,4 @@ const Marketplace = () => {
 };
 
 export default Marketplace;
+

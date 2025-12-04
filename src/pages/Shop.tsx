@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ShoppingBag, Coins, Gift, TrendingUp, Sparkles } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import HeaderNav from '@/components/HeaderNav';
 import { useAuth } from '@/features/auth/useAuth';
@@ -406,4 +406,5 @@ const Shop = () => {
 };
 
 export default Shop;
+
 

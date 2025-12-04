@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import { IDKitWidget, VerificationLevel, ISuccessResult } from '@worldcoin/idkit'
-import { Button } from "@/shared/ui/Button"
+import { Button } from "@/components/ui/Button"
 import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/features/auth/useAuth"
 import { useToast } from '@/hooks/useToast';
@@ -213,3 +213,4 @@ export const WorldIDButton: React.FC<WorldIDButtonProps> = ({
 };
 
 export default WorldIDButton;
+

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Crown, Zap, Eye, Target, BarChart3, Globe, MessageCircle, Heart, Lock } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/shared/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { Progress } from "@/components/ui/progress";
 import { safeGetItem } from '@/utils/safeLocalStorage';
 

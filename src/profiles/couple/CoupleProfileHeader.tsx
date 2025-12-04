@@ -1,6 +1,6 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { MapPin, CheckCircle, Crown, Heart, MessageCircle, Edit, Users } from 'lucide-react';
 import { CoupleProfileWithPartners, RelationshipType } from '@/features/profile/coupleProfiles';
 
@@ -205,3 +205,4 @@ const CoupleProfileHeader: React.FC<CoupleProfileHeaderProps> = ({
 };
 
 export default CoupleProfileHeader;
+

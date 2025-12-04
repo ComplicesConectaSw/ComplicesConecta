@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Send, Shield, Users, Eye } from 'lucide-react'
-import { Button } from '@/shared/ui/Button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card'
-import { Input } from '@/shared/ui/Input'
+import { Button } from '@/components/ui/Button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -361,3 +361,4 @@ const ModeratorApplicationForm = () => {
 }
 
 export default ModeratorApplicationForm
+

@@ -12,7 +12,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Download, Share2, Flag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 interface ImageLightboxProps {
   images: string[];
@@ -357,3 +357,4 @@ export const ImageLightbox: React.FC<ImageLightboxProps> = ({
 };
 
 export default ImageLightbox;
+

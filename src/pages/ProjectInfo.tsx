@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent } from '@/shared/ui/Card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/shared/ui/Modal';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/Modal';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -542,3 +542,4 @@ const ModeratorApplicationModal = () => {
     </Dialog>
   );
 };
+

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { Card, CardContent } from '@/shared/ui/Card';
+import { Card, CardContent } from '@/components/ui/Card';
 import { ArrowLeft, Scale } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
@@ -66,3 +66,4 @@ export default function TokensLegal() {
     </div>
   );
 }
+

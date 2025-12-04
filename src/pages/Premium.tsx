@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import HeaderNav from "@/components/HeaderNav";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/shared/ui/Button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Crown, Zap, Heart, Star, Shield, Calendar, Users, Coins, Lock, Sparkles, Gift } from "lucide-react";
 import { useNavigate } from "react-router-dom";

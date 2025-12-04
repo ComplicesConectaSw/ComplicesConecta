@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/shared/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   EyeOff, 
@@ -558,3 +558,4 @@ export default PrivateMatches;
  * PERFORMANCE: Optimizada con memoización y optional chaining
  * TYPES: Estrictos y null-safe sin errores de compilación
  */
+

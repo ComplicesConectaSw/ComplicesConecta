@@ -1,10 +1,10 @@
 import { useState } from "react";
 import HeaderNav from "@/components/HeaderNav";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/shared/ui/Button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/shared/ui/Input";
+import { Input } from "@/components/ui/Input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle, MessageSquare, Star, Send, Heart, Shield, Crown, Bug, AlertTriangle, UserCheck, Lock, GalleryHorizontal, MessageCircle, Gift, Zap } from "lucide-react";
@@ -591,3 +591,4 @@ Fecha: ${new Date().toLocaleString()}
 };
 
 export default FAQ;
+

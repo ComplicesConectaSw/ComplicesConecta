@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import HeaderNav from "@/components/HeaderNav";
-import { Button } from "@/shared/ui/Button";
-import { Card } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
@@ -381,3 +381,4 @@ const Requests = () => {
 };
 
 export default Requests;
+

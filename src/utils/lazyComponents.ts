@@ -3,10 +3,10 @@ import { lazy } from 'react';
 // Lazy loading with chunk names for better debugging
 export const LazyPages = {
   // Admin components - separate chunk
-  Admin: lazy(() => import(/* webpackChunkName: "admin" */ "@/app/(admin)/Admin")),
-  AdminProduction: lazy(() => import(/* webpackChunkName: "admin" */ "@/app/(admin)/AdminProduction")),
-  AdminCareerApplications: lazy(() => import(/* webpackChunkName: "admin" */ "@/app/(admin)/AdminCareerApplications")),
-  AdminModerators: lazy(() => import(/* webpackChunkName: "admin" */ "@/app/(admin)/AdminModerators")),
+  Admin: lazy(() => import(/* webpackChunkName: "admin" */ "@/pages/Admin/Admin")),
+  AdminProduction: lazy(() => import(/* webpackChunkName: "admin" */ "@/pages/Admin/AdminProduction")),
+  AdminCareerApplications: lazy(() => import(/* webpackChunkName: "admin" */ "@/pages/Admin/AdminCareerApplications")),
+  AdminModerators: lazy(() => import(/* webpackChunkName: "admin" */ "@/pages/Admin/AdminModerators")),
   ModeratorDashboard: lazy(() => import(/* webpackChunkName: "admin" */ "@/pages/ModeratorDashboard")),
   
   // Token system - separate chunk
@@ -50,7 +50,7 @@ export const LazyPages = {
   Matches: lazy(() => import(/* webpackChunkName: "core" */ "@/pages/Matches")),
   Requests: lazy(() => import(/* webpackChunkName: "core" */ "@/pages/Requests")),
   Settings: lazy(() => import(/* webpackChunkName: "core" */ "@/pages/Settings")),
-  Discover: lazy(() => import(/* webpackChunkName: "core" */ "@/app/(discover)/Discover")),
+  Discover: lazy(() => import(/* webpackChunkName: "core" */ "@/pages/Discover")),
   Premium: lazy(() => import(/* webpackChunkName: "core" */ "@/pages/Premium")),
   Dashboard: lazy(() => import(/* webpackChunkName: "core" */ "@/pages/Dashboard")),
   

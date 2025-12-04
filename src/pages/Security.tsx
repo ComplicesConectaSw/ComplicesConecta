@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Shield, Lock, Eye, UserCheck, AlertTriangle, CheckCircle } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import HeaderNav from "@/components/HeaderNav";
 
@@ -243,3 +243,4 @@ const SecurityPage = () => {
 };
 
 export default SecurityPage;
+

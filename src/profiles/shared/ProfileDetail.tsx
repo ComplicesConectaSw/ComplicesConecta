@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart, MessageCircle, MapPin, Star, Shield, Camera } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
-import { Card, CardContent } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Navigation from '@/components/Navigation';

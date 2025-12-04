@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Card } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { 
   Camera, 
@@ -598,3 +598,4 @@ const StoriesContainer: React.FC = () => {
 };
 
 export default StoriesContainer;
+

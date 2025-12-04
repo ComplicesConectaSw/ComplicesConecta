@@ -10,12 +10,12 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/shared/ui/Modal';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/Modal';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Image as ImageIcon, 
@@ -576,4 +576,5 @@ export const NFTGalleryManager: React.FC<NFTGalleryManagerProps> = ({
     </div>
   );
 };
+
 

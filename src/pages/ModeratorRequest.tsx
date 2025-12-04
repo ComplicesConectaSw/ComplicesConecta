@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import AdminNav from '@/components/AdminNav';
 import { 
@@ -486,3 +486,4 @@ const ModeratorRequest = () => {
 };
 
 export default ModeratorRequest;
+

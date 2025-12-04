@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/Modal';
-import { Button } from '@/shared/ui/Button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/Modal';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Users, Crown, Shield, Clock, Star } from 'lucide-react';
 
@@ -192,3 +192,4 @@ const EventsModal: React.FC<EventsModalProps> = ({
 };
 
 export default EventsModal;
+

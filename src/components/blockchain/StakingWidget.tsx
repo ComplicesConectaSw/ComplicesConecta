@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { 
   Coins, 
@@ -420,3 +420,4 @@ export const StakingWidget: React.FC<StakingWidgetProps> = ({
 };
 
 export default StakingWidget;
+

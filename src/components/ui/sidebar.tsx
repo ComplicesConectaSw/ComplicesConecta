@@ -5,8 +5,8 @@ import { PanelLeft } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/shared/lib/cn"
-import { Button } from "@/shared/ui/Button"
-import { Input } from "@/shared/ui/Input"
+import { Button } from "@/components/ui/Button"
+import { Input } from "@/components/ui/Input"
 import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -769,3 +769,4 @@ export {
   SidebarTrigger,
   useSidebar,
 }
+

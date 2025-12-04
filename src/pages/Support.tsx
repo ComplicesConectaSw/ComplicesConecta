@@ -1,9 +1,9 @@
 import { HelpCircle, Shield, MessageCircle, Mail, Clock, Search, ChevronDown, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import HeaderNav from '@/components/HeaderNav';
 
@@ -265,4 +265,5 @@ const Support = () => {
 };
 
 export default Support;
+
 

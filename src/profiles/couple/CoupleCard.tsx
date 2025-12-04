@@ -1,5 +1,5 @@
-import { Card, CardContent } from "@/shared/ui/Card";
-import { Button } from "@/shared/ui/Button";
+import { Card, CardContent } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MessageCircle, MapPin, Verified, Crown, Users, UserPlus } from "lucide-react";
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
@@ -168,3 +168,4 @@ const CoupleCard = ({ profile, onLike, onMessage, showActions = true, showInvite
 };
 
 export default CoupleCard;
+

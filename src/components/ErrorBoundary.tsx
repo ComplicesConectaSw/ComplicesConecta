@@ -1,7 +1,7 @@
 import React from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -141,3 +141,4 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 }
 
 export default ErrorBoundary;
+

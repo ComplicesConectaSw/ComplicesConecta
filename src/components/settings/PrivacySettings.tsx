@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/shared/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Shield, Eye, EyeOff, Users, AlertTriangle, Trash2 } from "lucide-react";
 import { logger } from '@/lib/logger';

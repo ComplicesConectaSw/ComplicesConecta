@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/textarea';
 import { EyeOff, Lock, Send, X } from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
@@ -140,3 +140,4 @@ export const PrivateImageRequest: React.FC<PrivateImageRequestProps> = ({
 };
 
 export default PrivateImageRequest;
+

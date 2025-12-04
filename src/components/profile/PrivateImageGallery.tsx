@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Lock, Unlock, Check, X } from 'lucide-react';
 import { PrivateImageRequest } from './PrivateImageRequest';
-import { SafeImage } from '@/shared/ui/SafeImage';
+import { SafeImage } from '@/components/ui/SafeImage';
 
 interface PrivateImage {
   id: string;
@@ -324,3 +324,4 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
 };
 
 export default PrivateImageGallery;
+

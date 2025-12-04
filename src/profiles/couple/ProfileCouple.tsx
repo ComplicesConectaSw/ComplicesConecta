@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/Card";
-import { Button } from "@/shared/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/badge";
 import { 
   Heart, MapPin, Verified, Crown, Share2, Lock, Flag, 
@@ -20,9 +20,9 @@ import { ReportDialog } from '@/components/swipe/ReportDialog';
 import { ProfileNavTabs } from '@/profiles/shared/ProfileNavTabs';
 import { ImageModal } from '@/profiles/shared/ImageModal';
 import { ParentalControl } from '@/components/profile/ParentalControl';
-import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
+import { VanishSearchInput } from '@/components/ui/vanish-search-input';
 import { WalletService } from '@/services/WalletService';
-import { SafeImage } from '@/shared/ui/SafeImage';
+import { SafeImage } from '@/components/ui/SafeImage';
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/types/supabase-generated';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';

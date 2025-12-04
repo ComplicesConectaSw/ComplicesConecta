@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Bell, X, Check, Trash2, Settings, Volume2, VolumeX } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';

@@ -10,14 +10,14 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  ChartBarIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  ServerIcon,
-  SignalIcon,
-  ShieldCheckIcon
-} from '@heroicons/react/24/outline';
+  BarChart3,
+  TriangleAlert,
+  CheckCircle,
+  Clock3,
+  Server,
+  Signal,
+  ShieldCheck
+} from 'lucide-react';
 
 import performanceMonitoring from '@/services/PerformanceMonitoringService';
 import errorAlertService from '@/services/ErrorAlertService';
@@ -252,7 +252,7 @@ export const AnalyticsDashboard: React.FC = () => {
             }`}
           >
             <span className="flex items-center space-x-2">
-              <ChartBarIcon className="h-5 w-5" />
+              <BarChart3 className="h-5 w-5" />
               <span className="font-medium">Overview</span>
             </span>
           </button>
@@ -266,7 +266,7 @@ export const AnalyticsDashboard: React.FC = () => {
             }`}
           >
             <span className="flex items-center space-x-2">
-              <ShieldCheckIcon className="h-5 w-5" />
+              <ShieldCheck className="h-5 w-5" />
               <span className="font-medium">Moderación</span>
             </span>
           </button>
@@ -280,7 +280,7 @@ export const AnalyticsDashboard: React.FC = () => {
             }`}
           >
             <span className="flex items-center space-x-2">
-              <SignalIcon className="h-5 w-5" />
+              <Signal className="h-5 w-5" />
               <span className="font-medium">Histórico</span>
             </span>
           </button>
@@ -294,7 +294,7 @@ export const AnalyticsDashboard: React.FC = () => {
             }`}
           >
             <span className="flex items-center space-x-2">
-              <CheckCircleIcon className="h-5 w-5" />
+              <CheckCircle className="h-5 w-5" />
               <span className="font-medium">Configuración</span>
             </span>
           </button>
@@ -315,7 +315,7 @@ export const AnalyticsDashboard: React.FC = () => {
                 {metrics.performance.avgLoadTime}ms
               </p>
             </div>
-            <ClockIcon className="w-12 h-12 text-blue-500" />
+            <Clock3 className="w-12 h-12 text-blue-500" />
           </div>
           <div className="mt-4">
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
@@ -339,7 +339,7 @@ export const AnalyticsDashboard: React.FC = () => {
                 {metrics.performance.totalRequests}
               </p>
             </div>
-            <ServerIcon className="w-12 h-12 text-green-500" />
+            <Server className="w-12 h-12 text-green-500" />
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
             {metrics.performance.failedRequests} failed
@@ -355,7 +355,7 @@ export const AnalyticsDashboard: React.FC = () => {
                 {metrics.performance.memoryUsage}MB
               </p>
             </div>
-            <SignalIcon className="w-12 h-12 text-purple-500" />
+            <Signal className="w-12 h-12 text-purple-500" />
           </div>
           <div className="mt-4">
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
@@ -379,7 +379,7 @@ export const AnalyticsDashboard: React.FC = () => {
                 {metrics.errors.unresolved}
               </p>
             </div>
-            <ExclamationTriangleIcon
+            <TriangleAlert
               className={`w-12 h-12 ${
                 metrics.errors.unresolved > 0 ? 'text-red-500' : 'text-green-500'
               }`}
@@ -458,16 +458,16 @@ export const AnalyticsDashboard: React.FC = () => {
               >
                 <div className="flex items-center space-x-3">
                   {alert.severity === 'critical' && (
-                    <ExclamationTriangleIcon className="w-6 h-6 text-red-500" />
+                    <TriangleAlert className="w-6 h-6 text-red-500" />
                   )}
                   {alert.severity === 'high' && (
-                    <ExclamationTriangleIcon className="w-6 h-6 text-orange-500" />
+                    <TriangleAlert className="w-6 h-6 text-orange-500" />
                   )}
                   {alert.severity === 'medium' && (
-                    <ChartBarIcon className="w-6 h-6 text-yellow-500" />
+                    <BarChart3 className="w-6 h-6 text-yellow-500" />
                   )}
                   {alert.severity === 'low' && (
-                    <CheckCircleIcon className="w-6 h-6 text-green-500" />
+                    <ShieldCheck className="w-6 h-6 text-blue-500" />
                   )}
 
                   <div>

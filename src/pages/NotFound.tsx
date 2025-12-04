@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Button } from "@/shared/ui/Button";
-import { Card } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { Home, Heart, Search, Sparkles, Zap, Star } from "lucide-react";
 import { logger } from '@/lib/logger';
 
@@ -277,3 +277,4 @@ const NotFound = () => {
 };
 
 export default NotFound;
+

@@ -4,9 +4,9 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { CheckCircle, AlertTriangle, XCircle, RefreshCw } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
 
@@ -406,3 +406,4 @@ export function AccessibilityAudit({ autoFix = false, onIssuesFound }: Accessibi
 }
 
 export default AccessibilityAudit;
+

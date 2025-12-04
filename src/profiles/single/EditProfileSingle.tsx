@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent } from "@/shared/ui/Card";
-import { Button } from "@/shared/ui/Button";
-import { Input } from "@/shared/ui/Input";
+import { Card, CardContent } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, X, Sun, Moon, Eye, EyeOff } from "lucide-react";
@@ -629,3 +629,4 @@ const EditProfileSingle = () => {
 };
 
 export default EditProfileSingle;
+

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Heart, MapPin, Verified, Star, Wifi, WifiOff, X, Zap } from "lucide-react";
 import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
-import { Button } from "@/shared/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/useToast";
@@ -230,3 +230,4 @@ export const ProfileCard = ({ profile, onLike, onSuperLike: _onSuperLike, onOpen
 };
 
 export default ProfileCard;
+

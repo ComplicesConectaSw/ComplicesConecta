@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { X, Smartphone, Download, Globe, CheckCircle } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
-import { Card, CardContent } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { logger } from '@/lib/logger';
 import { isRunningFromAPK, getPlatformInfo } from '@/utils/platformDetection';

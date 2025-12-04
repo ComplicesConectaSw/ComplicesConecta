@@ -12,11 +12,11 @@
 import React, { useState, useEffect } from 'react';
 import { Save, Eye, Lock, Globe, Users, X, Plus, Camera } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 
 interface AdvancedProfileEditorProps {
   userId: string;
@@ -555,3 +555,4 @@ export const AdvancedProfileEditor: React.FC<AdvancedProfileEditorProps> = ({
 };
 
 export default AdvancedProfileEditor;
+

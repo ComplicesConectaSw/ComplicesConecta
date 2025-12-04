@@ -1,6 +1,6 @@
 import { Heart, MessageCircle, Users, MapPin, Calendar, Bookmark } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/Card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 

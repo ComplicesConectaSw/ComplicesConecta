@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { AlertTriangle, Lock } from 'lucide-react';
 import { EXPLICIT_INTERESTS } from '@/lib/lifestyle-interests';
 
@@ -137,4 +137,5 @@ export const ExplicitInterestsEditor: React.FC<ExplicitInterestsEditorProps> = (
     </Card>
   );
 };
+
 

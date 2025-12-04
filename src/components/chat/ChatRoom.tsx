@@ -12,11 +12,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Video, MapPin, Image, Lock, UserPlus, Check, X, AlertCircle } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/shared/ui/Card';
+import { Card, CardContent } from '@/components/ui/Card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useAuth } from '@/features/auth/useAuth';
 import { useGeolocation } from '@/hooks/useGeolocation';
@@ -578,4 +578,5 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({
     </div>
   );
 };
+
 

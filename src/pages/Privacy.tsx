@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Eye, Database, Cookie, Mail, Lock } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import HeaderNav from '@/components/HeaderNav';
 
@@ -277,3 +277,4 @@ const Privacy = () => {
 };
 
 export default Privacy;
+

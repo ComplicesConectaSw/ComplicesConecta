@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/ui/Modal";
-import { Button } from "@/shared/ui/Button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/Modal";
+import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Sparkles, Crown } from "lucide-react";
 
@@ -62,3 +62,4 @@ export const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
     </Dialog>
   );
 };
+

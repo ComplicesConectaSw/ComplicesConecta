@@ -5,14 +5,14 @@ import { UnifiedButton } from '@/components/ui/UnifiedButton';
 import { Badge } from '@/components/ui/badge';
 import { Heart, X, Star, MapPin, Users, Sparkles } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
-import { SafeImage } from '@/shared/ui/SafeImage';
+import { SafeImage } from '@/components/ui/SafeImage';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/shared/ui/Modal';
+} from '@/components/ui/Modal';
 
 interface MatchCardProps {
   id: string;
@@ -457,3 +457,4 @@ export const MatchCard: React.FC<MatchCardProps> = ({
     </motion.div>
   );
 };
+

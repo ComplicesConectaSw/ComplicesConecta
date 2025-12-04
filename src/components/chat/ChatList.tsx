@@ -1,5 +1,5 @@
 import { Search, MessageCircleOff } from "lucide-react";
-import { Input } from "@/shared/ui/Input";
+import { Input } from "@/components/ui/Input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ChatUser } from "@/pages/Chat";

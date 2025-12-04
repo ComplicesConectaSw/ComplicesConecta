@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/shared/ui/Input';
+import { Input } from '@/components/ui/Input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/shared/ui/Modal';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/Modal';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/useToast';
 // import { supabase } from "@/integrations/supabase/client"; // No usado actualmente
@@ -635,3 +635,4 @@ export function TokenSystemPanel() {
     </div>
   );
 }
+

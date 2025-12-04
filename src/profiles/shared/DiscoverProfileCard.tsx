@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Card } from "@/shared/ui/Card";
-import { Button } from "@/shared/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { Heart, Flame, CheckCircle, Crown, Star, MapPin, MessageCircle, User } from 'lucide-react';
 import type { Database } from '@/types/supabase-generated';
 
@@ -199,3 +199,4 @@ DiscoverProfileCard.displayName = 'DiscoverProfileCard';
 // ✅ Arquitectura: Mantenida ubicación en discover/, preparado para unificación con ProfileCard.tsx
 // ✅ Campos corregidos: Eliminado 'name' → 'first_name + last_name', 'location' → coordenadas
 // ✅ Event handling: Agregado stopPropagation en botones para evitar conflictos con click del card
+

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/badge';
 import HeaderNav from '@/components/HeaderNav';
 import { ContrastFixer } from '@/components/accessibility/ContrastFixer';

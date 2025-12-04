@@ -12,8 +12,8 @@
 import React, { useState } from 'react';
 import { ChevronRight, ChevronLeft, Check, Sparkles, Heart, Users, Shield, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent } from '@/components/ui/Card';
 
 interface OnboardingFlowProps {
   onComplete: () => void;
@@ -400,3 +400,4 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
 };
 
 export default OnboardingFlow;
+

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { MessageCircle, Video, MoreVertical, ArrowLeft, Heart, Send, Lock, Globe, UserPlus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { UnifiedButton } from "@/components/ui/UnifiedButton";
-import { Input } from "@/shared/ui/Input";
+import { Input } from "@/components/ui/Input";
 import { useNavigate } from "react-router-dom";
 import { useFeatures } from "@/hooks/useFeatures";
 import { toast } from "@/hooks/useToast";

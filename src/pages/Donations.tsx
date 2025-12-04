@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Heart, Star, Crown, Zap, Gift, Users, Shield } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import HeaderNav from "@/components/HeaderNav";
 
 const Donations = () => {
@@ -309,3 +309,4 @@ const Donations = () => {
 };
 
 export default Donations;
+

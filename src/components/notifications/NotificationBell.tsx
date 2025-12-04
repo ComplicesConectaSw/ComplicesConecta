@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Bell, X, Check, Mail, UserPlus, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { supabase } from '@/integrations/supabase/client';
@@ -494,3 +494,4 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 };
 
 export default NotificationBell;
+

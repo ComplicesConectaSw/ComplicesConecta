@@ -4,8 +4,8 @@
  */
 
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/Modal';
-import { Button } from '@/shared/ui/Button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/Modal';
+import { Button } from '@/components/ui/Button';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -103,3 +103,4 @@ export function UnifiedModal({
 }
 
 export default UnifiedModal;
+

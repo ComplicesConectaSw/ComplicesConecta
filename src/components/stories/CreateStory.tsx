@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/textarea';
 import { 
   Camera, 
@@ -277,3 +277,4 @@ export const CreateStory: React.FC<CreateStoryProps> = ({ onStoryCreated, onClos
     </div>
   );
 };
+

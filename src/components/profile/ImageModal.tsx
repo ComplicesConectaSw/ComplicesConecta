@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Heart, MessageCircle, Baby } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 
 interface ImageData {
   id: string;
@@ -201,3 +201,4 @@ export const ImageModal: React.FC<ImageModalProps> = ({
     </AnimatePresence>
   );
 };
+

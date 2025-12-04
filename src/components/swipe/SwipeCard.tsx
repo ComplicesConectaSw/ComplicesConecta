@@ -1,13 +1,13 @@
 import { useState, useRef } from "react";
 import { Heart, X, Zap, Flag, Ban } from "lucide-react";
-import { Button } from "@/shared/ui/Button";
-import { Card, CardContent } from "@/shared/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/useToast";
 import { ReportDialog } from "@/components/swipe/ReportDialog";
 import { VerificationBadge } from "@/components/ui/verification-badge";
 import { MatchScore } from "@/components/discover/MatchScore";
-import { SafeImage } from '@/shared/ui/SafeImage';
+import { SafeImage } from '@/components/ui/SafeImage';
 
 interface SwipeCardProps {
   profile: {

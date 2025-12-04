@@ -1,6 +1,6 @@
 import { useState, useEffect, memo } from 'react';
-import { Card } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -18,7 +18,7 @@ import { invitationService } from '@/lib/invitations';
 import { useAuth } from '@/features/auth/useAuth';
 import { InvitationDialog } from "@/components/invitations/InvitationDialog";
 import { logger } from '@/lib/logger';
-import { SafeImage } from '@/shared/ui/SafeImage';
+import { SafeImage } from '@/components/ui/SafeImage';
 
 interface GalleryImage {
   id: number;
@@ -408,3 +408,4 @@ const Gallery = ({ userId, isOwner = false, canViewPrivate = false, profileName 
 };
 
 export default memo(Gallery);
+

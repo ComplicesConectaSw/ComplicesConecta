@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProfileTheme } from '@/features/profile/useProfileTheme';
 import { ProfileType, Theme } from '@/types';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, XCircle, AlertCircle, Palette, Smartphone, Monitor, Globe } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
@@ -423,3 +423,4 @@ export const TemplateIntegrator: React.FC<TemplateIntegratorProps> = ({ classNam
     </div>
   );
 };
+

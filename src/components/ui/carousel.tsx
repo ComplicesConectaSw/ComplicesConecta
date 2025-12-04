@@ -5,7 +5,7 @@ import useEmblaCarousel, {
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 import { cn } from "@/shared/lib/cn"
-import { Button } from "@/shared/ui/Button"
+import { Button } from "@/components/ui/Button"
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
@@ -275,3 +275,4 @@ export {
   CarouselPrevious,
   CarouselNext,
 }
+

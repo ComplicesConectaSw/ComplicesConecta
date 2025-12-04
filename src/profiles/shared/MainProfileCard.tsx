@@ -1,7 +1,7 @@
 import React, { useState, memo, useMemo, useCallback } from 'react';
 import { Heart, MapPin, Verified, Star, X, Zap } from "lucide-react";
 import { useUserOnlineStatus } from "@/hooks/useOnlineStatus";
-import { Button } from "@/shared/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/useToast";
 import { logger } from '@/lib/logger';

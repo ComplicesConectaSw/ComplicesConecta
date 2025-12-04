@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { PasswordValidator, isPasswordValid } from '@/components/auth/PasswordValidator';
 import { NicknameValidator } from '@/components/auth/NicknameValidator';
 import { InterestsSelector } from '@/components/auth/InterestsSelector';
@@ -732,3 +732,4 @@ export const CoupleRegistrationForm: React.FC<CoupleRegistrationFormProps> = ({
     </>
   );
 };
+

@@ -8,8 +8,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Users, Sparkles, ArrowRight } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useAuth } from '@/features/auth/useAuth';
 import { useToast } from '@/hooks/useToast';
 import { safeSetItem } from '@/utils/safeLocalStorage';
@@ -235,3 +235,4 @@ export const DemoSelector: React.FC<DemoSelectorProps> = ({ className = '' }) =>
 };
 
 export default DemoSelector;
+

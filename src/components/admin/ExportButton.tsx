@@ -10,7 +10,7 @@
 
 import React, { useState } from 'react';
 import { Download, FileText, FileJson, FileSpreadsheet, Loader2 } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -160,4 +160,5 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
 };
 
 export default ExportButton;
+
 

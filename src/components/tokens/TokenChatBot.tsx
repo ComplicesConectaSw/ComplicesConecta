@@ -4,8 +4,8 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent } from '@/shared/ui/Card';
-import { Input } from '@/shared/ui/Input';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Input } from '@/components/ui/Input';
 import { useTokens } from '@/hooks/useTokens';
 import { Send, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -469,3 +469,4 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
     </Card>
   );
 }
+

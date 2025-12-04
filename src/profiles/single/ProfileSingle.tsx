@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/shared/ui/Button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import {
   Heart, MessageCircle, Share2, MapPin, Star, Camera, Flag, Lock,
@@ -21,12 +21,12 @@ import { ImageModal } from '@/profiles/shared/ImageModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WalletService } from '@/services/WalletService';
-import { VanishSearchInput } from '@/shared/ui/vanish-search-input';
-import { SafeImage } from '@/shared/ui/SafeImage';
+import { VanishSearchInput } from '@/components/ui/vanish-search-input';
+import { SafeImage } from '@/components/ui/SafeImage';
 import { HoverEffect } from '@/components/ui/card-hover-effect';
-import { EventsCarousel } from '@/shared/ui/events-carousel';
-import { ComplianceSignupForm } from '@/shared/ui/compliance-signup-form';
-import { FileUpload } from '@/shared/ui/file-upload';
+import { EventsCarousel } from '@/components/ui/events-carousel';
+import { ComplianceSignupForm } from '@/components/ui/compliance-signup-form';
+import { FileUpload } from '@/components/ui/file-upload';
 import { ParticlesBackground } from '@/components/ui/ParticlesBackground'; // Importar Wrapper
 import { cn } from '@/shared/lib/cn';
 import { ThemeConfig } from '@/theme/ThemeConfig';

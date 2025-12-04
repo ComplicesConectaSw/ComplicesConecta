@@ -2,10 +2,10 @@
 // USO: import { Button, Card, useAuth } from '@/lib'
 
 // UI
-export * from '@/shared/ui/Button';
-export * from '@/shared/ui/Card';
-export * from '@/shared/ui/Input';
-export * from '@/shared/ui/Modal';
+export * from '@/components/ui/Button';
+export * from '@/components/ui/Card';
+export * from '@/components/ui/Input';
+export * from '@/components/ui/Modal';
 
 // Hooks compartidos
 export * from '@/hooks/useGeolocation';

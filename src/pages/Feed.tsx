@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent } from "@/shared/ui/Card";
-import { Button } from "@/shared/ui/Button";
+import { Card, CardContent } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { Heart, MessageCircle, Share2, MoreHorizontal, MapPin, Clock, CheckCircle, Loader2, Plus } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import { postsService, type Post } from '@/services/postsService';
@@ -8,7 +8,7 @@ import { useAuth } from '@/features/auth/useAuth';
 import { useToast } from '@/hooks/useToast';
 import { logger } from '@/lib/logger';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SafeImage } from '@/shared/ui/SafeImage';
+import { SafeImage } from '@/components/ui/SafeImage';
 
 const Feed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -391,3 +391,4 @@ const Feed = () => {
 };
 
 export default Feed;
+

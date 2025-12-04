@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/Modal';
-import { Button } from '@/shared/ui/Button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/Modal';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { Heart, Users, Target, Brain, Star, Zap } from 'lucide-react';
 
@@ -141,3 +141,4 @@ const CompatibilityModal: React.FC<CompatibilityModalProps> = ({
 };
 
 export default CompatibilityModal;
+

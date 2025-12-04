@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Card } from "@/shared/ui/Card";
+import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/shared/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { Gift, Crown, Send } from "lucide-react";
 import { safeGetItem } from '@/utils/safeLocalStorage';
 
@@ -162,3 +162,4 @@ const VirtualGifts = ({ recipientName, onSendGift }: VirtualGiftsProps) => {
 };
 
 export default VirtualGifts;
+

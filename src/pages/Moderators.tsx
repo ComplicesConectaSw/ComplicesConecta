@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { DecorativeHearts } from '@/components/DecorativeHearts';
 import { motion } from 'framer-motion';
@@ -506,3 +506,4 @@ const Moderators = () => {
 };
 
 export default Moderators;
+

@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProfileTheme } from '@/features/profile/useProfileTheme';
 import { Gender, ProfileType, Theme } from '@/types';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/badge';
 import { Search, Send, Paperclip, Image, MoreVertical } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
@@ -319,3 +319,4 @@ export const ChatTemplate: React.FC<ChatTemplateProps> = ({
     </div>
   );
 };
+

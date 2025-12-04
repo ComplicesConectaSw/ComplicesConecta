@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card } from '@/shared/ui/Card';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { useToast } from '@/hooks/useToast';
 import { 
   Heart, 
@@ -380,3 +380,4 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
     </div>
   );
 };
+

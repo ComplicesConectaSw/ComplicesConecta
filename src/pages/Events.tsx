@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, MapPin, Users, Star, Heart, Search, AlertTriangle, X, ArrowLeft, Lock, Sparkles, Crown, Shield } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
-import { Card, CardContent } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import HeaderNav from "@/components/HeaderNav";
 import { usePersistedState } from '@/hooks/usePersistedState';

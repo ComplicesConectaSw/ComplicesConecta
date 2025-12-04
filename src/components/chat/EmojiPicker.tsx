@@ -12,8 +12,8 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Smile, X } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Button } from '@/shared/ui/Button';
-import { Input } from '@/shared/ui/Input';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 
 interface EmojiPickerProps {
   onEmojiSelect: (emoji: string) => void;
@@ -233,3 +233,4 @@ export const EmojiPicker: React.FC<EmojiPickerProps> = ({
 };
 
 export default EmojiPicker;
+

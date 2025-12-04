@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { logger } from '@/lib/logger';
 import { useAuth } from '@/features/auth/useAuth';
 import { safeGetItem } from '@/utils/safeLocalStorage';
-import { SafeImage } from '@/shared/ui/SafeImage';
+import { SafeImage } from '@/components/ui/SafeImage';
 
 // Professional profile images from Unsplash - Production ready
 // Removed local imports that fail in production

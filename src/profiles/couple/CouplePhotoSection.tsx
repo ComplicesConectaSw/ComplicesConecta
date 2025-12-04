@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Upload, X, Heart, Star, Plus } from 'lucide-react';
-import { Button } from '@/shared/ui/Button';
-import { Card } from '@/shared/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/badge';
 import { logger } from '@/lib/logger';
 
@@ -315,3 +315,4 @@ export const CouplePhotoSection: React.FC<CouplePhotoSectionProps> = ({
 };
 
 export default CouplePhotoSection;
+

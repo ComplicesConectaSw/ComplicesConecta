@@ -12,7 +12,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Mic, Square, Play, Pause, Trash2, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Button } from '@/shared/ui/Button';
+import { Button } from '@/components/ui/Button';
 import { logger } from '@/lib/logger';
 
 interface VoiceRecorderProps {
@@ -347,3 +347,4 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
 };
 
 export default VoiceRecorder;
+
