@@ -1,9 +1,6 @@
-// ✅ AUTO-FIX aplicado por Auditoría ComplicesConecta v2.1.2
-// Fecha: 2025-01-06
+// Supabase Edge Function for sending emails
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
-// Supabase Edge Function for sending emails
-// @ts-ignore: Deno is available in Supabase Edge Functions
-// Supabase Edge Function for sending emails
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const Deno: any;
 
@@ -123,3 +120,6 @@ async function generateEmailHTML(template: string, data: any = {}, to: string): 
     return getFallbackTemplate(template);
   }
 }
+
+// Para asegurar que Deno deploy lo tome como un módulo
+serve(handler);
