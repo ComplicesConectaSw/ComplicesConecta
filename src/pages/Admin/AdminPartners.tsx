@@ -23,6 +23,8 @@ import { logger } from '@/lib/logger';
 import AdminNav from '@/components/AdminNav';
 import { processClubFlyerImageServer } from '@/features/clubs/clubFlyerImageProcessing';
 import type { Database } from '@/types/supabase-generated';
+import type { SupabaseClient } from '@supabase/supabase-js';
+
 import {
   AlertDialog,
   AlertDialogContent,
