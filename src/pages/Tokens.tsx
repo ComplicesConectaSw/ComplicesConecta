@@ -220,7 +220,7 @@ export default function Tokens() {
             <div className="flex flex-wrap justify-center gap-4">
               <Button 
                 onClick={() => navigate('/profile')} 
-                className="bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white px-8 py-3 text-lg font-semibold"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3 text-lg font-semibold shadow-lg"
               >
                 <Wallet className="w-5 h-5 mr-2" />
                 Mi Wallet
@@ -228,7 +228,7 @@ export default function Tokens() {
               <Button 
                 onClick={() => setShowStakingModal(true)} 
                 variant="outline" 
-                className="border-white/30 text-white hover:bg-white/10 px-8 py-3 text-lg"
+                className="border-white/30 text-white hover:bg-white/10 px-8 py-3 text-lg shadow-md backdrop-blur-sm"
               >
                 <TrendingUp className="w-5 h-5 mr-2" />
                 Hacer Staking
@@ -488,7 +488,7 @@ export default function Tokens() {
                 <div className="flex flex-wrap justify-center gap-4 mb-6">
                   <AnimatedButton
                     onClick={() => navigate('/profile')}
-                    className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3"
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3 shadow-lg"
                   >
                     <Wallet className="w-5 h-5 mr-2" />
                     Ver Mi Wallet
@@ -496,7 +496,7 @@ export default function Tokens() {
                   
                   <AnimatedButton
                     onClick={() => setShowStakingModal(true)}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3"
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 shadow-lg"
                   >
                     <TrendingUp className="w-5 h-5 mr-2" />
                     Hacer Staking
@@ -505,7 +505,7 @@ export default function Tokens() {
                   <AnimatedButton
                     onClick={() => navigate('/tokens-info')}
                     variant="premium"
-                    className="border-white/30 text-white hover:bg-white/10 px-8 py-3"
+                    className="border-white/30 text-white hover:bg-white/10 px-8 py-3 shadow-md backdrop-blur-sm"
                   >
                     <Info className="w-5 h-5 mr-2" />
                     Más Información
@@ -540,7 +540,7 @@ export default function Tokens() {
             <Button
               onClick={handleGoBack}
               variant="outline"
-              className="border-white/30 text-white hover:bg-white/10"
+              className="border-white/30 text-white hover:bg-white/10 shadow-md backdrop-blur-sm"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Volver
@@ -549,7 +549,7 @@ export default function Tokens() {
             <Button
               onClick={handleGoHome}
               variant="outline"
-              className="border-white/30 text-white hover:bg-white/10"
+              className="border-white/30 text-white hover:bg-white/10 shadow-md backdrop-blur-sm"
             >
               <Home className="w-4 h-4 mr-2" />
               Inicio

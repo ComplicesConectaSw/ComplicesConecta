@@ -64,7 +64,7 @@ export function TokenDashboard() {
   return (
     <main role="main" className="space-y-6 p-4">
       {/* Header con balance principal */}
-      <div className="text-center bg-gradient-to-r from-purple-600/80 to-pink-600/80 backdrop-blur-md border border-white/20 text-white p-6 rounded-xl shadow-xl">
+      <div className="text-center bg-gradient-to-r from-purple-700/90 to-blue-700/90 backdrop-blur-lg border border-white/30 text-white p-6 rounded-xl shadow-2xl">
         <h2 className="text-2xl font-bold mb-2 text-white">🪙 Tu Balance de Tokens</h2>
         <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
           <div>
@@ -79,7 +79,7 @@ export function TokenDashboard() {
       </div>
 
       {/* Distribución de CMPX */}
-      <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
+      <Card className="bg-white/10 backdrop-blur-lg border-white/30 shadow-xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white">
             <TrendingUp className="h-5 w-5" />
@@ -120,7 +120,7 @@ export function TokenDashboard() {
       </Card>
 
       {/* Límite mensual */}
-      <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
+      <Card className="bg-white/10 backdrop-blur-lg border-white/30 shadow-xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white">
             <Calendar className="h-5 w-5" />
@@ -190,7 +190,7 @@ export function TokenDashboard() {
       )}
 
       {/* Staking */}
-      <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
+      <Card className="bg-white/10 backdrop-blur-lg border-white/30 shadow-xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white">
             <Lock className="h-5 w-5" />
@@ -259,7 +259,7 @@ export function TokenDashboard() {
       </Card>
 
       {/* Referidos */}
-      <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
+      <Card className="bg-white/10 backdrop-blur-lg border-white/30 shadow-xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white">
             <Users className="h-5 w-5" />
@@ -328,7 +328,7 @@ export function TokenDashboard() {
 
       {/* Transacciones recientes */}
       {transactions.length > 0 && (
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-xl">
+        <Card className="bg-white/10 backdrop-blur-lg border-white/30 shadow-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
               <Coins className="h-5 w-5" />

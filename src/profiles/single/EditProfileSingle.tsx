@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, X, Sun, Moon, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { generateMockSingle } from "@/lib/data";
-import ImageUpload from "@/components/profile/ImageUpload";
+import ImageUpload from "@/profiles/shared/ImageUpload";
 import { supabase } from "@/integrations/supabase/client";
 import { getAppConfig } from "@/lib/app-config";
 import Navigation from "@/components/Navigation";
@@ -21,6 +21,7 @@ import { useDemoThemeConfig, getNavbarStyles, useProfileTheme } from '@/features
 import { motion } from 'framer-motion';
 
 type ProfileRow = Tables<'profiles'>;
+type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
 
 const EditProfileSingle = () => {
   const navigate = useNavigate();
@@ -275,16 +276,17 @@ const EditProfileSingle = () => {
         }
         // Modo producción - guardar en Supabase
         const nameParts = formData.name.split(' ');
-        const { error } = await supabase
+        const updatePayload: ProfileUpdate = {
+          first_name: nameParts[0] || '',
+          last_name: nameParts.slice(1).join(' ') || '',
+          age: parseInt(formData.age) || 25,
+          updated_at: new Date().toISOString()
+        };
+
+        const { error } = await (supabase
           .from('profiles')
-          .update({
-            first_name: nameParts[0] || '',
-            last_name: nameParts.slice(1).join(' ') || '',
-            age: parseInt(formData.age) || 25,
-            updated_at: new Date().toISOString()
-          })
+          .update(updatePayload) as any)
           .eq('id', userId);
-        
         if (error) {
           setError('Error al guardar perfil: ' + error.message);
         } else {
@@ -370,7 +372,6 @@ const EditProfileSingle = () => {
                   userId={userId}
                   currentImage={formData.avatar}
                   type="profile"
-                  profileType="single"
                   className="w-full h-full"
                 />
               </div>

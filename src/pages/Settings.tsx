@@ -92,7 +92,7 @@ const Settings = () => {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-card/90 backdrop-blur-md border border-primary/20 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Parejas Registradas</CardTitle>
                 <Heart className="h-4 w-4 text-primary" fill="currentColor" />
@@ -105,7 +105,7 @@ const Settings = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-card/90 backdrop-blur-md border border-primary/20 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Swingers Activos</CardTitle>
                 <Users className="h-4 w-4 text-accent" />
@@ -118,7 +118,7 @@ const Settings = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-card/90 backdrop-blur-md border border-primary/20 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Conexiones ntimas</CardTitle>
                 <Zap className="h-4 w-4 text-accent" />
@@ -131,7 +131,7 @@ const Settings = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-card/90 backdrop-blur-md border border-primary/20 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Perfiles Verificados</CardTitle>
                 <Shield className="h-4 w-4 text-primary" />
@@ -144,7 +144,7 @@ const Settings = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-card/90 backdrop-blur-md border border-primary/20 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Eventos Mensuales</CardTitle>
                 <Calendar className="h-4 w-4 text-accent" />
@@ -157,7 +157,7 @@ const Settings = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-card/80 backdrop-blur-sm border border-primary/10">
+            <Card className="bg-card/90 backdrop-blur-md border border-primary/20 shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Satisfaccin</CardTitle>
                 <Star className="h-4 w-4 text-accent" fill="currentColor" />
@@ -179,7 +179,7 @@ const Settings = () => {
             </div>
 
             <Tabs defaultValue="privacy" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 bg-white/10 backdrop-blur-sm border-white/20">
+              <TabsList className="grid w-full grid-cols-3 bg-white/20 backdrop-blur-md border-white/30 shadow-lg">
                 <TabsTrigger value="privacy" className="flex items-center gap-2 data-[state=active]:bg-white/20">
                   <Lock className="h-4 w-4" />
                   Privacidad
@@ -227,7 +227,7 @@ const Settings = () => {
                   {swingerFeatures.map((feature, index) => (
                     <Card 
                       key={index} 
-                      className="bg-card/80 backdrop-blur-sm border border-primary/10 cursor-pointer hover:bg-card/90 transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/20"
+                      className="bg-card/90 backdrop-blur-md border border-primary/20 cursor-pointer hover:bg-card/95 transition-all duration-300 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/30"
                       onClick={() => {
                         if (feature.title === "Verificacin Lifestyle KYC") {
                           navigate('/profile-single');

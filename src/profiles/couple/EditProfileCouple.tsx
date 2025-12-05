@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Save, Camera, X, Users, MapPin, AlertCircle, Sun, Moon, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
-import ImageUpload from "@/components/profile/ImageUpload";
+import ImageUpload from "@/profiles/shared/ImageUpload";
 import { SAFE_INTERESTS } from "@/lib/lifestyle-interests";
 import { ExplicitInterestsEditor } from '@/components/settings/ExplicitInterestsEditor';
 import { useGeolocation } from "@/hooks/useGeolocation";

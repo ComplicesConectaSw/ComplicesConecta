@@ -15,7 +15,7 @@ import { ProfileNavTabs } from '@/profiles/shared/ProfileNavTabs';
 import { useAuth } from '@/features/auth/useAuth';
 import { usePersistedState } from '@/hooks/usePersistedState';
 import type { Database } from '@/types/supabase-generated';
-import { PrivateImageRequest } from '@/components/profile/PrivateImageRequest';
+import { PrivateImageRequest } from '@/profiles/shared/PrivateImageRequest';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
 import { ImageModal } from '@/profiles/shared/ImageModal';
 import { motion, AnimatePresence } from 'framer-motion';

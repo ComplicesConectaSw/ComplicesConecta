@@ -376,7 +376,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
 
   if (loading) {
     return (
-      <Card className="w-full max-w-2xl mx-auto">
+      <Card className="w-full max-w-2xl mx-auto shadow-2xl">
         <CardContent className="flex items-center justify-center p-8">
           <Loader2 className="h-8 w-8 animate-spin mr-2" />
           <span>Cargando tu asistente de tokens...</span>
@@ -386,9 +386,9 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto shadow-2xl">
       <CardContent className="p-0">
-        <div className="h-[500px] overflow-y-auto p-6 space-y-6 custom-scrollbar">
+        <div className="h-[500px] overflow-y-auto p-6 space-y-6 custom-scrollbar bg-gray-900/50 backdrop-blur-sm rounded-t-2xl">
           {/* Messages Area */}
           {messages.map((message) => (
             <motion.div
@@ -401,7 +401,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
               <div
                 className={`p-4 rounded-2xl ${
                   message.type === 'bot'
-                    ? 'bg-gray-800/80 text-gray-100 rounded-tl-none border-l-2 border-purple-500/50'
+                    ? 'bg-gray-800/90 text-gray-100 rounded-tl-none border-l-2 border-purple-500/50 backdrop-blur-sm'
                     : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-tr-none shadow-lg'
                 } max-w-[85%]`}
               >
@@ -432,13 +432,13 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
           ))}
 
           {/* Input Area */}
-          <div className="border-t border-purple-500/20 p-4 bg-gray-900/80 backdrop-blur-md">
+          <div className="border-t border-purple-500/20 p-4 bg-gray-900/90 backdrop-blur-lg rounded-b-2xl">
             <div className="flex items-center space-x-2">
               <Input
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder="Escribe tu mensaje..."
-                className="flex-1 bg-gray-800/80 border border-purple-500/30 text-white placeholder-gray-400 rounded-l-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all duration-200"
+                className="flex-1 bg-gray-800/90 border border-purple-500/40 text-white placeholder-gray-400 rounded-l-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500/60 transition-all duration-200 shadow-inner"
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 disabled={isTyping}
               />
@@ -447,7 +447,7 @@ Tienes ${balance?.cmpxBalance || 0} CMPX disponibles.
                 whileTap={{ scale: 0.95 }}
                 onClick={handleSendMessage}
                 disabled={!userInput.trim() || isTyping}
-                className={`px-4 py-3 rounded-r-lg font-medium transition-all duration-200 ${
+                className={`px-4 py-3 rounded-r-lg font-medium transition-all duration-200 shadow-lg ${
                   !userInput.trim() || isTyping
                     ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
                     : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-lg'

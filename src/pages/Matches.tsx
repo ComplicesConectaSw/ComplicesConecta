@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import HeaderNav from "@/components/HeaderNav";
 import { Heart, MessageCircle, User, Flame, Users, Crown, Sparkles } from "lucide-react";
-// useNavigate removido por no utilizarse
+import { Button } from '@/components/ui/Button';
 import { motion } from "framer-motion";
 import { logger } from '@/lib/logger';
 import { useAuth } from '@/features/auth/useAuth';
@@ -151,7 +151,7 @@ const Matches = () => {
         {/* Estadísticas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Tarjeta de nuevos matches */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
+          <div className="bg-gray-800/60 backdrop-blur-md rounded-xl p-4 border border-purple-500/30 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-300">Nuevos Matches</p>
@@ -166,7 +166,7 @@ const Matches = () => {
           </div>
 
           {/* Tarjeta de conversaciones */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-blue-500/20">
+          <div className="bg-gray-800/60 backdrop-blur-md rounded-xl p-4 border border-blue-500/30 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-300">Conversaciones</p>
@@ -181,7 +181,7 @@ const Matches = () => {
           </div>
 
           {/* Tarjeta de compatibilidad */}
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-yellow-500/20">
+          <div className="bg-gray-800/60 backdrop-blur-md rounded-xl p-4 border border-yellow-500/30 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-300">Compatibilidad</p>
@@ -277,12 +277,12 @@ const Matches = () => {
             <p className="text-gray-400 max-w-md mx-auto mb-6">
               No se encontraron coincidencias con los filtros actuales. Intenta ajustar tus preferencias.
             </p>
-            <button 
+            <Button 
               onClick={() => setFilter('all')}
-              className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full text-sm font-medium hover:from-purple-700 hover:to-blue-700 transition-all"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full text-sm font-medium hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg"
             >
               Ver todos los matches
-            </button>
+            </Button>
           </div>
         )}
       </main>
@@ -306,7 +306,7 @@ const MatchCard = ({
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5 }}
       transition={{ type: 'spring', stiffness: 300 }}
-      className="bg-gray-800/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700/50 hover:border-purple-500/30 transition-all duration-300 group"
+      className="bg-gray-800/60 backdrop-blur-lg rounded-2xl overflow-hidden border border-gray-700/60 hover:border-purple-500/40 transition-all duration-300 group shadow-xl"
     >
       {/* Imagen de perfil */}
       <div className="relative h-64 overflow-hidden">
@@ -364,7 +364,7 @@ const MatchCard = ({
         
         {/* Botones de acción */}
         <div className="flex gap-2">
-          <button
+          <Button
             onClick={() => onMessage(match.id)}
             className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-medium transition-all ${
               match.hasUnreadMessage
@@ -374,15 +374,15 @@ const MatchCard = ({
           >
             <MessageCircle className="h-4 w-4" />
             {match.hasUnreadMessage ? 'Nuevo mensaje' : 'Mensaje'}
-          </button>
+          </Button>
           
-          <button
+          <Button
             onClick={() => onViewProfile(match.id)}
             className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-medium text-white bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600/30 transition-all"
           >
             <User className="h-4 w-4" />
             Ver perfil
-          </button>
+          </Button>
         </div>
         
         {/* Fecha del match */}
