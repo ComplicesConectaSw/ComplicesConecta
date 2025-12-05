@@ -23,7 +23,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WalletService } from '@/services/WalletService';
 import { VanishSearchInput } from '@/components/ui/vanish-search-input';
 import { SafeImage } from '@/components/ui/SafeImage';
-import { HoverEffect } from '@/components/ui/Card-hover-effect';
+import { HoverEffect } from '@/components/ui/card-hover-effect';
 import { EventsCarousel } from '@/components/ui/events-carousel';
 import { ComplianceSignupForm } from '@/components/ui/compliance-signup-form';
 import { FileUpload } from '@/components/ui/file-upload';
@@ -202,7 +202,7 @@ const ProfileSingle: React.FC = () => {
            };
            setProfile(demoProfileData);
         } else if (authProfile) {
-           setProfile(authProfile);
+           setProfile(authProfile as ProfileRow);
         }
 
         hasDataLoaded.current = true;
@@ -343,7 +343,7 @@ const ProfileSingle: React.FC = () => {
       </AnimatePresence>
 
       <div className="relative z-10 pt-8 pb-6 px-4 text-center">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{displayName}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{String(displayName)}</h1>
         <p className="text-purple-600 dark:text-purple-200">@{currentProfile.nickname || 'usuario'}</p>
         <p className="text-sm text-gray-500 dark:text-white/60">ID: {currentProfile.profile_id || 'DEMO-USER'}</p>
         <div className="mt-4 max-w-md mx-auto">
@@ -376,7 +376,7 @@ const ProfileSingle: React.FC = () => {
                       variant="outline"
                       className="text-white border-white/30 bg-white/10"
                     >
-                      {displayAge} años
+                      {String(displayAge)} años
                     </Badge>
                     <Badge
                       variant="outline"
@@ -843,8 +843,8 @@ const ProfileSingle: React.FC = () => {
         <PrivateImageRequest
           isOpen={showPrivateImageRequest}
           onClose={() => setShowPrivateImageRequest(false)}
-          profileId={profile?.id || ''}
-          profileName={profile?.name || ''}
+          profileId={String(profile?.id || '')}
+          profileName={String(profile?.name || '')}
           profileType="single"
           onRequestSent={() => {
             setPrivateImageAccess('pending');
@@ -1010,8 +1010,8 @@ const ProfileSingle: React.FC = () => {
         isPrivate={true}
       />
       <ReportDialog
-        profileId={profile?.id || ''}
-        profileName={displayName}
+        profileId={String(profile?.id || '')}
+        profileName={String(displayName)}
         isOpen={showReportDialog}
         onOpenChange={setShowReportDialog}
         onReport={(r) => console.log(r)}
