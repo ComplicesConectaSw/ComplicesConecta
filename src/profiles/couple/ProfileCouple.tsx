@@ -7,7 +7,7 @@ import {
   Heart, MapPin, Verified, Crown, Share2, Lock, Flag, 
   Wallet, Users, MessageCircle, Eye, TrendingUp, 
   Award, CheckCircle, Edit, Camera, Gift, LogOut, X, Info, Loader2, 
-  Gamepad2, Unlock, BarChart3 
+  Gamepad2, Unlock, BarChart3, ShieldCheck 
 } from "lucide-react";
 import { TikTokShareButton } from '@/components/sharing/TikTokShareButton';
 import Navigation from "@/components/Navigation";
@@ -252,15 +252,22 @@ const ProfileCouple: React.FC = () => {
     setShowMintDialog(false);
     setIsMinting(true);
     setTimeout(() => {
+      const id = Date.now();
+      const baseIndex = coupleNFTs.length + 1;
+      const priceMatic = (0.10 + (baseIndex % 5) * 0.02).toFixed(3);
+      const priceCmpx = 180 + (baseIndex % 5) * 40;
+
       const newNFT = {
-        id: Date.now(),
-        name: `Couple NFT #${coupleNFTs.length + 1}`,
+        id,
+        name: `CMPX Couple Genesis #${baseIndex}`,
         image: mintPreview,
-        description: 'Identidad Dual Verificada'
+        description: 'Coleccionable demo que representa su conexión como pareja dentro del ecosistema CMPX.',
+        price: `${priceMatic} MATIC · ${priceCmpx} CMPX`,
       };
+
       setCoupleNFTs(prev => [newNFT, ...prev]);
       setIsMinting(false);
-      showToast("NFT creado", "success");
+      showToast("NFT demo de pareja creado", "success");
     }, 2000);
   };
   const handleImageLike = (idx: number) => showToast("Te gusta", "success");
@@ -405,10 +412,48 @@ const ProfileCouple: React.FC = () => {
                           </div>
                           <p className="text-xs font-semibold text-white truncate">{nft.name}</p>
                           <p className="text-[11px] text-white/60">{nft.description || 'Coleccionable'}</p>
+                          {nft.price && (
+                            <p className="text-[10px] text-emerald-200 mt-1 font-semibold">{nft.price}</p>
+                          )}
                         </div>
                       ))}
                     </div>
                   )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Arquitectura de Seguridad de la Wallet (ilustrativo) */}
+            {isOwnProfile && (
+              <Card className="bg-white/10 border-white/20 backdrop-blur-xl text-white shadow-[0_20px_40px_rgba(10,0,40,.4)]">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5" /> Arquitectura de Seguridad de la Wallet
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 text-sm text-white/80">
+                  <p>
+                    En esta demo mostramos cómo funciona la capa de seguridad cuando una pareja interactúa con tokens
+                    y NFTs: canal cifrado, firma desde la wallet y contratos que resguardan sus activos.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="bg-black/40 rounded-xl border border-white/20 overflow-hidden">
+                      <img src="/assets/security/ssl-diagram.webp" alt="Diagrama SSL" className="w-full h-40 object-cover" />
+                      <div className="px-3 py-2 text-[11px] text-white/70">Protección contra espionaje y robo de datos durante las sesiones.</div>
+                    </div>
+                    <div className="bg-black/40 rounded-xl border border-white/20 overflow-hidden">
+                      <img src="/assets/security/wallet-sequence.webp" alt="Flujo de firma con wallet" className="w-full h-40 object-cover" />
+                      <div className="px-3 py-2 text-[11px] text-white/70">Cada operación se firma en la wallet de la pareja, nunca en nuestros servidores.</div>
+                    </div>
+                    <div className="bg-black/40 rounded-xl border border-white/20 overflow-hidden">
+                      <img src="/assets/security/wallet-flow.webp" alt="Flujo de tokens" className="w-full h-40 object-cover" />
+                      <div className="px-3 py-2 text-[11px] text-white/70">Ruta visual de CMPX/GTK hacia staking, recompensas y utilidades en la app.</div>
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-white/60 mt-1">
+                    Demo educativa: estos diagramas ayudan a usuarios nuevos a entender el ecosistema Web3 sin exponer
+                    datos sensibles.
+                  </p>
                 </CardContent>
               </Card>
             )}

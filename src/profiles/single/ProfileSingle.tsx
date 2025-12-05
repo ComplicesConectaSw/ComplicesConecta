@@ -33,7 +33,8 @@ import { cn } from '@/shared/lib/cn';
 import { ThemeConfig } from '@/theme/ThemeConfig';
 
 // IMÁGENES LOCALES DEMO
-const SINGLE_PROFILE_AVATAR = ThemeConfig.backgrounds.hero; // placeholder avatar path handled elsewhere
+// Avatar demo para perfil single (mujer) usando asset real en /public
+const SINGLE_PROFILE_AVATAR = '/assets/people/female/f5.jpg';
 
 // GALERÍA PRIVADA SINGLE - Rutas corregidas y optimizadas
 const SINGLE_PRIVATE_IMAGES: PrivateImageItem[] = [
@@ -52,9 +53,10 @@ const SINGLE_PRIVATE_IMAGES: PrivateImageItem[] = [
 
 import nftImage1 from '@/assets/Ntf/imagen1.jpg';
 import nftImage2 from '@/assets/Ntf/imagen2.png';
-import nftImage3 from '@/assets/Ntf/imagen3.png';
-import nftImage4 from '@/assets/Ntf/imagen4.png';
-const DEMO_ASSETS = [nftImage1, nftImage2, nftImage3, nftImage4];
+import nftImage3 from '@/assets/Ntf/imagen3.jpg';
+import nftImage4 from '@/assets/Ntf/imagen4.jpg';
+import nftImage6 from '@/assets/Ntf/imagen6.jpg';
+const DEMO_ASSETS = [nftImage1, nftImage2, nftImage3, nftImage4, nftImage6];
 
 // --- TIPOS CORREGIDOS ---
 type ProfileRow = Database['public']['Tables']['profiles']['Row'] & {
@@ -238,10 +240,25 @@ const ProfileSingle: React.FC = () => {
     setShowMintDialog(true);
   };
   const confirmMinting = () => {
-    setShowMintDialog(false); setIsMinting(true);
+    setShowMintDialog(false);
+    setIsMinting(true);
     setTimeout(() => {
-        const newNFT = { id: Date.now(), name: `Profile #${userNFTs.length + 1}`, image: mintPreview, description: "Identidad Digital Verificada" };
-        setUserNFTs(prev => [newNFT, ...prev]); setIsMinting(false); showToast("¡NFT Minteado!", "success");
+      const id = Date.now();
+      const baseIndex = userNFTs.length + 1;
+      const priceMatic = (0.08 + (baseIndex % 5) * 0.015).toFixed(3);
+      const priceCmpx = 120 + (baseIndex % 5) * 30;
+
+      const newNFT = {
+        id,
+        name: `CMPX Genesis #${baseIndex}`,
+        image: mintPreview,
+        description: `Coleccionable demo vinculado a tu perfil single. No transferible, pensado para mostrar cómo luce un NFT real en la app.`,
+        price: `${priceMatic} MATIC · ${priceCmpx} CMPX`,
+      };
+
+      setUserNFTs(prev => [newNFT, ...prev]);
+      setIsMinting(false);
+      showToast("¡NFT demo minteado!", "success");
     }, 2000);
   };
   const handleUploadImage = () => {
@@ -543,10 +560,50 @@ const ProfileSingle: React.FC = () => {
                         </div>
                         <p className="text-xs font-semibold text-gray-800 dark:text-white truncate">{nft.name}</p>
                         <p className="text-[11px] text-gray-500 dark:text-white/60">{nft.description}</p>
+                        {nft.price && (
+                          <p className="text-[10px] text-emerald-700 dark:text-emerald-300 mt-1 font-semibold">
+                            {nft.price}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </div>
                 )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Arquitectura de Seguridad de la Wallet (ilustrativo) */}
+          {isOwnProfile && (
+            <Card className="bg-white/10 border-white/20 backdrop-blur-xl text-white shadow-[0_20px_40px_rgba(10,0,40,.4)]">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5" /> Arquitectura de Seguridad de la Wallet
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm text-white/80">
+                <p>
+                  Esta vista demo muestra cómo protegemos las transacciones: conexión cifrada (SSL), firma desde tu wallet
+                  y contratos inteligentes que nunca exponen tu llave privada.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-black/40 rounded-xl border border-white/20 overflow-hidden">
+                    <img src="/assets/security/ssl-diagram.webp" alt="Diagrama SSL" className="w-full h-40 object-cover" />
+                    <div className="px-3 py-2 text-[11px] text-white/70">Canal cifrado extremo a extremo entre tu dispositivo y nuestros servicios.</div>
+                  </div>
+                  <div className="bg-black/40 rounded-xl border border-white/20 overflow-hidden">
+                    <img src="/assets/security/wallet-sequence.webp" alt="Flujo de firma con wallet" className="w-full h-40 object-cover" />
+                    <div className="px-3 py-2 text-[11px] text-white/70">Secuencia de firma: la wallet autoriza, el contrato ejecuta, nosotros solo leemos el resultado.</div>
+                  </div>
+                  <div className="bg-black/40 rounded-xl border border-white/20 overflow-hidden">
+                    <img src="/assets/security/wallet-flow.webp" alt="Flujo de tokens" className="w-full h-40 object-cover" />
+                    <div className="px-3 py-2 text-[11px] text-white/70">Flujo de CMPX/GTK desde tu wallet hacia staking, recompensas y compras internas.</div>
+                  </div>
+                </div>
+                <p className="text-[11px] text-white/60 mt-1">
+                  Importante: esta sección es solo ilustrativa en modo demo. Los diagramas representan la arquitectura
+                  real revisada en las auditorías de seguridad del proyecto.
+                </p>
               </CardContent>
             </Card>
           )}

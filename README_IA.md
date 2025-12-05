@@ -7,6 +7,14 @@
 - FloatingNav reorganizada: jerarquía pública (Inicio/Explorar/NFTs/Tokens + dropdown “Más”) con estilo glassmorphism y compatibilidad móvil, reforzando el funnel IA-native.
 - ChatInfo y StoriesInfo ahora utilizan el tema oscuro + CTA a `/auth`, reflejando la narrativa AI/privacidad en todas las páginas públicas.
 
+### 🎨 Modo Visual Glass + Fondos Dinámicos (v3.8.x)
+- Modo global `glassMode` controlado vía store (`useBgMode`), aplicado a perfiles, feed, tokens y settings.
+- Fondos dinámicos por tipo de perfil y género:
+  - Single: `single-male.webp`, `single-female.webp` (default mujer), `default-neon.webp`, `ybg2.jpg`.
+  - Couple: `couple-mf.webp`, `couple-mm-ff.webp`, `single-female.webp` como opción neutra.
+- Opción **Random** restringida al conjunto válido por tipo/género para mantener coherencia visual.
+- Wallet & NFTs integran cards glass + diagramas de seguridad (`/assets/security/*.webp`) para educar a usuarios nuevos en Web3 sin exponer llaves privadas.
+
 1. **Crear ramas específicas**  
    - `backup/safe-YYYYMMDD_HHMMSS` → Respaldo completo
    - `feature/*` → Nuevas funciones
