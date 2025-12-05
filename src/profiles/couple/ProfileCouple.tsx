@@ -33,8 +33,8 @@ import { ParticlesBackground } from '@/components/ui/ParticlesBackground'; // IM
 // IMÁGENES LOCALES
 import nftImage1 from '@/assets/Ntf/imagen1.jpg';
 import nftImage2 from '@/assets/Ntf/imagen2.png';
-import nftImage3 from '@/assets/Ntf/imagen3.png';
-import nftImage4 from '@/assets/Ntf/imagen4.png';
+import nftImage3 from '@/assets/Ntf/imagen3.jpg';
+import nftImage4 from '@/assets/Ntf/imagen4.jpg';
 
 const DEMO_COUPLE_ASSETS = [nftImage1, nftImage2, nftImage3, nftImage4];
 
