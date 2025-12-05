@@ -23,7 +23,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WalletService } from '@/services/WalletService';
 import { VanishSearchInput } from '@/components/ui/vanish-search-input';
 import { SafeImage } from '@/components/ui/SafeImage';
-import { HoverEffect } from '@/components/ui/card-hover-effect';
+import { HoverEffect } from '@/components/ui/Card-hover-effect';
 import { EventsCarousel } from '@/components/ui/events-carousel';
 import { ComplianceSignupForm } from '@/components/ui/compliance-signup-form';
 import { FileUpload } from '@/components/ui/file-upload';

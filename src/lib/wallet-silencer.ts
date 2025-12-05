@@ -13,7 +13,9 @@ if (typeof window !== 'undefined') {
         configurable: true,
         value: undefined,
       });
-    } catch {
+    } catch (error) {
+      // Intencionalmente vacío: Ignorar errores de wallet de manera segura
+      // ya que son esperados y manejados por el flujo de la aplicación
     }
   };
 

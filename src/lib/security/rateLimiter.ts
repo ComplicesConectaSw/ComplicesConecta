@@ -273,34 +273,66 @@ export const rateLimitMiddleware = (
 };
 
 // Hook para mostrar información de rate limit en UI
-export const useRateLimitInfo = (endpoint: string) => {
-  const [info, setInfo] = useState<{
-    remaining: number;
-    resetTime: number;
-    isNearLimit: boolean;
-  } | null>(null);
+interface RateLimitInfo {
+  remaining: number;
+  resetTime: number;
+  isNearLimit: boolean;
+}
 
-  const checkInfo = () => {
-    const identifier = localStorage.getItem('user_id') || 'anonymous';
-    const result = rateLimiter.checkLimit(endpoint, identifier, true); // No contar esta verificación
-    
-    setInfo({
-      remaining: result.remaining,
-      resetTime: result.resetTime,
-      isNearLimit: result.remaining <= 3
-    });
-  };
+export const useRateLimitInfo = (endpoint: string) => {
+  const [info, setInfo] = useState<RateLimitInfo | null>(null);
+
+  const checkInfo = useCallback(async (): Promise<void> => {
+    try {
+      const identifier = typeof window !== 'undefined' 
+        ? localStorage.getItem('user_id') || 'anonymous'
+        : 'server';
+      const result = rateLimiter.checkLimit(endpoint, identifier, true);
+      
+      setInfo({
+        remaining: result.remaining,
+        resetTime: result.resetTime,
+        isNearLimit: result.remaining <= 3
+      });
+    } catch (err) {
+      console.error('Error checking rate limit:', err);
+      // Mantener el estado actual en caso de error
+    }
+  }, [endpoint]);
 
   useEffect(() => {
-    checkInfo();
+    let mounted = true;
     
-    // Actualizar cada 30 segundos
-    const interval = setInterval(checkInfo, 30000);
-    return () => clearInterval(interval);
-  }, [endpoint]);
+    const updateInfo = async () => {
+      try {
+        await checkInfo();
+      } catch (error) {
+        console.error('Error en la verificación de límite de tasa:', error);
+      }
+    };
+
+    // Ejecutar inmediatamente
+    if (mounted) {
+      updateInfo();
+    }
+
+    // Configurar intervalo para actualizaciones periódicas
+    const intervalId = setInterval(() => {
+      if (mounted) {
+        updateInfo();
+      }
+    }, 30000);
+
+    // Limpieza
+    return () => {
+      mounted = false;
+      clearInterval(intervalId);
+    };
+  }, [checkInfo]);
 
   return info;
 };
 
+// ...
 export { rateLimiter, RATE_LIMIT_CONFIGS };
 export default RateLimiter;
