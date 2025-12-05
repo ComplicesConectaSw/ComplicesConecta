@@ -121,18 +121,39 @@ const App = () => {
   });
   const [logoReady, setLogoReady] = useState(false);
 
+  // Splash principal: intenta precargar el logo animado y cerrar en ~2.5s
   useEffect(() => {
     if (!showSplash) return;
-    const logo = new Image();
-    logo.src = '/backgrounds/logo-animated.webp';
-    logo.onload = () => setLogoReady(true);
+
+    try {
+      const logo = new Image();
+      logo.src = '/backgrounds/logo-animated.webp';
+      logo.onload = () => setLogoReady(true);
+    } catch {
+      // En Android / entornos raros, si Image falla, simplemente continuamos al timeout
+    }
 
     const timer = setTimeout(() => {
-      sessionStorage.setItem('cc_splash_shown', '1');
+      try {
+        sessionStorage.setItem('cc_splash_shown', '1');
+      } catch {
+        // Ignorar errores de sessionStorage en entornos restringidos (Android / WebView)
+      }
       setShowSplash(false);
     }, 2500);
 
     return () => clearTimeout(timer);
+  }, [showSplash]);
+
+  // Safety extra: si por cualquier razón el splash no se cierra, forzarlo tras unos segundos
+  useEffect(() => {
+    if (!showSplash) return;
+
+    const safetyTimer = setTimeout(() => {
+      setShowSplash(false);
+    }, 7000); // margen extra para Android / dispositivos lentos
+
+    return () => clearTimeout(safetyTimer);
   }, [showSplash]);
 
   const { isAuthenticated, user } = useAuth();

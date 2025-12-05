@@ -18,6 +18,7 @@ import type { Database } from '@/types/supabase-generated';
 import { PrivateImageRequest } from '@/profiles/shared/PrivateImageRequest';
 import { ReportDialog } from '@/components/swipe/ReportDialog';
 import { ImageModal } from '@/profiles/shared/ImageModal';
+import { ParentalControl } from '@/profiles/shared/ParentalControl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WalletService } from '@/services/WalletService';
@@ -852,6 +853,21 @@ const ProfileSingle: React.FC = () => {
           }}
         />
       )}
+
+      {/* Control parental visual unificado (misma UI que pareja, lógica de single) */}
+      <ParentalControl
+        isLocked={isParentalLocked}
+        onToggle={(locked) => {
+          setIsParentalLocked(locked);
+          localStorage.setItem('parentalControlLocked', String(locked));
+        }}
+        onUnlock={() => {
+          // Mantener la lógica principal en handlePinSubmit / handleLockGallery.
+          // Aquí solo reflejamos el estado desbloqueado si el usuario pasa por el control.
+          setIsParentalLocked(false);
+          localStorage.setItem('parentalControlLocked', 'false');
+        }}
+      />
 
       {confirmDialog.open && (
         <AnimatePresence>

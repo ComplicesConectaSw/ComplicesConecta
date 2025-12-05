@@ -10,10 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import { User, Users, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
-import { useAuth } from '@/features/auth/useAuth';
 import { useToast } from '@/hooks/useToast';
 import { safeSetItem } from '@/utils/safeLocalStorage';
 import { usePersistedState } from '@/hooks/usePersistedState';
+import { handleDemoAuth } from '@/lib/app-config';
 
 interface DemoSelectorProps {
   className?: string;
@@ -22,7 +22,6 @@ interface DemoSelectorProps {
 export const DemoSelector: React.FC<DemoSelectorProps> = ({ className = '' }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { signIn } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedType, setSelectedType] = useState<'single' | 'couple' | null>(null);
   
@@ -40,28 +39,29 @@ export const DemoSelector: React.FC<DemoSelectorProps> = ({ className = '' }) =>
     setSelectedType(type);
     
     try {
-      // Configurar credenciales demo según el tipo
-      const demoCredentials = {
-        email: 'demo@complicesconecta.com',
-        password: 'demo123',
-        accountType: type,
+      // Crear sesión demo usando la lógica centralizada de app-config
+      const demoAuth = handleDemoAuth('demo@complicesconecta.com', type);
+
+      if (!demoAuth || !demoAuth.user) {
+        throw new Error('No se pudo inicializar la sesión demo');
+      }
+
+      // Establecer estado de autenticación demo en estado persistente
+      const demoUserData = {
+        ...(demoAuth.user as Record<string, unknown>),
         displayName: type === 'single' ? 'Demo User' : 'Demo Pareja',
-        first_name: type === 'single' ? 'Demo' : 'Demo Pareja',
-        role: 'user'
+        accountType: type,
+        role: (demoAuth.user as Record<string, unknown>).role ?? 'user',
       };
-      
-      // Establecer estado de autenticación demo
+
       setDemoAuthenticated(true);
-      setDemoUser(demoCredentials);
+      setDemoUser(demoUserData);
       setUserType(type);
-      
-      // Configurar localStorage para demo
+
+      // Reflejar estado en localStorage usando helper seguro
       safeSetItem('demo_authenticated', 'true', { validate: true });
-      safeSetItem('demo_user', demoCredentials, { validate: false, sanitize: true });
+      safeSetItem('demo_user', demoUserData, { validate: false, sanitize: true });
       safeSetItem('userType', type, { validate: false });
-      
-      // Usar el método signIn del hook useAuth
-      await signIn('demo@complicesconecta.com', 'demo123', type);
       
       toast({
         title: "🎭 Modo Demo Activado",

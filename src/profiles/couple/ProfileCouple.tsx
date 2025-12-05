@@ -215,22 +215,23 @@ const ProfileCouple: React.FC = () => {
     }, 1500);
   };
   const handlePinSubmit = () => {
+    // Lógica espejo de ProfileSingle: PIN 1234, actualizar estado y localStorage
     if (pinInput === '1234') {
       setIsParentalLocked(false);
       localStorage.setItem('parentalControlLocked', 'false');
       setShowPinModal(false);
       setPinInput('');
-      setPrivateImageAccess('approved');
       showToast('Galería desbloqueada', 'success');
     } else {
       showToast('PIN incorrecto (1234)', 'error');
       setPinInput('');
     }
   };
+
   const handleLockGallery = () => {
+    // Lógica espejo de ProfileSingle: bloquear y reflejar en localStorage
     setIsParentalLocked(true);
     localStorage.setItem('parentalControlLocked', 'true');
-    setPrivateImageAccess('none');
     showToast('Galería bloqueada', 'info');
   };
   const handleImageClick = (index: number) => {

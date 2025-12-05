@@ -9,7 +9,8 @@ import {
   MessageCircle,
   Heart,
   Share,
-  MoreHorizontal
+  MoreHorizontal,
+  CheckCircle
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/shared/lib/cn';
@@ -42,6 +43,12 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
   const [demoPostComments, setDemoPostComments] = useState(0);
   const [showComments, setShowComments] = useState(false);
   const [demoPostCount, setDemoPostCount] = useState(0);
+  const [privateToastVisible, setPrivateToastVisible] = useState(false);
+
+  const showPrivateAccessToast = () => {
+    setPrivateToastVisible(true);
+    setTimeout(() => setPrivateToastVisible(false), 3000);
+  };
 
   const tabs = [
     {
@@ -334,7 +341,10 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
                 Fotos Privadas 🔒
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <div className="aspect-square rounded-lg overflow-hidden relative cursor-pointer" onClick={() => alert('🔒 Solicita acceso para ver fotos privadas')}>
+                <div
+                  className="aspect-square rounded-lg overflow-hidden relative cursor-pointer"
+                  onClick={showPrivateAccessToast}
+                >
                   <img 
                     src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop" 
                     alt="Foto privada 1"
@@ -389,7 +399,7 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
       {/* Tab Navigation */}
       <div className="flex border-b border-white/20">
         {tabs.map((tab) => {
@@ -419,6 +429,14 @@ export const ProfileNavTabs: React.FC<ProfileNavTabsProps> = ({
       <div className="min-h-[400px]">
         {renderTabContent()}
       </div>
+
+      {/* Toast verde para acceso a fotos privadas */}
+      {privateToastVisible && (
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[90] px-6 py-3 rounded-full bg-emerald-500 text-white text-sm font-medium shadow-xl border border-emerald-300 flex items-center gap-2">
+          <CheckCircle className="w-4 h-4" />
+          <span>Solicitud enviada para acceder a fotos privadas.</span>
+        </div>
+      )}
 
       {/* Modales */}
       <ComingSoonModal 

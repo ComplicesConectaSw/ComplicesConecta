@@ -15,6 +15,7 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import { logger } from '@/lib/logger';
 import { useDemoThemeConfig, getNavbarStyles, useProfileTheme } from '@/features/profile/useProfileTheme';
 import { motion } from 'framer-motion';
+import { useBgMode } from '@/hooks/useBgMode';
 
 interface PartnerProfile {
   name?: string;
@@ -77,6 +78,7 @@ const EditProfileCouple = () => {
   const { demoTheme, setDemoTheme, navbarStyle, setNavbarStyle } = useDemoThemeConfig();
   const themeConfig = useProfileTheme('couple', ['male', 'female'], demoTheme);
   const _navbarStyles = getNavbarStyles(navbarStyle);
+  const { mode, setMode } = useBgMode();
   
   const { location, error: locationError, getCurrentLocation } = useGeolocation();
   const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -828,6 +830,44 @@ const EditProfileCouple = () => {
                     <div className="flex items-center gap-2 text-sm font-medium text-white">
                       <EyeOff className="h-4 w-4" />
                       Sólida
+                    </div>
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Toggle de Partículas */}
+              <div>
+                <label className="text-sm text-white/90 mb-2 block">Efectos de Partículas</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setMode('particles')}
+                    className={`p-3 rounded-lg border-2 transition-all ${
+                      mode === 'particles'
+                        ? 'border-emerald-400 bg-emerald-500/20'
+                        : 'border-white/30 bg-white/10 hover:bg-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 text-sm font-medium text-white">
+                      <span className="text-lg">✨</span>
+                      Activadas
+                    </div>
+                  </motion.button>
+
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setMode('static')}
+                    className={`p-3 rounded-lg border-2 transition-all ${
+                      mode === 'static'
+                        ? 'border-gray-300 bg-black/40'
+                        : 'border-white/30 bg-white/10 hover:bg-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 text-sm font-medium text-white">
+                      <span className="text-lg">🕹️</span>
+                      Desactivadas
                     </div>
                   </motion.button>
                 </div>
