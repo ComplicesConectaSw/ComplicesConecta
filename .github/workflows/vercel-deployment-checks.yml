@@ -1,8 +1,5 @@
-name: Setup Node.js
-uses: actions/setup-node@v4
-  with:
-    node-version: '20'
-    cache: 'pnpm'
+name: Vercel Deployment Checks
+
 on:
   push:
     branches:
@@ -21,24 +18,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
-      
+          cache: 'npm'
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      
+        run: npm ci
+
       - name: Run lint
-        run: pnpm run lint
-      
+        run: npm run lint
+
       - name: 'notify vercel'
         uses: vercel/repository-dispatch/actions/status@v1
         with:
@@ -54,24 +46,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
-      
+          cache: 'npm'
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      
+        run: npm ci
+
       - name: Run type-check
-        run: pnpm run type-check
-      
+        run: npm run type-check
+
       - name: 'notify vercel'
         uses: vercel/repository-dispatch/actions/status@v1
         with:
@@ -87,24 +74,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'pnpm'
-      
+          cache: 'npm'
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      
+        run: npm ci
+
       - name: Build
-        run: pnpm run build
-      
+        run: npm run build
+
       - name: 'notify vercel'
         uses: vercel/repository-dispatch/actions/status@v1
         with:
