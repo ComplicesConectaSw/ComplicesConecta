@@ -210,7 +210,7 @@
     "eslint-plugin-unused-imports": "^4.3.0",
     "ethers": "^6.16.0",
     "globals": "^16.5.0",
-    "hardhat": "^3.0.17",
+    "hardhat": "^2.26.0",
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
     "jsdom": "^27.2.0",
