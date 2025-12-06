@@ -121,6 +121,7 @@ const ProfileSingle: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState>({ open: false, title: '', description: '' });
   const [showTopBanner, setShowTopBanner] = useState(true);
+  const [showParentalControl, setShowParentalControl] = useState(false);
 
   const [isParentalLocked, setIsParentalLocked] = useState(() => {
     const saved = localStorage.getItem('parentalControlLocked');
@@ -234,8 +235,11 @@ const ProfileSingle: React.FC = () => {
   };
   const handleAddComment = () => showToast("Comentario agregado", "success");
   const handleImageClick = (index: number) => {
-    // Si está bloqueado, respetamos blur + candado y no abrimos modal aquí.
-    if (isParentalLocked) return;
+    // Si está bloqueado, mostramos el overlay de control parental en lugar de abrir la imagen.
+    if (isParentalLocked) {
+      setShowParentalControl(true);
+      return;
+    }
     setSelectedImageIndex(index);
     setShowImageModal(true);
   };
@@ -300,8 +304,8 @@ const ProfileSingle: React.FC = () => {
     });
   };
   const handleCommentPost = (postId: string) => {
-    const c = prompt("Escribe...");
-    if(c) showToast("Enviado", "success"); };
+    showToast('La sección de comentarios estará disponible en la versión final', 'info');
+  };
   const handlePinSubmit = () => {
     if (pinInput === "1234") {
       const nextCount = unlockCounter + 1;
@@ -455,9 +459,9 @@ const ProfileSingle: React.FC = () => {
       </AnimatePresence>
 
       <div className="relative z-10 pt-8 pb-6 px-4 text-center">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{String(displayName)}</h1>
-        <p className="text-purple-600 dark:text-purple-200">@{currentProfile.nickname || 'usuario'}</p>
-        <p className="text-sm text-gray-500 dark:text-white/60">ID: {currentProfile.profile_id || 'DEMO-USER'}</p>
+        <h1 className="text-2xl font-bold text-white drop-shadow-[0_0_6px_rgba(0,0,0,0.7)]">{String(displayName)}</h1>
+        <p className="text-purple-100 font-semibold drop-shadow-[0_0_4px_rgba(0,0,0,0.7)]">@{currentProfile.nickname || 'usuario'}</p>
+        <p className="text-sm text-white/80 drop-shadow-[0_0_4px_rgba(0,0,0,0.8)]">ID: {currentProfile.profile_id || 'SNG-DEMO-0001'}</p>
         <div className="mt-4 max-w-md mx-auto">
           <VanishSearchInput placeholders={['Buscar...', 'Eventos...']} onSubmit={(val) => console.log(val)} />
         </div>
@@ -487,24 +491,24 @@ const ProfileSingle: React.FC = () => {
                 </div>
                 <div className="flex-1 text-center sm:text-left space-y-2">
                   <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                    <Badge className="bg-white/15 text-white border border-white/20">
+                    <Badge className="bg-white/15 text-white border border-white/20 drop-shadow-[0_0_4px_rgba(0,0,0,0.6)]">
                       <MapPin className="w-3 h-3 mr-1" /> CDMX
                     </Badge>
                     <Badge
                       variant="outline"
-                      className="text-white border-white/30 bg-white/10"
+                      className="text-white border-white/40 bg-white/10 drop-shadow-[0_0_4px_rgba(0,0,0,0.6)]"
                     >
                       {String(displayAge)} años
                     </Badge>
                     <Badge
                       variant="outline"
-                      className="text-gray-700 border-gray-300 dark:text-white dark:border-white/40 dark:bg-white/5"
+                      className="text-white border-white/40 bg-white/5/20 drop-shadow-[0_0_4px_rgba(0,0,0,0.6)]"
                     >
                       ⚧️ No especificado
                     </Badge>
                     <Badge
                       variant="outline"
-                      className="text-gray-700 border-gray-300 dark:text-white dark:border-white/40 dark:bg-white/5"
+                      className="text-white border-white/40 bg-white/5/20 drop-shadow-[0_0_4px_rgba(0,0,0,0.6)]"
                     >
                       ⚤ Bisexual
                     </Badge>
@@ -862,9 +866,9 @@ const ProfileSingle: React.FC = () => {
               </Card>
 
               {/* INTERESES */}
-              <Card className="bg-white dark:bg-white/10 border-gray-200 dark:border-white/20 mt-4">
+              <Card className="bg-white/70 dark:bg-white/10 border-gray-200 dark:border-white/20 mt-4">
                 <CardHeader>
-                  <CardTitle className="text-gray-900 dark:text-white">Mis Intereses</CardTitle>
+                  <CardTitle className="text-gray-900 dark:text-white drop-shadow-[0_0_4px_rgba(0,0,0,0.6)]">Mis Intereses</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-2">
                   {['Lifestyle Swinger', 'Fiestas Temáticas', 'Viajes', 'Cenas', 'Cockteles'].map((tag, i) => (
@@ -1030,20 +1034,27 @@ const ProfileSingle: React.FC = () => {
         />
       )}
 
-      {/* Control parental visual unificado (misma UI que pareja, lógica de single) */}
-      <ParentalControl
-        isLocked={isParentalLocked}
-        onToggle={(locked) => {
-          setIsParentalLocked(locked);
-          localStorage.setItem('parentalControlLocked', String(locked));
-        }}
-        onUnlock={() => {
-          // Mantener la lógica principal en handlePinSubmit / handleLockGallery.
-          // Aquí solo reflejamos el estado desbloqueado si el usuario pasa por el control.
-          setIsParentalLocked(false);
-          localStorage.setItem('parentalControlLocked', 'false');
-        }}
-      />
+      {/* Control parental visual unificado (misma UI que pareja, lógica de single).
+          Solo se muestra cuando el usuario intenta abrir contenido privado bloqueado. */}
+      {showParentalControl && (
+        <ParentalControl
+          isLocked={isParentalLocked}
+          onToggle={(locked) => {
+            setIsParentalLocked(locked);
+            localStorage.setItem('parentalControlLocked', String(locked));
+            if (!locked) {
+              setShowParentalControl(false);
+            }
+          }}
+          onUnlock={() => {
+            // Mantener la lógica principal en handlePinSubmit / handleLockGallery.
+            // Aquí solo reflejamos el estado desbloqueado si el usuario pasa por el control.
+            setIsParentalLocked(false);
+            localStorage.setItem('parentalControlLocked', 'false');
+            setShowParentalControl(false);
+          }}
+        />
+      )}
 
       {confirmDialog.open && (
         <AnimatePresence>

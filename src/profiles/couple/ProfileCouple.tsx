@@ -30,6 +30,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/shared/lib/cn';
 import { ParticlesBackground } from '@/components/ui/ParticlesBackground'; // IMPORTAR
 import { useBgMode } from '@/hooks/useBgMode';
+import graficoFluxEconomia from '@/assets/svg/GRÁFICO-COMPLETO-FLUX-ECONOMÍA.webp';
+import graficoTokensApp from '@/assets/svg/GRÁFICO DE TOKENS + APP.webp';
+import graficoTokensAppAlt from '@/assets/svg/GRÁFICO-DE-TOKENS-APP.webp';
 
 // IMÁGENES LOCALES
 import nftImage1 from '@/assets/Ntf/imagen1.jpg';
@@ -106,6 +109,7 @@ const ProfileCouple: React.FC = () => {
   const [showTopBanner, setShowTopBanner] = useState(true);
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [showParentalControl, setShowParentalControl] = useState(false);
   const [galleryImages, setGalleryImages] = useState<PrivateImageItem[]>([]);
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]);
@@ -248,7 +252,7 @@ const ProfileCouple: React.FC = () => {
   };
   const handleImageClick = (index: number) => {
     if (isParentalLocked) {
-      setShowPinModal(true);
+      setShowParentalControl(true);
       return;
     }
     setSelectedImageIndex(index);
@@ -391,7 +395,7 @@ const ProfileCouple: React.FC = () => {
       <div className="relative z-10 pt-8 pb-6 px-4 text-center">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{profile.couple_name}</h1>
         <p className="text-purple-600 dark:text-purple-200">@{profile.username || 'pareja_demo'}</p>
-        <p className="text-sm text-gray-500 dark:text-white/60">ID: {profile.id}</p>
+        <p className="text-sm text-white/80 drop-shadow-[0_0_4px_rgba(0,0,0,0.8)]">ID: {profile.id || 'CPL-DEMO-0001'}</p>
         <div className="mt-4 max-w-md mx-auto">
             <VanishSearchInput placeholders={['Buscar parejas...', 'Eventos swinger...', 'Clubs...']} onSubmit={(val) => console.log(val)} />
         </div>
@@ -506,15 +510,15 @@ const ProfileCouple: React.FC = () => {
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-black/40 rounded-xl border border-white/20 overflow-hidden">
-                      <img src="/assets/security/ssl-diagram.webp" alt="Diagrama SSL" className="w-full h-40 object-cover" />
+                      <img src={graficoFluxEconomia} alt="Diagrama SSL" className="w-full h-40 object-cover" />
                       <div className="px-3 py-2 text-[11px] text-white/70">Protección contra espionaje y robo de datos durante las sesiones.</div>
                     </div>
                     <div className="bg-black/40 rounded-xl border border-white/20 overflow-hidden">
-                      <img src="/assets/security/wallet-sequence.webp" alt="Flujo de firma con wallet" className="w-full h-40 object-cover" />
+                      <img src={graficoTokensAppAlt} alt="Flujo de firma con wallet" className="w-full h-40 object-cover" />
                       <div className="px-3 py-2 text-[11px] text-white/70">Cada operación se firma en la wallet de la pareja, nunca en nuestros servidores.</div>
                     </div>
                     <div className="bg-black/40 rounded-xl border border-white/20 overflow-hidden">
-                      <img src="/assets/security/wallet-flow.webp" alt="Flujo de tokens" className="w-full h-40 object-cover" />
+                      <img src={graficoTokensApp} alt="Flujo de tokens" className="w-full h-40 object-cover" />
                       <div className="px-3 py-2 text-[11px] text-white/70">Ruta visual de CMPX/GTK hacia staking, recompensas y utilidades en la app.</div>
                     </div>
                   </div>
