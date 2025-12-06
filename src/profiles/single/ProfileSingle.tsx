@@ -31,6 +31,7 @@ import { FileUpload } from '@/components/ui/file-upload';
 import { ParticlesBackground } from '@/components/ui/ParticlesBackground'; // Importar Wrapper
 import { cn } from '@/shared/lib/cn';
 import { ThemeConfig } from '@/theme/ThemeConfig';
+import { useBgMode } from '@/hooks/useBgMode';
 
 // IMÁGENES LOCALES DEMO
 // Avatar demo para perfil single (mujer) usando asset real en /public
@@ -102,6 +103,7 @@ const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
   const { profile: authProfile, isAuthenticated } = useAuth();
   const hasDataLoaded = useRef(false);
+  const { glassMode, backgroundKey, backgroundMode } = useBgMode();
 
   // --- ESTADOS ---
   const [profile, setProfile] = useState<ProfileRow | null>(null);
@@ -306,13 +308,61 @@ const ProfileSingle: React.FC = () => {
   const displayAge = currentProfile.age || 25;
   const isDemoActive = (String(demoAuth) === 'true') && demoUser;
 
-  // Background por género: demo mujer usa Background(2).webp, hombre Background(1).webp
+  // Background por género / config global (glassMode/backgroundKey/backgroundMode)
   const gender = (currentProfile as any)?.gender as string | undefined;
-  const singleBackground = !gender
-    ? '/backgrounds/Background(2).webp' // demo actual mujer
-    : gender === 'male'
-    ? '/backgrounds/Background(1).webp'
-    : '/backgrounds/Background(2).webp';
+
+  const singleCandidatesByGender: string[] = gender === 'male'
+    ? [
+        ThemeConfig.backgrounds.profiles.single.male,
+        ThemeConfig.backgrounds.dashboard,
+      ]
+    : [
+        ThemeConfig.backgrounds.profiles.single.female,
+        ThemeConfig.backgrounds.hero,
+      ];
+
+  const fixedBackgroundFromKey = (key: string | null | undefined): string | null => {
+    switch (key) {
+      case 'single-male':
+        return ThemeConfig.backgrounds.profiles.single.male;
+      case 'single-female':
+        return ThemeConfig.backgrounds.profiles.single.female;
+      case 'default-neon':
+        return ThemeConfig.backgrounds.hero;
+      case 'ybg2':
+        return '/backgrounds/ybg2.jpg';
+      default:
+        return null;
+    }
+  };
+
+  const pickRandomBackground = (): string => {
+    const pool: string[] = [
+      ...singleCandidatesByGender,
+      ThemeConfig.backgrounds.profiles.couple.heterosexual,
+    ];
+    const unique = Array.from(new Set(pool.filter(Boolean)));
+    if (!unique.length) return '/backgrounds/Background(2).webp';
+    const idx = Math.floor(Math.random() * unique.length);
+    return unique[idx];
+  };
+
+  let singleBackground: string;
+  if (backgroundMode === 'random') {
+    singleBackground = pickRandomBackground();
+  } else {
+    const fromKey = fixedBackgroundFromKey(backgroundKey);
+    if (fromKey) {
+      singleBackground = fromKey;
+    } else {
+      // Fallback: demo mujer usa Background(2).webp, hombre Background(1).webp
+      singleBackground = !gender
+        ? '/backgrounds/Background(2).webp'
+        : gender === 'male'
+        ? '/backgrounds/Background(1).webp'
+        : '/backgrounds/Background(2).webp';
+    }
+  }
 
   // --- CONTENIDO DEL RENDERIZADO (versión completa fusionada con respaldo) ---
   const content = (
@@ -372,7 +422,13 @@ const ProfileSingle: React.FC = () => {
       <div className="relative z-10 pb-20 px-2 sm:px-4 overflow-y-auto custom-scrollbar">
         <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 py-4">
           {/* TARJETA PRINCIPAL */}
-          <Card className="bg-white/5 text-white border-white/20 backdrop-blur-2xl shadow-[0_25px_60px_rgba(24,0,62,.45)]">
+          <Card
+            className={
+              glassMode === 'off'
+                ? 'bg-slate-950/95 text-white border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,.7)]'
+                : 'bg-white/5 text-white border-white/20 backdrop-blur-2xl shadow-[0_25px_60px_rgba(24,0,62,.45)]'
+            }
+          >
             <CardContent className="p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
                 <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-purple-100 dark:border-purple-500/30 shadow-2xl">
@@ -482,7 +538,14 @@ const ProfileSingle: React.FC = () => {
               { icon: Users, label: 'Matches', value: profileStats.totalMatches, color: 'text-purple-400' },
               { icon: TrendingUp, label: 'Completo', value: `${profileStats.profileCompleteness}%`, color: 'text-green-400' }
             ].map((stat, idx) => (
-              <Card key={stat.label} className="bg-white/10 border-white/20 backdrop-blur-xl shadow-[0_20px_40px_rgba(18,0,54,.35)] text-white">
+              <Card
+                key={stat.label}
+                className={
+                  glassMode === 'off'
+                    ? 'bg-slate-950/95 border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,.7)] text-white'
+                    : 'bg-white/10 border-white/20 backdrop-blur-xl shadow-[0_20px_40px_rgba(18,0,54,.35)] text-white'
+                }
+              >
                 <CardContent className="p-4 text-center">
                   <stat.icon className={`w-7 h-7 mx-auto mb-2 ${stat.color}`} />
                   <div className="text-2xl font-bold text-white">{stat.value}</div>
@@ -494,7 +557,13 @@ const ProfileSingle: React.FC = () => {
 
           {/* WALLET & COLECCIONABLES */}
           {isOwnProfile && (
-            <Card className="bg-white/5 border-white/20 text-white backdrop-blur-2xl shadow-[0_25px_50px_rgba(15,0,45,.45)]">
+            <Card
+              className={
+                glassMode === 'off'
+                  ? 'bg-slate-950/95 border border-white/10 text-white shadow-[0_25px_50px_rgba(0,0,0,.7)]'
+                  : 'bg-white/5 border-white/20 text-white backdrop-blur-2xl shadow-[0_25px_50px_rgba(15,0,45,.45)]'
+              }
+            >
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Wallet className="w-5 h-5" /> Wallet & Coleccionables
@@ -575,7 +644,13 @@ const ProfileSingle: React.FC = () => {
 
           {/* Arquitectura de Seguridad de la Wallet (ilustrativo) */}
           {isOwnProfile && (
-            <Card className="bg-white/10 border-white/20 backdrop-blur-xl text-white shadow-[0_20px_40px_rgba(10,0,40,.4)]">
+            <Card
+              className={
+                glassMode === 'off'
+                  ? 'bg-slate-950/95 border border-white/10 text-white shadow-[0_20px_40px_rgba(0,0,0,.7)]'
+                  : 'bg-white/10 border-white/20 backdrop-blur-xl text-white shadow-[0_20px_40px_rgba(10,0,40,.4)]'
+              }
+            >
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <ShieldCheck className="w-5 h-5" /> Arquitectura de Seguridad de la Wallet

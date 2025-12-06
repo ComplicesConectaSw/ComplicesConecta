@@ -47,7 +47,7 @@ const EditProfileSingle = () => {
   const { demoTheme, setDemoTheme, navbarStyle, setNavbarStyle } = useDemoThemeConfig();
   const themeConfig = useProfileTheme('single', ['male'], demoTheme);
   const _navbarStyles = getNavbarStyles(navbarStyle);
-  const { mode, setMode } = useBgMode();
+  const { mode, setMode, glassMode, setGlassMode, backgroundKey, setBackgroundKey, backgroundMode, setBackgroundMode } = useBgMode();
 
   // Forzar re-render cuando cambia el tema
   useEffect(() => {
@@ -285,9 +285,9 @@ const EditProfileSingle = () => {
           updated_at: new Date().toISOString()
         };
 
-        const { error } = await (supabase
+        const { error } = await supabase
           .from('profiles')
-          .update(updatePayload) as any)
+          .update(updatePayload as ProfileUpdate)
           .eq('id', userId);
         if (error) {
           setError('Error al guardar perfil: ' + error.message);
@@ -615,6 +615,125 @@ const EditProfileSingle = () => {
                       Desactivadas
                     </div>
                   </motion.button>
+                </div>
+              </div>
+
+              {/* Modo Glass + Fondo dinámico */}
+              <div className="mt-6 space-y-4 border-t border-white/10 pt-4">
+                <div>
+                  <label className="text-sm text-white/90 mb-2 block">Modo Visual (Glass)</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setGlassMode('on')}
+                      className={`p-3 rounded-lg border-2 transition-all ${
+                        glassMode === 'on'
+                          ? 'border-cyan-300 bg-white/20 shadow-lg'
+                          : 'border-white/30 bg-white/5 hover:bg-white/15'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 text-sm font-medium text-white">
+                        <span className="text-lg">🧊</span>
+                        Glass ON
+                      </div>
+                    </motion.button>
+
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setGlassMode('off')}
+                      className={`p-3 rounded-lg border-2 transition-all ${
+                        glassMode === 'off'
+                          ? 'border-gray-300 bg-black/50'
+                          : 'border-white/30 bg-white/5 hover:bg-white/15'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 text-sm font-medium text-white">
+                        <span className="text-lg">⬛</span>
+                        Sólido
+                      </div>
+                    </motion.button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-sm text-white/90 mb-2 block">Fondo del Perfil Single</label>
+                  <div className="grid grid-cols-2 gap-3 text-xs text-white">
+                    <button
+                      type="button"
+                      onClick={() => { setBackgroundMode('fixed'); setBackgroundKey('single-female'); }}
+                      className={`p-3 rounded-lg border transition-all text-left ${
+                        backgroundMode === 'fixed' && backgroundKey === 'single-female'
+                          ? 'border-pink-300 bg-pink-500/30 shadow-lg'
+                          : 'border-white/20 bg-white/5 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="font-medium">Default mujer</div>
+                      <div className="text-[11px] text-white/80">single-female.webp</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => { setBackgroundMode('fixed'); setBackgroundKey('single-male'); }}
+                      className={`p-3 rounded-lg border transition-all text-left ${
+                        backgroundMode === 'fixed' && backgroundKey === 'single-male'
+                          ? 'border-blue-300 bg-blue-500/30 shadow-lg'
+                          : 'border-white/20 bg-white/5 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="font-medium">Varón</div>
+                      <div className="text-[11px] text-white/80">single-male.webp</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => { setBackgroundMode('fixed'); setBackgroundKey('default-neon'); }}
+                      className={`p-3 rounded-lg border transition-all text-left ${
+                        backgroundMode === 'fixed' && backgroundKey === 'default-neon'
+                          ? 'border-purple-300 bg-gradient-to-r from-purple-600/60 to-blue-600/60 shadow-lg'
+                          : 'border-white/20 bg-white/5 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="font-medium">Neón default</div>
+                      <div className="text-[11px] text-white/80">default-neon.webp</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => { setBackgroundMode('fixed'); setBackgroundKey('ybg2'); }}
+                      className={`p-3 rounded-lg border transition-all text-left ${
+                        backgroundMode === 'fixed' && backgroundKey === 'ybg2'
+                          ? 'border-emerald-300 bg-emerald-500/30 shadow-lg'
+                          : 'border-white/20 bg-white/5 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="font-medium">Alterno YBG2</div>
+                      <div className="text-[11px] text-white/80">ybg2.jpg</div>
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-sm text-white/90 mb-2 block">Modo Random</label>
+                  <p className="text-[11px] text-white/70 mb-2">
+                    Si activas random, el sistema elegirá al cargar entre los fondos válidos para perfil single
+                    respetando género/identidad sin usar imágenes externas raras.
+                  </p>
+                  <div className="flex items-center justify-between bg-white/5 border border-white/15 rounded-lg px-3 py-2 text-xs text-white">
+                    <span>Usar fondo aleatorio compatible</span>
+                    <button
+                      type="button"
+                      onClick={() => setBackgroundMode(backgroundMode === 'random' ? 'fixed' : 'random')}
+                      className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
+                        backgroundMode === 'random'
+                          ? 'bg-emerald-400 text-black'
+                          : 'bg-white/10 text-white border border-white/20'
+                      }`}
+                    >
+                      {backgroundMode === 'random' ? 'Activo' : 'Inactivo'}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

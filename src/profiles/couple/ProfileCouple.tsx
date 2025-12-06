@@ -29,6 +29,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/shared/lib/cn';
 import { ParticlesBackground } from '@/components/ui/ParticlesBackground'; // IMPORTAR
+import { useBgMode } from '@/hooks/useBgMode';
 
 // IMÁGENES LOCALES
 import nftImage1 from '@/assets/Ntf/imagen1.jpg';
@@ -85,6 +86,7 @@ const ProfileCouple: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
   const hasDataLoaded = useRef(false);
   const checkAuth = () => typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
+  const { glassMode, backgroundKey, backgroundMode } = useBgMode();
 
   // --- ESTADOS ---
   const [profile, setProfile] = useState<CoupleProfileWithPartners | null>(null);
@@ -293,14 +295,49 @@ const ProfileCouple: React.FC = () => {
 
   const isDemoActive = (String(demoAuth) === 'true') && demoUser;
 
-  // Background de pareja según tipo de relación
+  // Background de pareja según tipo de relación + config global
   const relationshipType = (profile as any)?.relationship_type as string | undefined;
-  const coupleBackgroundIndex = String(profile.id ?? '').length % 2;
-  const coupleBackground = !relationshipType
-    ? ['/backgrounds/Background(3).webp', '/backgrounds/Background(4).webp'][coupleBackgroundIndex]
-    : relationshipType === 'man-woman'
-    ? '/backgrounds/Background(3).webp'
-    : '/backgrounds/Background(4).webp';
+
+  const fixedCoupleBackgroundFromKey = (key: string | null | undefined): string | null => {
+    switch (key) {
+      case 'couple-mf':
+        return '/backgrounds/Background(3).webp';
+      case 'couple-mm-ff':
+        return '/backgrounds/Background(4).webp';
+      case 'single-female':
+        return '/backgrounds/Background(2).webp';
+      default:
+        return null;
+    }
+  };
+
+  const pickRandomCoupleBackground = (): string => {
+    const pool = [
+      '/backgrounds/Background(3).webp',
+      '/backgrounds/Background(4).webp',
+      '/backgrounds/Background(2).webp',
+    ];
+    const unique = Array.from(new Set(pool));
+    const idx = Math.floor(Math.random() * unique.length);
+    return unique[idx];
+  };
+
+  let coupleBackground: string;
+  if (backgroundMode === 'random') {
+    coupleBackground = pickRandomCoupleBackground();
+  } else {
+    const fromKey = fixedCoupleBackgroundFromKey(backgroundKey);
+    if (fromKey) {
+      coupleBackground = fromKey;
+    } else {
+      const idx = String(profile.id ?? '').length % 2;
+      coupleBackground = !relationshipType
+        ? ['/backgrounds/Background(3).webp', '/backgrounds/Background(4).webp'][idx]
+        : relationshipType === 'man-woman'
+        ? '/backgrounds/Background(3).webp'
+        : '/backgrounds/Background(4).webp';
+    }
+  }
 
   const content = (
     <div className="min-h-screen bg-transparent profile-page relative overflow-hidden transition-colors duration-300">
@@ -346,7 +383,13 @@ const ProfileCouple: React.FC = () => {
 
             {/* WALLET & COLECCIONABLES - espejo de single */}
             {isOwnProfile && (
-              <Card className="bg-white/5 text-white border-white/20 backdrop-blur-2xl shadow-[0_25px_60px_rgba(24,0,62,.45)]">
+              <Card
+                className={
+                  glassMode === 'off'
+                    ? 'bg-slate-950/95 text-white border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,.7)]'
+                    : 'bg-white/5 text-white border-white/20 backdrop-blur-2xl shadow-[0_25px_60px_rgba(24,0,62,.45)]'
+                }
+              >
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
                     <Wallet className="w-5 h-5" /> Wallet & Coleccionables
@@ -425,7 +468,13 @@ const ProfileCouple: React.FC = () => {
 
             {/* Arquitectura de Seguridad de la Wallet (ilustrativo) */}
             {isOwnProfile && (
-              <Card className="bg-white/10 border-white/20 backdrop-blur-xl text-white shadow-[0_20px_40px_rgba(10,0,40,.4)]">
+              <Card
+                className={
+                  glassMode === 'off'
+                    ? 'bg-slate-950/95 border border-white/10 text-white shadow-[0_20px_40px_rgba(0,0,0,.7)]'
+                    : 'bg-white/10 border-white/20 backdrop-blur-xl text-white shadow-[0_20px_40px_rgba(10,0,40,.4)]'
+                }
+              >
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
                     <ShieldCheck className="w-5 h-5" /> Arquitectura de Seguridad de la Wallet
@@ -459,7 +508,13 @@ const ProfileCouple: React.FC = () => {
             )}
 
             {/* TARJETA PRINCIPAL PAREJA */}
-            <Card className="bg-white/5 text-white border-white/15 backdrop-blur-2xl shadow-[0_25px_80px_rgba(0,0,0,.5)]">
+            <Card
+              className={
+                glassMode === 'off'
+                  ? 'bg-slate-950/95 text-white border border-white/10 shadow-[0_25px_80px_rgba(0,0,0,.7)]'
+                  : 'bg-white/5 text-white border-white/15 backdrop-blur-2xl shadow-[0_25px_80px_rgba(0,0,0,.5)]'
+              }
+            >
               <CardContent className="p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
                   <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
@@ -590,7 +645,13 @@ const ProfileCouple: React.FC = () => {
               {/* TAB RESUMEN */}
               <TabsContent value="overview" className="mt-6 space-y-6">
                 {/* GALERÍA PRIVADA */}
-                <Card className="bg-white/5 border-white/15 backdrop-blur-xl text-white">
+                <Card
+                  className={
+                    glassMode === 'off'
+                      ? 'bg-slate-950/95 border border-white/10 text-white'
+                      : 'bg-white/5 border-white/15 backdrop-blur-xl text-white'
+                  }
+                >
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle className="text-white text-lg flex items-center gap-2">
                       <Lock className="w-4 h-4"/> Fotos Privadas

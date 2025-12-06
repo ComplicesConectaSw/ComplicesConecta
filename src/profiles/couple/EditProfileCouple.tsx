@@ -78,7 +78,7 @@ const EditProfileCouple = () => {
   const { demoTheme, setDemoTheme, navbarStyle, setNavbarStyle } = useDemoThemeConfig();
   const themeConfig = useProfileTheme('couple', ['male', 'female'], demoTheme);
   const _navbarStyles = getNavbarStyles(navbarStyle);
-  const { mode, setMode } = useBgMode();
+  const { mode, setMode, glassMode, setGlassMode, backgroundKey, setBackgroundKey, backgroundMode, setBackgroundMode } = useBgMode();
   
   const { location, error: locationError, getCurrentLocation } = useGeolocation();
   const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -870,6 +870,111 @@ const EditProfileCouple = () => {
                       Desactivadas
                     </div>
                   </motion.button>
+                </div>
+              </div>
+
+              {/* Modo Glass + Fondos dinámicos de pareja */}
+              <div className="mt-6 space-y-4 border-t border-white/10 pt-4">
+                <div>
+                  <label className="text-sm text-white/90 mb-2 block">Modo Visual (Glass)</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setGlassMode('on')}
+                      className={`p-3 rounded-lg border-2 transition-all ${
+                        glassMode === 'on'
+                          ? 'border-cyan-300 bg-white/20 shadow-lg'
+                          : 'border-white/30 bg-white/5 hover:bg-white/15'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 text-sm font-medium text-white">
+                        <span className="text-lg">🧊</span>
+                        Glass ON
+                      </div>
+                    </motion.button>
+
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setGlassMode('off')}
+                      className={`p-3 rounded-lg border-2 transition-all ${
+                        glassMode === 'off'
+                          ? 'border-gray-300 bg-black/50'
+                          : 'border-white/30 bg-white/5 hover:bg-white/15'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 text-sm font-medium text-white">
+                        <span className="text-lg">⬛</span>
+                        Sólido
+                      </div>
+                    </motion.button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-sm text-white/90 mb-2 block">Fondo del Perfil de Pareja</label>
+                  <div className="grid grid-cols-2 gap-3 text-xs text-white">
+                    <button
+                      type="button"
+                      onClick={() => { setBackgroundMode('fixed'); setBackgroundKey('couple-mf'); }}
+                      className={`p-3 rounded-lg border transition-all text-left ${
+                        backgroundMode === 'fixed' && backgroundKey === 'couple-mf'
+                          ? 'border-pink-300 bg-pink-500/30 shadow-lg'
+                          : 'border-white/20 bg-white/5 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="font-medium">Pareja M-F</div>
+                      <div className="text-[11px] text-white/80">couple-mf.webp</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => { setBackgroundMode('fixed'); setBackgroundKey('couple-mm-ff'); }}
+                      className={`p-3 rounded-lg border transition-all text-left ${
+                        backgroundMode === 'fixed' && backgroundKey === 'couple-mm-ff'
+                          ? 'border-purple-300 bg-purple-500/40 shadow-lg'
+                          : 'border-white/20 bg-white/5 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="font-medium">Pareja LGBT+</div>
+                      <div className="text-[11px] text-white/80">couple-mm-ff.webp</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => { setBackgroundMode('fixed'); setBackgroundKey('single-female'); }}
+                      className={`p-3 rounded-lg border transition-all text-left ${
+                        backgroundMode === 'fixed' && backgroundKey === 'single-female'
+                          ? 'border-blue-300 bg-blue-500/30 shadow-lg'
+                          : 'border-white/20 bg-white/5 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className="font-medium">Fondo neutro</div>
+                      <div className="text-[11px] text-white/80">single-female.webp</div>
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-sm text-white/90 mb-2 block">Modo Random</label>
+                  <p className="text-[11px] text-white/70 mb-2">
+                    Random elige entre fondos válidos para parejas (hetero/LGBT+) manteniendo una estética coherente.
+                  </p>
+                  <div className="flex items-center justify-between bg-white/5 border border-white/15 rounded-lg px-3 py-2 text-xs text-white">
+                    <span>Usar fondo aleatorio compatible</span>
+                    <button
+                      type="button"
+                      onClick={() => setBackgroundMode(backgroundMode === 'random' ? 'fixed' : 'random')}
+                      className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${
+                        backgroundMode === 'random'
+                          ? 'bg-emerald-400 text-black'
+                          : 'bg-white/10 text-white border border-white/20'
+                      }`}
+                    >
+                      {backgroundMode === 'random' ? 'Activo' : 'Inactivo'}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
