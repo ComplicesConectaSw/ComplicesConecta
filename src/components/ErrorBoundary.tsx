@@ -33,8 +33,14 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       errorStack.includes('solana.js') ||
       errorStack.includes('inpage.js') ||
       errorStack.includes('evmAsk.js');
+
+    const isExtensionInjectionError =
+      errorMessage.includes('React.Children.only expected to receive a single React element child') ||
+      errorMessage.toLowerCase().includes('bybit') ||
+      errorMessage.toLowerCase().includes('page provider inject code') ||
+      errorStack.toLowerCase().includes('bybit');
     
-    if (isWalletError) {
+    if (isWalletError || isExtensionInjectionError) {
       // No establecer hasError para errores de wallet
       return { hasError: false };
     }
@@ -55,10 +61,16 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       errorStack.includes('solana.js') ||
       errorStack.includes('inpage.js') ||
       errorStack.includes('evmAsk.js');
+
+    const isExtensionInjectionError =
+      errorMessage.includes('React.Children.only expected to receive a single React element child') ||
+      errorMessage.toLowerCase().includes('bybit') ||
+      errorMessage.toLowerCase().includes('page provider inject code') ||
+      errorStack.toLowerCase().includes('bybit');
     
-    if (isWalletError) {
-      console.warn('⚠️ Error de wallet ignorado por ErrorBoundary:', error);
-      // No actualizar el estado para errores de wallet
+    if (isWalletError || isExtensionInjectionError) {
+      console.warn('⚠️ Error de extensión/wallet ignorado por ErrorBoundary:', error);
+      // No actualizar el estado para este tipo de errores
       return;
     }
     
