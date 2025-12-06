@@ -65,6 +65,58 @@ export const useVideoChat = ({
     ]
   };
 
+  // End call
+  const endCall = useCallback(() => {
+    if (channelRef.current && state.callId && state.remoteUserId) {
+      const signal: CallSignal = {
+        type: 'call-end',
+        from: userId,
+        to: state.remoteUserId,
+        callId: state.callId,
+        timestamp: Date.now()
+      };
+
+      channelRef.current.send({
+        type: 'broadcast',
+        event: 'call-signal',
+        payload: signal
+      });
+    }
+
+    if (peerConnectionRef.current) {
+      peerConnectionRef.current.close();
+      peerConnectionRef.current = null;
+    }
+
+    if (localStreamRef.current) {
+      localStreamRef.current.getTracks().forEach(track => track.stop());
+      localStreamRef.current = null;
+    }
+
+    if (localVideoRef.current) {
+      localVideoRef.current.srcObject = null;
+    }
+
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = null;
+    }
+
+    const callId = state.callId;
+    setState({
+      isInCall: false,
+      isConnecting: false,
+      isMuted: false,
+      isVideoEnabled: true,
+      callId: null,
+      remoteUserId: null,
+      error: null
+    });
+
+    if (callId) {
+      onCallEnded?.(callId);
+    }
+  }, [userId, state.callId, state.remoteUserId, onCallEnded]);
+
   // Initialize peer connection
   const initializePeerConnection = useCallback(() => {
     if (peerConnectionRef.current) {
@@ -115,7 +167,7 @@ export const useVideoChat = ({
     };
 
     return peerConnection;
-  }, [userId, state.callId, state.remoteUserId]);
+  }, [userId, state.callId, state.remoteUserId, endCall]);
 
   // Get user media
   const getUserMedia = useCallback(async (video: boolean = true, audio: boolean = true): Promise<MediaStream | null> => {
@@ -274,59 +326,6 @@ export const useVideoChat = ({
     onCallRejected?.(callId);
   }, [userId, onCallRejected]);
 
-  // End call
-  const endCall = useCallback(() => {
-    // Send end call signal
-    if (channelRef.current && state.callId && state.remoteUserId) {
-      const signal: CallSignal = {
-        type: 'call-end',
-        from: userId,
-        to: state.remoteUserId,
-        callId: state.callId,
-        timestamp: Date.now()
-      };
-
-      channelRef.current.send({
-        type: 'broadcast',
-        event: 'call-signal',
-        payload: signal
-      });
-    }
-
-    // Clean up
-    if (peerConnectionRef.current) {
-      peerConnectionRef.current.close();
-      peerConnectionRef.current = null;
-    }
-
-    if (localStreamRef.current) {
-      localStreamRef.current.getTracks().forEach(track => track.stop());
-      localStreamRef.current = null;
-    }
-
-    if (localVideoRef.current) {
-      localVideoRef.current.srcObject = null;
-    }
-
-    if (remoteVideoRef.current) {
-      remoteVideoRef.current.srcObject = null;
-    }
-
-    const callId = state.callId;
-    setState({
-      isInCall: false,
-      isConnecting: false,
-      isMuted: false,
-      isVideoEnabled: true,
-      callId: null,
-      remoteUserId: null,
-      error: null
-    });
-
-    if (callId) {
-      onCallEnded?.(callId);
-    }
-  }, [userId, state.callId, state.remoteUserId, onCallEnded]);
 
   // Toggle mute
   const toggleMute = useCallback(() => {

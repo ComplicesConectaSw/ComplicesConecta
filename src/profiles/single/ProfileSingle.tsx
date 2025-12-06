@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
@@ -342,20 +342,25 @@ const ProfileSingle: React.FC = () => {
     }
   };
 
-  const pickRandomBackground = (): string => {
-    const pool: string[] = [
-      ...singleCandidatesByGender,
-      ThemeConfig.backgrounds.profiles.couple.heterosexual,
-    ];
-    const unique = Array.from(new Set(pool.filter(Boolean)));
-    if (!unique.length) return '/backgrounds/Background(2).webp';
-    const idx = Math.floor(Math.random() * unique.length);
-    return unique[idx];
-  };
+  const [randomBackground, setRandomBackground] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (backgroundMode === 'random') {
+      const pool: string[] = [
+        ...singleCandidatesByGender,
+        ThemeConfig.backgrounds.profiles.couple.heterosexual,
+      ];
+      const unique = Array.from(new Set(pool.filter(Boolean)));
+      const picked = !unique.length
+        ? '/backgrounds/Background(2).webp'
+        : unique[Math.floor(Math.random() * unique.length)];
+      setRandomBackground(picked);
+    }
+  }, [backgroundMode, singleCandidatesByGender]);
 
   let singleBackground: string;
   if (backgroundMode === 'random') {
-    singleBackground = pickRandomBackground();
+    singleBackground = randomBackground || '/backgrounds/Background(2).webp';
   } else {
     const fromKey = fixedBackgroundFromKey(backgroundKey);
     if (fromKey) {

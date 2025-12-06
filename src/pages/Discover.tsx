@@ -218,12 +218,12 @@ const Discover = () => {
   }, []);
 
   // Aplicar filtros
-  useEffect(() => {
-    const handleLoadMore = useCallback(() => {
+  const handleLoadMore = useCallback(() => {
     // Lógica para cargar más perfiles
     console.log('Cargando más perfiles...');
   }, []);
 
+  useEffect(() => {
     const filteredDemo = demoProfiles.filter(profile => {
       const ageMatch = profile.age >= filters.ageRange[0] && profile.age <= filters.ageRange[1];
       const distanceMatch = !location || profile.distance <= filters.distance;
@@ -268,28 +268,26 @@ const Discover = () => {
     setFilteredProfiles(filteredProfilesReal);
 
     // Filtrar perfiles de parejas
-    const filteredCouplesByFilters = useMemo(() => {
-      return coupleProfiles.filter((couple: CoupleWithUIState) => {
-        const avgAge = ((couple.partner1_age ?? 0) + (couple.partner2_age ?? 0)) / 2;
-        const ageMatch = avgAge >= filters.ageRange[0] && avgAge <= filters.ageRange[1];
-        
-        // Filtro de distancia para parejas
-        let distanceMatch = true;
-        if (location && couple.location) {
-          // Calcular distancia - los perfiles de pareja pueden no tener coordenadas exactas
-          // Usar la distancia calculada previamente o permitir el match si no hay coordenadas
-          distanceMatch = true; // Por ahora permitir todos si no hay coordenadas precisas
-        }
-        
-        // Los perfiles de pareja no tienen interests en el tipo actual, permitir match
-        const interestsMatch = filters.interests.length === 0;
-        const verifiedMatch = !filters.verified || !!couple.is_verified;
-        const premiumMatch = !filters.premium || !!couple.is_premium;
-        const onlineMatch = !filters.online || couple.isOnline;
-        
-        return ageMatch && distanceMatch && interestsMatch && verifiedMatch && premiumMatch && onlineMatch;
-      });
-    }, [coupleProfiles, filters, location]);
+    const filteredCouplesByFilters = coupleProfiles.filter((couple: CoupleWithUIState) => {
+      const avgAge = ((couple.partner1_age ?? 0) + (couple.partner2_age ?? 0)) / 2;
+      const ageMatch = avgAge >= filters.ageRange[0] && avgAge <= filters.ageRange[1];
+
+      // Filtro de distancia para parejas
+      let distanceMatch = true;
+      if (location && couple.location) {
+        // Calcular distancia - los perfiles de pareja pueden no tener coordenadas exactas
+        // Usar la distancia calculada previamente o permitir el match si no hay coordenadas
+        distanceMatch = true; // Por ahora permitir todos si no hay coordenadas precisas
+      }
+
+      // Los perfiles de pareja no tienen interests en el tipo actual, permitir match
+      const interestsMatch = filters.interests.length === 0;
+      const verifiedMatch = !filters.verified || !!couple.is_verified;
+      const premiumMatch = !filters.premium || !!couple.is_premium;
+      const onlineMatch = !filters.online || couple.isOnline;
+
+      return ageMatch && distanceMatch && interestsMatch && verifiedMatch && premiumMatch && onlineMatch;
+    });
 
     setFilteredCoupleProfiles(filteredCouplesByFilters);
   }, [demoProfiles, filters, location, profiles, coupleProfiles]);

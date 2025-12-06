@@ -51,7 +51,19 @@ export function useAdvancedAnalytics(
   });
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const sessionIdRef = useRef<string>(`session-${Date.now()}-${Math.random()}`);
+  const sessionIdRef = useRef<string>('');
+
+  useEffect(() => {
+    if (!sessionIdRef.current) {
+      sessionIdRef.current = `session-${Date.now()}-${Math.random()}`;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!sessionIdRef.current) {
+      sessionIdRef.current = `session-${Date.now()}-${Math.random()}`;
+    }
+  }, []);
 
   // Función para cargar dashboard
   const loadDashboard = useCallback(async (): Promise<void> => {
@@ -155,7 +167,13 @@ export function useAdvancedAnalytics(
 
   // Cargar dashboard inicial
   useEffect(() => {
-    loadDashboard();
+    const timeoutId = setTimeout(() => {
+      void loadDashboard();
+    }, 0);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [loadDashboard]);
 
   // Configurar actualizaciones en tiempo real

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -311,20 +311,26 @@ const ProfileCouple: React.FC = () => {
     }
   };
 
-  const pickRandomCoupleBackground = (): string => {
-    const pool = [
-      '/backgrounds/Background(3).webp',
-      '/backgrounds/Background(4).webp',
-      '/backgrounds/Background(2).webp',
-    ];
-    const unique = Array.from(new Set(pool));
-    const idx = Math.floor(Math.random() * unique.length);
-    return unique[idx];
-  };
+  const [randomCoupleBg, setRandomCoupleBg] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (backgroundMode === 'random') {
+      const pool = [
+        '/backgrounds/Background(3).webp',
+        '/backgrounds/Background(4).webp',
+        '/backgrounds/Background(2).webp',
+      ];
+      const unique = Array.from(new Set(pool));
+      const picked =
+        unique[Math.floor(Math.random() * unique.length)] ||
+        '/backgrounds/Background(3).webp';
+      setRandomCoupleBg(picked);
+    }
+  }, [backgroundMode]);
 
   let coupleBackground: string;
   if (backgroundMode === 'random') {
-    coupleBackground = pickRandomCoupleBackground();
+    coupleBackground = randomCoupleBg || '/backgrounds/Background(3).webp';
   } else {
     const fromKey = fixedCoupleBackgroundFromKey(backgroundKey);
     if (fromKey) {

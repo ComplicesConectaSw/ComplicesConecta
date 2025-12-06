@@ -158,9 +158,11 @@ export function useAdvancedCache<T>(
     }
   }, []);
 
-  // Cargar datos iniciales
+  // Cargar datos iniciales evitando setState sincrono directo en effect
   useEffect(() => {
-    fetchData();
+    Promise.resolve().then(() => {
+      fetchData();
+    });
   }, [fetchData]);
 
   // Configurar cache predictivo si está habilitado
@@ -197,10 +199,14 @@ export function useCacheStats() {
   }, []);
 
   useEffect(() => {
-    refreshStats();
-    
+    Promise.resolve().then(() => {
+      refreshStats();
+    });
+
     // Actualizar estadísticas cada 30 segundos
-    const interval = setInterval(refreshStats, 30000);
+    const interval = setInterval(() => {
+      refreshStats();
+    }, 30000);
     
     return () => clearInterval(interval);
   }, [refreshStats]);
