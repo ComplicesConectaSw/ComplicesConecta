@@ -75,7 +75,7 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
 
   const finalMode = mode;
   const showVideo = finalMode === 'video';
-  const showParticles = config.enableParticles && !config.reducedMotion && finalMode !== 'static';
+  const showParticles = config.enableParticles && finalMode !== 'static';
   const videoSrc = profile?.profile_type === 'couple'
     ? '/backgrounds/Animate-bg2.mp4'
     : '/backgrounds/animate-bg.mp4';
