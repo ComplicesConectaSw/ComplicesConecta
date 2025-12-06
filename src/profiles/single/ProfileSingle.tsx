@@ -418,11 +418,9 @@ const ProfileSingle: React.FC = () => {
       </div>
 
       {/* Partículas controladas por useBgMode (el componente lee su propio estado) */}
-      {mode !== 'static' && (
-        <div className="absolute inset-0 -z-10">
-          <ParticlesBackground />
-        </div>
-      )}
+      <div className="absolute inset-0 -z-10">
+        <ParticlesBackground />  {/* Siempre visible, el config ya controla enableParticles */}
+      </div>
 
       {!isAuthenticated() && !isDemoActive && <Navigation />}
 
@@ -467,7 +465,7 @@ const ProfileSingle: React.FC = () => {
         </div>
       </div>
 
-      <div className="relative z-10 pb-20 px-2 sm:px-4 overflow-y-auto custom-scrollbar">
+      <div className="relative z-10 pb-20 lg:pb-0 px-2 sm:px-4 overflow-y-auto custom-scrollbar">
         <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 py-4">
           {/* TARJETA PRINCIPAL */}
           <Card

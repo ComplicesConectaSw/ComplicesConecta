@@ -89,7 +89,7 @@ const ProfileCouple: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
   const hasDataLoaded = useRef(false);
   const checkAuth = () => typeof isAuthenticated === 'function' ? isAuthenticated() : !!isAuthenticated;
-  const { glassMode, backgroundKey, backgroundMode } = useBgMode();
+  const { glassMode, backgroundKey, backgroundMode, mode } = useBgMode();
 
   // --- ESTADOS ---
   const [profile, setProfile] = useState<CoupleProfileWithPartners | null>(null);
@@ -372,6 +372,9 @@ const ProfileCouple: React.FC = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-purple-900/20 to-black/80" />
       </div>
+      <div className="absolute inset-0 -z-10">
+        <ParticlesBackground />  {/* Siempre visible, el config ya controla enableParticles */}
+      </div>
       
       {!isAuthenticated() && !isDemoActive && <Navigation />}
       
@@ -401,7 +404,7 @@ const ProfileCouple: React.FC = () => {
         </div>
       </div>
 
-      <div className="relative z-10 flex-1 pb-20 px-2 sm:px-4 overflow-y-auto custom-scrollbar">
+      <div className="relative z-10 flex-1 pb-20 lg:pb-0 px-2 sm:px-4 overflow-y-auto custom-scrollbar">
           <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 py-4">
 
             {/* WALLET & COLECCIONABLES - espejo de single */}
