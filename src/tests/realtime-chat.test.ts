@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase as supabaseRaw } from '@/integrations/supabase/client';
 
 // Mock Supabase
 vi.mock('@/integrations/supabase/client', () => ({
@@ -21,6 +21,9 @@ vi.mock('@/integrations/supabase/client', () => ({
     }))
   }
 }));
+
+// Usar supabase como any en tests para evitar errores de null/tipos generics
+const supabase = supabaseRaw as any;
 
 describe('Realtime Chat Tests', () => {
   beforeEach(() => {
