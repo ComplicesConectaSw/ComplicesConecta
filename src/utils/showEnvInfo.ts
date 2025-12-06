@@ -5,64 +5,110 @@
  * Uso: Importar y llamar showEnvInfo() en la consola del navegador
  * 
  * NOTA: Este archivo usa console.log intencionalmente para debugging en consola del navegador
+ /**
+ * DEBUG GOD MODE - ComplicesConecta v5.0
+ * Muestra absolutamente TODO lo que está pasando en el entorno
+ * Uso: abre consola del navegador y escribe → showEnvInfo()
  */
-export function showEnvInfo(): {
-  env: Record<string, unknown>;
-  viteVars: Record<string, string>;
-  mode: string;
-  dev: boolean;
-  prod: boolean;
-  baseUrl: string;
-} {
-  console.group('­ƒöÉ Variables de Entorno - ComplicesConecta v3.5.1');
-  
-  // Mostrar todas las variables de entorno
-  const env = import.meta.env as Record<string, unknown>;
-  
-  console.log('­ƒôï Todas las variables de entorno:');
-  console.table(env);
-  
-  // Mostrar variables VITE_* espec├¡ficas
-  console.log('\n­ƒöæ Variables VITE_* (CONTRASE├æAS COMPLETAS):');
-  const viteVars: Record<string, string> = {};
-  
-  Object.keys(env).forEach((key) => {
-    if (key.startsWith('VITE_')) {
-      const value = env[key];
-      viteVars[key] = String(value || ''); // Mostrar valores completos en desarrollo
-    }
+export function showEnvInfo(): void {
+  console.clear();
+  console.groupCollapsed('COMPLICES CONECTA - DEBUG GOD MODE v5.0');
+
+  const env = import.meta.env;
+
+  // 1. ENTORNO GENERAL
+  console.log('%cENTORNO ACTUAL', 'font-weight:bold; font-size:16px; color:#8b5cf6');
+  console.table({
+    Mode: env.MODE,
+    Dev: env.DEV,
+    Prod: env.PROD,
+    SSR: env.SSR,
+    BaseURL: env.BASE_URL,
+    Version: (env as Record<string, unknown>).VITE_APP_VERSION || 'No definida',
+    BuildTime: new Date().toLocaleString('es-MX'),
   });
-  
+
+  // 2. TODAS LAS VARIABLES VITE_ (CON CONTRASEÑAS REALES EN DEV)
+  console.log('%cVARIABLES DE ENTORNO (VITE_*)', 'font-weight:bold; color:#3b82f6');
+  const viteVars = Object.entries(env as Record<string, string | boolean | number>)
+    .filter(([key]) => key.startsWith('VITE_'))
+    .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+    .reduce((obj, [key, value]) => {
+      const stringValue = String(value ?? '');
+      obj[key] = env.DEV 
+        ? stringValue
+        : (stringValue.length > 0 ? '●●●●●●●●' : '[vacío]');
+      return obj;
+    }, {} as Record<string, string>);
+
   console.table(viteVars);
-  
-  // Mostrar contrase├▒as espec├¡ficas
-  console.log('\n­ƒöÉ Contrase├▒as disponibles:');
-  const passwordKeys = Object.keys(env).filter(key => 
-    key.match(/PASSWORD/i) && key.startsWith('VITE_')
-  );
-  
-  passwordKeys.forEach((key) => {
-    console.log(`  ${key}:`, env[key]);
+
+  // 3. SUPABASE INFO
+  console.log('%cSUPABASE CONFIG', 'font-weight:bold; color:#10b981');
+  console.table({
+    URL: (env as Record<string, unknown>).VITE_SUPABASE_URL || 'No definida',
+    AnonKey: env.DEV ? String((env as Record<string, unknown>).VITE_SUPABASE_ANON_KEY || '').slice(0, 20) + '...' : 'Oculta en prod',
+    ServiceRole: env.DEV ? 'Visible solo en local' : 'Nunca expuesta',
+    ProjectRef: String((env as Record<string, unknown>).VITE_SUPABASE_URL || '').match(/https:\/\/(.+?)\.supabase\.co/)?.[1] || 'No detectado',
   });
-  
-  // Informaci├│n adicional
-  console.log('\n­ƒôè Informaci├│n del entorno:');
-  console.log('Mode:', env.MODE);
-  console.log('Dev:', env.DEV);
-  console.log('Prod:', env.PROD);
-  console.log('Base URL:', env.BASE_URL);
-  
-  console.groupEnd();
-  
-  // Retornar objeto con informaci├│n (para uso en consola)
-  return {
-    env,
-    viteVars,
-    mode: String(env.MODE || ''),
-    dev: Boolean(env.DEV),
-    prod: Boolean(env.PROD),
-    baseUrl: String(env.BASE_URL || '')
+
+  // 4. BLOCKCHAIN / WALLET
+  console.log('%cBLOCKCHAIN & WALLET', 'font-weight:bold; color:#f59e0b');
+  console.table({
+    ChainID: (env as Record<string, unknown>).VITE_POLYGON_CHAIN_ID,
+    ChainName: (env as Record<string, unknown>).VITE_POLYGON_CHAIN_NAME,
+    RPC_URL: (env as Record<string, unknown>).VITE_POLYGON_RPC_URL,
+    Contract_NFT: (env as Record<string, unknown>).VITE_CONTRACT_NFT_ADDRESS,
+    Contract_TOKEN: (env as Record<string, unknown>).VITE_CONTRACT_TOKEN_ADDRESS,
+    WalletConnect_ID: (env as Record<string, unknown>).VITE_WALLETCONNECT_PROJECT_ID || 'No configurado',
+  });
+
+  // 5. FEATURE FLAGS
+  console.log('%cFEATURE FLAGS', 'font-weight:bold; color:#ec4899');
+  console.table({
+    DemoMode: (env as Record<string, unknown>).VITE_DEMO_MODE === 'true',
+    ParentalControl: (env as Record<string, unknown>).VITE_ENABLE_PARENTAL_CONTROL === 'true',
+    PrivateGallery: (env as Record<string, unknown>).VITE_ENABLE_PRIVATE_GALLERY === 'true',
+    ReportSystem: (env as Record<string, unknown>).VITE_ENABLE_REPORT_SYSTEM === 'true',
+    BiometricAuth: (env as Record<string, unknown>).VITE_ENABLE_BIOMETRIC === 'true',
+  });
+
+  // 6. DISPOSITIVO & RENDIMIENTO (TU REDMI NOTE 13 PRO+)
+  console.log('%cDISPOSITIVO & RENDIMIENTO', 'font-weight:bold; color:#8b5cf6');
+  const nav = navigator as unknown as {
+    hardwareConcurrency?: number;
+    deviceMemory?: number;
+    connection?: { effectiveType?: string };
   };
+  console.table({
+    UserAgent: navigator.userAgent,
+    Platform: navigator.platform,
+    Cores: nav.hardwareConcurrency || 'No detectado',
+    Memory: `${nav.deviceMemory ?? 'No soportado'} GB`,
+    Connection: nav.connection?.effectiveType || 'unknown',
+    Screen: `${window.screen.width}x${window.screen.height}`,
+    PixelRatio: window.devicePixelRatio,
+    Touch: 'ontouchstart' in window ? 'SÍ (móvil)' : 'NO (desktop)',
+    ReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  });
+
+  // 7. LOCALSTORAGE INFO
+  console.log('%cLOCALSTORAGE (Reportes, tokens, etc)', 'font-weight:bold; color:#ef4444');
+  const keys = Object.keys(window.localStorage).filter((key) =>
+    key.includes('report') || key.includes('sb-') || key.includes('wallet')
+  );
+  console.log(keys.length > 0 ? keys : 'Vacío o solo datos de sesión');
+
+  console.groupEnd();
+
+  // Exponer globalmente
+  if (env.DEV && typeof window !== 'undefined') {
+    (window as unknown as Record<string, unknown>).showEnvInfo = showEnvInfo;
+    (window as unknown as Record<string, unknown>).env = env;
+    // Log amigable en consola
+    // eslint-disable-next-line no-console
+    console.log('%cListo! Usa showEnvInfo() cuando quieras', 'color:#10b981; font-weight:bold');
+  }
 }
 
 // Hacer disponible globalmente para uso en consola
