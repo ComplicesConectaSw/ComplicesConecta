@@ -1,8 +1,8 @@
 # 💖 ComplicesConecta - Presentación Pública
 
-**Versión:** 3.8.16  
-**Fecha:** Noviembre, 2025  
-**Última Actualización:** 29 de Noviembre, 2025  
+**Versión:** 3.8.18  
+**Fecha:** Diciembre, 2025  
+**Última Actualización:** 6 de Diciembre, 2025  
 **Estado:** ✅ PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - 100% TYPE-SAFE - LEY OLIMPIA COMPLIANT - 85% FEATURES IMPLEMENTED - DEMO INVESTOR READY
 
 ## 📋 **ÍNDICE DE CONTENIDOS**
@@ -24,11 +24,11 @@
 - [📋 Notas de Lanzamiento](RELEASE_NOTES_v3.4.1.md)
 - [📱 Descargar APK](https://github.com/ComplicesConectaSw/ComplicesConecta/releases)
 
-### 📅 Bitácora 26–29 Nov 2025
+### 📅 Bitácora 26 Nov – 6 Dic 2025
 - Navegación pública reorganizada: FloatingNav glassmorphism (Inicio, Explorar, NFTs, Tokens + "Más") y CTA único de registro.
 - Páginas informativas (`ChatInfo.tsx` / `StoriesInfo.tsx`) con layout oscuro, cards glass y CTA directo a `/auth` para reforzar storytelling IA/privacidad.
 - `search_unified` (pg_trgm + RPC) disponible en `GlobalSearchService`/`VanishSearchInput`, demostrando búsqueda instantánea con datos reales.
-- Control Parental y Modal Glass en perfiles Single/Couple con niveles Soft/Medium/Strict, auto-lock 5 min y PIN compartido.
+- Control Parental **único y global Ley Olimpia** en perfiles Single/Couple y galerías privadas, con contador estricto de desbloqueos y relock automático.
 - Tokens/NFT Dashboard v3.8.16: HeaderNav minimalista, grid NFTs 2x4, modal glass blur, animaciones globales.
 
 > **📚 Para desarrolladores:**  

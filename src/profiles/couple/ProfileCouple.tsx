@@ -96,6 +96,7 @@ const ProfileCouple: React.FC = () => {
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pinInput, setPinInput] = useState('');
+  const [unlockCounter, setUnlockCounter] = useState(0);
   const [isParentalLocked, setIsParentalLocked] = useState(() => {
     const saved = localStorage.getItem('parentalControlLocked');
     return saved !== null ? JSON.parse(saved) : true;
@@ -217,13 +218,22 @@ const ProfileCouple: React.FC = () => {
     }, 1500);
   };
   const handlePinSubmit = () => {
-    // Lógica espejo de ProfileSingle: PIN 1234, actualizar estado y localStorage
     if (pinInput === '1234') {
+      const nextCount = unlockCounter + 1;
+      setUnlockCounter(nextCount);
       setIsParentalLocked(false);
       localStorage.setItem('parentalControlLocked', 'false');
       setShowPinModal(false);
       setPinInput('');
       showToast('Galería desbloqueada', 'success');
+
+      if (nextCount >= 3) {
+        setTimeout(() => {
+          setIsParentalLocked(true);
+          localStorage.setItem('parentalControlLocked', 'true');
+          showToast('Bloqueo automático por seguridad', 'info');
+        }, 10000);
+      }
     } else {
       showToast('PIN incorrecto (1234)', 'error');
       setPinInput('');

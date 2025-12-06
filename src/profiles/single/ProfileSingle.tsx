@@ -114,6 +114,7 @@ const ProfileSingle: React.FC = () => {
   // UI States
   const [showPinModal, setShowPinModal] = useState(false);
   const [pinInput, setPinInput] = useState("");
+  const [unlockCounter, setUnlockCounter] = useState(0);
   const [notification, setNotification] = useState<{show: boolean, message: string, type: 'success'|'error'|'info'}>({ show: false, message: '', type: 'info' });
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -302,10 +303,32 @@ const ProfileSingle: React.FC = () => {
     const c = prompt("Escribe...");
     if(c) showToast("Enviado", "success"); };
   const handlePinSubmit = () => {
-    if (pinInput === "1234") { setIsParentalLocked(false); localStorage.setItem('parentalControlLocked', 'false'); setShowPinModal(false); setPinInput(""); showToast("Desbloqueado", "success"); } 
-    else { showToast("PIN incorrecto (1234)", "error"); setPinInput(""); }
+    if (pinInput === "1234") {
+      const nextCount = unlockCounter + 1;
+      setUnlockCounter(nextCount);
+      setIsParentalLocked(false);
+      localStorage.setItem('parentalControlLocked', 'false');
+      setShowPinModal(false);
+      setPinInput("");
+      showToast("Desbloqueado", "success");
+
+      if (nextCount >= 3) {
+        setTimeout(() => {
+          setIsParentalLocked(true);
+          localStorage.setItem('parentalControlLocked', 'true');
+          showToast("Bloqueo automático por seguridad", "info");
+        }, 10000);
+      }
+    } else {
+      showToast("PIN incorrecto (1234)", "error");
+      setPinInput("");
+    }
   };
-  const handleLockGallery = () => { setIsParentalLocked(true); localStorage.setItem('parentalControlLocked', 'true'); showToast("Bloqueado", "info"); };
+  const handleLockGallery = () => {
+    setIsParentalLocked(true);
+    localStorage.setItem('parentalControlLocked', 'true');
+    showToast("Bloqueado", "info");
+  };
 
   const currentProfile = profile || { name: 'Usuario', nickname: 'usuario', id: 'invitado', age: 25 } as ProfileRow;
   const displayName = currentProfile.display_name || currentProfile.name || 'Usuario';

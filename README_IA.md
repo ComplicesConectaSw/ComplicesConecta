@@ -2,6 +2,11 @@
 
 ## Estrategia Avanzada con IA + Machine Learning + DevOps Manager Ultra + 100% Type-Safe Development + Ley Olimpia Compliance
 
+> **Novedades v3.8.x (resumen IA + UX):**
+> - Capa de IA y reglas Ley Olimpia aplicada al **control parental global** (un solo candado sincronizado, contador estricto y relock automático).
+> - Ajustes de animaciones y partículas respetando `prefers-reduced-motion` y perfiles de rendimiento móvil (incluyendo Redmi Note 13 Pro+).
+> - Onboarding simplificado a 3 pantallas, con foco en privacidad, consentimiento y uso responsable.
+
 ### 📅 Bitácora 26 Nov 2025
 - `search_unified` (pg_trgm) + `GlobalSearchService` conectados al UI (VanishSearchInput) para búsqueda en tiempo real desde Supabase; migración `20251126_create_global_search.sql` disponible vía CLI/SQL.
 - FloatingNav reorganizada: jerarquía pública (Inicio/Explorar/NFTs/Tokens + dropdown “Más”) con estilo glassmorphism y compatibilidad móvil, reforzando el funnel IA-native.

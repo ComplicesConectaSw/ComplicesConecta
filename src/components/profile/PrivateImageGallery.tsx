@@ -35,6 +35,7 @@ interface PrivateImageGalleryProps {
   onApproveRequest?: (requestId: string) => void;
   onRejectRequest?: (requestId: string) => void;
   className?: string;
+  isParentalLocked?: boolean;
 }
 
 export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
@@ -48,13 +49,11 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
   onRequestAccess,
   onApproveRequest,
   onRejectRequest,
-  className = ''
+  className = '',
+  isParentalLocked = true,
 }) => {
   const [showRequestDialog, setShowRequestDialog] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [pin, setPin] = useState('');
-  const [pinError, setPinError] = useState<string | null>(null);
 
   const pendingRequests = accessRequests.filter(req => req.status === 'pending');
 
@@ -68,7 +67,7 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
   };
 
   const handleImageClick = (imageId: string) => {
-    if (isUnlocked && (hasAccess || isOwner)) {
+    if (!isParentalLocked && (hasAccess || isOwner)) {
       setSelectedImage(imageId);
     }
   };
@@ -153,8 +152,8 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
           </div>
         )}
 
-        {/* Control parental local: PIN 1234 para desbloquear */}
-        {!isUnlocked ? (
+        {/* Control parental: depende del estado global isParentalLocked */}
+        {isParentalLocked ? (
           <div className="space-y-6">
             {images.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -178,67 +177,22 @@ export const PrivateImageGallery: React.FC<PrivateImageGalleryProps> = ({
               </div>
             )}
 
-            <div className="max-w-md mx-auto bg-black/40 border border-white/15 rounded-2xl p-4 space-y-3">
-              <p className="text-sm text-white/80 text-center font-medium">
-                🔒 Galería privada bloqueada
-              </p>
-              <div className="space-y-2">
-                <label className="block text-xs text-white/70 text-center">
-                  Ingresa PIN de 4 dígitos para desbloquear (demo)
-                </label>
-                <input
-                  type="password"
-                  maxLength={4}
-                  value={pin}
-                  onChange={(e) => {
-                    setPin(e.target.value.replace(/\D/g, ''));
-                    setPinError(null);
-                  }}
-                  className="w-full p-3 bg-white/10 border border-white/20 rounded-xl text-center text-2xl tracking-[0.4em] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-purple-500/60"
-                  placeholder="••••"
-                />
-                {pinError && (
-                  <p className="text-xs text-red-400 text-center mt-1">{pinError}</p>
-                )}
+              <div className="max-w-md mx-auto bg-black/40 border border-white/15 rounded-2xl p-4 space-y-3">
+                <p className="text-sm text-white/80 text-center font-medium">
+                  🔒 Galería privada bloqueada por control parental
+                </p>
+                <p className="text-xs text-white/60 text-center">
+                  Usa el candado global del perfil para desbloquear todo el contenido privado.
+                </p>
               </div>
-              <Button
-                disabled={pin.length !== 4}
-                onClick={() => {
-                  if (pin === '1234') {
-                    setIsUnlocked(true);
-                    setPin('');
-                    setPinError(null);
-                  } else {
-                    setPinError('PIN incorrecto');
-                    setPin('');
-                  }
-                }}
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white mt-1 disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                <Unlock className="h-4 w-4 mr-2" />
-                Desbloquear con PIN
-              </Button>
-            </div>
           </div>
         ) : (
           <>
             <div className="flex items-center justify-between mb-4">
               <p className="text-xs text-green-300 flex items-center gap-2">
                 <Unlock className="h-4 w-4" />
-                Galería desbloqueada (demo)
+                Galería desbloqueada (control parental global)
               </p>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setIsUnlocked(false);
-                  setPin('');
-                  setPinError(null);
-                }}
-                className="border-red-500/50 text-red-300 hover:bg-red-500/10 hover:border-red-400/70 text-xs"
-              >
-                Volver a bloquear
-              </Button>
             </div>
 
             {images.length === 0 ? (

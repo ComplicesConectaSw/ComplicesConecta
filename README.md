@@ -1,5 +1,5 @@
 
-              Cómplices Conecta (Beta v3.7.0) 🚀
+              Cómplices Conecta (Beta v3.8.x) 🚀
 ⚠️ NOTA DE DESARROLLO: Este proyecto se encuentra actualmente en fase BETA activa. El código está en proceso de refactorización y limpieza. Se recomienda revisar la rama main para la versión más estable.
 
 
@@ -20,11 +20,13 @@ Actualmente estoy trabajando en:
 [x] Limpieza de código muerto y comentarios legacy.
 [x] Implementación de Tests E2E críticos (Completado).
 
-### 🆕 Bitácora express 04 Dic 2025 (v3.7.2)
+### 🆕 Bitácora express 06 Dic 2025 (v3.8.x)
 - **UI Consolidada:** `src/shared/ui/*` se migró por completo a `src/components/ui/*`. Esto asegura variantes unificadas (love/passion/premium) y elimina imports `@/shared/ui/*` que generaban errores en builds móviles.
 - **Arquitectura Vite pura:** Todos los módulos que vivían en `src/app/(admin|clubs|discover|auth)` se movieron a `src/pages/**`. `App.tsx` y `utils/lazyComponents` utilizan ahora las nuevas rutas, simplificando el enrutado de los flujos documentados.
 - **PostCSS/Tailwind actualizado:** `postcss.config.js` utiliza `@tailwindcss/postcss` + `autoprefixer`, requisito de Tailwind 4.1.17. El build de Vite vuelve a correr en Vercel/Capacitor.
-- **Iconografía lucide-react:** Paneles `AlertConfigPanel`, `AnalyticsDashboard`, `ModerationMetrics` y `WebhookConfigPanel` migraron de Heroicons a Lucide para evitar dependencias removidas y mantener consistencia visual/interactividad descrita en los diagramas.
+- **Iconografía lucide-react:** Paneles `AlertConfigPanel`, `AnalyticsDashboard`, `ModerationMetrics` y `WebhookConfigPanel` migraron de Heroicons a Lucide para mantener consistencia visual.
+- **Control Parental Global Ley Olimpia:** Un solo candado global (`parentalControlLocked`) sincronizado entre `ProfileSingle`, `ProfileCouple` y `PrivateImageGallery`, con contador estricto de desbloqueos y relock automático.
+- **Onboarding reducido:** `OnboardingFlow.tsx` compactado a 3 pantallas, enfatizando privacidad, control parental y Ley Olimpia.
 
 ### 📅 Bitácora 26 Nov 2025
 - **FloatingNav renovada**: Glassmorphism oscuro, jerarquía pública (Inicio, Explorar, NFTs, Tokens + menú "Más") y dropdown responsivo (w-[90%], max-w-sm), eliminando el botón duplicado de login y añadiendo `pb-24` global para evitar solapar el footer.
@@ -48,7 +50,7 @@ Este repositorio es un "laboratorio vivo" donde experimento con tecnologías com
 
 
 
-# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.7.0
+# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.8.x
 
 <div align="center">
 
@@ -64,10 +66,10 @@ Este repositorio es un "laboratorio vivo" donde experimento con tecnologías com
 ### 📱 ¡Descarga la App Ahora!
 
 <a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/latest" target="_blank">
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.6.6-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.8.x-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v3.7.0 - Sistema Legal Enterprise + Protocolo de Disolución Ready`
+**SHA256:** `Verificado - Build v3.8.x - Sistema Legal Enterprise + Control Parental Global Ley Olimpia`
 
 *🔒 Aplicación segura y verificada para Android - Disponible en [GitHub Releases](https://github.com/ComplicesConectaSw/ComplicesConecta/releases/latest)*
 

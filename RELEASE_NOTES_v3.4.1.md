@@ -1,12 +1,27 @@
 # 📝 RELEASE NOTES - ComplicesConecta
 
-**Última Actualización:** 20 de Noviembre, 2025  
-**Versión Actual:** v3.7.1  
-**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - BLOCKCHAIN INTEGRADO - 100% TYPE-SAFE - SISTEMA COMPLETO SIN ERRORES TYPESCRIPT**
+**Última Actualización:** 6 de Diciembre, 2025  
+**Versión Actual:** v3.8.0  
+**Estado:** ✅ **PRODUCTION READY - ENTERPRISE GRADE - AI-NATIVE - BLOCKCHAIN INTEGRADO - 100% TYPE-SAFE - CONTROL PARENTAL GLOBAL LEY OLIMPIA**
 
 > **📚 Para guía completa de instalación y configuración, consulta [INSTALACION_SETUP_v3.5.0.md](./INSTALACION_SETUP_v3.5.0.md)**  
 > **📚 Para documentación pública, consulta [docs/README.md](./docs/README.md)**  
 > **📚 Para documentación técnica (uso interno), consulta [docs-unified/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md](./docs-unified/DOCUMENTACION_MAESTRA_UNIFICADA_v3.6.3.md)** (no se sube a Git)
+
+---
+
+## 🚀 Versión 3.8.0 - Control Parental Global + UX Android (06 Dic 2025)
+
+### 🎯 Cambios Clave
+- **Control Parental Global Ley Olimpia**:
+  - Un solo estado global `parentalControlLocked` sincronizado entre `ProfileSingle`, `ProfileCouple` y `PrivateImageGallery`.
+  - Eliminados PINs locales duplicados; todo el contenido privado obedece al mismo candado.
+  - **Contador estricto** de desbloqueos y **relock automático** tras umbral configurable (demo: 3 intentos → relock en 10s).
+- **Onboarding optimizado**:
+  - `OnboardingFlow.tsx` reducido a 3 pantallas, con foco en bienvenida, configuración de perfil y privacidad/Ley Olimpia.
+- **Experiencia visual y rendimiento Android**:
+  - Partículas ajustadas para respetar `prefers-reduced-motion` y no bloquear dispositivos móviles.
+  - Revisión específica en Redmi Note 13 Pro+ 5G (1220x2712) para evitar solapamientos y asegurar legibilidad.
 
 ---
 

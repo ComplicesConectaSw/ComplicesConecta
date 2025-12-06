@@ -39,37 +39,37 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
   const steps: OnboardingStep[] = [
     {
       id: 1,
-      title: '¡Bienvenido a Cómplices Conecta!',
-      description: profileType === 'couple' 
-        ? 'La plataforma #1 para parejas que buscan nuevas experiencias'
+      title: 'Bienvenida a Cómplices Conecta',
+      description: profileType === 'couple'
+        ? 'La comunidad para parejas que buscan nuevas experiencias seguras'
         : 'Conecta con personas increíbles en un ambiente seguro',
       icon: <Sparkles className="h-12 w-12 text-purple-500" />,
       content: (
         <div className="text-center space-y-6">
-          <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-8 rounded-2xl">
+          <div className="bg-gradient-to-br from-purple-600 to-blue-600 p-8 rounded-2xl">
             <div className="text-6xl mb-4">
               {profileType === 'couple' ? '💑' : '✨'}
             </div>
             <h3 className="text-2xl font-bold text-white mb-2">
-              {profileType === 'couple' ? '¡Bienvenidos!' : '¡Bienvenido!'}
+              {profileType === 'couple' ? '¡Bienvenidos a la comunidad!' : '¡Bienvenido a la comunidad!'}
             </h3>
             <p className="text-white/90">
-              Estás a punto de unirte a una comunidad increíble
+              Aquí cuidamos tu privacidad, tu tiempo y tus conexiones.
             </p>
           </div>
 
           <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+            <div className="p-4 bg-white/10 rounded-lg border border-white/15">
               <div className="text-3xl mb-2">🔒</div>
-              <p className="text-sm font-medium">100% Seguro</p>
+              <p className="text-xs font-medium text-white/90">Seguridad primero</p>
             </div>
-            <div className="p-4 bg-pink-50 dark:bg-pink-900/20 rounded-lg">
+            <div className="p-4 bg-white/10 rounded-lg border border-white/15">
               <div className="text-3xl mb-2">💬</div>
-              <p className="text-sm font-medium">Chat Privado</p>
+              <p className="text-xs font-medium text-white/90">Chat privado</p>
             </div>
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <div className="p-4 bg-white/10 rounded-lg border border-white/15">
               <div className="text-3xl mb-2">🎉</div>
-              <p className="text-sm font-medium">Eventos</p>
+              <p className="text-xs font-medium text-white/90">Eventos & comunidad</p>
             </div>
           </div>
         </div>
@@ -77,15 +77,16 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
     },
     {
       id: 2,
-      title: 'Crea tu Perfil Único',
-      description: 'Destaca y atrae a las personas correctas',
+      title: 'Configura tu Perfil',
+      description: 'Un buen perfil mejora tus matches y tu seguridad',
       icon: <Heart className="h-12 w-12 text-pink-500" />,
       content: (
         <div className="space-y-6">
-          <div className="aspect-video bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl flex items-center justify-center">
+          <div className="aspect-video bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-xl flex items-center justify-center">
             <div className="text-center">
               <div className="text-6xl mb-4">📸</div>
-              <p className="text-lg font-medium">Sube tus mejores fotos</p>
+              <p className="text-lg font-medium">Sube fotos claras y recientes</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Evita contenido explícito, recuerda la Ley Olimpia.</p>
             </div>
           </div>
 
@@ -93,40 +94,20 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
             <div className="p-4 border-2 border-purple-200 dark:border-purple-700 rounded-lg">
               <div className="flex items-center gap-3 mb-2">
                 <Check className="h-5 w-5 text-green-500" />
-                <span className="font-medium">Fotos recientes</span>
+                <span className="font-medium">Bio auténtica</span>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Muestra tu mejor versión actual
+                Cuenta quién eres y qué buscas sin compartir datos sensibles.
               </p>
             </div>
 
             <div className="p-4 border-2 border-purple-200 dark:border-purple-700 rounded-lg">
               <div className="flex items-center gap-3 mb-2">
                 <Check className="h-5 w-5 text-green-500" />
-                <span className="font-medium">Bio atractiva</span>
+                <span className="font-medium">Intereses claros</span>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Cuéntanos qué te hace especial
-              </p>
-            </div>
-
-            <div className="p-4 border-2 border-purple-200 dark:border-purple-700 rounded-lg">
-              <div className="flex items-center gap-3 mb-2">
-                <Check className="h-5 w-5 text-green-500" />
-                <span className="font-medium">Intereses</span>
-              </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Comparte tus pasiones
-              </p>
-            </div>
-
-            <div className="p-4 border-2 border-purple-200 dark:border-purple-700 rounded-lg">
-              <div className="flex items-center gap-3 mb-2">
-                <Check className="h-5 w-5 text-green-500" />
-                <span className="font-medium">Verificación</span>
-              </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Gana confianza con la verificación
+                Define tus límites, preferencias y acuerdos como cómplices.
               </p>
             </div>
           </div>
@@ -135,59 +116,8 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
     },
     {
       id: 3,
-      title: 'Conecta con Personas Afines',
-      description: 'Descubre matches basados en tus preferencias',
-      icon: <Users className="h-12 w-12 text-blue-500" />,
-      content: (
-        <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <Card className="border-2 border-purple-200 dark:border-purple-700">
-              <CardContent className="pt-6 text-center">
-                <div className="text-4xl mb-3">🔍</div>
-                <h4 className="font-bold mb-2">Búsqueda Inteligente</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Filtros avanzados para encontrar exactamente lo que buscas
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-pink-200 dark:border-pink-700">
-              <CardContent className="pt-6 text-center">
-                <div className="text-4xl mb-3">💕</div>
-                <h4 className="font-bold mb-2">Matches Inteligentes</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Algoritmo de compatibilidad para mejores conexiones
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-blue-200 dark:border-blue-700">
-              <CardContent className="pt-6 text-center">
-                <div className="text-4xl mb-3">💬</div>
-                <h4 className="font-bold mb-2">Chat Seguro</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Conversaciones privadas y protegidas
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-green-200 dark:border-green-700">
-              <CardContent className="pt-6 text-center">
-                <div className="text-4xl mb-3">🎉</div>
-                <h4 className="font-bold mb-2">Eventos</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Conoce personas en eventos exclusivos
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 4,
-      title: 'Privacidad y Seguridad',
-      description: 'Tu seguridad es nuestra prioridad',
+      title: 'Privacidad, Seguridad y Ley Olimpia',
+      description: 'Antes de empezar, revisa cómo protegemos tu contenido',
       icon: <Shield className="h-12 w-12 text-green-500" />,
       content: (
         <div className="space-y-6">
@@ -196,56 +126,19 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
               <Shield className="h-8 w-8 text-green-500" />
               <h4 className="text-xl font-bold">Protección Total</h4>
             </div>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
+            <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+              <p className="font-medium flex items-start gap-2">
                 <Check className="h-5 w-5 text-green-500 mt-0.5" />
-                <div>
-                  <p className="font-medium">Cumplimiento Ley Olimpia</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Tu contenido está protegido contra descargas no autorizadas
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
+                <span>Aplicamos principios de la Ley Olimpia para proteger tu intimidad digital.</span>
+              </p>
+              <p className="font-medium flex items-start gap-2">
                 <Check className="h-5 w-5 text-green-500 mt-0.5" />
-                <div>
-                  <p className="font-medium">Verificación de Usuarios</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Sistema de verificación para garantizar perfiles reales
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
+                <span>Contamos con reportes, bloqueo y moderación activa 24/7.</span>
+              </p>
+              <p className="font-medium flex items-start gap-2">
                 <Check className="h-5 w-5 text-green-500 mt-0.5" />
-                <div>
-                  <p className="font-medium">Control de Privacidad</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Tú decides quién puede ver tu perfil y fotos
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Check className="h-5 w-5 text-green-500 mt-0.5" />
-                <div>
-                  <p className="font-medium">Reportes y Moderación</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Equipo 24/7 para mantener un ambiente seguro
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Check className="h-5 w-5 text-green-500 mt-0.5" />
-                <div>
-                  <p className="font-medium">Bloqueo y Filtros</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Herramientas para controlar tu experiencia
-                  </p>
-                </div>
-              </div>
+                <span>Tú decides quién ve tu perfil, tus fotos y tus galerías privadas.</span>
+              </p>
             </div>
           </div>
 
@@ -259,6 +152,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
               <a href="/privacy" className="text-purple-500 hover:underline">
                 Política de Privacidad
               </a>
+              . Usa la plataforma siempre con consentimiento informado.
             </p>
           </div>
         </div>

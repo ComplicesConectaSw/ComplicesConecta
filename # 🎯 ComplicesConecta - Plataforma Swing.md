@@ -1,4 +1,4 @@
-# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.6.6
+# 🎯 ComplicesConecta - Plataforma Swinger Premium v3.8.x
 
 <div align="center">
 
@@ -14,10 +14,10 @@
 ### 📱 ¡Descarga la App Ahora!
 
 <a href="https://github.com/ComplicesConectaSw/ComplicesConecta/releases/latest" target="_blank">
-  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.6.6-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
+  <img src="https://img.shields.io/badge/📱_Descargar_APK-v3.8.x-3DDC84?style=for-the-badge&logo=android&logoColor=white&labelColor=1976D2" alt="Descargar APK" />
 </a>
 
-**SHA256:** `Verificado - Build v3.6.6 - Ley Olimpia Compliant + 10 Features Demo Investor Ready`
+**SHA256:** `Verificado - Build v3.8.x - Ley Olimpia Compliant + Control Parental Global Unificado`
 
 *🔒 Aplicación segura y verificada para Android - Disponible en [GitHub Releases](https://github.com/ComplicesConectaSw/ComplicesConecta/releases/latest)*
 
@@ -40,13 +40,15 @@
 
 ---
 
-## 🏆 ESTADO DE AUDITORÍA v3.6.4
+## 🏆 ESTADO DE AUDITORÍA v3.6.4 / v3.8.x
 
 ### 🎉 **NUEVO: Tests E2E Completos (15 Nov 2025)**
 - **✅ 198 Tests E2E Funcionales** - Registro, Chat, Matches, Galerías, Tokens
 - **✅ 273 Tests Unitarios** - 100% pasando
 - **✅ 471 Tests Totales** - Cobertura exhaustiva
 - **📚 Documentación Completa** - [TESTS_README.md](./TESTS_README.md)
+
+> **Actualización v3.8.x (UX + Ley Olimpia):** Perfiles `ProfileSingle` y `ProfileCouple` ahora comparten un **único control parental global** sincronizado con `PrivateImageGallery`, con contador estricto de desbloqueos y relock automático, más onboarding reducido a 3 pantallas centradas en privacidad y consentimiento.
 
 ## 🏆 ESTADO DE AUDITORÍA v3.6.3
 

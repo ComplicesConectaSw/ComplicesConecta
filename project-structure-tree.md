@@ -1,6 +1,6 @@
-# 📁 PROJECT STRUCTURE TREE - ComplicesConecta v3.8.16
+# 📁 PROJECT STRUCTURE TREE - ComplicesConecta v3.8.18
 
-**Última Actualización:** 4 de Diciembre, 2025  
+**Última Actualización:** 6 de Diciembre, 2025  
 **Versión:** 3.8.18  
 **Estado:** ✅ **PRODUCTION READY - AI-NATIVE - ENTERPRISE GRADE - 100% TYPE-SAFE - SUPABASE/NEO4J ALINEADOS - BUILD OPTIMIZADO**  
 **Puntuación:** 97/100 ✅ (Estructura: 100/100, Lógica: 100/100, Consistencia: 97/100)  
@@ -17,10 +17,11 @@
 - [🧪 Testing & Scripts](#-edge-functions)
 - [🚀 Flujo Dev + Comandos](#-flujo-de-desarrollo)
 
-### 📅 Avances 26–29 Nov 2025
+### 📅 Avances 26 Nov – 6 Dic 2025
 - `search_unified` (pg_trgm + RPC) integrado en Supabase y expuesto en `GlobalSearchService`/`VanishSearchInput`.
-- Control Parental + Modal Glass compartidos en perfiles single/couple (`ProfileSingle.tsx` / `ProfileCouple.tsx`).
+- Control Parental **único global Ley Olimpia** aplicado a perfiles single/couple y galerías privadas (`ProfileSingle.tsx`, `ProfileCouple.tsx`, `PrivateImageGallery.tsx`) con contador estricto y relock automático.
 - Tokens/NFT Dashboard con grid 2x4, animaciones globales y HeaderNav minimalista.
+- Onboarding reducido a 3 pantallas principales, destacando privacidad y Ley Olimpia.
 - Migraciones `20251106xxxx` blindadas para entornos locales (RLS matches, consent, virtual events, NFTs).
 
 ### Funcionalidades destacadas v3.7.2:
