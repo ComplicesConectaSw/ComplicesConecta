@@ -21,6 +21,7 @@ import { usePersistedState } from '@/hooks/usePersistedState';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import ModeratorApplicationForm from "@/components/forms/ModeratorApplicationForm";
 import { getRandomProfileImage } from '@/lib/imageService';
+import { ParticlesBackground } from '@/components/ui/ParticlesBackground';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -343,6 +344,7 @@ const Index = () => {
   ];
 
   return (
+    <ParticlesBackground>
     <div className="min-h-screen relative overflow-hidden bg-transparent">
 
       {/* Corazones decorativos flotantes */}
@@ -628,6 +630,7 @@ const Index = () => {
       
       {/* Loading Screen - REMOVIDO: Ya está manejado arriba con loadingTimeoutPassed */}
     </div>
+    </ParticlesBackground>
   );
 };
 

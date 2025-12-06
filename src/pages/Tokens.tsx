@@ -35,6 +35,7 @@ import { useAuth } from '@/features/auth/useAuth';
 import { DecorativeHearts } from '@/components/DecorativeHearts';
 import { motion } from 'framer-motion';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
+import { ParticlesBackground } from '@/components/ui/ParticlesBackground';
 
 export default function Tokens() {
   const [showStakingModal, setShowStakingModal] = useState(false);
@@ -164,6 +165,7 @@ export default function Tokens() {
   };
 
   return (
+    <ParticlesBackground>
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 pb-20">
       {hasActiveSession ? <Navigation /> : <HeaderNav />}
       
@@ -569,6 +571,7 @@ export default function Tokens() {
       {/* ChatBot de Tokens */}
       <TokenChatBot />
     </div>
+    </ParticlesBackground>
   );
 }
 

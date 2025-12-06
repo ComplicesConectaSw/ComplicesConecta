@@ -4,6 +4,7 @@ import { Info as InfoIcon, ArrowLeft, Shield, Users, Heart, Star, Globe, Lock, C
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import HeaderNav from '@/components/HeaderNav';
+import { ParticlesBackground } from '@/components/ui/ParticlesBackground';
 
 const Info = () => {
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ const Info = () => {
 
 
   return (
+    <ParticlesBackground>
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-800 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-purple-800/20 to-blue-900/20"></div>
@@ -205,6 +207,7 @@ const Info = () => {
         </main>
       </div>
     </div>
+    </ParticlesBackground>
   );
 };
 

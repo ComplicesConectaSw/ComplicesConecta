@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
 import { DecorativeHearts } from '@/components/DecorativeHearts';
+import { ParticlesBackground } from '@/components/ui/ParticlesBackground';
 import { 
   ArrowLeft, 
   Calendar, 
@@ -207,6 +208,7 @@ const News: React.FC = () => {
   };
 
   return (
+    <ParticlesBackground>
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 relative overflow-hidden">
       {/* Background decorativo */}
       <DecorativeHearts count={8} />
@@ -511,6 +513,7 @@ const News: React.FC = () => {
         </motion.div>
       </div>
     </div>
+    </ParticlesBackground>
   );
 };
 
