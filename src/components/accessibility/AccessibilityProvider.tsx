@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 

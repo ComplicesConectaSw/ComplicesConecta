@@ -37,10 +37,11 @@ export const DecorativeHearts: React.FC<DecorativeHeartsProps> = ({
       opacity: number;
     } = {
       id: i,
-      size: Math.random() * 20 + 16, // Entre 16px y 36px - más grandes y visibles
+      // Valores deterministas basados en el índice para evitar Math.random en render
+      size: 16 + (i % 5) * 4, // 16,20,24,28,32
       delay: i * 1.2, // Delay escalonado más espaciado para mejor distribución
-      duration: Math.random() * 6 + 12, // Entre 12s y 18s - mucho más lentas
-      opacity: Math.random() * 0.5 + 0.5, // Entre 0.5 y 1.0 - más visibles
+      duration: 12 + (i % 4) * 2, // 12,14,16,18
+      opacity: 0.5 + ((i % 6) * 0.1), // 0.5 a 1.0
     };
     
     if ('top' in pos && typeof pos.top === 'string') heartData.top = pos.top;

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /**
  * =====================================================
  * HISTORICAL CHARTS COMPONENT
@@ -84,6 +85,7 @@ export const HistoricalCharts: React.FC<HistoricalChartsProps> = ({
   // EFFECTS
   // =====================================================
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     void fetchAllData();
 

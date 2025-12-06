@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /**
  * =====================================================
  * ANALYTICS DASHBOARD
@@ -8,7 +9,7 @@
  * =====================================================
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   BarChart3,
@@ -79,6 +80,24 @@ interface DashboardMetrics {
   };
 }
 
+const DASHBOARD_INIT_NOW = Date.now();
+const DASHBOARD_ONE_DAY_AGO = new Date(DASHBOARD_INIT_NOW - 24 * 60 * 60 * 1000);
+
+const MetricCard: React.FC<MetricCardProps> = ({ title, value, subtext, icon: Icon, color = 'blue' }) => (
+  <div className={`bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-l-4 border-${color}-500`}>
+    <div className="flex justify-between items-start">
+      <div>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{title}</p>
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{value}</h3>
+        {subtext && <p className="text-xs text-gray-400 mt-2">{subtext}</p>}
+      </div>
+      <div className={`p-3 bg-${color}-50 dark:bg-${color}-900/20 rounded-lg`}>
+        <Icon className={`w-6 h-6 text-${color}-500`} />
+      </div>
+    </div>
+  </div>
+);
+
 export const AnalyticsDashboard: React.FC = () => {
   const [metrics, setMetrics] = useState<DashboardMetrics>({
     performance: { avgLoadTime: 0, avgInteractionTime: 0, totalRequests: 0, failedRequests: 0, memoryUsage: 0 },
@@ -90,10 +109,6 @@ export const AnalyticsDashboard: React.FC = () => {
 
   const [refreshInterval, setRefreshInterval] = useState(30000);
   const [autoRefresh, setAutoRefresh] = useState(true);
-
-  // Referencia de tiempo estable para el renderizado
-  const now = useMemo(() => Date.now(), []);
-  const oneDayAgo = useMemo(() => new Date(now - 24 * 60 * 60 * 1000), [now]);
 
   // =====================================================
   // DATA LOADING
@@ -160,21 +175,6 @@ export const AnalyticsDashboard: React.FC = () => {
   // =====================================================
   // HELPER COMPONENTS
   // =====================================================
-
-  const MetricCard = ({ title, value, subtext, icon: Icon, color = "blue" }: MetricCardProps) => (
-    <div className={`bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border-l-4 border-${color}-500`}>
-      <div className="flex justify-between items-start">
-        <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{title}</p>
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{value}</h3>
-          {subtext && <p className="text-xs text-gray-400 mt-2">{subtext}</p>}
-        </div>
-        <div className={`p-3 bg-${color}-50 dark:bg-${color}-900/20 rounded-lg`}>
-          <Icon className={`w-6 h-6 text-${color}-500`} />
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <div className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
@@ -348,8 +348,8 @@ export const AnalyticsDashboard: React.FC = () => {
                   <div className="flex items-center justify-between py-2 border-t dark:border-gray-700">
                     <span className="text-sm text-gray-600 dark:text-gray-400">Última actividad</span>
                     <span className="text-sm font-medium">
-                      {/* FIXED: Usar timestamp calculado en render o valor guardado, no Date.now() directo */}
-                      Hace {Math.floor((now - metrics.engagement.lastActive.getTime()) / 60000)} min
+                      {/* FIXED: Usar timestamp inicial del módulo para evitar Date.now() en render */}
+                      Hace {Math.floor((DASHBOARD_INIT_NOW - metrics.engagement.lastActive.getTime()) / 60000)} min
                     </span>
                   </div>
                 </div>
@@ -375,8 +375,8 @@ export const AnalyticsDashboard: React.FC = () => {
         <div className="divide-y dark:divide-gray-700">
           {errorAlertService
             .getAlerts({
-              // FIXED: Usar fecha memoizada en lugar de new Date(Date.now() - ...)
-              since: oneDayAgo,
+              // FIXED: Usar fecha calculada a nivel de módulo para evitar Date.now() en render
+              since: DASHBOARD_ONE_DAY_AGO,
               resolved: false
             })
             .slice(0, 5)

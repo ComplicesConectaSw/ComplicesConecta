@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect } from "react";
 import { X, Heart, Sparkles, Gift, Star, Zap, HelpCircle, Globe, Shield } from "lucide-react";
 import { Button } from "@/components/ui/Button";

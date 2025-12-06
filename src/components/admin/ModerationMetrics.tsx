@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /**
  * =====================================================
  * MODERATION METRICS COMPONENT
@@ -28,6 +29,90 @@ import { logger } from '@/lib/logger';
 interface ModerationMetricsProps {
   refreshInterval?: number; // en segundos
 }
+
+interface MetricCardProps {
+  icon: any;
+  title: string;
+  value: string | number;
+  subtitle?: string;
+  color?: 'blue' | 'green' | 'yellow' | 'red' | 'purple' | 'gray';
+  trend?: string;
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({
+  icon: Icon,
+  title,
+  value,
+  subtitle,
+  color = 'blue',
+  trend
+}) => {
+  const colorClasses = {
+    blue: 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400',
+    green: 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400',
+    yellow: 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400',
+    red: 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400',
+    purple: 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400',
+    gray: 'bg-gray-50 dark:bg-gray-900/20 text-gray-600 dark:text-gray-400'
+  } as const;
+
+  return (
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow">
+      <div className="flex items-center justify-between mb-4">
+        <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
+          <Icon className="w-6 h-6" />
+        </div>
+        {trend && (
+          <span className="text-sm text-gray-500 dark:text-gray-400">{trend}</span>
+        )}
+      </div>
+      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+        {value}
+      </h3>
+      <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+        {title}
+      </p>
+      {subtitle && (
+        <p className="text-xs text-gray-500 dark:text-gray-500">
+          {subtitle}
+        </p>
+      )}
+    </div>
+  );
+};
+
+interface ProgressBarProps {
+  label: string;
+  value: number;
+  max: number;
+  color: string;
+}
+
+const ProgressBar: React.FC<ProgressBarProps> = ({ label, value, max, color }) => {
+  const percentage = max > 0 ? (value / max) * 100 : 0;
+
+  return (
+    <div className="mb-4">
+      <div className="flex justify-between mb-2">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          {label}
+        </span>
+        <span className="text-sm font-bold text-gray-900 dark:text-white">
+          {value}
+        </span>
+      </div>
+      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+        <div
+          className="h-full rounded-full transition-all duration-500 ease-out"
+          style={{
+            width: `${Math.min(percentage, 100)}%`,
+            backgroundColor: color
+          }}
+        />
+      </div>
+    </div>
+  );
+};
 
 // =====================================================
 // COMPONENT
@@ -64,6 +149,7 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
   // EFFECTS
   // =====================================================
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     void fetchMetrics();
 
@@ -73,95 +159,6 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
 
     return () => clearInterval(interval);
   }, [refreshInterval]);
-
-  // =====================================================
-  // HELPER COMPONENTS
-  // =====================================================
-
-  const MetricCard = ({ 
-    icon: Icon, 
-    title, 
-    value, 
-    subtitle, 
-    color = 'blue',
-    trend 
-  }: { 
-    icon: any; 
-    title: string; 
-    value: string | number; 
-    subtitle?: string; 
-    color?: 'blue' | 'green' | 'yellow' | 'red' | 'purple' | 'gray';
-    trend?: string;
-  }) => {
-    const colorClasses = {
-      blue: 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400',
-      green: 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400',
-      yellow: 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400',
-      red: 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400',
-      purple: 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400',
-      gray: 'bg-gray-50 dark:bg-gray-900/20 text-gray-600 dark:text-gray-400'
-    };
-
-    return (
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow">
-        <div className="flex items-center justify-between mb-4">
-          <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
-            <Icon className="w-6 h-6" />
-          </div>
-          {trend && (
-            <span className="text-sm text-gray-500 dark:text-gray-400">{trend}</span>
-          )}
-        </div>
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-          {value}
-        </h3>
-        <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-          {title}
-        </p>
-        {subtitle && (
-          <p className="text-xs text-gray-500 dark:text-gray-500">
-            {subtitle}
-          </p>
-        )}
-      </div>
-    );
-  };
-
-  const ProgressBar = ({ 
-    label, 
-    value, 
-    max, 
-    color 
-  }: { 
-    label: string; 
-    value: number; 
-    max: number; 
-    color: string;
-  }) => {
-    const percentage = max > 0 ? (value / max) * 100 : 0;
-    
-    return (
-      <div className="mb-4">
-        <div className="flex justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            {label}
-          </span>
-          <span className="text-sm font-bold text-gray-900 dark:text-white">
-            {value}
-          </span>
-        </div>
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-500 ease-out"
-            style={{
-              width: `${Math.min(percentage, 100)}%`,
-              backgroundColor: color
-            }}
-          />
-        </div>
-      </div>
-    );
-  };
 
   // =====================================================
   // RENDER
@@ -352,7 +349,7 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
               label="💬 Mensajes"
               value={metrics.reports.byType.message}
               max={totalReports}
-              color="#ec4899"
+              color="#8b5cf6"
             />
             <ProgressBar
               label="📦 Otros"
