@@ -1,6 +1,7 @@
-import React, { useCallback, useMemo } from 'react';
-import Particles from 'react-tsparticles';
-import { loadSlim } from 'tsparticles-slim';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import Particles, { initParticlesEngine } from '@tsparticles/react';
+import { loadSlim } from '@tsparticles/slim';
+import type { Engine } from '@tsparticles/engine';
 import { cn } from '@/shared/lib/cn';
 import { useBgMode } from '@/hooks/useBgMode';
 import { useTheme } from '@/hooks/useTheme';
@@ -18,8 +19,16 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
   const { mode } = useBgMode();
   const { config } = useAnimation();
 
-  const particlesInit = useCallback(async (engine: Parameters<typeof loadSlim>[0]) => {
+  const [engineReady, setEngineReady] = useState(false);
+
+  const particlesInit = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
+  }, []);
+
+  useEffect(() => {
+    void initParticlesEngine(async (engine: Engine) => {
+      await loadSlim(engine);
+    }).then(() => setEngineReady(true));
   }, []);
 
   const particlesOptions = useMemo(
@@ -99,7 +108,7 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
       )}
 
       {/* PARTÍCULAS */}
-      {showParticles && (
+      {engineReady && showParticles && (
         <Particles
           id="tsparticles"
           init={particlesInit}
