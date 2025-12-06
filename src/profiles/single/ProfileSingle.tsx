@@ -103,7 +103,7 @@ const ProfileSingle: React.FC = () => {
   const navigate = useNavigate();
   const { profile: authProfile, isAuthenticated } = useAuth();
   const hasDataLoaded = useRef(false);
-  const { glassMode, backgroundKey, backgroundMode } = useBgMode();
+  const { glassMode, backgroundKey, backgroundMode, mode } = useBgMode();
 
   // --- ESTADOS ---
   const [profile, setProfile] = useState<ProfileRow | null>(null);
@@ -229,8 +229,10 @@ const ProfileSingle: React.FC = () => {
   };
   const handleAddComment = () => showToast("Comentario agregado", "success");
   const handleImageClick = (index: number) => {
-    if (isParentalLocked) { setShowPinModal(true); return; }
-    setSelectedImageIndex(index); setShowImageModal(true);
+    // Si está bloqueado, respetamos blur + candado y no abrimos modal aquí.
+    if (isParentalLocked) return;
+    setSelectedImageIndex(index);
+    setShowImageModal(true);
   };
   const handleClaimTokens = () => {
     if (isClaimingTokens) return; setIsClaimingTokens(true);
@@ -375,6 +377,13 @@ const ProfileSingle: React.FC = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-purple-900/10 to-black/80" />
       </div>
+
+      {/* Partículas controladas por useBgMode */}
+      {mode !== 'static' && (
+        <div className="absolute inset-0 -z-10">
+          <ParticlesBackground mode={mode} />
+        </div>
+      )}
 
       {!isAuthenticated() && !isDemoActive && <Navigation />}
 
