@@ -91,8 +91,8 @@ export const ExplicitInterestsEditor: React.FC<ExplicitInterestsEditorProps> = (
                 variant={isSelected ? "default" : "outline"}
                 className={`cursor-pointer transition-all duration-200 text-center justify-center py-2 px-3 ${
                   isSelected
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white border-transparent hover:from-purple-600 hover:to-pink-600 shadow-md'
-                    : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:border-purple-400 dark:hover:border-purple-500'
+                    ? 'bg-gradient-to-r from-purple-500 to-blue-600 text-white border-transparent shadow-sm'
+                    : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
                 }`}
                 onClick={() => handleInterestToggle(interest)}
               >

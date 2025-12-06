@@ -193,6 +193,10 @@ const ProfileSingle: React.FC = () => {
         
         // --- USAR GALERÍA LOCAL ---
         setGalleryImages(SINGLE_PRIVATE_IMAGES);
+
+        // Forzar control parental bloqueado al entrar en demo
+        setIsParentalLocked(true);
+        localStorage.setItem('parentalControlLocked', 'true');
         
         setTokenBalances({ cmpx: '100', gtk: '50', matic: '0.5' });
 
@@ -441,10 +445,10 @@ const ProfileSingle: React.FC = () => {
             <CardContent className="p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
                 <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-purple-100 dark:border-purple-500/30 shadow-2xl">
-                  <SafeImage
-                    src={profile?.avatar_url || SINGLE_PROFILE_AVATAR}
-                    alt="Avatar"
-                    className="w-full h-full object-cover"
+                  <img
+                    src={String(profile?.avatar_url ?? SINGLE_PROFILE_AVATAR)}
+                    alt={String(displayName)}
+                    className="w-32 h-32 rounded-full object-cover border-4 border-purple-500/80 shadow-xl"
                   />
                   {SHOW_ONLINE_BADGE && (
                     <div className="absolute bottom-2 right-2 bg-green-500 w-4 h-4 rounded-full border-2 border-white shadow-lg"></div>
