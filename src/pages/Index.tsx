@@ -245,11 +245,8 @@ const Index = () => {
     }
   }, [isLoading, loadingTimeoutPassed]);
   
-  // Solo mostrar LoadingScreen si está cargando Y el timeout de seguridad no ha pasado
-  if (isLoading && !loadingTimeoutPassed) {
-    logger.info('⏳ Mostrando LoadingScreen:', { isLoading, loadingTimeoutPassed });
-    return <LoadingScreen onComplete={handleLoadingComplete} />;
-  }
+  // Nota: El contenido principal se renderiza siempre para evitar bucles visuales
+  // en caso de que alguna extensión o condición externa impida que isLoading cambie.
 
   // Professional sample profiles for presentation using dynamic image service
   const sampleProfiles = [

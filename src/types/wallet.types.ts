@@ -4,9 +4,10 @@
  */
 
 /**
- * Interfaz extendida de Window con propiedades de wallets
+ * Interfaz con propiedades opcionales de wallets (no extiende Window directamente
+ * para evitar conflictos con otras declaraciones globales).
  */
-export interface WindowWithWallets extends Window {
+export interface WindowWithWallets {
   ethereum?: {
     isMetaMask?: boolean;
     request?: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
@@ -34,9 +35,10 @@ export interface WindowWithWallets extends Window {
 }
 
 /**
- * Tipo helper para verificar si window tiene wallets
+ * Tipo helper para verificar si un objeto Window tiene propiedades de wallets
  */
-export function isWindowWithWallets(window: Window): window is WindowWithWallets {
-  return true; // Type guard básico
+export function isWindowWithWallets(win: Window | WindowWithWallets): win is Window & WindowWithWallets {
+  // Type guard básico: en runtime no forzamos nada, solo ayudamos a TypeScript
+  return true;
 }
 

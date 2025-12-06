@@ -68,7 +68,7 @@ declare global {
     if (typeof firstArg === 'string' && WALLET_ERROR_KEYWORDS.some(keyword => firstArg.toLowerCase().includes(keyword))) {
       return;
     }
-    if (firstArg instanceof Error && isWalletError(firstArg)) {
+    if (firstArg instanceof Error && matchWalletError(firstArg)) {
       return;
     }
     originalConsoleError.apply(console, args);

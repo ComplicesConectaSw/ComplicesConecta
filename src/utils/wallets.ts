@@ -48,20 +48,11 @@ interface BybitProvider {
 }
 
 // Safe provider getters - no global modifications
-declare global {
-  interface Window {
-    ethereum?: EthereumProvider;
-    solana?: SolanaProvider;
-    tronWeb?: TronProvider;
-    bybitWallet?: BybitProvider;
-  }
-}
-
 export const getEthereumProvider = (): EthereumProvider | null => {
   if (typeof window === 'undefined') return null;
   
   try {
-    const provider = window.ethereum;
+    const provider = (window as unknown as { ethereum?: EthereumProvider }).ethereum;
     return provider && typeof provider.request === 'function' ? provider : null;
   } catch (error) {
     logger.warn('Error accessing Ethereum provider', { error });
@@ -73,7 +64,7 @@ export const getSolanaProvider = (): SolanaProvider | null => {
   if (typeof window === 'undefined') return null;
   
   try {
-    const provider = window.solana;
+    const provider = (window as unknown as { solana?: SolanaProvider }).solana;
     return provider && (provider.isPhantom || typeof provider.connect === 'function') ? provider : null;
   } catch (error) {
     logger.warn('Error accessing Solana provider', { error });
@@ -85,7 +76,7 @@ export const getTronProvider = (): TronProvider | null => {
   if (typeof window === 'undefined') return null;
   
   try {
-    const provider = window.tronWeb;
+    const provider = (window as unknown as { tronWeb?: TronProvider }).tronWeb;
     return provider && (provider.ready || typeof provider.request === 'function') ? provider : null;
   } catch (error) {
     logger.warn('Error accessing Tron provider', { error });
@@ -97,7 +88,7 @@ export const getBybitProvider = (): BybitProvider | null => {
   if (typeof window === 'undefined') return null;
   
   try {
-    const provider = window.bybitWallet;
+    const provider = (window as unknown as { bybitWallet?: BybitProvider }).bybitWallet;
     return provider && typeof provider.request === 'function' ? provider : null;
   } catch (error) {
     logger.warn('Error accessing Bybit provider', { error });
@@ -175,7 +166,7 @@ export const connectEthereumWallet = async (): Promise<string[]> => {
   try {
     const accounts = await provider.request({
       method: 'eth_requestAccounts'
-    });
+    }) as unknown as string[];
     return accounts;
   } catch (error) {
     logger.error('Ethereum connection failed', { error });
@@ -211,7 +202,7 @@ export const connectTronWallet = async (): Promise<string> => {
     
     const account = await provider.request({
       method: 'tron_requestAccounts'
-    });
+    }) as unknown as string[];
     return account[0];
   } catch (error) {
     logger.error('Tron connection failed', { error });

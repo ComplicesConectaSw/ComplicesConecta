@@ -6,7 +6,6 @@ import { safeGetItem, safeSetItem } from '@/utils/safeLocalStorage';
 // Importación dinámica para evitar errores de build
 const getWebVitals = async () => {
   try {
-    // @ts-expect-error Módulo opcional, puede no resolverse en ciertos builds
     const webVitals = await import('web-vitals');
     
     // Definir la interfaz para web-vitals
