@@ -105,7 +105,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : "button"
+    const Comp = "button"
 
     const [rippleEffect, setRippleEffect] = React.useState<{
       x: number
@@ -147,6 +147,40 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       animate === "pulse" && !isDisabled
         ? { scale: [1, 1.03, 1] }
         : motionProps?.animate
+
+    // Modo asChild: delegar completamente al hijo, asegurando un único elemento
+    if (asChild) {
+      return (
+        <motion.div
+          whileHover={motionProps?.whileHover ?? baseWhileHover}
+          whileTap={motionProps?.whileTap ?? baseWhileTap}
+          animate={baseAnimate}
+          transition={
+            motionProps?.transition ?? {
+              duration: 0.2,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }
+          }
+          {...motionProps}
+        >
+          <Slot
+            ref={ref as any}
+            className={cn(
+              buttonVariants({ variant, size }),
+              "relative overflow-hidden transition-all duration-200",
+              gradient && [
+                "bg-gradient-to-r from-purple-600 to-blue-600",
+                "hover:from-purple-700 hover:to-blue-700",
+                "text-white border-0",
+              ],
+              className
+            )}
+          >
+            {children}
+          </Slot>
+        </motion.div>
+      )
+    }
 
     return (
       <motion.div
