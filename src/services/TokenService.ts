@@ -94,7 +94,7 @@ class TokenService {
         return null;
       }
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('user_token_balances')
         .select('cmpx_balance, gtk_balance')
         .eq('user_id', userId)
@@ -131,7 +131,7 @@ class TokenService {
         gtk: 0
       };
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('user_token_balances')
         .insert({
           user_id: userId,
@@ -188,7 +188,7 @@ class TokenService {
 
       // Actualizar balance
       const updateField = tokenType === 'cmpx' ? 'cmpx_balance' : 'gtk_balance';
-      const { error: updateError } = await supabase
+      const { error: updateError } = await (supabase as any)
         .from('user_token_balances')
         .update({ [updateField]: newBalance })
         .eq('user_id', userId);
@@ -424,7 +424,7 @@ class TokenService {
         return null;
       }
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('staking_records')
         .insert({
           user_id: userId,
@@ -498,7 +498,7 @@ class TokenService {
         return false;
       }
       
-      await supabase
+      await (supabase as any)
         .from('staking_records')
         .update({
           status: 'completed',

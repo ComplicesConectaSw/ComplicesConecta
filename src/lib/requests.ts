@@ -105,16 +105,18 @@ export const RequestsService = {
         return { success: false, error: 'Ya has enviado una solicitud a este usuario' };
       }
 
-      // Crear nueva solicitud con tipos estrictos
-      const { error } = await supabase
+      // Crear nueva solicitud (usar supabase as any para evitar problemas de tipos de tabla)
+      const newInvitation = {
+        from_profile: user.user.id,
+        to_profile: data.receiver_id,
+        message: data.message ?? null,
+        type: 'profile' as InvitationType,
+        status: 'pending' as InvitationStatus,
+      };
+
+      const { error } = await (supabase as any)
         .from('invitations')
-        .insert({
-          from_profile: user.user.id,
-          to_profile: data.receiver_id,
-          message: data.message ?? null,
-          type: 'profile' as InvitationType,
-          status: 'pending' as InvitationStatus
-        } as any);
+        .insert(newInvitation);
 
       if (error) {
         return { success: false, error: error.message };
@@ -176,7 +178,7 @@ export const RequestsService = {
         return { data: [], error: 'Usuario no autenticado' };
       }
 
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('invitations')
         .select(`
           *,
@@ -200,9 +202,16 @@ export const RequestsService = {
       }
 
       // Transformar datos para que coincidan con ConnectionRequestWithProfile
-      const transformedData = (data ?? []).map((item: any) => ({
-        ...item,
-        profile: (item as any).sender_profile // Para solicitudes recibidas, el perfil es el remitente
+      const transformedData = (data ?? []).map((item: any): ConnectionRequestWithProfile => ({
+        id: item.id,
+        from_profile: item.from_profile,
+        to_profile: item.to_profile,
+        message: item.message,
+        status: item.status as InvitationStatus | null,
+        created_at: item.created_at,
+        decided_at: item.decided_at,
+        type: item.type as InvitationType | null,
+        profile: item.sender_profile as SafeProfile | undefined,
       }));
 
       return { data: transformedData };
@@ -251,9 +260,16 @@ export const RequestsService = {
       }
 
       // Transformar datos para que coincidan con ConnectionRequestWithProfile
-      const transformedData = (data ?? []).map((item: any) => ({
-        ...item,
-        profile: (item as any).receiver_profile // Para solicitudes enviadas, el perfil es el destinatario
+      const transformedData = (data ?? []).map((item: any): ConnectionRequestWithProfile => ({
+        id: item.id,
+        from_profile: item.from_profile,
+        to_profile: item.to_profile,
+        message: item.message,
+        status: item.status as InvitationStatus | null,
+        created_at: item.created_at,
+        decided_at: item.decided_at,
+        type: item.type as InvitationType | null,
+        profile: item.receiver_profile as SafeProfile | undefined,
       }));
 
       return { data: transformedData };
@@ -357,10 +373,12 @@ export const RequestsService = {
         return { connected: false };
       }
 
+      const typed = data as _InvitationRow;
+
       return {
-        connected: (data as any).status === 'accepted',
-        requestStatus: (data as any).status as InvitationStatus,
-        requestId: (data as any).id
+        connected: typed.status === 'accepted',
+        requestStatus: typed.status as InvitationStatus,
+        requestId: typed.id ? String(typed.id) : undefined,
       };
     } catch (error) {
       return { 

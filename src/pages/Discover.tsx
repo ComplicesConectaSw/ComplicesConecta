@@ -21,6 +21,7 @@ import { safeGetItem } from '@/utils/safeLocalStorage';
 import { generateFilterDemoCards, type FilterDemoCard } from '@/lib/infoCards';
 import { FilterDemoCard as FilterDemoCardComponent } from '@/components/ui/FilterDemoCard';
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/types/supabase-generated";
 import CoupleProfileCard from '@/profiles/couple/CoupleProfileCard';
 import { AnimatedProfileCard } from '@/profiles/shared/AnimatedProfileCard';
 import { AnimatedButton } from '@/components/ui/AnimatedButton';
@@ -48,6 +49,9 @@ interface Profile {
   profileType: ProfileType;
   gender?: Gender;
 }
+
+type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
+type LikeInsert = Database["public"]["Tables"]["likes"]["Insert"];
 
 // Tipo extendido solo para UI: agrega is_liked sin modificar el tipo de BD
 type CoupleWithUIState = CoupleProfileWithPartners & {
@@ -311,17 +315,20 @@ const Discover = () => {
         setTimeout(() => reject(new Error('Timeout loading profiles')), 3000);
       });
       
-      const profilesPromise = supabase
+      const profilesPromise = (supabase as any)
         .from('profiles')
         .select('*')
         .eq('is_active', true)
         .neq('is_demo', true)
         .limit(50);
       
-      const { data: realProfiles, error } = await Promise.race([
+      const raceResult = await Promise.race([
         profilesPromise,
         timeoutPromise
-      ]) as any;
+      ]) as { data?: ProfileRow[] | null; error?: { message: string } | null } | null;
+
+      const realProfiles = raceResult?.data ?? null;
+      const error = raceResult?.error ?? null;
 
       if (error) {
         logger.error('? Error cargando perfiles reales:', error);
@@ -334,7 +341,7 @@ const Discover = () => {
         logger.info(`? ${realProfiles.length} perfiles reales cargados`);
         
         // Convertir perfiles de Supabase al formato esperado
-        const convertedProfiles: Profile[] = realProfiles.map((profile: any) => ({
+        const convertedProfiles: Profile[] = realProfiles.map((profile: ProfileRow) => ({
           id: profile.id,
           name: `${profile.first_name} ${profile.last_name || ''}`.trim(),
           age: profile.age || 25,
@@ -447,7 +454,7 @@ const Discover = () => {
         prev.map(p => p.id === profileId ? { ...p, is_liked: isLiked } : p)
       );
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('likes')
         .upsert({
           user_id: user.id,
@@ -455,7 +462,7 @@ const Discover = () => {
           target_type: 'couple_profile',
           is_liked: isLiked,
           created_at: new Date().toISOString(),
-        } as any, { onConflict: 'user_id,target_id' });
+        }, { onConflict: 'user_id,target_id' });
 
       if (error) throw error;
     } catch (error) {
