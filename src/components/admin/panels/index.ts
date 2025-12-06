@@ -5,6 +5,8 @@
  * NOTA: Se usan los componentes funcionales en lugar de placeholders
  */
 
+import type { ComponentType } from 'react'
+
 export { ReportsPanel } from './ReportsPanel'
 export { UserManagementPanel } from '../UserManagementPanel'
 export { TokenSystemPanel } from '../TokenSystemPanel'
@@ -28,7 +30,7 @@ export interface PanelConfig {
   id: PanelType
   title: string
   description: string
-  icon: React.ComponentType<any>
+  icon: ComponentType<unknown>
   color: string
   requiredRole: 'admin' | 'moderator'
 }
