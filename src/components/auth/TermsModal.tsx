@@ -29,18 +29,18 @@ export const TermsModal: React.FC<TermsModalProps> = ({
     <>
     {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 sm:p-6"
           onClick={onClose}
         >
           <div
-            className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4 sm:mx-0 transform transition-all duration-300 ease-out"
+            className="bg-gradient-to-br from-purple-900 via-purple-800 to-blue-900 rounded-2xl shadow-2xl border border-purple-500/40 max-w-xl md:max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4 sm:mx-0 transform transition-all duration-300 ease-out"
             onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="sticky top-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 p-6 rounded-t-2xl">
+            <div className="sticky top-0 bg-gradient-to-r from-purple-900/95 via-purple-800/95 to-blue-900/95 border-b border-purple-500/40 p-6 rounded-t-2xl backdrop-blur-md">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-br from-red-500 to-pink-600 rounded-lg">
+                  <div className="p-2 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg shadow-lg shadow-purple-500/40">
                     <Shield className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -63,7 +63,7 @@ export const TermsModal: React.FC<TermsModalProps> = ({
 
             <div className="p-6 space-y-6">
               {/* Advertencia +18 */}
-              <div className="bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
+              <div className="bg-gradient-to-r from-red-500/20 via-red-600/15 to-orange-500/20 dark:from-red-900/40 dark:via-red-800/40 dark:to-orange-800/40 rounded-xl p-6 border border-red-400/40 dark:border-red-700/60">
                 <div className="flex items-start gap-3">
                   <div className="p-2 bg-red-500 rounded-lg flex-shrink-0">
                     <Shield className="w-5 h-5 text-white" />
@@ -161,10 +161,10 @@ export const TermsModal: React.FC<TermsModalProps> = ({
                   📋 Políticas Incluidas
                 </h4>
                 <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="text-blue-800 dark:text-blue-200">• Política de Privacidad</div>
-                  <div className="text-blue-800 dark:text-blue-200">• Política de Cookies</div>
-                  <div className="text-blue-800 dark:text-blue-200">• Normas de Comunidad</div>
-                  <div className="text-blue-800 dark:text-blue-200">• Política de Contenido</div>
+                   <div className="text-blue-900 dark:text-blue-100">• Política de Privacidad</div>
+                  <div className="text-blue-900 dark:text-blue-100">• Política de Cookies</div>
+                  <div className="text-blue-900 dark:text-blue-100">• Normas de Comunidad</div>
+                  <div className="text-blue-900 dark:text-blue-100">• Política de Contenido</div>
                 </div>
               </div>
 
