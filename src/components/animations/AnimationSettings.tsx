@@ -17,7 +17,7 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
   // Usar useContext directamente y manejar el caso undefined después
   const context = React.useContext(AnimationContext);
   const { prefs, setPrefs } = useTheme();
-  const { mode, setMode, reducedMotion, toggleReducedMotion } = useBgMode();
+  const { mode, setMode, reducedMotion, toggleReducedMotion, backgroundMode, setBackgroundMode } = useBgMode();
   
   // Si no hay provider, mostrar mensaje o retornar null
   if (!context) {
@@ -109,6 +109,19 @@ export const AnimationSettings: React.FC<AnimationSettingsProps> = ({ isOpen, on
                     onClick={() => setMode(option)}
                   >
                     {option === 'static' ? 'Fijo' : option === 'particles' ? 'Partículas' : 'Video'}
+                  </UnifiedButton>
+                ))}
+              </div>
+              {/* Selector fijo/aleatorio para fondos basados en perfil */}
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {(['fixed', 'random'] as const).map((bm) => (
+                  <UnifiedButton
+                    key={bm}
+                    variant={backgroundMode === bm ? 'love' : 'default'}
+                    size="sm"
+                    onClick={() => setBackgroundMode(bm)}
+                  >
+                    {bm === 'fixed' ? 'Fondo fijo' : 'Fondo aleatorio'}
                   </UnifiedButton>
                 ))}
               </div>

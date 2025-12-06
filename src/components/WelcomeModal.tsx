@@ -252,15 +252,15 @@ export const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
                 variant="default"
                 onClick={handlePrevious}
                 disabled={currentStep === 0}
-                className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold border-0 shadow-lg shadow-purple-500/30"
+                className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold border-0 shadow-lg shadow-purple-500/30 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 Anterior
               </Button>
               
               <Button
-                variant={currentStep === welcomeSteps.length - 1 ? "love" : "default"}
+                variant="default"
                 onClick={handleNext}
-                className="flex-1 relative overflow-hidden group"
+                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold border-0 shadow-lg shadow-purple-500/30 relative overflow-hidden group"
               >
                 {currentStep === welcomeSteps.length - 1 ? (
                   <>
