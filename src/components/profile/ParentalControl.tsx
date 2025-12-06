@@ -68,8 +68,8 @@ export const ParentalControl = ({ isLocked, onToggle, onUnlock }: ParentalContro
     onToggle(true);
   });
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (isLocked) {
       clear();
       setShowPinInput(false);

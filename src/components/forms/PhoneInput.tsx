@@ -42,6 +42,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   }>({ valid: false, normalized: '', error: undefined });
 
   // Validar el valor actual cuando cambie
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (value) {
       const result = validateMXPhone(value);

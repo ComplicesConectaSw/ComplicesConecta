@@ -37,6 +37,7 @@ export const usePWA = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const { toast } = useToast();
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     // Detectar si ya está instalado
     const isInstalled = window.matchMedia('(display-mode: standalone)').matches ||

@@ -191,6 +191,7 @@ export const OptimizedImage: React.FC<ImageOptimizerProps> = ({
   }, [lazy, priority, formatLoading]);
 
   // Cargar imagen cuando sea necesario
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     if (formatLoading || !src) return;
 
