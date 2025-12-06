@@ -670,7 +670,12 @@ const ProfileCouple: React.FC = () => {
                         <div
                           key={idx}
                           className="relative aspect-video rounded-lg overflow-hidden cursor-pointer shadow-sm"
-                          onClick={() => handleImageClick(idx)}
+                          onClick={() => {
+                            // En pareja seguimos el mismo flujo que en single: si está bloqueado,
+                            // no abrimos el modal aquí; solo respetamos blur/candado.
+                            if (isParentalLocked) return;
+                            handleImageClick(idx);
+                          }}
                         >
                           <SafeImage
                             src={img.url || ''}

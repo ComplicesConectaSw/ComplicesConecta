@@ -378,10 +378,10 @@ const ProfileSingle: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-purple-900/10 to-black/80" />
       </div>
 
-      {/* Partículas controladas por useBgMode */}
+      {/* Partículas controladas por useBgMode (el componente lee su propio estado) */}
       {mode !== 'static' && (
         <div className="absolute inset-0 -z-10">
-          <ParticlesBackground mode={mode} />
+          <ParticlesBackground />
         </div>
       )}
 
