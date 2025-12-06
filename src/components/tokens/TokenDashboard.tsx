@@ -217,8 +217,8 @@ export function TokenDashboard() {
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-white truncate">{staking.amount} CMPX</p>
                       <p className="text-sm text-white/80 break-words">
-                        {staking.status === 'active' 
-                          ? `${Math.ceil((new Date(staking.end_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} días restantes`
+                        {staking.status === 'active'
+                          ? 'Staking en curso hasta la fecha de fin configurada'
                           : `Completado (+${Math.round(staking.amount * staking.apy / 100)} CMPX)`
                         }
                       </p>

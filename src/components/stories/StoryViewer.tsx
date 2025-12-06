@@ -43,10 +43,6 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
   useEffect(() => {
     // Marcar como vista
     storyService.markAsViewed(currentStory.id);
-    
-    // Verificar si ya le dio like
-    const userLike = currentStory.likes?.find(like => like.userId === currentUserId);
-    setIsLiked(!!userLike);
 
     // Simular progreso de la historia (15 segundos)
     const interval = setInterval(() => {
@@ -61,7 +57,7 @@ export const StoryViewer: React.FC<StoryViewerProps> = ({
     }, 100);
 
     return () => clearInterval(interval);
-  }, [currentStory.id, currentUserId, onClose]);
+  }, [currentStory.id, onClose]);
 
   const formatTimeAgo = (dateString: string) => {
     const now = new Date();

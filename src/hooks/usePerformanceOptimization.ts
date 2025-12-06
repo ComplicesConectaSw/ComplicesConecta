@@ -141,18 +141,16 @@ export const useExpensiveCalculation = <T>(
   calculation: () => T,
   dependencies: any[]
 ): T => {
-  return useMemo(() => {
-    const startTime = Date.now();
-    const result = calculation();
-    const endTime = Date.now();
-    
-    logger.info('Expensive calculation completed:', {
-      duration: endTime - startTime,
-      dependencies: dependencies.length
-    });
-    
-    return result;
-  }, dependencies);
+  const startTime = Date.now();
+  const result = calculation();
+  const endTime = Date.now();
+
+  logger.info('Expensive calculation completed:', {
+    duration: endTime - startTime,
+    dependencies: dependencies.length
+  });
+
+  return result;
 };
 
 /**

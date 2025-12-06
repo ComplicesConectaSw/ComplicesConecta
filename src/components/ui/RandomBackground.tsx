@@ -83,28 +83,17 @@ const backgrounds = [
 
 export const RandomBackground: React.FC<RandomBackgroundProps> = ({ children, className }) => {
   const { pathname } = useLocation();
-  const [bgUrl, setBgUrl] = useState(fallbackBackground);
-
-  const [isLoaded, setIsLoaded] = useState(false);
   const { prefs } = useTheme();
 
   const resolvedBackground = useMemo(() => {
     if (prefs?.isCustom && prefs.background) {
       return prefs.background;
     }
-    const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+
+    const index = Math.abs(Array.from(pathname).reduce((acc, char) => acc + char.charCodeAt(0), 0)) % backgrounds.length;
+    const randomBg = backgrounds[index];
     return randomBg || fallbackBackground;
   }, [prefs.background, prefs.isCustom, pathname]);
-
-  useEffect(() => {
-    setIsLoaded(false);
-    const img = new Image();
-    img.src = resolvedBackground;
-    img.onload = () => {
-      setBgUrl(resolvedBackground);
-      setIsLoaded(true);
-    };
-  }, [resolvedBackground]);
 
   // Si el usuario desactivó "Fondo Animado" o "Partículas" desde el engrane,
   // podemos mostrar un color sólido o el fondo estático sin efectos extra.
@@ -115,10 +104,9 @@ export const RandomBackground: React.FC<RandomBackgroundProps> = ({ children, cl
       {/* Capa de imagen de fondo */}
       <div
         className={cn(
-          'absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-700',
-          isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+          'absolute inset-0 bg-cover bg-center bg-no-repeat'
         )}
-        style={{ backgroundImage: `url(${bgUrl || fallbackBackground})` }}
+        style={{ backgroundImage: `url(${resolvedBackground || fallbackBackground})` }}
       />
 
       {/* Overlay Neón (Controlado por el engrane: glowLevel) */}

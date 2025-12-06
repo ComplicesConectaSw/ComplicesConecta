@@ -110,50 +110,6 @@ export const OptimizedImage: React.FC<ImageOptimizerProps> = ({
     };
   };
 
-  // Precargar imagen si es necesario
-  useEffect(() => {
-    if (shouldPreload && !formatLoading && src) {
-      const { optimized } = generateOptimizedUrls(src);
-      preloadImage(optimized, { quality, width, height })
-        .then(() => {
-          logger.info('✅ Imagen precargada', { src: optimized });
-        })
-        .catch((error) => {
-          logger.warn('⚠️ Error precargando imagen', { src: optimized, error });
-        });
-    }
-  }, [shouldPreload, formatLoading, src, quality, width, height]);
-
-  // Configurar lazy loading
-  useEffect(() => {
-    if (!lazy || priority || !imgRef.current || formatLoading) {
-      return;
-    }
-
-    observerRef.current = createLazyLoader();
-    
-    if (observerRef.current && imgRef.current) {
-      observerRef.current.observe(imgRef.current as Element);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [lazy, priority, formatLoading]);
-
-  // Cargar imagen cuando sea necesario
-  useEffect(() => {
-    if (formatLoading || !src) return;
-
-    const shouldLoadImmediately = priority || !lazy;
-    
-    if (shouldLoadImmediately) {
-      loadImage();
-    }
-  }, [formatLoading, src, priority, lazy]);
-
   const loadImage = async () => {
     if (!src) return;
 
@@ -200,6 +156,50 @@ export const OptimizedImage: React.FC<ImageOptimizerProps> = ({
       onError?.(error as Error);
     }
   };
+
+  // Precargar imagen si es necesario
+  useEffect(() => {
+    if (shouldPreload && !formatLoading && src) {
+      const { optimized } = generateOptimizedUrls(src);
+      preloadImage(optimized, { quality, width, height })
+        .then(() => {
+          logger.info('✅ Imagen precargada', { src: optimized });
+        })
+        .catch((error) => {
+          logger.warn('⚠️ Error precargando imagen', { src: optimized, error });
+        });
+    }
+  }, [shouldPreload, formatLoading, src, quality, width, height]);
+
+  // Configurar lazy loading
+  useEffect(() => {
+    if (!lazy || priority || !imgRef.current || formatLoading) {
+      return;
+    }
+
+    observerRef.current = createLazyLoader();
+    
+    if (observerRef.current && imgRef.current) {
+      observerRef.current.observe(imgRef.current as Element);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [lazy, priority, formatLoading]);
+
+  // Cargar imagen cuando sea necesario
+  useEffect(() => {
+    if (formatLoading || !src) return;
+
+    const shouldLoadImmediately = priority || !lazy;
+    
+    if (shouldLoadImmediately) {
+      loadImage();
+    }
+  }, [formatLoading, src, priority, lazy]);
 
   // Generar srcSet para responsive images
   const generateResponsiveSrcSet = () => {

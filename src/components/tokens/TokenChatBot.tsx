@@ -39,26 +39,32 @@ export function TokenChatBot() {
     hasPendingRewards
   } = useTokens();
 
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const initialGreeting: ChatMessage = {
+    id: 'greeting',
+    type: 'bot',
+    content: `👋 ¡Hola Usuario! Bienvenido a tu asistente de tokens Beta.
+
+🪙 Soy tu guía personal para CMPX y GTK. Te puedo ayudar a:
+• Ver tu saldo actual
+• Reclamar recompensas disponibles  
+• Configurar staking (alcancía especial)
+• Aprender sobre el sistema de tokens
+
+¿Quieres revisar tu saldo actual?`,
+    timestamp: new Date(),
+  };
+
+  const [messages, setMessages] = useState<ChatMessage[]>([initialGreeting]);
   const [currentStep, setCurrentStep] = useState<WizardStep>('greeting');
   const [userInput, setUserInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [_stakingAmount, _setStakingAmount] = useState<number>(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const isInitialized = useRef(false);
 
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  // Initialize chat - solo una vez
-  useEffect(() => {
-    if (balance && !isInitialized.current && messages.length === 0) {
-      isInitialized.current = true;
-      addBotMessage(getGreetingMessage());
-    }
-  }, [balance]);
 
   const addBotMessage = (content: string, actions?: ChatAction[]) => {
     const message: ChatMessage = {

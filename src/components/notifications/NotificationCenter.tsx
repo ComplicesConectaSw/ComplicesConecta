@@ -47,6 +47,7 @@ export function NotificationCenter({ userId, className }: NotificationCenterProp
     
     // Navigate to action URL if available
     if (notification.action_url) {
+      // eslint-disable-next-line react-hooks/immutability
       window.location.href = notification.action_url;
     }
   };

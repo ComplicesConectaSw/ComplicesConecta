@@ -291,8 +291,6 @@ const ProfileCouple: React.FC = () => {
   };
   const handleCommentPost = () => showToast("Comentar...", "info");
 
-  if (isLoading || !profile) return <div className="min-h-screen flex items-center justify-center bg-gray-900"><Loader2 className="w-10 h-10 text-purple-500 animate-spin"/></div>;
-
   const isDemoActive = (String(demoAuth) === 'true') && demoUser;
 
   // Background de pareja según tipo de relación + config global
@@ -311,22 +309,27 @@ const ProfileCouple: React.FC = () => {
     }
   };
 
-  const [randomCoupleBg, setRandomCoupleBg] = useState<string | null>(null);
+  const randomCoupleBg = React.useMemo(() => {
+    if (backgroundMode !== 'random') return null;
 
-  useEffect(() => {
-    if (backgroundMode === 'random') {
-      const pool = [
-        '/backgrounds/Background(3).webp',
-        '/backgrounds/Background(4).webp',
-        '/backgrounds/Background(2).webp',
-      ];
-      const unique = Array.from(new Set(pool));
-      const picked =
-        unique[Math.floor(Math.random() * unique.length)] ||
-        '/backgrounds/Background(3).webp';
-      setRandomCoupleBg(picked);
+    const pool = [
+      '/backgrounds/Background(3).webp',
+      '/backgrounds/Background(4).webp',
+      '/backgrounds/Background(2).webp',
+    ];
+    const unique = Array.from(new Set(pool));
+    if (!unique.length) {
+      return '/backgrounds/Background(3).webp';
     }
-  }, [backgroundMode]);
+
+    const key = String(profile?.id ?? '');
+    const hash = key.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    const idx = hash % unique.length;
+
+    return unique[idx];
+  }, [backgroundMode, profile?.id]);
+
+  if (isLoading || !profile) return <div className="min-h-screen flex items-center justify-center bg-gray-900"><Loader2 className="w-10 h-10 text-purple-500 animate-spin"/></div>;
 
   let coupleBackground: string;
   if (backgroundMode === 'random') {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Image as ImageIcon, User, Lock } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
 
@@ -14,18 +14,15 @@ export const SafeImage: React.FC<SafeImageProps> = ({
   ...props
 }) => {
   const [hasError, setHasError] = useState(false);
-  const [imgSrc, setImgSrc] = useState<string>('');
-
-  useEffect(() => {
-    setHasError(false);
-    if (!src) return;
-
+  const imgSrc = useMemo(() => {
+    if (!src) {
+      return "";
+    }
     let finalSrc = src as string;
     if (!finalSrc.startsWith('http') && !finalSrc.startsWith('data:') && !finalSrc.startsWith('/')) {
       finalSrc = `/${finalSrc}`;
     }
-
-    setImgSrc(finalSrc);
+    return finalSrc;
   }, [src]);
 
   if (hasError || !imgSrc) {

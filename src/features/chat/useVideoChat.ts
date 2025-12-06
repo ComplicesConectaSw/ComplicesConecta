@@ -447,7 +447,7 @@ export const useVideoChat = ({
     
     // Utilities
     isCallActive: state.isInCall || state.isConnecting,
-    hasLocalStream: !!localStreamRef.current
+    hasLocalStream: () => Boolean(localStreamRef.current)
   };
 };
 

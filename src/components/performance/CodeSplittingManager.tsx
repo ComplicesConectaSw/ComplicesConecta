@@ -148,6 +148,7 @@ function getCachedLazyComponent(config: RouteConfig): React.LazyExoticComponent<
 }
 
 // Componente wrapper para rutas lazy
+// eslint-disable-next-line react-hooks/static-components
 export const LazyRoute: React.FC<{ config: RouteConfig }> = ({ config }) => {
   const LazyComponent = getCachedLazyComponent(config);
   

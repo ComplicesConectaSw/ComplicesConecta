@@ -307,8 +307,6 @@ const ProfileSingle: React.FC = () => {
   };
   const handleLockGallery = () => { setIsParentalLocked(true); localStorage.setItem('parentalControlLocked', 'true'); showToast("Bloqueado", "info"); };
 
-  if (isLoading) return <div className="flex items-center justify-center min-h-screen text-gray-500">Cargando...</div>;
-  
   const currentProfile = profile || { name: 'Usuario', nickname: 'usuario', id: 'invitado', age: 25 } as ProfileRow;
   const displayName = currentProfile.display_name || currentProfile.name || 'Usuario';
   const displayAge = currentProfile.age || 25;
@@ -342,21 +340,26 @@ const ProfileSingle: React.FC = () => {
     }
   };
 
-  const [randomBackground, setRandomBackground] = useState<string | null>(null);
+  const randomBackground = React.useMemo(() => {
+    if (backgroundMode !== 'random') return null;
 
-  useEffect(() => {
-    if (backgroundMode === 'random') {
-      const pool: string[] = [
-        ...singleCandidatesByGender,
-        ThemeConfig.backgrounds.profiles.couple.heterosexual,
-      ];
-      const unique = Array.from(new Set(pool.filter(Boolean)));
-      const picked = !unique.length
-        ? '/backgrounds/Background(2).webp'
-        : unique[Math.floor(Math.random() * unique.length)];
-      setRandomBackground(picked);
+    const pool: string[] = [
+      ...singleCandidatesByGender,
+      ThemeConfig.backgrounds.profiles.couple.heterosexual,
+    ];
+    const unique = Array.from(new Set(pool.filter(Boolean)));
+    if (!unique.length) {
+      return '/backgrounds/Background(2).webp';
     }
-  }, [backgroundMode, singleCandidatesByGender]);
+
+    const key = String(currentProfile.profile_id ?? currentProfile.id ?? '');
+    const hash = key.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    const idx = hash % unique.length;
+
+    return unique[idx];
+  }, [backgroundMode, singleCandidatesByGender, currentProfile.profile_id, currentProfile.id]);
+
+  if (isLoading) return <div className="flex items-center justify-center min-h-screen text-gray-500">Cargando...</div>;
 
   let singleBackground: string;
   if (backgroundMode === 'random') {
