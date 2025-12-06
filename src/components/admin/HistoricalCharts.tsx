@@ -24,7 +24,6 @@ import {
   ResponsiveContainer,
   ComposedChart
   } from 'recharts';
-import { useCallback } from 'react';
 import historicalMetricsService, {
   type PerformanceTrendData,
   type ErrorTrendData,
@@ -45,17 +44,7 @@ interface HistoricalChartsProps {
 // =====================================================
 // COMPONENT
 // =====================================================
-// ... dentro del componente
 
-// 1. PRIMERO define la función
-const loadConfigs = useCallback(() => {
-    // ... tu lógica
-}, []);
-
-// 2. DESPUÉS úsala en el efecto
-useEffect(() => {
-    loadConfigs();
-}, [loadConfigs]);
 export const HistoricalCharts: React.FC<HistoricalChartsProps> = ({
   timeRange = 24,
   refreshInterval = 60
@@ -66,20 +55,6 @@ export const HistoricalCharts: React.FC<HistoricalChartsProps> = ({
   const [moderationData, setModerationData] = useState<ModerationTrendData | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedRange, setSelectedRange] = useState<number>(timeRange);
-
-  // =====================================================
-  // EFFECTS
-  // =====================================================
-
-  useEffect(() => {
-    fetchAllData();
-
-    const interval = setInterval(() => {
-      fetchAllData();
-    }, refreshInterval * 1000);
-
-    return () => clearInterval(interval);
-  }, [selectedRange, refreshInterval]);
 
   // =====================================================
   // FUNCTIONS
@@ -104,6 +79,20 @@ export const HistoricalCharts: React.FC<HistoricalChartsProps> = ({
       setLoading(false);
     }
   };
+
+  // =====================================================
+  // EFFECTS
+  // =====================================================
+
+  useEffect(() => {
+    void fetchAllData();
+
+    const interval = setInterval(() => {
+      void fetchAllData();
+    }, refreshInterval * 1000);
+
+    return () => clearInterval(interval);
+  }, [selectedRange, refreshInterval]);
 
   // =====================================================
   // RENDER HELPERS

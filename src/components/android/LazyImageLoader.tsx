@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '@/shared/lib/cn';
-import { useCallback } from 'react';
 interface LazyImageLoaderProps {
   src: string;
   alt: string;
@@ -13,17 +12,6 @@ interface LazyImageLoaderProps {
   onError?: () => void;
 }
 
-// ... dentro del componente
-
-// 1. PRIMERO define la función
-const loadConfigs = useCallback(() => {
-    // ... tu lógica
-}, []);
-
-// 2. DESPUÉS úsala en el efecto
-useEffect(() => {
-    loadConfigs();
-}, [loadConfigs]);
 export const LazyImageLoader: React.FC<LazyImageLoaderProps> = ({
   src,
   alt,
@@ -64,35 +52,6 @@ export const LazyImageLoader: React.FC<LazyImageLoaderProps> = ({
       avifTest.src = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgABogQEAwgMg8f8D///8WfhwB8+ErK42A=';
     }
   }, []);
-
-  useEffect(() => {
-    if (!imgRef.current) return;
-
-    // Intersection Observer para lazy loading
-    if (loading === 'lazy') {
-      observerRef.current = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              loadImage();
-              observerRef.current?.disconnect();
-            }
-          });
-        },
-        {
-          rootMargin: '50px' // Cargar 50px antes de ser visible
-        }
-      );
-
-      observerRef.current.observe(imgRef.current as Element);
-    } else {
-      loadImage();
-    }
-
-    return () => {
-      observerRef.current?.disconnect();
-    };
-  }, [src, webpSrc, avifSrc]);
 
   const loadImage = () => {
     // Seleccionar la mejor fuente disponible
@@ -136,6 +95,35 @@ export const LazyImageLoader: React.FC<LazyImageLoaderProps> = ({
     
     img.src = selectedSrc;
   };
+
+  useEffect(() => {
+    if (!imgRef.current) return;
+
+    // Intersection Observer para lazy loading
+    if (loading === 'lazy') {
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              loadImage();
+              observerRef.current?.disconnect();
+            }
+          });
+        },
+        {
+          rootMargin: '50px' // Cargar 50px antes de ser visible
+        }
+      );
+
+      observerRef.current.observe(imgRef.current as Element);
+    } else {
+      loadImage();
+    }
+
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, [src, webpSrc, avifSrc]);
 
   return (
     <div className="relative overflow-hidden">

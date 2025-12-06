@@ -18,7 +18,6 @@ import {
   BarChart3,
   Flag
 } from 'lucide-react';
-import { useCallback } from 'react';
 import moderationMetricsService, { type ModerationMetrics } from '@/services/ModerationMetricsService';
 import { logger } from '@/lib/logger';
 
@@ -33,37 +32,13 @@ interface ModerationMetricsProps {
 // =====================================================
 // COMPONENT
 // =====================================================
-// ... dentro del componente
 
-// 1. PRIMERO define la función
-const loadConfigs = useCallback(() => {
-    // ... tu lógica
-}, []);
-
-// 2. DESPUÉS úsala en el efecto
-useEffect(() => {
-    loadConfigs();
-}, [loadConfigs]);
 export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
   refreshInterval = 30
 }) => {
   const [metrics, setMetrics] = useState<ModerationMetrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [highPriority, setHighPriority] = useState(0);
-
-  // =====================================================
-  // EFFECTS
-  // =====================================================
-
-  useEffect(() => {
-    fetchMetrics();
-
-    const interval = setInterval(() => {
-      fetchMetrics();
-    }, refreshInterval * 1000);
-
-    return () => clearInterval(interval);
-  }, [refreshInterval]);
 
   // =====================================================
   // FUNCTIONS
@@ -84,6 +59,20 @@ export const ModerationMetricsPanel: React.FC<ModerationMetricsProps> = ({
       setLoading(false);
     }
   };
+
+  // =====================================================
+  // EFFECTS
+  // =====================================================
+
+  useEffect(() => {
+    void fetchMetrics();
+
+    const interval = setInterval(() => {
+      void fetchMetrics();
+    }, refreshInterval * 1000);
+
+    return () => clearInterval(interval);
+  }, [refreshInterval]);
 
   // =====================================================
   // HELPER COMPONENTS

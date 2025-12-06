@@ -214,9 +214,9 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
               className="w-1 bg-purple-500 rounded-full"
               animate={{
                 height: [
-                  Math.random() * 40 + 10,
-                  Math.random() * 60 + 10,
-                  Math.random() * 40 + 10
+                  20,
+                  60,
+                  20
                 ]
               }}
               transition={{

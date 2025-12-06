@@ -24,27 +24,27 @@ interface PWAStatus {
   updateAvailable: boolean;
 }
 
-// Hook para gestionar estado PWA
-export const usePWA = () => {
-  const [status, setStatus] = useState<PWAStatus>({
+const getInitialPWAStatus = (): PWAStatus => {
+  const isInstalled = window.matchMedia('(display-mode: standalone)').matches ||
+    (window.navigator as any).standalone === true;
+
+  return {
     isInstallable: false,
-    isInstalled: false,
+    isInstalled,
     isOnline: navigator.onLine,
     notificationsEnabled: false,
-    updateAvailable: false
-  });
+    updateAvailable: false,
+  };
+};
+
+// Hook para gestionar estado PWA
+export const usePWA = () => {
+  const [status, setStatus] = useState<PWAStatus>(getInitialPWAStatus);
   
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const { toast } = useToast();
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
-    // Detectar si ya está instalado
-    const isInstalled = window.matchMedia('(display-mode: standalone)').matches ||
-                       (window.navigator as any).standalone === true;
-    
-    setStatus(prev => ({ ...prev, isInstalled }));
-
     // Listener para evento de instalación
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();

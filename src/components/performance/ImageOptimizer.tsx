@@ -190,17 +190,8 @@ export const OptimizedImage: React.FC<ImageOptimizerProps> = ({
     };
   }, [lazy, priority, formatLoading]);
 
-  // Cargar imagen cuando sea necesario
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => {
-    if (formatLoading || !src) return;
-
-    const shouldLoadImmediately = priority || !lazy;
-    
-    if (shouldLoadImmediately) {
-      loadImage();
-    }
-  }, [formatLoading, src, priority, lazy]);
+  // Nota: la carga explícita se dispara vía IntersectionObserver y atributos nativos;
+  // no necesitamos un efecto adicional que invoque loadImage directamente.
 
   // Generar srcSet para responsive images
   const generateResponsiveSrcSet = () => {

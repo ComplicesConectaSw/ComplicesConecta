@@ -34,12 +34,6 @@ export const LocationSelector = ({ onLocationChange, initialRadius = 10 }: Locat
 
   useEffect(() => {
     if (location) {
-      setAddress(`${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`);
-    }
-  }, [location]);
-
-  useEffect(() => {
-    if (location) {
       onLocationChange({
         lat: location.latitude,
         lng: location.longitude,

@@ -35,30 +35,19 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   autoFormat = true
 }) => {
   const [isTouched, setIsTouched] = useState(false);
-  const [validationResult, setValidationResult] = useState<{
-    valid: boolean;
-    normalized: string;
-    error?: string;
-  }>({ valid: false, normalized: '', error: undefined });
 
-  // Validar el valor actual cuando cambie
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => {
-    if (value) {
-      const result = validateMXPhone(value);
-      setValidationResult(result);
-      
-      // Notificar al padre sobre el cambio de validación
-      if (onValidChange) {
-        onValidChange(result.valid, result.normalized);
-      }
-    } else {
-      setValidationResult({ valid: false, normalized: '', error: undefined });
-      if (onValidChange) {
-        onValidChange(false, '');
-      }
+  const validationResult = React.useMemo(() => {
+    if (!value) {
+      return { valid: false, normalized: '', error: undefined };
     }
-  }, [value, onValidChange]);
+    return validateMXPhone(value);
+  }, [value]);
+
+  useEffect(() => {
+    if (!onValidChange) return;
+
+    onValidChange(validationResult.valid, validationResult.normalized);
+  }, [onValidChange, validationResult.valid, validationResult.normalized]);
 
   /**
    * Maneja el cambio de valor en el input

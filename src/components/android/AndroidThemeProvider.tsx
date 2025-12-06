@@ -33,44 +33,26 @@ interface AndroidThemeProviderProps {
 }
 
 export const AndroidThemeProvider: React.FC<AndroidThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<ThemeMode>('system');
-  const [isDark, setIsDark] = useState(false);
-
-  // Detectar preferencia del sistema
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    const updateSystemTheme = () => {
-      if (theme === 'system') {
-        setIsDark(mediaQuery.matches);
-      }
-    };
-
-    // Configurar listener inicial
-    updateSystemTheme();
-    mediaQuery.addEventListener('change', updateSystemTheme);
-
-    return () => mediaQuery.removeEventListener('change', updateSystemTheme);
-  }, [theme]);
-
-  // Cargar tema guardado
-  useEffect(() => {
+  const [theme, setTheme] = useState<ThemeMode>(() => {
     const savedTheme = localStorage.getItem('android-theme') as ThemeMode;
     if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
-      setTheme(savedTheme);
+      return savedTheme;
     }
-  }, []);
+    return 'system';
+  });
+
+  const isDark = (() => {
+    if (typeof window === 'undefined') return false;
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      return mediaQuery.matches;
+    }
+    return theme === 'dark';
+  })();
 
   // Aplicar tema al DOM
   useEffect(() => {
     const root = document.documentElement;
-    
-    if (theme === 'system') {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      setIsDark(mediaQuery.matches);
-    } else {
-      setIsDark(theme === 'dark');
-    }
 
     // Aplicar clases CSS
     if (isDark) {

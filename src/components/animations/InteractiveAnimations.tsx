@@ -284,12 +284,16 @@ export const ParticleExplosion: React.FC<ParticleExplosionProps> = ({
   particleCount = 20,
   className = "" 
 }) => {
-  const particles = Array.from({ length: particleCount }, (_, i) => ({
-    id: i,
-    angle: (360 / particleCount) * i,
-    distance: Math.random() * 100 + 50,
-    size: Math.random() * 4 + 2,
-  }));
+  const particles = React.useMemo(
+    () =>
+      Array.from({ length: particleCount }, (_, i) => ({
+        id: i,
+        angle: (360 / particleCount) * i,
+        distance: 80 + (i % 5) * 10,
+        size: 3 + (i % 3),
+      })),
+    [particleCount],
+  );
 
   return (
     <div className={`absolute inset-0 pointer-events-none ${className}`}>
