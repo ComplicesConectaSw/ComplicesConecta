@@ -13,6 +13,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 import { invitationService } from '@/lib/invitations';
+import { nftVerificationService } from '@/services/nft/NFTVerificationService';
 
 export interface ChatRequest {
   id: string;
@@ -96,7 +97,7 @@ class ChatPrivacyService {
       }
 
       // Crear solicitud de chat
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('invitations')
         .insert({
           from_profile: fromUserId,
@@ -137,7 +138,7 @@ class ChatPrivacyService {
         return false;
       }
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('invitations')
         .update({
           status: 'accepted',
@@ -178,7 +179,7 @@ class ChatPrivacyService {
         return false;
       }
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('invitations')
         .update({
           status: 'declined',
@@ -343,7 +344,32 @@ class ChatPrivacyService {
    */
   async hasGalleryAccess(ownerId: string, requesterId: string): Promise<boolean> {
     try {
-      return await invitationService.hasGalleryAccess(ownerId, requesterId);
+      const maskedOwner = ownerId.substring(0, 8) + '***';
+      const maskedRequester = requesterId.substring(0, 8) + '***';
+
+      logger.info('🖼️ Verificando acceso a galería privada', {
+        owner: maskedOwner,
+        requester: maskedRequester,
+      });
+
+      // 1) Lógica actual basada en invitaciones/permisos
+      const invitationAccess = await invitationService.hasGalleryAccess(ownerId, requesterId);
+
+      // 2) Verificación NFT: acceso adicional si el solicitante tiene NFT activo
+      //    Mantiene compatibilidad con la lógica existente y añade "fast path" para holders.
+      const nftAccess = await nftVerificationService.canAccessPrivateGallery(ownerId, requesterId);
+
+      const hasAccess = invitationAccess || nftAccess;
+
+      logger.info('🧩 Resultado acceso galería', {
+        owner: maskedOwner,
+        requester: maskedRequester,
+        invitationAccess,
+        nftAccess,
+        hasAccess,
+      });
+
+      return hasAccess;
     } catch (error) {
       logger.error('Error verificando acceso a galería:', {
         error: error instanceof Error ? error.message : String(error)
@@ -363,7 +389,7 @@ class ChatPrivacyService {
       }
 
       // Obtener la solicitud
-      const { data: request } = await supabase
+      const { data: request } = await (supabase as any)
         .from('invitations')
         .select('from_profile, to_profile')
         .eq('id', requestId)

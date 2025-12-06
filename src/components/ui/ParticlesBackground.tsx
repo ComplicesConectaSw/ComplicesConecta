@@ -5,6 +5,7 @@ import { cn } from '@/shared/lib/cn';
 import { useBgMode } from '@/hooks/useBgMode';
 import { useTheme } from '@/hooks/useTheme';
 import { useAuth } from '@/features/auth/useAuth';
+import { useAnimation } from '@/components/animations/AnimationProvider';
 
 interface ParticlesBackgroundProps {
   children?: React.ReactNode;
@@ -14,7 +15,8 @@ interface ParticlesBackgroundProps {
 export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ children, className }) => {
   const { prefs } = useTheme();
   const { profile } = useAuth();
-  const { mode, reducedMotion } = useBgMode();
+  const { mode } = useBgMode();
+  const { config } = useAnimation();
 
   const particlesInit = useCallback(async (engine: Parameters<typeof loadSlim>[0]) => {
     await loadSlim(engine);
@@ -49,7 +51,8 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
           enable: true,
           outModes: { default: 'bounce' as const },
           random: false,
-          speed: 1.4,
+          // Ajustar velocidad según reducedMotion global
+          speed: config.reducedMotion ? 0.4 : 1.4,
           straight: false,
         },
         number: {
@@ -62,12 +65,12 @@ export const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ childr
       },
       detectRetina: true,
     }),
-    [profile?.is_premium]
+    [config.reducedMotion, profile?.is_premium]
   );
 
-  const finalMode = reducedMotion ? 'static' : mode;
+  const finalMode = mode;
   const showVideo = finalMode === 'video';
-  const showParticles = finalMode === 'particles';
+  const showParticles = config.enableParticles && !config.reducedMotion && finalMode === 'particles';
   const videoSrc = profile?.profile_type === 'couple'
     ? '/backgrounds/Animate-bg2.mp4'
     : '/backgrounds/animate-bg.mp4';

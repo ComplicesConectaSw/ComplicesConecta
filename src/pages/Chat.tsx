@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MessageCircle, Video, MoreVertical, ArrowLeft, Heart, Send, Lock, Globe, UserPlus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { UnifiedButton } from "@/components/ui/UnifiedButton";
@@ -56,6 +56,8 @@ const Chat = () => {
   const [activeTab, setActiveTab] = useState('chats');
   const [realRooms, setRealRooms] = useState<any[]>([]);
   const [realMessages, setRealMessages] = useState<SimpleChatMessage[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { isAuthenticated } = useAuth();
   
   // Hook de verificacin de consentimiento
@@ -128,13 +130,13 @@ const Chat = () => {
   const loadRealMessages = async (roomId: string) => {
     _setIsLoading(true);
     try {
-      const result = await simpleChatService.getRoomMessages(roomId, 50);
+      const result = await simpleChatService.getRoomMessages(roomId, 100);
       if (result.success && result.messages) {
-        setRealMessages(result.messages);
+        setRealMessages(result.messages.slice(-200));
         
         // Suscribirse a nuevos mensajes en tiempo real
         simpleChatService.subscribeToRoomMessages(roomId, (message) => {
-          setRealMessages(prev => [...prev, message]);
+          setRealMessages(prev => [...prev.slice(-199), message]);
         });
       }
     } catch (_error) {
@@ -398,7 +400,7 @@ const Chat = () => {
     
     // Usar datos reales en produccin, mock en demo
     if (isProduction) {
-      sendRealMessage(newMessage);
+      void sendRealMessage(newMessage);
       return;
     }
     
@@ -425,9 +427,14 @@ const Chat = () => {
       message_type: 'text'
     };
     
-    setMessages(prev => [...prev, message]);
+    setMessages(prev => [...prev.slice(-199), message]);
     setNewMessage('');
   };
+
+  // Auto-scroll suave al nuevo mensaje
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [realMessages, messages]);
 
   const checkMessagePermissions = (chat: ChatUser) => {
     if (!features.messagingPrivacy) return true;
@@ -587,7 +594,7 @@ const Chat = () => {
                           : 'hover:bg-white/10'
                       }`}
                     >
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-2">
                         <div className="relative">
                           <img 
                             src={chat.image} 
@@ -644,7 +651,7 @@ const Chat = () => {
                           : 'hover:bg-white/10'
                       }`}
                     >
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-2">
                         <div className="relative">
                           <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg border-2 border-white/20">
                             {chat.name.charAt(0)}
@@ -681,7 +688,7 @@ const Chat = () => {
             <>
               {/* Header del chat */}
               <div className="p-4 border-b border-white/10 bg-gradient-to-r from-purple-900/30 via-purple-800/30 to-blue-900/30">
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
                   <UnifiedButton 
                     variant="ghost" 
                     size="sm" 
@@ -786,7 +793,14 @@ const Chat = () => {
                     </div>
                   ))
                 )}
+                <div ref={messagesEndRef} />
               </div>
+
+              {isTyping && (
+                <div className="px-4 pb-2 text-xs text-white/80 italic">
+                  Escribiendo...
+                </div>
+              )}
 
               {/* Input para enviar mensajes */}
               <div className="p-4 border-t border-white/10 bg-gradient-to-r from-purple-900/30 via-purple-800/30 to-blue-900/30 chat-input">
