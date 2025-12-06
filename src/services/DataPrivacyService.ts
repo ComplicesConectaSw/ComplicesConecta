@@ -252,7 +252,7 @@ class DataPrivacyService {
           throw new Error('Supabase no está disponible');
         }
 
-        const { data: messages } = await (supabase as any)
+        const { data: messages, error: anonymizeError } = await (supabase as any)
           .from('chat_messages')
           .update({
             content: '[Mensaje eliminado]',
@@ -263,8 +263,8 @@ class DataPrivacyService {
 
         if (anonymizeError) {
           errors.push(`Error anonimizando mensajes: ${anonymizeError.message}`);
-            deletedItems.messages = messages.length;
-          }
+        } else if (messages && messages.length > 0) {
+          deletedItems.messages = messages.length;
         }
       } catch (error) {
         errors.push(`Error procesando mensajes: ${String(error)}`);
