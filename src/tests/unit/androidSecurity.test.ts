@@ -3,6 +3,7 @@
  * Cobertura de funciones de seguridad anti-root/anti-developer
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AndroidSecurityManager } from '../../utils/androidSecurity';
 

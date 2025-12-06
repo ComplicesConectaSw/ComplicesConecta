@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // @ts-nocheck
 import React from 'react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';

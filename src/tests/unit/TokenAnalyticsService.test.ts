@@ -177,6 +177,7 @@ describe('TokenAnalyticsService', () => {
         );
         
         await Promise.race([resultPromise, timeoutPromise]);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         // Si hay timeout o error, no fallar el test (salida de emergencia)
         const elapsed = Date.now() - startTime;

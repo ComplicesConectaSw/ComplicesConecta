@@ -3,6 +3,7 @@
  * Cobertura de funciones de detección y optimización móvil
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   isMobile,

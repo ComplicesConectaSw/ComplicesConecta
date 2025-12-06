@@ -1,4 +1,5 @@
 import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 // Mock components and functions for testing
@@ -505,7 +506,7 @@ describe('BiometricSettings Component', () => {
 
     await waitFor(() => {
       const registerButton = screen.getByText('Registrar Biométrico');
-      fireEvent.click(registerButton);
+      fireEvent.click(registerButton as unknown as Element);
     });
 
     await waitFor(() => {
@@ -536,7 +537,7 @@ describe('BiometricSettings Component', () => {
 
     await waitFor(() => {
       const testButton = screen.getByText('Probar Autenticación');
-      fireEvent.click(testButton);
+      fireEvent.click(testButton as unknown as Element);
     });
 
     await waitFor(() => {
@@ -614,7 +615,7 @@ describe('BiometricSettings Component', () => {
 
     await waitFor(() => {
       const removeButton = screen.getByRole('button', { name: /trash/i });
-      fireEvent.click(removeButton);
+      fireEvent.click(removeButton as unknown as Element);
     });
 
     await waitFor(() => {

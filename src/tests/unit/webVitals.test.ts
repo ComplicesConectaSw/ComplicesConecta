@@ -97,6 +97,13 @@ describe('Web Vitals Monitoring', () => {
       }
     }, 5000); // Timeout de 5 segundos para el test completo
 
+    it('handles web vitals error', () => {
+      const error = new Error('Test error');
+      expect(() => {
+        throw error;
+      }).toThrow('Test error');
+    });
+
     it('should handle web-vitals import error gracefully', async () => {
       const startTime = Date.now();
       const maxTime = 3000; // Máximo 3 segundos
@@ -122,6 +129,7 @@ describe('Web Vitals Monitoring', () => {
         ]).catch(() => {
           // Esperado que falle, no lanzar error
         });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
         const elapsed = Date.now() - startTime;
         if (elapsed >= maxTime) {

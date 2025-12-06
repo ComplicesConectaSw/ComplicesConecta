@@ -3,6 +3,7 @@
  * Valida que las optimizaciones implementadas funcionen correctamente
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { postsService } from '../../services/postsService';
 import performanceMonitoring from '../../services/PerformanceMonitoringService';

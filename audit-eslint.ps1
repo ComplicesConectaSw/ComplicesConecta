@@ -9,16 +9,15 @@
 $ReportFile = "ESLINT_REPORTE.md"
 $TargetDir = "src" # Ajusta esto si quieres escanear otra carpeta (ej. ".")
 
-Write-Host "🔍 Iniciando análisis de ESLint en '$TargetDir'..." -ForegroundColor Cyan
+Write-Host "Iniciando análisis de ESLint en '$TargetDir'..." -ForegroundColor Cyan
 
 # 1. Ejecutar ESLint solicitando formato JSON
-# Nota: Usamos cmd /c para asegurar compatibilidad con npx en algunas terminales de Windows
-# El '2>&1' asegura que si npx falla, capturemos el error, aunque eslint suele escribir el json en stdout.
-$eslintOutput = npx eslint "$TargetDir/**/*.{js,ts,jsx,tsx}" --format json
+# Usamos --ext para evitar problemas con el glob en PowerShell
+$eslintOutput = npx eslint $TargetDir --ext .js,.ts,.jsx,.tsx --format json 2>&1
 
 # Verificamos si la salida está vacía
 if (-not $eslintOutput) {
-    Write-Host "✅ No se encontraron errores o ESLint no devolvió nada." -ForegroundColor Green
+    Write-Host "No se encontraron errores o ESLint no devolvió nada." -ForegroundColor Green
     exit
 }
 
@@ -29,7 +28,7 @@ try {
     $results = $jsonString | ConvertFrom-Json
 }
 catch {
-    Write-Host "⚠️ Error al parsear la salida de ESLint. Es posible que haya un error de configuración en ESLint que no es de linting." -ForegroundColor Red
+    Write-Host "Error al parsear la salida de ESLint. Es posible que haya un error de configuración en ESLint que no es de linting." -ForegroundColor Red
     Write-Host "Salida cruda:"
     Write-Host $eslintOutput
     exit
@@ -37,11 +36,11 @@ catch {
 
 # 3. Preparar el contenido del reporte Markdown
 $mdContent = @()
-$mdContent += "# 🛡️ Reporte de Auditoría Técnica - ESLint"
+$mdContent += "# Reporte de Auditoría Técnica - ESLint"
 $mdContent += "**Proyecto:** Complices Conecta"
 $mdContent += "**Fecha:** $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 $mdContent += ""
-$mdContent += "## 📊 Resumen Ejecutivo"
+$mdContent += "## Resumen Ejecutivo"
 
 # Calcular contadores
 $totalErrors = ($results | Measure-Object -Property errorCount -Sum).Sum
@@ -49,12 +48,13 @@ $totalWarnings = ($results | Measure-Object -Property warningCount -Sum).Sum
 $totalFiles = $results.Count
 
 $mdContent += "- **Archivos analizados con problemas:** $totalFiles"
-$mdContent += "- **🔴 Errores Totales:** $totalErrors"
-$mdContent += "- **🟡 Advertencias Totales:** $totalWarnings"
+$mdContent += "- **Errores Totales:** $totalErrors"
+$mdContent += "- **Advertencias Totales:** $totalWarnings"
+
 $mdContent += ""
 $mdContent += "---"
 $mdContent += ""
-$mdContent += "## 📝 Detalle de Hallazgos"
+$mdContent += "## Detalle de Hallazgos"
 $mdContent += ""
 
 # Iniciar Tabla
@@ -71,7 +71,7 @@ foreach ($file in $results) {
 
     foreach ($msg in $file.messages) {
         # Determinar icono de severidad (1 = Warning, 2 = Error)
-        $icon = if ($msg.severity -eq 2) { "🔴" } else { "🟡" }
+        $icon = if ($msg.severity -eq 2) { "ERROR" } else { "WARN" }
         
         # Limpiar mensajes para que no rompan la tabla Markdown (escapar pipes |)
         $cleanMsg = $msg.message -replace "\|", "-"
@@ -85,7 +85,7 @@ foreach ($file in $results) {
 # 5. Guardar el archivo
 $mdContent | Out-File -FilePath $ReportFile -Encoding utf8
 
-Write-Host "✅ Reporte generado exitosamente: $ReportFile" -ForegroundColor Green
+Write-Host "Reporte generado exitosamente: $ReportFile" -ForegroundColor Green
 
 # Opcional: Abrir el reporte automáticamente si estás en entorno visual
 # Invoke-Item $ReportFile

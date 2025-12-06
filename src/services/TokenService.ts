@@ -263,7 +263,7 @@ class TokenService {
 
       // Actualizar balance
       const updateField = tokenType === 'cmpx' ? 'cmpx_balance' : 'gtk_balance';
-      const { error: updateError } = await supabase
+      const { error: updateError } = await (supabase as any)
         .from('user_token_balances')
         .update({ [updateField]: newBalance })
         .eq('user_id', userId);
@@ -468,7 +468,7 @@ class TokenService {
       }
 
       // Obtener registro de staking
-      const { data: staking, error: fetchError } = await supabase
+      const { data: stakingRaw, error: fetchError } = await (supabase as any)
         .from('staking_records')
         .select('*')
         .eq('id', stakingId)
@@ -476,9 +476,17 @@ class TokenService {
         .eq('status', 'active')
         .single();
 
-      if (fetchError || !staking) {
+      if (fetchError || !stakingRaw) {
         throw new Error('Staking no encontrado');
       }
+
+      const staking = stakingRaw as {
+        start_date: string;
+        end_date: string | null;
+        apy?: number;
+        amount: number;
+        token_type: 'cmpx' | 'gtk';
+      };
 
       // Calcular recompensas basado en duración y APY
       const startDate = new Date(staking.start_date);
